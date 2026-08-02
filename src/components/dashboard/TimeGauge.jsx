@@ -1,7 +1,7 @@
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import { Clock3 } from "lucide-react"
-import Panel, { PanelHeader } from "./Panel"
+import Panel, { PanelHeader, PANEL_HEIGHT } from "./Panel"
 import { useCountUp } from "../../hooks/useCountUp"
 import { timeline } from "../../data/profile"
 
@@ -27,7 +27,7 @@ export default function TimeGauge() {
   const hours = useCountUp(timeline.hours, { start: inView, duration: 1.6 })
 
   return (
-    <Panel ref={ref} className="flex h-85 flex-col p-5 sm:p-6 lg:h-90">
+    <Panel ref={ref} className={`flex ${PANEL_HEIGHT} flex-col p-5 sm:p-6`}>
       <PanelHeader icon={Clock3} label="DESIGN TIME SPENT" />
 
       <div className="flex flex-1 flex-col items-center justify-center">

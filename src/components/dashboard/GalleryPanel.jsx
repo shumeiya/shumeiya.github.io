@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
-import Panel from "./Panel"
+import Panel, { PANEL_HEIGHT } from "./Panel"
 import { galleryProjects } from "../../data/profile"
 
 const layout = [
@@ -19,7 +19,7 @@ export default function GalleryPanel() {
   const [revealed, setRevealed] = useState(false)
 
   return (
-    <Panel className="h-80 p-0 lg:h-85">
+    <Panel className={`${PANEL_HEIGHT} p-0`}>
       <svg
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.15]"
@@ -56,9 +56,9 @@ export default function GalleryPanel() {
               <img
                 src={project.image}
                 alt={project.name}
-                className="aspect-[4/3] w-full object-cover brightness-75 transition-all duration-300 group-hover:brightness-100"
+                className="aspect-4/3 w-full object-cover brightness-75 transition-all duration-300 group-hover:brightness-100"
               />
-              <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/90 to-transparent p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <figcaption className="absolute inset-x-0 bottom-0 bg-linear-to-t from-ink/90 to-transparent p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <p className="text-[10px] font-medium text-cream">{project.name}</p>
               </figcaption>
               <span
@@ -80,7 +80,7 @@ export default function GalleryPanel() {
             initial={false}
             animate={{ opacity: revealed ? 1 : 0.9, filter: revealed ? "blur(0px)" : "blur(6px)" }}
             transition={{ duration: 0.4 }}
-            className="max-w-[220px] cursor-pointer rounded-full bg-ink-2/80 px-4 py-1.5 text-center font-mono-tight text-[10px] text-cream backdrop-blur"
+            className="max-w-55 cursor-pointer rounded-full bg-ink-2/80 px-4 py-1.5 text-center font-mono-tight text-[10px] text-cream backdrop-blur"
             onClick={() => setRevealed((v) => !v)}
           >
             {ANSWER}

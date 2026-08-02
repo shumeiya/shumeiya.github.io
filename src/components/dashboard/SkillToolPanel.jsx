@@ -1,7 +1,7 @@
 import { useRef } from "react"
 import { useInView } from "framer-motion"
 import { BarChart3 } from "lucide-react"
-import Panel, { PanelHeader } from "./Panel"
+import Panel, { PanelHeader, PANEL_HEIGHT } from "./Panel"
 import { skills, tools } from "../../data/profile"
 
 const accents = [
@@ -30,7 +30,7 @@ export default function SkillToolPanel() {
   const inView = useInView(ref, { once: true, margin: "-10% 0px" })
 
   return (
-    <Panel ref={ref} className="flex h-85 flex-col p-5 sm:p-6 lg:h-90">
+    <Panel ref={ref} className={`flex ${PANEL_HEIGHT} flex-col p-5 sm:p-6`}>
       <PanelHeader icon={BarChart3} label="DESIGN SKILL MATRIX" />
 
       <div className="grid flex-1 grid-cols-2 gap-4">
