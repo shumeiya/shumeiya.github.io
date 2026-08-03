@@ -2,7 +2,7 @@ import { useMemo, useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import DottedMapWithoutCountries from "dotted-map/without-countries"
 import { Globe2 } from "lucide-react"
-import Panel, { PanelHeader, PANEL_HEIGHT } from "./Panel"
+import Panel, { PanelHeader, BOTTOM_ROW_HEIGHT } from "./Panel"
 import worldmapData from "../../data/worldmap.json"
 import { experience } from "../../data/profile"
 
@@ -42,7 +42,7 @@ export default function WorldMapPanel() {
   const minY = Math.min(...points.map((p) => p.y))
 
   return (
-    <Panel ref={ref} className={`flex ${PANEL_HEIGHT} flex-col p-5 sm:p-6`}>
+    <Panel ref={ref} className={`flex ${BOTTOM_ROW_HEIGHT} flex-col p-5 sm:p-6`}>
       <PanelHeader icon={Globe2} label="MY EXPERIENCE" />
 
       <div className="relative w-full flex-1">

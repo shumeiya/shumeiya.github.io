@@ -11,7 +11,7 @@ export default function ProjectCard({ project, index }) {
       transition={{ duration: 0.5, delay: (index % 6) * 0.06 }}
       className="group flex flex-col overflow-hidden rounded-2xl bg-ink text-cream"
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div className="relative aspect-4/3 overflow-hidden">
         <img
           src={project.image}
           alt={project.name}

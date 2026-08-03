@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
-import Panel, { PANEL_HEIGHT } from "./Panel"
+import Panel, { BOTTOM_ROW_HEIGHT } from "./Panel"
 import { galleryProjects } from "../../data/profile"
 
 const layout = [
@@ -19,7 +19,7 @@ export default function GalleryPanel() {
   const [revealed, setRevealed] = useState(false)
 
   return (
-    <Panel className={`${PANEL_HEIGHT} p-0`}>
+    <Panel className={`${BOTTOM_ROW_HEIGHT} p-0`}>
       <svg
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.15]"

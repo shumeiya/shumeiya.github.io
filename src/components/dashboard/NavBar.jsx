@@ -16,14 +16,14 @@ export default function NavBar() {
           {profile.name.toUpperCase()}
         </span>
 
-        <ul className="flex items-center gap-1 overflow-x-auto rounded-full border border-page-line bg-white/70 p-1 shadow-sm sm:justify-self-center sm:overflow-visible">
+        <ul className="flex items-center gap-1 overflow-x-auto rounded-full bg-white p-1 sm:justify-self-center sm:overflow-visible">
           {links.map((link) => (
             <li key={link.to} className="shrink-0">
               <NavLink
                 to={link.to}
                 end={link.to === "/"}
                 className={({ isActive }) =>
-                  `block whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium transition-colors sm:px-4 sm:text-sm ${
+                  `block whitespace-nowrap rounded-full px-3 py-1 text-xs font-regular transition-colors sm:px-4 sm:text-sm ${
                     isActive
                       ? "bg-ink text-cream"
                       : "text-ink/50 hover:text-ink"

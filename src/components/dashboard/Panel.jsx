@@ -1,6 +1,7 @@
 import { forwardRef } from "react"
 
-export const PANEL_HEIGHT = "h-85 lg:h-92"
+export const TOP_ROW_HEIGHT = "h-85 lg:h-84"
+export const BOTTOM_ROW_HEIGHT = "h-85 lg:h-100"
 
 const Panel = forwardRef(function Panel(
   { children, className = "", as: Tag = "div", ...rest },

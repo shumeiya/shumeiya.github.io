@@ -39,6 +39,16 @@ export const skills = [
   { label: "Visual Design", score: 93 },
 ]
 
+// Powers the "Design Skill Matrix" hexagon radar chart — 0-100 scale, edit scores here.
+export const radarSkills = [
+  { label: "UX & UI", score: 92 },
+  { label: "Prototype", score: 90 },
+  { label: "Vibe Coding", score: 70 },
+  { label: "Data Research & Analysis", score: 78 },
+  { label: "Design System", score: 82 },
+  { label: "Product Thinking", score: 85 },
+]
+
 export const tools = [
   "Figma",
   "Protopie",

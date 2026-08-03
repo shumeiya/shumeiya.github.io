@@ -1,9 +1,9 @@
 import { motion } from "framer-motion"
-import Panel, { PANEL_HEIGHT } from "./Panel"
+import Panel, { TOP_ROW_HEIGHT } from "./Panel"
 
 export default function HelloPanel() {
   return (
-    <Panel className={`flex ${PANEL_HEIGHT} flex-col justify-between p-5 sm:p-6`}>
+    <Panel className={`flex ${TOP_ROW_HEIGHT} flex-col justify-between p-5 sm:p-6`}>
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-0 right-0 w-2/3"
