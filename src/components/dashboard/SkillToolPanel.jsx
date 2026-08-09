@@ -27,16 +27,24 @@ function polygonPoints(fraction) {
 const VERTS = radarSkills.map((skill, i) => pointAt(i, skill.score / 100, BLOB_R))
 const N = VERTS.length
 
-// One bright hue per vertex — a high-contrast spectrum around the hexagon
-// (blue → teal → green → yellow → orange → pink). Test palette; swap for the
-// muted --color-ac-* tokens later if it's too vivid.
-const VERT_HUES = [
+// One hue per vertex (order = top, top-right, right, bottom, bot-left, top-left).
+// Two palettes so the gradient differs between themes; the active one is chosen
+// at render time and re-blended whenever the .dark class flips.
+const VERT_HUES_DARK = [
   "#234D8F", // top        — blue
-  "#B44043", // top-right  — teal
+  "#B44043", // top-right  — red
   "#FFF798", // bottom     — yellow
   "#EC6D3F", // bot-left   — orange
   "#83B29E", // bot-right  — green
   "#FD5172", // top-left   — pink
+]
+const VERT_HUES_LIGHT = [
+  "#CDEEFF", // top        — blue
+  "#F58599", // top-right  — coral
+  "#F6D66B", // bottom     — yellow
+  "#FEE7C5", // bot-left   — orange
+  "#A8C2A5", // bot-right  — green
+  "#E7B9C6", // top-left   — pink
 ]
 
 // ----- Blob geometry (rounded convex lobes + concave, morphing mid-edges) -----
@@ -93,8 +101,10 @@ const SIZE = 200 // canvas render size, matches the 0..200 viewBox coordinates
 const SIGMA = 25 // spread of each colour source; smaller = purer hues, higher contrast
 
 function resolveVertColors() {
+  const isDark = document.documentElement.classList.contains("dark")
+  const hues = isDark ? VERT_HUES_DARK : VERT_HUES_LIGHT
   return radarSkills.map((_, i) => {
-    const hex = VERT_HUES[i % VERT_HUES.length].replace("#", "")
+    const hex = hues[i % hues.length].replace("#", "")
     const full = hex.length === 3 ? hex.replace(/(.)/g, "$1$1") : hex
     const n = parseInt(full, 16)
     return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
@@ -260,7 +270,7 @@ export default function SkillToolPanel() {
                   animate={inView ? { opacity: 1 } : {}}
                   transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
                 >
-                  <span className="block font-medium text-cream">{skill.label}</span>
+                  <span className="block font-light text-cream">{skill.label}</span>
                 </motion.div>
               )
             })}
