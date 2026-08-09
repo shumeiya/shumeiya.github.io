@@ -17,7 +17,7 @@ function curvePath(a, b) {
   return `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`
 }
 
-export default function WorldMapPanel() {
+export default function MyWorldPanel() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: "-10% 0px" })
 

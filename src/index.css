@@ -25,6 +25,7 @@
   --color-ac-blue: #a9c4d2;
   --color-ac-green: #a8c2a5;
   --color-ac-pink: #e7b9c6;
+  --color-ac-yellow: #FFF9B5;
 
   /* Fixed tokens — do not flip with theme. For text/scrims laid over photos, whose
      brightness is unrelated to the site's light/dark mode. */
@@ -49,6 +50,7 @@
   --color-ac-blue: #7e9baa;
   --color-ac-green: #6d8a75;
   --color-ac-pink: #c5919e;
+  --color-ac-yellow: #E9DE92;
 }
 
 html {
