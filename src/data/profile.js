@@ -28,24 +28,13 @@ export const timeline = {
   end: { year: 2026, city: "Munich" },
 }
 
-export const skills = [
-  { label: "UI / UX Design", score: 92 },
-  { label: "Interaction / HMI Design", score: 88 },
-  { label: "Design Systems", score: 82 },
-  { label: "Prototyping", score: 90 },
-  { label: "User Research & Testing", score: 78 },
-  { label: "Front-end (Webflow)", score: 65 },
-  { label: "3D / Industrial Design", score: 74 },
-  { label: "Visual Design", score: 93 },
-]
-
 // Powers the "Design Skill Matrix" hexagon radar chart — 0-100 scale, edit scores here.
 export const radarSkills = [
-  { label: "UX & UI", score: 92 },
+  { label: "UX & UI", score: 95 },
   { label: "Prototype", score: 90 },
   { label: "Vibe Coding", score: 70 },
-  { label: "Data Research & Analysis", score: 78 },
-  { label: "Design System", score: 82 },
+  { label: "Data Research & Analysis", score: 75 },
+  { label: "Design System", score: 80 },
   { label: "Product Thinking", score: 85 },
 ]
 
@@ -69,13 +58,13 @@ export const experience = [
 ]
 
 export const galleryProjects = [
-  { name: "ABC Mouse", tag: "Tencent · Learning UX", image: "/gallery/abcmouse.jpg", color: "var(--color-gold)" },
-  { name: "TIDE", tag: "App Design System", image: "/gallery/tide.jpg", color: "var(--color-violet)" },
-  { name: "Slow Food", tag: "Brand / Web Design", image: "/gallery/slowfood.jpg", color: "var(--color-mint)" },
-  { name: "HMI", tag: "Granstudio · Automotive", image: "/gallery/hmi.jpg", color: "var(--color-coral)" },
-  { name: "CodeMao", tag: "Platform Design", image: "/gallery/codemao.jpg", color: "var(--color-pink)" },
-  { name: "Weather Pets", tag: "wetter.com · App Concept", image: "/gallery/weatherpets.jpg", color: "var(--color-amber)" },
-  { name: "Puzzle Game", tag: "Gamification", image: "/gallery/puzzle.jpg", color: "var(--color-lime)" },
+  { name: "ABC Mouse", tag: "Tencent · Learning UX", image: "/gallery/abcmouse.jpg", color: "var(--color-ac-orange)" },
+  { name: "TIDE", tag: "App Design System", image: "/gallery/tide.jpg", color: "var(--color-ac-blue)" },
+  { name: "Slow Food", tag: "Brand / Web Design", image: "/gallery/slowfood.jpg", color: "var(--color-ac-green)" },
+  { name: "HMI", tag: "Granstudio · Automotive", image: "/gallery/hmi.jpg", color: "var(--color-ac-red)" },
+  { name: "CodeMao", tag: "Platform Design", image: "/gallery/codemao.jpg", color: "var(--color-ac-pink)" },
+  { name: "Weather Pets", tag: "wetter.com · App Concept", image: "/gallery/weatherpets.jpg", color: "var(--color-ac-orange)" },
+  { name: "Puzzle Game", tag: "Gamification", image: "/gallery/puzzle.jpg", color: "var(--color-ac-green)" },
 ]
 
 export const projects = galleryProjects.map((p) => ({
@@ -94,6 +83,7 @@ export const projectCategories = [
   { key: "product", label: "Product" },
 ]
 
+// "size" drives the bento-grid span in MyProject.jsx — lg (2x2), wide (2x1), tall (1x2), sm (1x1).
 export const projectList = [
   {
     name: "ABC Mouse",
@@ -101,8 +91,9 @@ export const projectList = [
     categories: ["uxui"],
     description: "Educational app design for Tencent's ToC learning platform, built with a cross-border team.",
     image: "/gallery/abcmouse.jpg",
-    color: "var(--color-gold)",
+    color: "var(--color-ac-orange)",
     href: "#",
+    size: "lg",
   },
   {
     name: "TIDE",
@@ -110,8 +101,9 @@ export const projectList = [
     categories: ["uxui"],
     description: "App design system for a lifestyle platform, from component library to shipped screens.",
     image: "/gallery/tide.jpg",
-    color: "var(--color-violet)",
+    color: "var(--color-ac-blue)",
     href: "#",
+    size: "tall",
   },
   {
     name: "Slow Food",
@@ -119,8 +111,9 @@ export const projectList = [
     categories: ["brand"],
     description: "Brand and web design exploring a playful, ingredient-led visual identity.",
     image: "/gallery/slowfood.jpg",
-    color: "var(--color-mint)",
+    color: "var(--color-ac-green)",
     href: "#",
+    size: "sm",
   },
   {
     name: "HMI Design",
@@ -128,8 +121,9 @@ export const projectList = [
     categories: ["hmi"],
     description: "Automotive HMI interaction design at Granstudio, for an international design team.",
     image: "/gallery/hmi.jpg",
-    color: "var(--color-coral)",
+    color: "var(--color-ac-red)",
     href: "#",
+    size: "sm",
   },
   {
     name: "CodeMao",
@@ -137,8 +131,9 @@ export const projectList = [
     categories: ["uxui"],
     description: "Platform design for a ToB course management product at Dianmao Technology.",
     image: "/gallery/codemao.jpg",
-    color: "var(--color-pink)",
+    color: "var(--color-ac-pink)",
     href: "#",
+    size: "wide",
   },
   {
     name: "Weather Pets",
@@ -146,8 +141,9 @@ export const projectList = [
     categories: ["uxui"],
     description: "A playful weather app concept with animated companion pets, explored at wetter.com.",
     image: "/gallery/weatherpets.jpg",
-    color: "var(--color-amber)",
+    color: "var(--color-ac-orange)",
     href: "#",
+    size: "sm",
   },
   {
     name: "Puzzle Game",
@@ -155,7 +151,8 @@ export const projectList = [
     categories: ["game"],
     description: "A jigsaw puzzle app with smooth, tactile interaction design.",
     image: "/gallery/puzzle.jpg",
-    color: "var(--color-lime)",
+    size: "sm",
+    color: "var(--color-ac-green)",
     href: "#",
   },
   {
@@ -164,7 +161,8 @@ export const projectList = [
     categories: ["product"],
     description: "Industrial design concept for a rescue drone, from form study to rendered product shots.",
     image: "/gallery/firesystem.jpg",
-    color: "var(--color-mint)",
+    color: "var(--color-ac-green)",
     href: "#",
+    size: "wide",
   },
 ]

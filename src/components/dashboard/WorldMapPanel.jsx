@@ -9,7 +9,7 @@ import { experience } from "../../data/profile"
 const MAP_W = 99
 const MAP_H = 50
 
-const pinColors = ["var(--color-pink)", "var(--color-gold)", "var(--color-mint)"]
+const pinColors = ["var(--color-ac-pink)", "var(--color-ac-orange)", "var(--color-ac-green)"]
 
 function curvePath(a, b) {
   const mx = (a.x + b.x) / 2
@@ -26,7 +26,7 @@ export default function WorldMapPanel() {
     const dots = map
       .getSVG({
         radius: 0.22,
-        color: "#33333a",
+        color: "var(--color-box-2)",
         shape: "circle",
         backgroundColor: "transparent",
       })
@@ -42,7 +42,7 @@ export default function WorldMapPanel() {
   const minY = Math.min(...points.map((p) => p.y))
 
   return (
-    <Panel ref={ref} className={`flex ${BOTTOM_ROW_HEIGHT} flex-col p-5 sm:p-6`}>
+    <Panel ref={ref} className={`flex ${BOTTOM_ROW_HEIGHT} flex-col p-2 sm:p-3`}>
       <PanelHeader icon={Globe2} label="MY EXPERIENCE" />
 
       <div className="relative w-full flex-1">
@@ -94,7 +94,7 @@ export default function WorldMapPanel() {
           return (
             <motion.div
               key={point.city}
-              className="absolute flex items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-ink-2/90 px-2 py-1 text-[9px] text-cream backdrop-blur sm:text-[10px]"
+              className="absolute flex items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-box-2/90 px-2 py-1 text-[9px] text-cream backdrop-blur sm:text-[10px]"
               style={{
                 left: `${(point.x / MAP_W) * 100}%`,
                 top: `${(point.y / MAP_H) * 100}%`,

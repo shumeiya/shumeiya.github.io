@@ -27,7 +27,7 @@ export default function TimeGauge() {
   const hours = useCountUp(timeline.hours, { start: inView, duration: 1.6 })
 
   return (
-    <Panel ref={ref} className={`flex ${TOP_ROW_HEIGHT} flex-col p-5 sm:p-6`}>
+    <Panel ref={ref} className={`flex ${TOP_ROW_HEIGHT} flex-col p-2 sm:p-3`}>
       <PanelHeader icon={Clock3} label="DESIGN TIME SPENT" />
 
       <div className="flex flex-1 flex-col items-center justify-center">
@@ -39,13 +39,13 @@ export default function TimeGauge() {
         <svg viewBox="0 0 200 112" className="mt-2 w-full max-w-[210px]">
           <defs>
             <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="var(--color-pink)" />
-              <stop offset="55%" stopColor="var(--color-violet)" />
-              <stop offset="100%" stopColor="var(--color-mint)" />
+              <stop offset="0%" stopColor="var(--color-ac-pink)" />
+              <stop offset="55%" stopColor="var(--color-ac-blue)" />
+              <stop offset="100%" stopColor="var(--color-ac-green)" />
             </linearGradient>
           </defs>
 
-          <path d={arcPath} fill="none" stroke="var(--color-ink-2)" strokeWidth="6" strokeLinecap="round" />
+          <path d={arcPath} fill="none" stroke="var(--color-box-2)" strokeWidth="6" strokeLinecap="round" />
 
           <motion.path
             d={arcPath}
@@ -58,8 +58,8 @@ export default function TimeGauge() {
             transition={{ duration: 1.2, ease: "easeOut" }}
           />
 
-          <circle cx={CX - R} cy={CY} r="3" fill="var(--color-ink-2)" />
-          <circle cx={CX + R} cy={CY} r="3" fill="var(--color-ink-2)" />
+          <circle cx={CX - R} cy={CY} r="3" fill="var(--color-box-2)" />
+          <circle cx={CX + R} cy={CY} r="3" fill="var(--color-box-2)" />
 
           <motion.circle
             cx={pointer.x}

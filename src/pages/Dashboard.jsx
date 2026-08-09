@@ -1,7 +1,7 @@
 import HelloPanel from "../components/dashboard/HelloPanel"
 import TimeGauge from "../components/dashboard/TimeGauge"
 import SkillToolPanel from "../components/dashboard/SkillToolPanel"
-import GalleryPanel from "../components/dashboard/GalleryPanel"
+import ProjectGallery from "../components/dashboard/ProjectGallery"
 import WorldMapPanel from "../components/dashboard/WorldMapPanel"
 
 export default function Dashboard() {
@@ -20,7 +20,7 @@ export default function Dashboard() {
 
 
         <div className="lg:col-span-7">
-          <GalleryPanel />
+          <ProjectGallery />
         </div>
         <div className="lg:col-span-5">
           <WorldMapPanel />

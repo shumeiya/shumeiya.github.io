@@ -13,8 +13,8 @@ export default function CategoryFilter({ categories, counts, active, onChange })
             onClick={() => onChange(cat.key)}
             className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors sm:text-sm ${
               isActive
-                ? "border-ink bg-ink text-cream"
-                : "border-page-line bg-white/70 text-ink/60 hover:text-ink"
+                ? "border-box bg-box text-cream"
+                : "border-page-line bg-box/70 text-ink/60 hover:text-ink"
             }`}
           >
             {cat.label} <span className={isActive ? "text-cream/50" : "text-ink/30"}>{count}</span>

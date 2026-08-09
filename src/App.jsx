@@ -6,7 +6,7 @@ import Placeholder from "./pages/Placeholder"
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-page text-ink">
+    <div className="min-h-screen bg-page">
       <NavBar />
       <Routes>
         <Route path="/" element={<Dashboard />} />

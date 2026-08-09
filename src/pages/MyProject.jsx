@@ -4,6 +4,13 @@ import CategoryFilter from "../components/project/CategoryFilter"
 import ProjectCard from "../components/project/ProjectCard"
 import { projectCategories, projectList } from "../data/profile"
 
+const SIZE_CLASSES = {
+  lg: "col-span-2 row-span-2",
+  wide: "col-span-2 row-span-1",
+  tall: "col-span-1 row-span-2",
+  sm: "col-span-1 row-span-1",
+}
+
 export default function MyProject() {
   const [active, setActive] = useState("all")
 
@@ -22,8 +29,8 @@ export default function MyProject() {
   )
 
   return (
-    <main className="px-4 pb-16 pt-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <main className="px-4 pb-16 pt-4 sm:px-6 lg:px-2">
+      <div className="mx-auto max-w-9xl">
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -50,9 +57,14 @@ export default function MyProject() {
           />
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+        <div className="mt-8 grid auto-rows-[170px] grid-cols-2 grid-flow-dense gap-3 sm:mt-10 sm:auto-rows-[190px] lg:grid-cols-4 lg:auto-rows-[210px] lg:gap-2">
           {visible.map((project, i) => (
-            <ProjectCard key={project.name} project={project} index={i} />
+            <ProjectCard
+              key={project.name}
+              project={project}
+              index={i}
+              className={SIZE_CLASSES[project.size] ?? SIZE_CLASSES.sm}
+            />
           ))}
         </div>
       </div>
