@@ -39,12 +39,12 @@ function SmileyFace({ className = "" }) {
 
 // Projects I'm building right now.
 const PROJECTS = [
-  { key: "kyrall", name: "Kyrall", pct: 50, variant: 4, color: "var(--color-ac-green)" },
+  { key: "kyrall", name: "Kyrall", pct: 55, variant: 4, color: "var(--color-ac-green)" },
   { key: "aitool", name: "AITool Explore", pct: 18, variant: 3, color: "var(--color-ac-blue)" },
   { key: "embodied", name: "Embodied AI", pct: 12, variant: 1, color: "var(--color-ac-pink)" },
   { key: "website", name: "Personal Website", pct: 5, variant: 2, color: "var(--color-ac-red)" },
 ]
-const ENJOY = { key: "enjoy", name: "Enjoy Life", pct: 15 }
+const ENJOY = { key: "enjoy", name: "Enjoy Life", pct: 10 }
 const ALL_BY_KEY = Object.fromEntries([...PROJECTS, ENJOY].map((p) => [p.key, p]))
 
 // Hover-preview media per project. Empty for now — drop files in later, e.g.:
@@ -72,8 +72,8 @@ const DAY_LABELS = { 0: "Mon", 2: "Wed", 4: "Fri" }
 // Kyrall lives mostly on weekdays; personal website + enjoy life fill the weekend;
 // aitool / Embodied AI are scattered across both.
 // Kyrall + website are placed by rules (below); these bags fill whatever cells are left.
-const WEEKDAY_COUNTS = { kyrall: 99, aitool: 30, enjoy: 7 }
-const WEEKEND_FILL_COUNTS = { aitool: 10, enjoy: 27 }
+const WEEKDAY_COUNTS = { aitool: 21, enjoy: 5 }
+const WEEKEND_FILL_COUNTS = { aitool: 19, enjoy: 18 }
 // How many Kyrall each month's weekend gets. Month indexes: Jan0 … Jun5, Jul6, Aug7.
 // June is loaded (6); July is heavy (4); Mar/Apr/Aug get none; the rest default to 1.
 const WEEKEND_KYRALL_DEFAULT = 1
@@ -83,8 +83,20 @@ const WEEKEND_KYRALL_BY_MONTH = { 2: 0, 3: 0, 5: 6, 6: 3, 7: 0 }
 const WEEKEND_FULL_WEEKS = { 6: [0] }
 // Weeks that must NOT get a weekend Kyrall — July's last weekend stays clear…
 const WEEKEND_KYRALL_EXCLUDE_WEEKS = { 6: [3] }
-// …that Kyrall moves into a July weekday instead.
-const WEEKDAY_KYRALL_BY_MONTH = { 6: 1 }
+// Weekday (Mon–Fri) Kyrall per week-column (32 weeks, Jan→Aug). Kyrall launched Jul 6,
+// so Jun through early-July is the busiest stretch; Jan/Feb are lighter. Every column is
+// ≥1 (no empty week). Must total 111, and May–Aug (cols 16–31) must stay ≤57 so Embodied
+// (20 weekday cells, confined to May–Aug) still fits.
+const WEEKDAY_KYRALL_BY_COL = [
+  3, 3, 3, 3, // Jan
+  3, 3, 3, 3, // Feb
+  4, 4, 4, 4, // Mar
+  4, 4, 4, 4, // Apr
+  2, 2, 3, 3, // May
+  5, 5, 5, 5, // Jun — peak
+  5, 5, 1, 5, // Jul — first two weeks peak (through Jul 6); last week (col 27) stays full
+  5, 2, 1, 1, // Aug — first week (col 28) stays full
+]
 // Projects that only appear from a certain month onward. Each is placed explicitly
 // (weekend-heavy) before the random bags fill the rest.
 //   personal website → from July;  Embodied AI → from May.
@@ -176,10 +188,14 @@ function buildGrid() {
     for (let k = 0; placed < target && k < rest.length; k++, placed++) grid[rest[k]] = "kyrall"
   }
 
-  // 2) the Kyrall moved off July's last weekend now sits in a July weekday.
-  for (const m in WEEKDAY_KYRALL_BY_MONTH) {
-    placeInto(monthCells([Number(m)], 0, WEEKDAY_ROWS - 1), WEEKDAY_KYRALL_BY_MONTH[m], "kyrall", grid, rng)
-  }
+  // 2) weekday (Mon–Fri) Kyrall, per week-column — this sets the frequency curve
+  //    (Jun → early-July peak, Jan/Feb lighter) and keeps every week ≥1.
+  WEEKDAY_KYRALL_BY_COL.forEach((n, c) => {
+    const cells = []
+    for (let r = 0; r < WEEKDAY_ROWS; r++) cells.push(r * COLS + c)
+    shuffle(cells, rng)
+    for (let k = 0; k < n && k < cells.length; k++) grid[cells[k]] = "kyrall"
+  })
 
   // 3) projects that only start from a given month, placed weekend-first.
   for (const { key, months, weekend, weekday } of CONSTRAINED) {
