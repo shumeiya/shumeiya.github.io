@@ -1,43 +1,38 @@
 import { motion } from "framer-motion"
-import { ArrowUpRight } from "lucide-react"
 
-export default function ProjectCard({ project, index, className = "" }) {
+// Bento cell size — every card fills a fixed grid region (col x row span).
+const SPAN = {
+  lg: "col-span-2 row-span-2",
+  wide: "col-span-2 row-span-1",
+  tall: "col-span-1 row-span-2",
+  sm: "col-span-1 row-span-1",
+}
+
+export default function ProjectCard({ project, index }) {
+  const span = SPAN[project.size] ?? SPAN.sm
+
   return (
     <motion.a
       href={project.href}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10% 0px" }}
+      viewport={{ once: true, margin: "-8% 0px" }}
       transition={{ duration: 0.5, delay: (index % 8) * 0.05 }}
-      className={`group relative block overflow-hidden rounded-2xl bg-paper-ink ${className}`}
+      className={`group relative block overflow-hidden rounded-xl bg-box ${span}`}
     >
       <img
         src={project.image}
         alt={project.name}
-        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
       />
 
-      <span
-        className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-medium text-paper-ink"
-        style={{ backgroundColor: project.color }}
-      >
-        {project.category}
-      </span>
-
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-paper-ink via-paper-ink/80 to-transparent p-4">
-        <h3 className="text-base font-medium text-paper sm:text-lg">{project.name}</h3>
-        <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-hover:grid-rows-[1fr]">
-          <div className="overflow-hidden">
-            <p className="mt-1.5 text-sm text-paper/60">{project.description}</p>
-            <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-paper/80">
-              View Project
-              <ArrowUpRight
-                size={14}
-                className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </span>
-          </div>
-        </div>
+      {/* Label overlay — keeps the grid perfectly tiled while staying readable. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-baseline justify-between gap-3 bg-gradient-to-t from-black/70 via-black/25 to-transparent px-4 pb-3 pt-10">
+        <h3 className="truncate text-base font-medium text-white">{project.name}</h3>
+        {project.category && (
+          <span className="shrink-0 text-sm text-white/60">{project.category}</span>
+        )}
       </div>
     </motion.a>
   )

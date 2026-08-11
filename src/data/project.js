@@ -1,4 +1,4 @@
-export const profile = {
+export const project = {
   name: "Shumei",
   fullName: "Shumei Zhang",
   role: "UX/UI Designer",
@@ -58,12 +58,12 @@ export const experience = [
 ]
 
 export const galleryProjects = [
+   { name: "Weather Pets", tag: "wetter.com · App Concept", image: "/gallery/weatherpets.jpg", color: "var(--color-ac-orange)" },
   { name: "ABC Mouse", tag: "Tencent · Learning UX", image: "/gallery/abcmouse.jpg", color: "var(--color-ac-orange)" },
   { name: "TIDE", tag: "App Design System", image: "/gallery/tide.jpg", color: "var(--color-ac-blue)" },
   { name: "Slow Food", tag: "Brand / Web Design", image: "/gallery/slowfood.jpg", color: "var(--color-ac-green)" },
   { name: "HMI", tag: "Granstudio · Automotive", image: "/gallery/hmi.jpg", color: "var(--color-ac-red)" },
   { name: "CodeMao", tag: "Platform Design", image: "/gallery/codemao.jpg", color: "var(--color-ac-pink)" },
-  { name: "Weather Pets", tag: "wetter.com · App Concept", image: "/gallery/weatherpets.jpg", color: "var(--color-ac-orange)" },
   { name: "Puzzle Game", tag: "Gamification", image: "/gallery/puzzle.jpg", color: "var(--color-ac-green)" },
 ]
 
@@ -77,14 +77,54 @@ export const projects = galleryProjects.map((p) => ({
 export const projectCategories = [
   { key: "all", label: "All" },
   { key: "uxui", label: "UX/UI" },
+  { key: "ai", label: "AI Product" },
   { key: "hmi", label: "HMI" },
-  { key: "brand", label: "Brand" },
-  { key: "game", label: "Game" },
   { key: "product", label: "Product" },
 ]
 
 // "size" drives the bento-grid span in MyProject.jsx — lg (2x2), wide (2x1), tall (1x2), sm (1x1).
 export const projectList = [
+    {
+    name: "Weather Pets",
+    category: "ai",
+    categories: ["uxui"],
+    description: "A playful weather app concept with animated companion pets, explored at wetter.com.",
+    image: "/gallery/weatherpets.jpg",
+    color: "var(--color-ac-orange)",
+    href: "#",
+    size: "lg",
+  },
+    {
+    name: "Slow Food",
+    category: "UX/UI",
+    categories: ["brand"],
+    description: "Brand and web design exploring a playful, ingredient-led visual identity.",
+    image: "/gallery/slowfood.jpg",
+    color: "var(--color-ac-green)",
+    href: "#",
+    size: "tall",
+  },
+    {
+    name: "HMI Design",
+    category: "HMI",
+    categories: ["hmi"],
+    description: "Automotive HMI interaction design at Granstudio, for an international design team.",
+    image: "/gallery/hmi.jpg",
+    color: "var(--color-ac-red)",
+    href: "#",
+    size: "sm",
+  },
+  {
+    name: "TIDE",
+    category: "UX/UI",
+    categories: ["uxui"],
+    description: "App design system for a lifestyle platform, from component library to shipped screens.",
+    image: "/gallery/tide.jpg",
+    color: "var(--color-ac-blue)",
+    href: "#",
+    size: "sm",
+  },
+
   {
     name: "ABC Mouse",
     category: "UX/UI",
@@ -96,36 +136,6 @@ export const projectList = [
     size: "lg",
   },
   {
-    name: "TIDE",
-    category: "UX/UI",
-    categories: ["uxui"],
-    description: "App design system for a lifestyle platform, from component library to shipped screens.",
-    image: "/gallery/tide.jpg",
-    color: "var(--color-ac-blue)",
-    href: "#",
-    size: "tall",
-  },
-  {
-    name: "Slow Food",
-    category: "Brand",
-    categories: ["brand"],
-    description: "Brand and web design exploring a playful, ingredient-led visual identity.",
-    image: "/gallery/slowfood.jpg",
-    color: "var(--color-ac-green)",
-    href: "#",
-    size: "sm",
-  },
-  {
-    name: "HMI Design",
-    category: "HMI",
-    categories: ["hmi"],
-    description: "Automotive HMI interaction design at Granstudio, for an international design team.",
-    image: "/gallery/hmi.jpg",
-    color: "var(--color-ac-red)",
-    href: "#",
-    size: "sm",
-  },
-  {
     name: "CodeMao",
     category: "UX/UI",
     categories: ["uxui"],
@@ -133,25 +143,16 @@ export const projectList = [
     image: "/gallery/codemao.jpg",
     color: "var(--color-ac-pink)",
     href: "#",
-    size: "wide",
+    size: "lg",
   },
-  {
-    name: "Weather Pets",
-    category: "UX/UI",
-    categories: ["uxui"],
-    description: "A playful weather app concept with animated companion pets, explored at wetter.com.",
-    image: "/gallery/weatherpets.jpg",
-    color: "var(--color-ac-orange)",
-    href: "#",
-    size: "sm",
-  },
+
   {
     name: "Puzzle Game",
-    category: "Game",
+    category: "UX/UI",
     categories: ["game"],
     description: "A jigsaw puzzle app with smooth, tactile interaction design.",
     image: "/gallery/puzzle.jpg",
-    size: "sm",
+    size: "tall",
     color: "var(--color-ac-green)",
     href: "#",
   },
@@ -163,6 +164,6 @@ export const projectList = [
     image: "/gallery/firesystem.jpg",
     color: "var(--color-ac-green)",
     href: "#",
-    size: "wide",
+    size: "sm",
   },
 ]

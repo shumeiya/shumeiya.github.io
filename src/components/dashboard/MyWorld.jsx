@@ -4,7 +4,7 @@ import DottedMapWithoutCountries from "dotted-map/without-countries"
 import { Globe2 } from "lucide-react"
 import Panel, { PanelHeader, BOTTOM_ROW_HEIGHT } from "./Panel"
 import worldmapData from "../../data/worldmap.json"
-import { experience } from "../../data/profile"
+import { experience } from "../../data/project"
 
 const MAP_W = 99
 const MAP_H = 50

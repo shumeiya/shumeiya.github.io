@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import Panel, { PanelHeader, TOP_ROW_HEIGHT } from "./Panel"
-import { radarSkills } from "../../data/profile"
+import { radarSkills } from "../../data/project"
 
 const CX = 100
 const CY = 100

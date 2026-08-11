@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 import { Moon, Sun } from "lucide-react"
-import { profile } from "../../data/profile"
+import { project } from "../../data/project"
 import { useDarkMode } from "../../hooks/useDarkMode"
 
 const links = [
@@ -17,7 +17,7 @@ export default function NavBar() {
     <header className="sticky top-0 z-50 bg-page/90 backdrop-blur-md">
       <nav className="relative mx-auto flex max-w-9xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:flex-nowrap sm:px-8 lg:px-8">
         <span className="text-sm font-semibold tracking-tight text-ink sm:text-base">
-          {profile.name.toUpperCase()}
+          {project.name.toUpperCase()}
         </span>
 
         <button

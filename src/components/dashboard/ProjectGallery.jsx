@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Panel, { BOTTOM_ROW_HEIGHT } from "./Panel"
-import { galleryProjects } from "../../data/profile"
+import { galleryProjects } from "../../data/project"
 
 // Free-form diamond composition — bottom-left to top-right diagonal, center = largest anchor.
 // left/top are the diamond's center point (%). size is the pre-rotation side length, as a
