@@ -3,7 +3,7 @@ import NavBar from "./components/dashboard/NavBar"
 import Dashboard from "./pages/Dashboard"
 import Project from "./pages/Project"
 import Myworld from "./pages/Myworld"
-import Placeholder from "./pages/Placeholder"
+import Studies from "./pages/Studies"
 
 export default function App() {
   return (
@@ -12,7 +12,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/project" element={<Project />} />
-        <Route path="/case-study" element={<Placeholder title="case study" />} />
+        <Route path="/case-study" element={<Studies />} />
         <Route path="/my-world" element={<Myworld />} />
       </Routes>
     </div>
