@@ -83,3 +83,47 @@ body {
   font-family: var(--font-mono);
   letter-spacing: -0.01em;
 }
+
+/* World map (My World) — pastel continent plates, tinted with theme tokens so the
+   map recolours in dark mode. A thin same-colour stroke closes the country gaps
+   within a continent so each plate reads as one soft shape. */
+.worldmap-svg {
+  opacity: 0.62;
+}
+.worldmap-svg svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.worldmap-svg path {
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+}
+.worldmap-svg .c-north-america {
+  fill: var(--color-ac-orange);
+  stroke: var(--color-ac-orange);
+}
+.worldmap-svg .c-south-america {
+  fill: var(--color-ac-green);
+  stroke: var(--color-ac-green);
+}
+.worldmap-svg .c-europe {
+  fill: var(--color-ac-yellow);
+  stroke: var(--color-ac-yellow);
+}
+.worldmap-svg .c-africa {
+  fill: var(--color-ac-red);
+  stroke: var(--color-ac-red);
+}
+.worldmap-svg .c-asia {
+  fill: var(--color-ac-green);
+  stroke: var(--color-ac-green);
+}
+.worldmap-svg .c-oceania {
+  fill: var(--color-ac-blue);
+  stroke: var(--color-ac-blue);
+}
+.worldmap-svg .c-antarctica {
+  fill: var(--color-fog);
+  stroke: var(--color-fog);
+}

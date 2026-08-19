@@ -1,10 +1,8 @@
-import { useEffect, useMemo, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { ArrowLeft, MapPin, Type } from "lucide-react"
-import Masonry from "../components/myworld/Masonry"
-import { places, intro } from "../data/myworld"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { motion } from "framer-motion"
+import { worldImages } from "../data/myworld"
 
-// Deterministic PRNG so the "random" scatter is stable across re-renders (no jumping).
+// Deterministic PRNG so the scatter is stable across re-renders.
 function mulberry32(seed) {
   return function () {
     seed |= 0
@@ -16,178 +14,221 @@ function mulberry32(seed) {
 }
 
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+const SEED = 20260817
+const JITTER = 0.7 // 0 = tidy grid, 1 = fully scattered within each cell
 
-// "Controlled random" — lay a grid of anchor cells, then apply a bounded jitter,
-// rotation and scale inside each cell. Free-scattered look, but cells keep them apart.
-function computeLayout(n, seed = 20260813) {
+// Curve smoothing (0 = straight, ~0.3 = rounder). Control points come from each
+// point's neighbours, so adjacent segments share a tangent → smooth joins, no corners.
+const CURVE_SMOOTH = 0.22
+// Extra "bow": on each leg, a waypoint is inserted near the end, offset perpendicular
+// to the straight line, so the leg curves into an arc → rounder bends. It bows toward
+// the OUTSIDE of the turn, so corners become wide sweeps.
+const WP_POS = 0.62 // waypoint position along the leg (0..1), nearer the end
+const WP_OFFSET = 0.2 // perpendicular offset as a fraction of the leg length
+
+// Interleaved intro timing (per image): image appears + shakes, THEN the segment of
+// curve leading to it draws, THEN the next image, and so on.
+const IMG_IN = 0.35 // s for an image to pop in before its line segment draws
+const DRAW = 0.45 // s to draw one segment
+const CYCLE = IMG_IN + DRAW // s per image, start-to-start
+
+function computeLayout(n, seed = SEED) {
   const rnd = mulberry32(seed)
-  const cols = Math.min(n, Math.max(2, Math.round(Math.sqrt(n * 1.6))))
+  const cols = Math.ceil(Math.sqrt(n))
   const rows = Math.ceil(n / cols)
-  const cellW = 100 / cols
-  const cellH = 100 / rows
-
   return Array.from({ length: n }, (_, i) => {
-    const row = Math.floor(i / cols)
     const col = i % cols
-    // Centre the last (possibly short) row so it never looks left-heavy.
-    const itemsInRow = Math.min(cols, n - row * cols)
-    const rowOffset = ((cols - itemsInRow) / 2) * cellW
-
-    const baseX = rowOffset + cellW * (col + 0.5)
-    const baseY = cellH * (row + 0.5)
-
+    const row = Math.floor(i / cols)
+    const cx = (col + 0.5) / cols
+    const cy = (row + 0.5) / rows
     return {
-      left: clamp(baseX + (rnd() - 0.5) * cellW * 0.42, 9, 91),
-      top: clamp(baseY + (rnd() - 0.5) * cellH * 0.42, 12, 88),
-      rot: (rnd() - 0.5) * 11, // degrees
-      scale: 0.86 + rnd() * 0.26,
+      x: clamp(cx + (rnd() - 0.5) * (JITTER / cols), 0.12, 0.88),
+      y: clamp(cy + (rnd() - 0.5) * (JITTER / rows), 0.14, 0.86),
+      rot: (rnd() - 0.5) * 16,
     }
   })
 }
 
-function PlaceMarker({ place, pos, index, showCaptions, onSelect }) {
-  return (
-    <div
-      className="group absolute z-10 -translate-x-1/2 -translate-y-1/2 hover:z-30"
-      style={{ left: `${pos.left}%`, top: `${pos.top}%`, width: "clamp(140px, 16vw, 216px)" }}
-    >
-      <motion.button
-        type="button"
-        onClick={() => onSelect(place)}
-        initial={{ opacity: 0, scale: 0.6, rotate: pos.rot }}
-        animate={{ opacity: 1, scale: pos.scale, rotate: pos.rot }}
-        whileHover={{ rotate: 0, scale: pos.scale * 1.07, y: -6 }}
-        transition={{ duration: 0.5, delay: 0.05 * index, ease: [0.22, 1, 0.36, 1] }}
-        className="relative block w-full cursor-pointer overflow-hidden"
-        aria-label={`${place.place}, ${place.year}`}
-      >
-        <img
-          src={encodeURI(place.cover)}
-          alt={place.place}
-          loading="lazy"
-          className="aspect-[4/5] w-full object-cover"
-        />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-baseline justify-between gap-2 px-3 pb-2 pt-8">
-          <span className="truncate text-xs font-medium text-white">{place.place}</span>
-          <span className="shrink-0 text-[10px] text-white/70">{place.year}</span>
-        </div>
-      </motion.button>
-
-      {/* Optional text layer — the "shaping" one-liner. Hover-revealed, or pinned. */}
-      <div
-        className={`pointer-events-none absolute left-1/2 top-full mt-2 w-[150%] -translate-x-1/2 text-center transition-opacity duration-300 ${
-          showCaptions ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-        }`}
-      >
-        <p className="text-[11px] italic leading-snug text-fog">{place.caption}</p>
-      </div>
-    </div>
-  )
+// --- Smooth curve helpers ---
+function lineProps(a, b) {
+  return { len: Math.hypot(b[0] - a[0], b[1] - a[1]), ang: Math.atan2(b[1] - a[1], b[0] - a[0]) }
+}
+function controlPoint(cur, prev, next, reverse) {
+  const p = prev || cur
+  const n = next || cur
+  const o = lineProps(p, n)
+  const ang = o.ang + (reverse ? Math.PI : 0)
+  const len = o.len * CURVE_SMOOTH
+  return [cur[0] + Math.cos(ang) * len, cur[1] + Math.sin(ang) * len]
+}
+// Sign of the turn at B when going A → B → C (>0 left, <0 right).
+function turnSign(A, B, C) {
+  const cross = (B[0] - A[0]) * (C[1] - B[1]) - (B[1] - A[1]) * (C[0] - B[0])
+  return cross > 0 ? 1 : cross < 0 ? -1 : 0
 }
 
-function PlaceDetail({ place, onClose }) {
-  // Lock body scroll + close on Escape while the wall is open.
-  useEffect(() => {
-    const prev = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    const onKey = (e) => e.key === "Escape" && onClose()
-    window.addEventListener("keydown", onKey)
-    return () => {
-      document.body.style.overflow = prev
-      window.removeEventListener("keydown", onKey)
+// Insert a bow waypoint before each real point: near the end of the leg, pushed
+// perpendicular to the leg toward the OUTSIDE of the upcoming turn. Returns the
+// augmented point list plus the indices of the original ("real") points within it.
+function augmentWithBows(pts) {
+  const aug = [pts[0]]
+  const realIdx = [0]
+  const nGaps = pts.length - 1
+  for (let i = 0; i < nGaps; i++) {
+    const A = pts[i]
+    const B = pts[i + 1]
+    const dx = B[0] - A[0]
+    const dy = B[1] - A[1]
+    const len = Math.hypot(dx, dy) || 1
+    const px = -dy / len // perpendicular unit
+    const py = dx / len
+    // Offset y = py * off; so sign = sign(py) bows the waypoint DOWN, -sign(py) UP.
+    const down = py > 0 ? 1 : -1
+    let sign
+    if (i === nGaps - 2) {
+      sign = down // leg into the final image (Munich): arc downward
+    } else if (i === nGaps - 1) {
+      sign = -down // final leg to the screen corner: arc upward, so it stays on-screen
+    } else {
+      const C = pts[i + 2]
+      sign = C ? -turnSign(A, B, C) : down
+      if (sign === 0) sign = 1
     }
-  }, [onClose])
+    const off = WP_OFFSET * len * sign
+    const W = [A[0] + dx * WP_POS + px * off, A[1] + dy * WP_POS + py * off]
+    aug.push(W, B)
+    realIdx.push(aug.length - 1)
+  }
+  return { aug, realIdx }
+}
 
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-40 overflow-y-auto bg-page"
-    >
-      <div className="mx-auto max-w-9xl px-4 pb-28 pt-20 sm:px-6 lg:px-8">
-        <motion.header
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-          className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
-        >
-          <div>
-            <button
-              onClick={onClose}
-              className="mb-3 flex items-center gap-1.5 text-sm text-ink/60 transition-colors hover:text-ink"
-            >
-              <ArrowLeft size={15} /> Back to my world
-            </button>
-            <h1 className="text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
-              {place.place}
-            </h1>
-            <p className="mt-1 max-w-md text-sm italic text-fog">{place.caption}</p>
-          </div>
-          <div className="flex shrink-0 items-center gap-2 text-xs text-ink/60">
-            <span className="rounded-full border border-line bg-box-2 px-3 py-1.5">{place.year}</span>
-            <span className="flex items-center gap-1.5 rounded-full border border-line bg-box-2 px-3 py-1.5">
-              <MapPin size={12} /> {place.coords}
-            </span>
-          </div>
-        </motion.header>
+// One smooth cubic ending at aug[i], control points from its neighbours (continuity).
+function cubicTo(aug, i) {
+  const cur = aug[i - 1]
+  const next = aug[i]
+  const cps = controlPoint(cur, aug[i - 2], next, false)
+  const cpe = controlPoint(next, cur, aug[i + 1], true)
+  return `C ${cps[0]},${cps[1]} ${cpe[0]},${cpe[1]} ${next[0]},${next[1]}`
+}
 
-        <Masonry items={place.photos} />
-      </div>
-    </motion.div>
-  )
+// One drawable path per real point (per image): the bowed, smooth curve from the
+// previous real point to this one. Split for the interleaved draw-on animation, but
+// control points come from the full augmented list, so joins stay tangent-continuous.
+function segmentPaths(pts) {
+  const { aug, realIdx } = augmentWithBows(pts)
+  const segs = []
+  for (let k = 1; k < realIdx.length; k++) {
+    const s = realIdx[k - 1]
+    const e = realIdx[k]
+    let d = `M ${aug[s][0]},${aug[s][1]}`
+    for (let i = s + 1; i <= e; i++) d += " " + cubicTo(aug, i)
+    segs.push(d)
+  }
+  return segs
 }
 
 export default function Myworld() {
-  const [selected, setSelected] = useState(null)
-  const [showCaptions, setShowCaptions] = useState(false)
+  const ref = useRef(null)
+  const [size, setSize] = useState({ w: 0, h: 0 })
+  const layout = useMemo(() => {
+    const base = computeLayout(worldImages.length)
+    // Swap Rome ↔ Barcelona positions (keeping the connection order) so the route
+    // flows right-to-left without crossing itself.
+    const a = worldImages.findIndex((w) => w.id === "rome")
+    const b = worldImages.findIndex((w) => w.id === "barcelona")
+    if (a > -1 && b > -1) [base[a], base[b]] = [base[b], base[a]]
+    // Munich: place it low-right so the final leg sweeps out to the bottom-right corner.
+    const m = worldImages.findIndex((w) => w.id === "munich")
+    if (m > -1) base[m] = { ...base[m], x: 0.66, y: 0.78 }
+    return base
+  }, [])
 
-  const layout = useMemo(() => computeLayout(places.length), [])
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const measure = () => {
+      const r = el.getBoundingClientRect()
+      setSize({ w: r.width, h: r.height })
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  // Curve pieces: top-left corner → each image centre, one Bézier per gap.
+  const ready = size.w > 0 && size.h > 0
+  const segments = useMemo(() => {
+    if (!ready) return []
+    // Top-left corner → each image centre → bottom-right corner.
+    const pts = [
+      [0, 0],
+      ...layout.map((p) => [p.x * size.w, p.y * size.h]),
+      [size.w, size.h],
+    ]
+    return segmentPaths(pts)
+  }, [ready, layout, size.w, size.h])
 
   return (
-    <main className="relative min-h-screen px-4 pb-28 pt-4 sm:px-6 lg:px-8">
-      <div className="relative mx-auto max-w-9xl">
-        <header className="mb-2 flex items-start justify-between gap-4">
-          <div className="pointer-events-none select-none">
-            <h1 className="text-3xl font-semibold leading-[0.9] tracking-tight text-ink/20 sm:text-4xl lg:text-5xl">
-              My World
-            </h1>
-            <p className="mt-2 max-w-sm text-sm text-fog">{intro}</p>
-          </div>
+    <main ref={ref} className="relative h-[calc(100vh-3.5rem)] min-h-130 w-full overflow-hidden">
+      {/* Connecting curve — one segment per image, drawn on right after that image
+          appears. Segments share tangents at each junction, so the whole thing reads
+          as one smooth curve. Sits behind the images. */}
+      <svg className="absolute inset-0 h-full w-full" aria-hidden>
+        {ready &&
+          segments.map((seg, i) => {
+            // Image segments draw right after their image pops in; the final segment
+            // (to the bottom-right corner) draws right after the last image's segment.
+            const drawDelay =
+              i < worldImages.length ? i * CYCLE + IMG_IN : worldImages.length * CYCLE
+            return (
+              <motion.path
+                key={i}
+                d={seg}
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth="20"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{
+                  pathLength: { duration: DRAW, delay: drawDelay, ease: "easeInOut" },
+                  // Stay hidden until the draw starts, so the round cap doesn't show a
+                  // dot at the segment's start point beforehand.
+                  opacity: { duration: 0.001, delay: drawDelay },
+                }}
+              />
+            )
+          })}
+      </svg>
 
-          <button
-            onClick={() => setShowCaptions((v) => !v)}
-            aria-pressed={showCaptions}
-            className={`flex shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors ${
-              showCaptions
-                ? "border-ac-green bg-box-2 text-ink"
-                : "border-line bg-box-2 text-ink/60 hover:text-ink"
-            }`}
+      {/* Scattered images — appear one at a time, each with a little shake, in step
+          with the line reaching them. */}
+      {worldImages.map((img, i) => {
+        const { x, y, rot } = layout[i]
+        return (
+          <div
+            key={img.id}
+            className="absolute z-10"
+            style={{ left: `${x * 100}%`, top: `${y * 100}%`, transform: "translate(-50%, -50%)" }}
           >
-            <Type size={13} />
-            {showCaptions ? "Captions on" : "Captions off"}
-          </button>
-        </header>
-
-        {/* Scatter canvas — markers are absolutely placed by percentage anchors. */}
-        <div className="relative h-[calc(100vh-9rem)] min-h-[560px] w-full">
-          {places.map((place, i) => (
-            <PlaceMarker
-              key={place.id}
-              place={place}
-              pos={layout[i]}
-              index={i}
-              showCaptions={showCaptions}
-              onSelect={setSelected}
+            <motion.img
+              src={encodeURI(img.src)}
+              alt={img.name}
+              draggable={false}
+              className="block max-w-none select-none"
+              style={{ width: img.w }}
+              initial={{ opacity: 0, scale: 0.5, rotate: rot }}
+              animate={{ opacity: 1, scale: 1, rotate: rot }}
+              transition={{
+                opacity: { duration: 0.18, delay: i * CYCLE },
+                scale: { duration: 0.3, delay: i * CYCLE, ease: [0.34, 1.56, 0.64, 1] },
+              }}
             />
-          ))}
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {selected && <PlaceDetail place={selected} onClose={() => setSelected(null)} />}
-      </AnimatePresence>
+          </div>
+        )
+      })}
     </main>
   )
 }
