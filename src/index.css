@@ -20,6 +20,9 @@
   --color-cream: #14171a;
   --color-fog: #6b6b72;
 
+  /* My World serpentine line — light value here, dark override in the .dark block. */
+  --color-road: #dcd3c5;
+
   --color-ac-orange: #fee7c5;
   --color-ac-red: #f58587;
   --color-ac-blue: #a9c4d2;
@@ -44,6 +47,8 @@
   --color-ink: #f0eeea;
   --color-cream: #f2f0ea;
   --color-fog: #8f8f97;
+
+  --color-road: #2c3341;
 
   --color-ac-orange: #e0bba5;
   --color-ac-red: #db736c;
