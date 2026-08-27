@@ -1,4 +1,7 @@
 import { motion } from "framer-motion"
+import { Link } from "react-router-dom"
+
+const MotionLink = motion.create(Link)
 
 // Bento cell size — every card fills a fixed grid region (col x row span).
 const SPAN = {
@@ -12,8 +15,8 @@ export default function ProjectCard({ project, index }) {
   const span = SPAN[project.size] ?? SPAN.sm
 
   return (
-    <motion.a
-      href={project.href}
+    <MotionLink
+      to={project.href}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8% 0px" }}
@@ -34,6 +37,6 @@ export default function ProjectCard({ project, index }) {
           <span className="shrink-0 text-sm text-white/60">{project.category}</span>
         )}
       </div>
-    </motion.a>
+    </MotionLink>
   )
 }

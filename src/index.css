@@ -7,6 +7,7 @@
   --font-mono: "Urbanist", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Urbanist", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Urbanist", ui-sans-serif, system-ui, sans-serif;
+  --font-chapter: "Urbanist", ui-sans-serif, system-ui, sans-serif;
 
   /* Themed tokens — light-mode defaults here, dark-mode overrides in the .dark block below. */
   --color-page: #f2ede4;

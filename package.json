@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.8",
     "dotted-map": "^3.1.0",
     "framer-motion": "^12.17.3",
+    "gsap": "^3.15.0",
     "lucide-react": "^1.25.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
