@@ -48,6 +48,8 @@ export default function ProjectGallery() {
           tilt={6}
           parallax={0.45}
           grayscale={false}
+          dim={0}
+          shadow={false}
           overlayColor="#05080d"
           textColor="var(--color-paper)"
           accentColor="var(--color-ac-orange)"

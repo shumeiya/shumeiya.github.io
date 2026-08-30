@@ -3,6 +3,8 @@
 // can fill a dashboard panel, `panelColor` themes the empty panel backdrop, and
 // `onItemSelect` lets the router handle navigation instead of a full page load. Items may
 // also carry `color` (accent bar tint) and `sublabel` (second line under the label).
+// `dim` controls how far inactive panels are darkened (0 disables the scrim entirely),
+// and `shadow={false}` drops the panel drop shadow while keeping the focus ring.
 import { useRef, useEffect, useState, useCallback } from "react"
 import { gsap } from "gsap"
 
@@ -13,6 +15,14 @@ const DEFAULT_ITEMS = [
   { image: "https://picsum.photos/id/1043/900/1200", label: "Harbour", link: "#" },
   { image: "https://picsum.photos/id/1044/900/1200", label: "Skyline", link: "#" },
 ]
+
+const PANEL_BASE_CLASS =
+  "group relative block min-w-0 min-h-0 flex-[1_1_0] cursor-pointer overflow-hidden no-underline outline-none [transform-style:preserve-3d] [transform-origin:center] max-[520px]:min-h-[84px] max-[520px]:!transform-none"
+
+const PANEL_SHADOW_CLASS =
+  "[box-shadow:0_10px_30px_-18px_rgba(0,0,0,0.8)] focus-visible:[box-shadow:0_0_0_2px_var(--ag-accent),0_10px_30px_-18px_rgba(0,0,0,0.8)]"
+
+const PANEL_NO_SHADOW_CLASS = "focus-visible:[box-shadow:0_0_0_2px_var(--ag-accent)]"
 
 const AccordionGallery = ({
   items = DEFAULT_ITEMS,
@@ -34,6 +44,8 @@ const AccordionGallery = ({
   trigger = "hover",
   showLabels = true,
   grayscale = true,
+  dim = 0.35,
+  shadow = true,
   onItemSelect,
   className = "",
 }) => {
@@ -55,7 +67,12 @@ const AccordionGallery = ({
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false
 
-  const overlayBg = `linear-gradient(180deg, transparent 45%, color-mix(in srgb, ${overlayColor} 78%, transparent) 100%), color-mix(in srgb, ${overlayColor} calc(var(--ag-dim, 0.35) * 100%), transparent)`
+  // Both scrim layers are driven by custom properties set on the *panel*, not on the
+  // media span: the overlay is a sibling of the media, and custom properties inherit
+  // downward only, so vars parked on the media element never reach it.
+  // --ag-scrim fades the bottom gradient (there for label legibility) out on inactive
+  // panels; --ag-dim is the overall darkening, and `dim={0}` removes it entirely.
+  const overlayBg = `linear-gradient(180deg, transparent 45%, color-mix(in srgb, ${overlayColor} calc(var(--ag-scrim, 1) * 78%), transparent) 100%), color-mix(in srgb, ${overlayColor} calc(var(--ag-dim, ${dim}) * 100%), transparent)`
 
   const applyLayout = useCallback(
     animate => {
@@ -80,7 +97,18 @@ const AccordionGallery = ({
         const rot = isActive ? 0 : i < active ? tilt : -tilt
         const rotProp = vertical ? { rotateX: -rot } : { rotateY: rot }
 
-        tl.to(panel, { flexGrow: isActive ? grow : 1, ...rotProp, duration: dur, ease }, 0)
+        tl.to(
+          panel,
+          {
+            flexGrow: isActive ? grow : 1,
+            ...rotProp,
+            "--ag-dim": isActive ? 0 : dim,
+            "--ag-scrim": isActive ? 1 : 0,
+            duration: dur,
+            ease,
+          },
+          0
+        )
 
         if (media) {
           const drift = Math.max(-1.5, Math.min(1.5, active - i))
@@ -94,7 +122,6 @@ const AccordionGallery = ({
               x: vertical ? 0 : isActive ? 0 : shift,
               y: vertical ? (isActive ? 0 : shift) : 0,
               "--ag-gray": gray,
-              "--ag-dim": isActive ? 0 : 0.35,
               duration: dur,
               ease,
             },
@@ -123,6 +150,7 @@ const AccordionGallery = ({
       tilt,
       parallax,
       grayscale,
+      dim,
       showLabels,
       stagger,
       prefersReduced,
@@ -204,11 +232,13 @@ const AccordionGallery = ({
           <Tag
             key={i}
             ref={el => (panelRefs.current[i] = el)}
-            className="group relative block min-w-0 min-h-0 flex-[1_1_0] cursor-pointer overflow-hidden no-underline outline-none [transform-style:preserve-3d] [transform-origin:center] [box-shadow:0_10px_30px_-18px_rgba(0,0,0,0.8)] focus-visible:[box-shadow:0_0_0_2px_var(--ag-accent),0_10px_30px_-18px_rgba(0,0,0,0.8)] max-[520px]:min-h-[84px] max-[520px]:!transform-none"
+            className={`${PANEL_BASE_CLASS} ${shadow ? PANEL_SHADOW_CLASS : PANEL_NO_SHADOW_CLASS}`}
             style={{
               borderRadius: `${radius}px`,
               background: panelColor,
               "--ag-accent": accentColor,
+              "--ag-dim": isActive ? 0 : dim,
+              "--ag-scrim": isActive ? 1 : 0,
               willChange: "flex-grow, transform",
             }}
             href={item.link || undefined}
