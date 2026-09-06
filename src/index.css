@@ -133,3 +133,53 @@ body {
   fill: var(--color-fog);
   stroke: var(--color-fog);
 }
+
+/* "My World" panel — a dotted world map with the cities my study and work have
+   passed through. Every colour is drawn from the design-system tokens above, so
+   the whole panel flips with light / dark mode. */
+.exp-panel {
+  --exp-dot: var(--color-ink);
+  --exp-dot-opacity: 0.14;
+  --exp-border: var(--color-line);
+  --exp-fill: color-mix(in srgb, var(--color-box-2) 55%, transparent);
+  --exp-ink: var(--color-ink);
+  --exp-dim: color-mix(in srgb, var(--color-ink) 76%, transparent);
+  --exp-arc-base: var(--color-road);
+}
+.dark .exp-panel {
+  --exp-dot-opacity: 0.18;
+}
+
+/* The generated dot grid. Dots inherit `currentColor`, so one rule recolours it. */
+.exp-dots {
+  color: var(--exp-dot);
+  opacity: var(--exp-dot-opacity);
+}
+.exp-dots svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.exp-arc-base {
+  stroke: var(--exp-arc-base);
+}
+
+/* Pill / card shell — a hairline border over a barely-there frosted fill. */
+.exp-card {
+  border: 0.8px solid var(--exp-border);
+  background-color: var(--exp-fill);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.exp-card:focus-visible {
+  outline: none;
+  border-color: var(--exp-ink);
+}
+
+.exp-ink {
+  color: var(--exp-ink);
+}
+.exp-line {
+  color: var(--exp-dim);
+}

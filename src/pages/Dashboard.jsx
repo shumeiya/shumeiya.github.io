@@ -2,7 +2,7 @@ import HelloPanel from "../components/dashboard/HelloPanel"
 import StatusLog from "../components/dashboard/StatusLog"
 import SkillToolPanel from "../components/dashboard/SkillToolPanel"
 import ProjectGallery from "../components/dashboard/ProjectGallery"
-import MyWorldPanel from "../components/dashboard/MyWorld"
+import MyWorldPanel from "../components/dashboard/MyWorldPanel"
 
 export default function Dashboard() {
   return (
