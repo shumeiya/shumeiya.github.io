@@ -10,18 +10,33 @@ const { Bodies, Body, Composite, Constraint, Engine, Query } = Matter
 // off-centre in some of them. `box` is the measured opaque bounding box as
 // [x, y, w, h] fractions of the square, so the physics body can match what is
 // actually drawn instead of the whole canvas.
+//
+// `scale` (default 1) multiplies the random draw size. A few pieces read too
+// small or too heavy against the rest at the same nominal size, so they get
+// nudged by hand.
 const ART = [
-  { src: "/个人形象/4.png", box: [0.07, 0.078, 0.895, 0.871] },
-  { src: "/个人形象/5.png", box: [0.188, 0.102, 0.621, 0.789] },
+  { src: "/个人形象/4.png", box: [0.07, 0.078, 0.895, 0.871], scale: 1.35 },
+  { src: "/个人形象/5.png", box: [0.188, 0.102, 0.621, 0.789], scale: 1.35 },
   { src: "/个人形象/6.png", box: [0.066, 0.125, 0.867, 0.734] },
   { src: "/个人形象/7.png", box: [0.242, 0.047, 0.473, 0.883] },
-  { src: "/个人形象/8.png", box: [0.066, 0.277, 0.867, 0.445] },
-  { src: "/个人形象/9.png", box: [0.129, 0.074, 0.781, 0.852] },
-  { src: "/个人形象/10.png", box: [0.105, 0.125, 0.816, 0.793] },
-
+  { src: "/个人形象/8.png", box: [0.066, 0.277, 0.867, 0.445], scale: 0.7 },
+  { src: "/个人形象/9.png", box: [0.129, 0.074, 0.781, 0.852], scale: 1.35 },
+  { src: "/个人形象/10.png", box: [0.105, 0.125, 0.816, 0.793], scale: 1.35 },
+  { src: "/个人形象/11.png", box: [0.116, 0.058, 0.726, 0.849] },
+  { src: "/个人形象/12.png", box: [0.235, 0.208, 0.534, 0.535] },
+  { src: "/个人形象/13.png", box: [0.071, 0.102, 0.831, 0.707] },
+  { src: "/个人形象/14.png", box: [0.115, 0.098, 0.771, 0.757] },
+  { src: "/个人形象/15.png", box: [0.173, 0.059, 0.693, 0.833] },
+  { src: "/个人形象/16.png", box: [0.176, 0.133, 0.638, 0.654], scale: 0.7 },
+  { src: "/个人形象/17.png", box: [0.067, 0.316, 0.893, 0.291], scale: 1.35 },
+  { src: "/个人形象/18.png", box: [0.078, 0.128, 0.852, 0.721] },
+  { src: "/个人形象/19.png", box: [0.146, 0.114, 0.718, 0.758] },
+  { src: "/个人形象/20.png", box: [0.103, 0.102, 0.793, 0.755] },
+  { src: "/个人形象/21.png", box: [0.062, 0.107, 0.881, 0.750] },
 ]
 
-const COUNT = 17
+// One sticker per artwork, so nothing in ART is left out of the pile.
+const COUNT = ART.length
 const MIN_SIZE = 60
 const MAX_SIZE = 100
 const WALL = 220 // thick walls so a flung sticker can't tunnel through
@@ -51,7 +66,8 @@ function buildStickers() {
   return Array.from({ length: COUNT }, (_, i) => {
     const art = ART[i % ART.length]
     const [bx, by, bw, bh] = art.box
-    const size = Math.round(MIN_SIZE + rand() * (MAX_SIZE - MIN_SIZE))
+    const base = MIN_SIZE + rand() * (MAX_SIZE - MIN_SIZE)
+    const size = Math.round(base * (art.scale ?? 1))
     return {
       id: i,
       src: art.src,

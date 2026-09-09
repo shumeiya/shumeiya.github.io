@@ -28,8 +28,13 @@ const LIVE = ".work-stage, .work-row, .work-panel"
 // Where each strip hangs and how far it is turned. Walking the arc once: the
 // bottom edge of one strip is the top edge of the next.
 function arc() {
-  const h = LIP / SLICES
   const step = (CURL / SLICES) * (Math.PI / 180)
+  // A curled strip stands shorter than it is long, so slicing LIP into equal
+  // heights leaves the bottom of the window bare. Size the strips off the arc's
+  // projected height instead: more paper than LIP, foreshortened back into it.
+  let unit = 0
+  for (let i = 0; i < SLICES; i += 1) unit += Math.cos((i + 0.5) * step)
+  const h = LIP / unit
   const out = []
   let y = 0
   let z = 0
@@ -56,12 +61,17 @@ export default function DrumStage({ children, className = "" }) {
     let clones = []
     let liveFrom = []
     let liveTo = []
+    let waiting = null
 
     const build = () => {
       stage.textContent = ""
       clones = []
       liveTo = []
       liveFrom = Array.from(root.querySelectorAll(LIVE))
+      // Listeners from a previous build are stale the moment the copies are.
+      if (waiting) waiting.abort()
+      waiting = new AbortController()
+      const srcImgs = Array.from(root.querySelectorAll("img"))
 
       for (const s of strips) {
         const slot = document.createElement("div")
@@ -90,6 +100,30 @@ export default function DrumStage({ children, className = "" }) {
           if (animated.has(n)) continue
           n.style.removeProperty("opacity")
           n.style.removeProperty("transform")
+        }
+
+        // The panels are loading="lazy", and a copy inherits that. Buried under
+        // a 200px window behind a four-figure translate, these never look near
+        // the viewport to the lazy-load heuristic, so they simply never load —
+        // which is the blank in the lip. Mirror the original's state instead of
+        // forcing them all eager, so the copies cost cache hits and never pull
+        // an image down earlier than the real page would have.
+        const copyImgs = copy.querySelectorAll("img")
+        for (let k = 0; k < copyImgs.length; k += 1) {
+          const from = srcImgs[k]
+          const to = copyImgs[k]
+          if (!from) continue
+          if (from.complete && from.naturalWidth > 0) {
+            to.loading = "eager"
+          } else {
+            from.addEventListener(
+              "load",
+              () => {
+                to.loading = "eager"
+              },
+              { once: true, signal: waiting.signal }
+            )
+          }
         }
 
         slot.appendChild(copy)
@@ -157,6 +191,7 @@ export default function DrumStage({ children, className = "" }) {
 
     return () => {
       live = false
+      if (waiting) waiting.abort()
       mo.disconnect()
       window.removeEventListener("resize", schedule)
       if (raf) cancelAnimationFrame(raf)

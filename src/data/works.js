@@ -3,7 +3,7 @@
 // reel; name, colour and detail link are pulled from projectList so nothing forks.
 import { projectList } from "./project"
 
-const featured = ["weather-pets", "slow-food", "hmi", "tide"]
+const featured = ["kyrall", "weather-pets", "slow-food", "hmi"]
 
 // Each project's strip is a row of big rounded panels that loops forever. A panel
 // groups screens that belong together and captions them once, at the top — so a
@@ -18,6 +18,24 @@ const featured = ["weather-pets", "slow-food", "hmi", "tide"]
 const panels = {
   // Only one screen exists for this one so far — drop more paths into `shots`
   // (or add panels here) and it fills out like the others.
+    "kyrall": [
+    { label: "AI Tool", size: "xl", shots: ["/gallery/weatherpets.jpg"] },
+    {
+      kind: "note",
+      tone: "accent",
+      size: "md",
+      eyebrow: "wetter.com",
+      title: "A forecast you'd want to open",
+      body: "The pet's mood and behaviour follow the weather, so the daily check-in earns its place on the home screen.",
+    },
+    {
+      kind: "note",
+      size: "md",
+      eyebrow: "Role",
+      title: "Concept + interaction",
+      body: "Explored inside the forecast team: concept, interaction design and the visual system.",
+    },
+  ],
   "weather-pets": [
     { label: "Forecast + companion pet", size: "xl", shots: ["/gallery/weatherpets.jpg"] },
     {
@@ -86,26 +104,17 @@ const panels = {
       body: "Navigation, vehicle status and media laid out so the cluster and the centre display never contradict each other.",
     },
   ],
-  tide: [
-    { label: "Component library", size: "lg", shots: ["/gallery/tide.jpg"] },
-    { label: "Shipped screens", size: "xl", shots: ["/gallery/detail/tide-mockup.jpg"] },
-    { label: "Brand cover", size: "lg", shots: ["/gallery/works/tide/cover.jpg"] },
-    { label: "Editorial pages", size: "md", shots: ["/gallery/works/tide/editorial.jpg"] },
-    { label: "Site layouts", size: "xl", shots: ["/gallery/works/tide/pages.jpg"] },
-    {
-      kind: "note",
-      tone: "accent",
-      size: "md",
-      eyebrow: "Design system",
-      title: "Library and product in lockstep",
-      body: "Built component by component, so the system and the shipped screens never drifted apart.",
-    },
-  ],
+
 }
 
 // The eyebrow line above each title and the lead paragraph under it. Written for
 // this layout — the archive grid uses the shorter `description` from projectList.
 const meta = {
+  "kyrall": {
+    year: "now",
+    isNew: true,
+    lead: "A weather app concept built around an animated companion pet, whose mood and behaviour react to the forecast — so checking the weather becomes something you want to do.",
+  },
   "weather-pets": {
     year: "2025",
     isNew: true,
@@ -118,10 +127,6 @@ const meta = {
   hmi: {
     year: "2022",
     lead: "Automotive HMI interaction design at Granstudio — navigation, vehicle status and media control laid out across the instrument cluster and the centre display.",
-  },
-  tide: {
-    year: "2021",
-    lead: "A design system for TIDE, a lifestyle app — component library and shipped screens designed together so the two never drifted apart.",
   },
 }
 
