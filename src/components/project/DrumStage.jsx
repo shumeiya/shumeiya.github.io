@@ -1,18 +1,17 @@
 import { useEffect, useRef } from "react"
 
-// You are standing inside a drum and the page is its inner wall — closer to a
-// slot-machine reel than a flat page. Everything marked `data-drum` inside the
-// stage reads flat while it sits at eye level, then turns about its own middle
-// as that middle drops into the bottom BAND of the viewport: top edge rolling
-// away, lower edge swinging toward you.
+// You are standing inside a drum and the page is its inner wall. The wall is
+// curved the whole way round, so the turn is a continuous function of distance,
+// not a switch that trips near the floor: a block is dead flat only where the
+// wall faces you head-on, and leans further the further below that it travels.
 //
 // Marking small pieces — a heading, a paragraph, a button — rather than whole
 // sections is what puts the type on the drum too. A 600px section only ever
 // turns as one slab, which reads as "the pictures move and the words don't".
-const BAND = 1 / 5 // share of the viewport that bends
-const MAX_DEG = 26 // turn at the very bottom of the band
+const EYE = 0.38 // where the wall faces you head-on, as a share of viewport height
+const MAX_DEG = 26 // turn once a block reaches the bottom of the viewport
 const DEPTH = 850 // px of perspective; smaller is a wider-angle lens
-const CURVE = 1.6 // <2 keeps the middle of the band visibly turned, not just the lip
+const CURVE = 0.95 // <1 builds the lean early; >1 holds the middle flat for longer
 
 export default function DrumStage({ children, className = "" }) {
   const rootRef = useRef(null)
@@ -32,8 +31,8 @@ export default function DrumStage({ children, className = "" }) {
     const paint = () => {
       raf = 0
       const vh = window.innerHeight
-      const edge = vh * (1 - BAND)
-      const span = vh - edge
+      const eye = vh * EYE
+      const span = vh - eye
 
       for (const el of els) {
         const box = el.getBoundingClientRect()
@@ -41,7 +40,8 @@ export default function DrumStage({ children, className = "" }) {
         // fixed point of the rotation — so reading it back off the element we
         // are about to transform cannot feed into itself.
         const centre = box.top + box.height / 2
-        const t = Math.min(Math.max((centre - edge) / span, 0), 1)
+        // Distance below eye level, 0 at the flat line and 1 at the floor.
+        const t = Math.min(Math.max((centre - eye) / span, 0), 1)
         if (t === 0) {
           if (el.style.transform) el.style.transform = ""
           continue

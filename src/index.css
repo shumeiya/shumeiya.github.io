@@ -226,9 +226,9 @@ body {
   will-change: transform;
 }
 
-/* Drum slats turn about their own middle, like slats on a reel: flat at eye
-   level, rolling away as they travel down past the viewer. The origin is the
-   whole trick — it is the fixed point the script reads back each frame. */
+/* Drum slats turn about their own middle: flat where the wall faces the viewer
+   head-on, leaning further the further below that they travel. The origin is
+   the whole trick — it is the fixed point the script reads back each frame. */
 [data-drum] {
   transform-origin: 50% 50%;
   backface-visibility: hidden;
