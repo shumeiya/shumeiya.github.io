@@ -5,6 +5,9 @@
 // also carry `color` (accent bar tint) and `sublabel` (second line under the label).
 // `dim` controls how far inactive panels are darkened (0 disables the scrim entirely),
 // and `shadow={false}` drops the panel drop shadow while keeping the focus ring.
+// `activeAspect` (e.g. 16 / 9) overrides `expandRatio`: the active panel is sized from the
+// measured cross-axis size so it holds that aspect ratio, with `minItemSize` reserving a
+// floor for the collapsed panels when the container is too narrow to honour both.
 import { useRef, useEffect, useState, useCallback } from "react"
 import { gsap } from "gsap"
 
@@ -24,6 +27,8 @@ const PANEL_SHADOW_CLASS =
 
 const PANEL_NO_SHADOW_CLASS = "focus-visible:[box-shadow:0_0_0_2px_var(--ag-accent)]"
 
+const clampRatio = v => Math.min(Math.max(v, 0.2), 0.9)
+
 const AccordionGallery = ({
   items = DEFAULT_ITEMS,
   defaultIndex = 2,
@@ -35,6 +40,8 @@ const AccordionGallery = ({
   gap = 10,
   radius = 16,
   expandRatio = 0.52,
+  activeAspect = 0,
+  minItemSize = 0,
   orientation = "horizontal",
   duration = 0.6,
   ease = "power3.out",
@@ -57,6 +64,9 @@ const AccordionGallery = ({
   const tlRef = useRef(null)
   const firstRunRef = useRef(true)
   const mediaSizeRef = useRef(320)
+  // Resolved share of the track taken by the active panel. `measure` recomputes it whenever
+  // `activeAspect` is in play, so applyLayout reads it instead of the raw prop.
+  const ratioRef = useRef(clampRatio(expandRatio))
 
   const vertical = orientation === "vertical"
   const count = items.length
@@ -79,7 +89,7 @@ const AccordionGallery = ({
       const panels = panelRefs.current
       if (!panels.length) return
 
-      const r = Math.min(Math.max(expandRatio, 0.2), 0.9)
+      const r = ratioRef.current
       const grow = count > 1 ? (r * (count - 1)) / (1 - r) : 1
       const mediaSize = mediaSizeRef.current
 
@@ -143,7 +153,6 @@ const AccordionGallery = ({
     [
       active,
       count,
-      expandRatio,
       duration,
       ease,
       vertical,
@@ -164,8 +173,20 @@ const AccordionGallery = ({
     const measure = () => {
       const rect = el.getBoundingClientRect()
       const total = vertical ? rect.height : rect.width
+      const cross = vertical ? rect.width : rect.height
       const usable = Math.max(total - gap * (count - 1), 120)
-      const size = Math.max(140, usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22)
+
+      let r = clampRatio(expandRatio)
+      if (activeAspect > 0 && count > 1 && cross > 0) {
+        // Width (or height, when vertical) the active panel needs for the requested aspect,
+        // capped so the collapsed panels keep `minItemSize` each on narrow containers.
+        const wanted = vertical ? cross / activeAspect : cross * activeAspect
+        const capped = Math.min(wanted, usable - minItemSize * (count - 1))
+        r = clampRatio(capped / usable)
+      }
+      ratioRef.current = r
+
+      const size = Math.max(140, usable * r * 1.22)
       mediaSizeRef.current = size
       el.style.setProperty("--ag-media-size", `${size}px`)
       applyLayout(!firstRunRef.current)
@@ -175,7 +196,7 @@ const AccordionGallery = ({
     const ro = new ResizeObserver(measure)
     ro.observe(el)
     return () => ro.disconnect()
-  }, [applyLayout, gap, count, expandRatio, vertical])
+  }, [applyLayout, gap, count, expandRatio, activeAspect, minItemSize, vertical])
 
   useEffect(() => {
     applyLayout(!firstRunRef.current)

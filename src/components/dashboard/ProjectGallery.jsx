@@ -44,6 +44,8 @@ export default function ProjectGallery() {
           defaultIndex={0}
           gap={8}
           radius={12}
+          activeAspect={3 / 2}
+          minItemSize={64}
           expandRatio={0.5}
           tilt={6}
           parallax={0.45}

@@ -1,6 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -8,6 +7,7 @@
   --font-display: "Urbanist", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Urbanist", ui-sans-serif, system-ui, sans-serif;
   --font-chapter: "Urbanist", ui-sans-serif, system-ui, sans-serif;
+  --font-condensed: "Anton", "Urbanist", ui-sans-serif, system-ui, sans-serif;
 
   /* Themed tokens — light-mode defaults here, dark-mode overrides in the .dark block below. */
   --color-page: #f2ede4;
@@ -182,4 +182,55 @@ body {
 }
 .exp-line {
   color: var(--exp-dim);
+}
+
+/* Works reel (/project) — a row of panels on one 3D stage. Leaning the stage on
+   rotateX is what bows the panels: the further a panel sits from the vanishing
+   point, the harder its edges skew. Every element between the perspective root
+   and the panels must keep `preserve-3d`, so none of them may take an `overflow`
+   other than visible — the horizontal clip happens further up, on the page. */
+:root {
+  --work-indent: 1.25rem;
+}
+@media (min-width: 640px) {
+  :root {
+    --work-indent: 5vw;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --work-indent: min(21vw, 26rem);
+  }
+}
+
+.work-indent {
+  padding-left: var(--work-indent);
+}
+
+.work-clip {
+  touch-action: pan-y; /* horizontal gestures are ours, vertical stays the page's */
+}
+.work-stage,
+.work-row {
+  transform-style: preserve-3d;
+}
+.work-stage {
+  transform-origin: 50% 0%;
+}
+.work-row {
+  will-change: transform;
+}
+.work-panel {
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Anyone who asked for less motion gets the strip flat and still — it stays a
+   plain horizontal gallery, which is all the curl was decorating. */
+@media (prefers-reduced-motion: reduce) {
+  .work-stage,
+  .work-panel {
+    transform: none !important;
+  }
 }

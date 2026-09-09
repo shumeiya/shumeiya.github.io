@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
 import Panel, { TOP_ROW_HEIGHT } from "./Panel"
+import StickerPile from "./StickerPile"
 
 export default function HelloPanel() {
   return (
@@ -22,21 +23,13 @@ export default function HelloPanel() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative font-serif text-5xl leading-[0.95] text-cream/90 sm:text-6xl"
+        className="relative font-serif text-3xl leading-[0.95] text-cream/90 sm:text-6xl"
       >
         Hello
-        <br />
-        Stranger
       </motion.h2>
 
-      <p className="relative mt-8 max-w-xs font-mono-tight text-[11px] leading-relaxed text-fog sm:text-xs">
-        let stranger = user.current();
-        <br />
-        <span className="text-ac-green">{"> "}</span>The terminal is open.
-        <br />
-        Type nothing. Just explore.
-        <span className="animate-pulse">_</span>
-      </p>
+
+      <StickerPile className="absolute inset-0 z-10" />
     </Panel>
   )
 }
