@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import WorkStrip from "./WorkStrip"
+import DrumSlat from "./DrumSlat"
 
 // One project, one screenful. The write-up and the first panel share the same
 // left edge (--work-indent), and the panels run taller than the fold so the
@@ -8,6 +9,7 @@ import WorkStrip from "./WorkStrip"
 export default function WorkSection({ work }) {
   return (
     <section id={work.slug} className="relative pb-16 pt-14 sm:pt-16">
+      <DrumSlat>
       <motion.header
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -39,10 +41,11 @@ export default function WorkSection({ work }) {
           View Case Study
         </Link>
       </motion.header>
+      </DrumSlat>
 
-      <div className="mt-10 sm:mt-12">
+      <DrumSlat className="mt-10 sm:mt-12">
         <WorkStrip panels={work.panels} accent={work.color} indent="var(--work-indent)" />
-      </div>
+      </DrumSlat>
     </section>
   )
 }

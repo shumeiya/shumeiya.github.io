@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
 import WorkSection from "../components/project/WorkSection"
+import DrumSlat from "../components/project/DrumSlat"
 import { featuredWorks } from "../data/works"
 
 export default function Works() {
@@ -20,6 +21,7 @@ export default function Works() {
         <WorkSection key={work.slug} work={work} index={i} total={featuredWorks.length} />
       ))}
 
+      <DrumSlat>
       <div id="see-others" className="mx-auto flex max-w-9xl flex-col items-center gap-4 px-4 py-24 text-center sm:px-6 lg:px-8">
         <p className="max-w-md text-base text-fog">
           Four of the projects I keep coming back to. The rest of the shelf — early work,
@@ -33,6 +35,7 @@ export default function Works() {
           <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
         </Link>
       </div>
+      </DrumSlat>
     </main>
   )
 }
