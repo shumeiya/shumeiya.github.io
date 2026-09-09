@@ -226,12 +226,13 @@ body {
   will-change: transform;
 }
 
-/* The folded lip along the bottom of the viewport. It paints the page colour
+/* The curled lip along the bottom of the viewport. It paints the page colour
    first so the flat original underneath is hidden, then shows an inert copy of
-   the page turned on rotateX — which is how a block taller than the lip stays
-   flat on top and folds only along its lower edge. */
+   the page sliced into strips and bent around an arc — which is how a block
+   taller than the lip stays flat on top and curls only along its lower edge. */
 .drum-lip {
   position: fixed;
+  perspective-origin: 50% 0%;
   left: 0;
   right: 0;
   bottom: 0;
@@ -243,8 +244,17 @@ body {
 .drum-lip-stage {
   position: absolute;
   inset: 0;
-  transform-origin: 50% 0%;
   transform-style: preserve-3d;
+}
+/* One flat quad of the arc. It clips to its own span of the copy behind it, and
+   is hung off the end of the strip above by the transform the script writes. */
+.drum-slice {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  transform-origin: 50% 0%;
 }
 
 /* Anyone who asked for less motion gets the strip flat and still — it stays a

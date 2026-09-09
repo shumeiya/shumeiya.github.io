@@ -18,10 +18,11 @@ const ART = [
   { src: "/个人形象/8.png", box: [0.066, 0.277, 0.867, 0.445] },
   { src: "/个人形象/9.png", box: [0.129, 0.074, 0.781, 0.852] },
   { src: "/个人形象/10.png", box: [0.105, 0.125, 0.816, 0.793] },
+
 ]
 
-const COUNT = 14
-const MIN_SIZE = 56
+const COUNT = 17
+const MIN_SIZE = 60
 const MAX_SIZE = 100
 const WALL = 220 // thick walls so a flung sticker can't tunnel through
 const DROP_GAP = 72 // vertical spacing between stickers waiting off-screen
