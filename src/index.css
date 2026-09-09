@@ -226,10 +226,10 @@ body {
   will-change: transform;
 }
 
-/* Drum slats hinge on their top edge, so a block entering from the bottom of
-   the viewport opens outward rather than pivoting about its middle. */
+/* Drum slats turn about their own middle, like slats on a reel: flat at eye
+   level, rolling away as they travel down past the viewer. */
 .drum-slat {
-  transform-origin: 50% 0%;
+  transform-origin: 50% 50%;
   will-change: transform;
   backface-visibility: hidden;
 }

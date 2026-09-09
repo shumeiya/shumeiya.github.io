@@ -1,13 +1,17 @@
 import { useEffect, useRef } from "react"
 
-// You are standing inside a drum and the page is its inner wall. Straight ahead
-// the wall reads flat; down at your feet it curves away under you. So a block
-// stays untouched until its top edge drops into the bottom BAND of the viewport,
-// where it hinges on that top edge and swings its lower end toward you — content
-// rolls up out of the bottom lip splayed open, then flattens as it rises.
-const BAND = 1 / 8 // share of the viewport that bends
-const MAX_DEG = 14 // turn at the very bottom of the band
-const DEPTH = 1400 // px of perspective; smaller is a wider-angle lens
+// You are standing inside a drum and the page is its inner wall — closer to a
+// slot-machine reel than a flat page. A block reads flat while it sits at eye
+// level, then turns about its own middle as that middle drops into the bottom
+// BAND of the viewport: top edge rolling away, lower edge swinging toward you.
+//
+// Tracking the block's centre rather than its top edge is what makes the turn
+// visible at all. These blocks run ~600px tall, so by the time a top edge
+// reaches the band the whole block has already left the screen.
+const BAND = 1 / 5 // share of the viewport that bends
+const MAX_DEG = 26 // turn at the very bottom of the band
+const DEPTH = 850 // px of perspective; smaller is a wider-angle lens
+const CURVE = 1.6 // <2 keeps the middle of the band visibly turned, not just the lip
 
 // One rAF loop and one scroll listener for every slat on the page.
 const slats = new Set()
@@ -23,14 +27,15 @@ function paint() {
   for (const { outer, inner } of slats) {
     // Measured on the *untransformed* outer node: reading the node we are about
     // to rotate would feed its own displacement back in and make it shiver.
-    const top = outer.getBoundingClientRect().top
-    const t = Math.min(Math.max((top - edge) / span, 0), 1)
+    const box = outer.getBoundingClientRect()
+    const centre = box.top + box.height / 2
+    const t = Math.min(Math.max((centre - edge) / span, 0), 1)
     if (t === 0) {
       inner.style.transform = ""
       continue
     }
     // Ease in, so the surface curves away instead of kinking at the band edge.
-    const deg = t * t * MAX_DEG
+    const deg = Math.pow(t, CURVE) * MAX_DEG
     inner.style.transform = `perspective(${DEPTH}px) rotateX(${deg.toFixed(2)}deg)`
   }
 }
