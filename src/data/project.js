@@ -58,11 +58,11 @@ export const experience = [
 ]
 
 export const galleryProjects = [
-   { name: "Weather Pets", slug: "weather-pets", tag: "wetter.com · App Concept", image: "/gallery/weatherpets.jpg", color: "var(--color-ac-orange)" },
-  { name: "ABC Mouse", slug: "abc-mouse", tag: "Tencent · Learning UX", image: "/gallery/abcmouse.jpg", color: "var(--color-ac-orange)" },
-  { name: "TIDE", slug: "tide", tag: "App Design System", image: "/gallery/tide.jpg", color: "var(--color-ac-blue)" },
+  { name: "Kyrall Web App", slug: "kyrall", tag: "ai tool", image: "/project/kyrall/121.png", color: "var(--color-ac-blue)" },
+  { name: "Weather Pets", slug: "weather-pets", tag: "wetter.com · App Concept", image: "/gallery/weatherpets.jpg", color: "var(--color-ac-orange)" },
   { name: "Slow Food", slug: "slow-food", tag: "Brand / Web Design", image: "/gallery/slowfood.jpg", color: "var(--color-ac-green)" },
   { name: "HMI", slug: "hmi", tag: "Granstudio · Automotive", image: "/gallery/hmi.jpg", color: "var(--color-ac-red)" },
+  { name: "ABC Mouse", slug: "abc-mouse", tag: "Tencent · Learning UX", image: "/gallery/abcmouse.jpg", color: "var(--color-ac-orange)" },
   { name: "CodeMao", slug: "codemao", tag: "Platform Design", image: "/gallery/codemao.jpg", color: "var(--color-ac-pink)" },
   { name: "Puzzle Game", slug: "puzzle-game", tag: "Gamification", image: "/gallery/puzzle.jpg", color: "var(--color-ac-green)" },
 ]
@@ -84,6 +84,17 @@ export const projectCategories = [
 
 // "size" drives the bento-grid span in MyProject.jsx — lg (2x2), wide (2x1), tall (1x2), sm (1x1).
 export const projectList = [
+  {
+    name: "Kyrall Web App",
+    slug: "kyrall",
+    category: "AI Product",
+    categories: ["ai"],
+    description: "An AI tool that takes an idea from concept to a manufacturable model in minutes.",
+    image: "/project/kyrall/121.png",
+    color: "var(--color-ac-blue)",
+    href: "/project/kyrall",
+    size: "lg",
+  },
     {
     name: "Weather Pets",
     slug: "weather-pets",

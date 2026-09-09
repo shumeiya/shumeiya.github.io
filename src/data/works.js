@@ -16,25 +16,15 @@ const featured = ["kyrall", "weather-pets", "slow-food", "hmi"]
 // Screens under /gallery/works/ came from the 2025 project files; add more to a
 // panel's `shots` array and it just gets wider.
 const panels = {
-  // Only one screen exists for this one so far — drop more paths into `shots`
-  // (or add panels here) and it fills out like the others.
-    "kyrall": [
-    { label: "AI Tool", size: "xl", shots: ["/gallery/weatherpets.jpg"] },
+  kyrall: [
+    { label: "Automating design for the physical world", size: "xl", shots: ["/project/kyrall/121.png"] },
+    // Same dashboard in both themes — one exhibit, so one panel and one caption.
     {
-      kind: "note",
-      tone: "accent",
-      size: "md",
-      eyebrow: "wetter.com",
-      title: "A forecast you'd want to open",
-      body: "The pet's mood and behaviour follow the weather, so the daily check-in earns its place on the home screen.",
+      label: "Dashboard — dark & light",
+      size: "xl",
+      shots: ["/project/kyrall/122.png", "/project/kyrall/123.png"],
     },
-    {
-      kind: "note",
-      size: "md",
-      eyebrow: "Role",
-      title: "Concept + interaction",
-      body: "Explored inside the forecast team: concept, interaction design and the visual system.",
-    },
+    { label: "Model editor + AI edit", size: "xl", shots: ["/project/kyrall/62.png"] },
   ],
   "weather-pets": [
     { label: "Forecast + companion pet", size: "xl", shots: ["/gallery/weatherpets.jpg"] },
@@ -113,7 +103,7 @@ const meta = {
   "kyrall": {
     year: "now",
     isNew: true,
-    lead: "A weather app concept built around an animated companion pet, whose mood and behaviour react to the forecast — so checking the weather becomes something you want to do.",
+    lead: "Start building now from concept to manufacturable model in minutes.",
   },
   "weather-pets": {
     year: "2025",
