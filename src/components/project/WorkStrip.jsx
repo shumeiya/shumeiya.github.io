@@ -238,7 +238,6 @@ export default function WorkStrip({ panels, accent }) {
     <div className="select-none">
       <div
         ref={clipRef}
-        data-drum
         className="work-clip relative cursor-grab"
         style={{ perspective: `${DEPTH}px`, perspectiveOrigin: "50% 0%" }}
       >
@@ -308,7 +307,7 @@ export default function WorkStrip({ panels, accent }) {
 
       {/* Position dots — also the only affordance that says the row pans. */}
       {count > 1 && (
-        <div data-drum className="mt-7 flex items-center justify-center gap-2.5">
+        <div className="mt-7 flex items-center justify-center gap-2.5">
           {panels.map((panel, i) => (
             <button
               key={panel.label ?? panel.title ?? i}

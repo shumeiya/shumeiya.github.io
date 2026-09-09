@@ -226,20 +226,35 @@ body {
   will-change: transform;
 }
 
-/* Drum slats turn about their own middle: flat where the wall faces the viewer
-   head-on, leaning further the further below that they travel. The origin is
-   the whole trick — it is the fixed point the script reads back each frame. */
-[data-drum] {
-  transform-origin: 50% 50%;
-  backface-visibility: hidden;
+/* The folded lip along the bottom of the viewport. It paints the page colour
+   first so the flat original underneath is hidden, then shows an inert copy of
+   the page turned on rotateX — which is how a block taller than the lip stays
+   flat on top and folds only along its lower edge. */
+.drum-lip {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40; /* under the sticky nav (z-50) */
+  overflow: hidden;
+  background: var(--color-page);
+  pointer-events: none;
+}
+.drum-lip-stage {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0%;
+  transform-style: preserve-3d;
 }
 
 /* Anyone who asked for less motion gets the strip flat and still — it stays a
    plain horizontal gallery, which is all the curl was decorating. */
 @media (prefers-reduced-motion: reduce) {
   .work-stage,
-  .work-panel,
-  [data-drum] {
+  .work-panel {
     transform: none !important;
+  }
+  .drum-lip {
+    display: none;
   }
 }
