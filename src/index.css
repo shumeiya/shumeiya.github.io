@@ -227,10 +227,10 @@ body {
 }
 
 /* Drum slats turn about their own middle, like slats on a reel: flat at eye
-   level, rolling away as they travel down past the viewer. */
-.drum-slat {
+   level, rolling away as they travel down past the viewer. The origin is the
+   whole trick — it is the fixed point the script reads back each frame. */
+[data-drum] {
   transform-origin: 50% 50%;
-  will-change: transform;
   backface-visibility: hidden;
 }
 
@@ -239,7 +239,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .work-stage,
   .work-panel,
-  .drum-slat {
+  [data-drum] {
     transform: none !important;
   }
 }

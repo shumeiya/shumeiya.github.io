@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
 import WorkSection from "../components/project/WorkSection"
-import DrumSlat from "../components/project/DrumSlat"
+import DrumStage from "../components/project/DrumStage"
 import { featuredWorks } from "../data/works"
 
 export default function Works() {
@@ -17,17 +17,18 @@ export default function Works() {
 
   return (
     <main className="relative overflow-x-clip pb-24">
+      <DrumStage>
       {featuredWorks.map((work, i) => (
         <WorkSection key={work.slug} work={work} index={i} total={featuredWorks.length} />
       ))}
 
-      <DrumSlat>
       <div id="see-others" className="mx-auto flex max-w-9xl flex-col items-center gap-4 px-4 py-24 text-center sm:px-6 lg:px-8">
-        <p className="max-w-md text-base text-fog">
+        <p data-drum className="max-w-md text-base text-fog">
           Four of the projects I keep coming back to. The rest of the shelf — early work,
           side projects and studies — lives in the archive.
         </p>
         <Link
+          data-drum
           to="/project/all"
           className="group inline-flex items-center gap-2 rounded-full border border-ink/25 px-8 py-4 text-lg text-ink transition-colors hover:border-ink hover:bg-ink hover:text-page"
         >
@@ -35,7 +36,7 @@ export default function Works() {
           <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
         </Link>
       </div>
-      </DrumSlat>
+      </DrumStage>
     </main>
   )
 }

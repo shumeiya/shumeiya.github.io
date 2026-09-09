@@ -1,15 +1,16 @@
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import WorkStrip from "./WorkStrip"
-import DrumSlat from "./DrumSlat"
 
 // One project, one screenful. The write-up and the first panel share the same
 // left edge (--work-indent), and the panels run taller than the fold so the
 // strip is still unfolding as you scroll into the next project.
+//
+// Every `data-drum` below is a slat on the page's drum (see DrumStage) — the
+// type is marked line by line so the words turn with the pictures.
 export default function WorkSection({ work }) {
   return (
     <section id={work.slug} className="relative pb-16 pt-14 sm:pt-16">
-      <DrumSlat>
       <motion.header
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -17,7 +18,7 @@ export default function WorkSection({ work }) {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="work-indent pr-5 sm:pr-8"
       >
-        <div className="mb-4 flex items-center gap-3">
+        <div data-drum className="mb-4 flex items-center gap-3">
           {work.isNew && (
             <span className="rounded-full border border-ink/40 px-3.5 py-1 font-mono-tight text-xs uppercase tracking-wide text-ink">
               New
@@ -26,26 +27,33 @@ export default function WorkSection({ work }) {
           <span className="font-mono-tight text-sm tracking-wide text-ink/70">{work.year}</span>
         </div>
 
-        <h2 className="font-condensed mb-5 text-[clamp(3rem,6.5vw,8rem)] uppercase leading-[0.82] tracking-[-0.01em] text-ink">
+        <h2
+          data-drum
+          className="font-condensed mb-5 text-[clamp(3rem,6.5vw,8rem)] uppercase leading-[0.82] tracking-[-0.01em] text-ink"
+        >
           {work.name}
         </h2>
 
-        <p className="mb-7 max-w-[58ch] text-lg leading-snug text-ink/85 sm:text-2xl">
+        <p
+          data-drum
+          className="mb-7 max-w-[58ch] text-lg leading-snug text-ink/85 sm:text-2xl"
+        >
           {work.lead}
         </p>
 
-        <Link
-          to={work.href}
-          className="inline-flex items-center rounded-full border border-ink/30 px-8 py-4 text-base text-ink transition-colors hover:border-ink hover:bg-ink hover:text-page sm:text-lg"
-        >
-          View Case Study
-        </Link>
+        <div data-drum className="w-fit">
+          <Link
+            to={work.href}
+            className="inline-flex items-center rounded-full border border-ink/30 px-8 py-4 text-base text-ink transition-colors hover:border-ink hover:bg-ink hover:text-page sm:text-lg"
+          >
+            View Case Study
+          </Link>
+        </div>
       </motion.header>
-      </DrumSlat>
 
-      <DrumSlat className="mt-10 sm:mt-12">
+      <div className="mt-10 sm:mt-12">
         <WorkStrip panels={work.panels} accent={work.color} indent="var(--work-indent)" />
-      </DrumSlat>
+      </div>
     </section>
   )
 }
