@@ -5,6 +5,7 @@ import { projectList } from "../data/project"
 import { projectDetails } from "../data/projectDetails"
 import DetailToc from "../components/project/DetailToc"
 import ScrollRail from "../components/project/ScrollRail"
+import DetailBlocks from "../components/project/DetailBlocks"
 
 export default function ProjectDetail() {
   const { slug } = useParams()
@@ -64,8 +65,21 @@ export default function ProjectDetail() {
               {project.name}
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-fog">
-              {project.description}
+              {detail.summary ?? project.description}
             </p>
+
+            {detail.tags && (
+              <ul className="mt-5 flex flex-wrap gap-x-2 gap-y-2">
+                {detail.tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="rounded-full border border-line px-3 py-1 font-mono-tight text-[11px] uppercase tracking-wide text-fog"
+                  >
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            )}
 
             <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-3 border-t border-line pt-5">
               <div>
@@ -87,6 +101,12 @@ export default function ProjectDetail() {
                 </p>
               )}
               <h2 className="mt-2 text-xl font-semibold text-cream sm:text-2xl">{section.label}</h2>
+
+              {section.lead && (
+                <p className="mt-3 text-base leading-relaxed text-ink sm:text-lg">{section.lead}</p>
+              )}
+
+              {section.blocks && <DetailBlocks blocks={section.blocks} accent={project.color} />}
 
               {section.body?.map((paragraph, i) => (
                 <p key={i} className="mt-4 text-sm leading-relaxed text-fog sm:text-base">
