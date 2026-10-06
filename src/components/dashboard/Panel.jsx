@@ -1,7 +1,10 @@
 import { forwardRef } from "react"
 
-export const TOP_ROW_HEIGHT = "h-85 lg:h-85"
-export const BOTTOM_ROW_HEIGHT = "h-85 lg:h-100"
+// Narrow screens keep a fixed panel height and let the page scroll. From `lg` up the
+// dashboard grid owns the height — it stretches to fill the viewport (see Dashboard.jsx),
+// so the panels just fill whatever row they land in.
+export const TOP_ROW_HEIGHT = "h-85 lg:h-full"
+export const BOTTOM_ROW_HEIGHT = "h-85 lg:h-full"
 
 const Panel = forwardRef(function Panel(
   { children, className = "", as: Tag = "div", ...rest },

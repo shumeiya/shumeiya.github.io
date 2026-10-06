@@ -5,9 +5,10 @@
 // also carry `color` (accent bar tint) and `sublabel` (second line under the label).
 // `dim` controls how far inactive panels are darkened (0 disables the scrim entirely),
 // and `shadow={false}` drops the panel drop shadow while keeping the focus ring.
-// `activeAspect` (e.g. 16 / 9) overrides `expandRatio`: the active panel is sized from the
-// measured cross-axis size so it holds that aspect ratio, with `minItemSize` reserving a
-// floor for the collapsed panels when the container is too narrow to honour both.
+// `activeAspect` (e.g. 16 / 9) drives the active panel off the measured cross-axis size so it
+// holds that aspect ratio. `expandRatio` then becomes the ceiling on its share of the track and
+// `minItemSize` the floor under the collapsed panels — on a container too tall or too narrow to
+// honour the aspect, those two win and the ratio bends rather than the layout breaking.
 import { useRef, useEffect, useState, useCallback } from "react"
 import { gsap } from "gsap"
 
@@ -178,11 +179,13 @@ const AccordionGallery = ({
 
       let r = clampRatio(expandRatio)
       if (activeAspect > 0 && count > 1 && cross > 0) {
-        // Width (or height, when vertical) the active panel needs for the requested aspect,
-        // capped so the collapsed panels keep `minItemSize` each on narrow containers.
+        // Size the active panel needs for the requested aspect, held under both guards: the
+        // collapsed panels keep `minItemSize` each, and the active one never takes more of the
+        // track than `expandRatio` — without that ceiling a tall container inflates it until
+        // the rest are slivers.
         const wanted = vertical ? cross / activeAspect : cross * activeAspect
         const capped = Math.min(wanted, usable - minItemSize * (count - 1))
-        r = clampRatio(capped / usable)
+        r = Math.min(clampRatio(capped / usable), clampRatio(expandRatio))
       }
       ratioRef.current = r
 

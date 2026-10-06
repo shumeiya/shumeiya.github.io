@@ -46,7 +46,9 @@ export default function ProjectGallery() {
           radius={12}
           activeAspect={3 / 2}
           minItemSize={64}
-          expandRatio={0.5}
+          // Ceiling on the active card's share. 0.64 is what 3:2 works out to at the panel's
+          // usual proportions, so the aspect holds as-is and only a very tall row gets clamped.
+          expandRatio={0.64}
           tilt={6}
           parallax={0.45}
           grayscale={false}

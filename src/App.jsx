@@ -9,7 +9,7 @@ import Studies from "./pages/Studies"
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-page">
+    <div className="flex min-h-screen flex-col bg-page">
       <NavBar />
       <Routes>
         <Route path="/" element={<Dashboard />} />
