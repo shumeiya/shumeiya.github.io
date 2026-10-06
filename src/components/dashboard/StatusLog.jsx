@@ -238,7 +238,19 @@ function ProjectPreview({ activeKey }) {
     return () => clearInterval(t)
   }, [activeKey, hasMedia, media])
 
-  if (!meta) return <div className="min-h-0 flex-1" />
+  // Idle state keeps the frame rather than collapsing to blank space — on a tall panel an
+  // empty flex-1 div reads as a hole in the layout.
+  if (!meta)
+    return (
+      <div
+        className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-lg border border-dashed"
+        style={{ borderColor: "var(--color-box-2)" }}
+      >
+        <span className="font-mono-tight text-[9px] uppercase tracking-wide text-fog/60">
+          hover a project
+        </span>
+      </div>
+    )
 
   return (
     <div

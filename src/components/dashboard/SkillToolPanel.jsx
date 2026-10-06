@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
 import Panel, { PanelHeader, TOP_ROW_HEIGHT } from "./Panel"
 import { radarSkills } from "../../data/project"
@@ -153,7 +153,25 @@ function renderField() {
 export default function SkillToolPanel() {
   const ref = useRef(null)
   const canvasRef = useRef(null)
+  const boxRef = useRef(null)
   const inView = useInView(ref, { once: true, margin: "-10% 0px" })
+
+  // The radar is the largest square its box can hold. Container query units would express this
+  // directly, but `container-type: size` resolves to zero here, so measure the box instead: the
+  // panel grows with the viewport and the chart grows with it rather than sitting at a fixed cap.
+  const [square, setSquare] = useState(0)
+  useEffect(() => {
+    const el = boxRef.current
+    if (!el) return
+    const measure = () => {
+      const { width, height } = el.getBoundingClientRect()
+      setSquare(Math.max(0, Math.min(width, height)))
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -203,8 +221,8 @@ export default function SkillToolPanel() {
     <Panel ref={ref} className={`flex ${TOP_ROW_HEIGHT} flex-col p-2 sm:p-3`}>
       <PanelHeader label="SKILL" />
 
-      <div className="flex flex-1 items-center justify-center">
-        <div className="relative aspect-square w-full max-w-100 -translate-y-8">
+      <div ref={boxRef} className="flex min-h-0 flex-1 items-center justify-center">
+        <div className="relative" style={{ width: square, height: square }}>
           {/* Six-colour blend field, clipped to the slowly-morphing blob. */}
           <motion.canvas
             ref={canvasRef}
