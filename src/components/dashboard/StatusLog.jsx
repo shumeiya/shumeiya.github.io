@@ -257,18 +257,26 @@ function ProjectPreview({ activeKey }) {
       className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-lg border border-dashed"
       style={{ borderColor: "var(--color-box-2)" }}
     >
+      {/* Media is taken out of flow on purpose. In flow a video reports its own intrinsic size
+          whenever the percentage height has nothing definite to resolve against, which pushes the
+          preview box — and the whole panel — taller the moment a clip loads. Positioned, it can
+          only ever fill the frame the layout already decided on, and object-cover crops the rest. */}
       {hasMedia && media.type === "video" ? (
         <video
           key={activeKey}
           src={media.sources[0]}
-          className="h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
           autoPlay
           muted
           loop
           playsInline
         />
       ) : hasMedia ? (
-        <img src={media.sources[idx]} alt={meta.name} className="h-full w-full object-cover" />
+        <img
+          src={media.sources[idx]}
+          alt={meta.name}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
       ) : (
         <div className="flex flex-col items-center gap-1.5 text-center">
           <CellMark projectKey={activeKey} className="h-7 w-7" />
