@@ -6,6 +6,7 @@ import ProjectArchive from "./pages/ProjectArchive"
 import ProjectDetail from "./pages/ProjectDetail"
 import Myworld from "./pages/Myworld"
 import Studies from "./pages/Studies"
+import About from "./pages/About"
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/project/:slug" element={<ProjectDetail />} />
         <Route path="/case-study" element={<Studies />} />
         <Route path="/my-world" element={<Myworld />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </div>
   )
