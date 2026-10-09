@@ -292,7 +292,7 @@ const AccordionGallery = ({
                   src={item.image}
                   alt={item.alt || item.label || ""}
                   draggable="false"
-                  className="block h-full w-full select-none object-cover [-webkit-user-drag:none]"
+                  className="block h-full w-full select-none object-contain [-webkit-user-drag:none]"
                 />
               </span>
               <span

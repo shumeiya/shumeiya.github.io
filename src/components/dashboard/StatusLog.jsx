@@ -260,12 +260,12 @@ function ProjectPreview({ activeKey }) {
       {/* Media is taken out of flow on purpose. In flow a video reports its own intrinsic size
           whenever the percentage height has nothing definite to resolve against, which pushes the
           preview box — and the whole panel — taller the moment a clip loads. Positioned, it can
-          only ever fill the frame the layout already decided on, and object-cover crops the rest. */}
+          only ever fit inside the frame the layout already decided on, uncropped. */}
       {hasMedia && media.type === "video" ? (
         <video
           key={activeKey}
           src={media.sources[0]}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-contain"
           autoPlay
           muted
           loop
@@ -275,7 +275,7 @@ function ProjectPreview({ activeKey }) {
         <img
           src={media.sources[idx]}
           alt={meta.name}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-contain"
         />
       ) : (
         <div className="flex flex-col items-center gap-1.5 text-center">

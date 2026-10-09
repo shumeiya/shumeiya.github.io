@@ -18,7 +18,7 @@ export default function Masonry({ items }) {
             src={encodeURI(item.src)}
             alt={item.alt}
             loading="lazy"
-            className="w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
+            className="block h-auto w-full transition-transform duration-500 hover:scale-[1.03]"
           />
         </motion.figure>
       ))}

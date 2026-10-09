@@ -117,8 +117,8 @@ export default function ProjectDetail() {
               {section.images?.length > 0 && (
                 <div className="mt-6 grid gap-4">
                   {section.images.map((src) => (
-                    <div key={src} className="overflow-hidden rounded-xl bg-box">
-                      <img src={src} alt="" loading="lazy" className="w-full object-cover" />
+                    <div key={src} className="bg-box">
+                      <img src={src} alt="" loading="lazy" className="block h-auto w-full" />
                     </div>
                   ))}
                 </div>

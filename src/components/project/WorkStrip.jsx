@@ -293,7 +293,7 @@ export default function WorkStrip({ panels, accent }) {
                           alt={panel.label ?? ""}
                           loading="lazy"
                           draggable={false}
-                          className="h-full w-auto max-w-full rounded-2xl object-contain"
+                          className="h-full w-auto max-w-full object-contain"
                         />
                       ))}
                     </div>
