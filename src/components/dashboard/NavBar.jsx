@@ -6,7 +6,7 @@ import { useDarkMode } from "../../hooks/useDarkMode"
 const links = [
   { to: "/", label: "Dashboard" },
   { to: "/project", label: "Projects" },
-  { to: "/case-study", label: "Studies" },
+  // { to: "/case-study", label: "Studies" },
   { to: "/my-world", label: "My world" },
 ]
 
