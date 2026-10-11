@@ -33,21 +33,26 @@ export default function HelloPanel() {
         <Link
           to="/about"
           aria-label="About Shumei Zhang"
-          className="group inline-flex items-start gap-1 transition-transform duration-200 active:scale-[0.97] sm:gap-2"
+          className="group inline-flex items-end gap-1.5 transition-transform duration-200 active:scale-[0.97] sm:gap-3"
         >
-          <span className="block">
+          {/* The underline is positioned, not in flow, so this span's height stays equal to
+              the word itself — which is what lets items-end sit the arrow on Hello's baseline. */}
+          <span className="relative block">
             <h2 className="font-serif text-3xl leading-[0.95] text-cream/90 transition-colors duration-300 group-hover:text-cream sm:text-6xl">
               Hello
             </h2>
-            {/* Underline sweeps out from the left on hover. */}
             <span
               aria-hidden="true"
-              className="mt-1 block h-px origin-left scale-x-0 bg-ink/40 transition-transform duration-300 group-hover:scale-x-100"
+              className="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-ink/40 transition-transform duration-300 group-hover:scale-x-100"
             />
           </span>
+          {/* lucide draws this glyph inset ~29% inside its 24x24 box, so the SVG
+              bottom sits well below the visible arrow. The negative margin pulls that
+              padding out and lands the arrow on Hello's baseline. */}
           <ArrowUpRight
             aria-hidden="true"
-            className="size-5 shrink-0 -translate-x-1 text-fog opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:text-cream group-hover:opacity-100 sm:size-8"
+            strokeWidth={1.75}
+            className="-mb-2 size-7 shrink-0 -translate-x-1 text-fog opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:text-cream group-hover:opacity-100 sm:-mb-4 sm:size-12"
           />
         </Link>
       </motion.div>
