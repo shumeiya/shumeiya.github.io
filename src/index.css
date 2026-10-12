@@ -64,6 +64,15 @@ html {
   /* Hide the scrollbar while keeping scroll functionality (Firefox / IE). */
   scrollbar-width: none;
   -ms-overflow-style: none;
+  /* No rubber-band at the ends. The bounce is a compositor-level shove of the
+     scrolling contents that never touches layout, so getBoundingClientRect reads
+     the same number throughout it — while the lip, being fixed, stays pinned to
+     the viewport and does not travel with the page. The copy inside it is placed
+     from that unchanged number, so for the length of the bounce the lip shows the
+     page at an offset from the page above it, and the gap between them is the
+     lip's own background. It is worst at the two ends, which is where the bounce
+     lives: the top, and the bottom where "See others" sits. */
+  overscroll-behavior-y: none;
 }
 
 /* Hide the scrollbar while keeping scroll functionality (Chrome / Safari / Edge). */
