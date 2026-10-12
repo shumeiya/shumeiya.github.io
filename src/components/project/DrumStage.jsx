@@ -21,9 +21,20 @@ const CURL = 55 // total degrees the paper turns through, top of lip to bottom
 const DEPTH = 900 // px of perspective; smaller is a wider-angle lens
 const BLEED = 1 // px of overlap, so no seam shows between neighbouring strips
 
-// WorkStrip drives these inline every frame. The copies are dead snapshots, so
-// their transforms have to be carried across or the seams tear mid-drag.
-const LIVE = ".work-stage, .work-row, .work-panel"
+// Nodes whose inline style keeps changing after the snapshot is taken. The copies
+// are dead, so whatever moves on the real page has to be carried across every
+// frame or the lip shows a stale pose of it.
+//
+// WorkStrip drives the first three as you drag. The fourth is each project's
+// heading: framer-motion parks it at `opacity: 0; transform: translateY(24px)`
+// and runs it to rest over 0.6s once it scrolls in — and with a -12% viewport
+// margin that run happens while the heading is crossing the lip. Leaving it out
+// meant the copy sat at rest while the original was still 24px high, which is
+// the tear you see sliding past a project title.
+const LIVE = ".work-stage, .work-row, .work-panel, .work-indent"
+
+// translate3d(x, y, 0) → translate(x, y): same pixels, no layer request.
+const FLATTEN = /translate3d\(([^,]+),\s*([^,]+),\s*0(?:px)?\)/
 
 // Where each strip hangs and how far it is turned. Walking the arc once: the
 // bottom edge of one strip is the top edge of the next.
@@ -58,9 +69,12 @@ export default function DrumStage({ children, className = "" }) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
     const strips = arc()
+    const SLICE_H = strips[0].h + BLEED
+    const PAD = 80 // slack either side of the band, for the arc's own foreshortening
     let clones = []
     let liveFrom = []
     let liveTo = []
+    let boxes = []
     let waiting = null
 
     const build = () => {
@@ -68,6 +82,15 @@ export default function DrumStage({ children, className = "" }) {
       clones = []
       liveTo = []
       liveFrom = Array.from(root.querySelectorAll(LIVE))
+      // Each slice only ever shows one ~34px band of a copy; the rest is clipped.
+      // Knowing where the sections sit lets the paint below hide the ones that
+      // cannot be in frame, which keeps the compositor from promoting panels
+      // nobody can see. Measured here because build is rare and this forces layout.
+      const rootTop = root.getBoundingClientRect().top
+      boxes = Array.from(root.children).map((el) => {
+        const r = el.getBoundingClientRect()
+        return { top: r.top - rootTop, bottom: r.bottom - rootTop }
+      })
       // Listeners from a previous build are stale the moment the copies are.
       if (waiting) waiting.abort()
       waiting = new AbortController()
@@ -82,12 +105,17 @@ export default function DrumStage({ children, className = "" }) {
           ` rotateX(${s.deg.toFixed(2)}deg)`
 
         const copy = root.cloneNode(true)
+        copy.classList.add("drum-copy")
         // Duplicate ids would break #slug deep links and getElementById.
         copy.removeAttribute("id")
         for (const n of copy.querySelectorAll("[id]")) n.removeAttribute("id")
         copy.style.position = "absolute"
         copy.style.top = "0"
-        copy.style.willChange = "transform"
+        // No will-change here. The slice above already composites — it carries a
+        // 3D transform under preserve-3d — and its layer is only one strip tall,
+        // so it rasterises a band. Promoting the copy as well asks for a texture
+        // the size of the whole page, seven times over, which is where the lip
+        // starts dropping to flat colour when the GPU runs short.
 
         const mine = Array.from(copy.querySelectorAll(LIVE))
         // framer-motion parks a section at opacity 0 until it scrolls into view,
@@ -128,7 +156,7 @@ export default function DrumStage({ children, className = "" }) {
 
         slot.appendChild(copy)
         stage.appendChild(slot)
-        clones.push({ copy, top: s.top })
+        clones.push({ copy, top: s.top, kids: Array.from(copy.children), seen: [] })
         liveTo.push(mine)
       }
     }
@@ -146,7 +174,20 @@ export default function DrumStage({ children, className = "" }) {
       const width = `${box.width}px`
 
       for (let i = 0; i < clones.length; i += 1) {
-        const { copy, top } = clones[i]
+        const clone = clones[i]
+        const { copy, top } = clone
+
+        // Which slab of the page this strip can actually show.
+        const lo = top - shift - PAD
+        const hi = top - shift + SLICE_H + PAD
+        for (let j = 0; j < clone.kids.length; j += 1) {
+          const b = boxes[j]
+          const on = !b || (b.bottom >= lo && b.top <= hi)
+          if (clone.seen[j] !== on) {
+            clone.seen[j] = on
+            clone.kids[j].style.visibility = on ? "" : "hidden"
+          }
+        }
         // This runs every frame — the reel animates without the page scrolling
         // — so only ever write a value that actually changed. Reading a style
         // string is free; assigning one costs a style recalc.
@@ -158,9 +199,17 @@ export default function DrumStage({ children, className = "" }) {
         const mine = liveTo[i]
         for (let k = 0; k < liveFrom.length; k += 1) {
           const to = mine[k]
-          if (to && to.style.transform !== liveFrom[k].style.transform) {
-            to.style.transform = liveFrom[k].style.transform
+          if (!to) continue
+          const from = liveFrom[k]
+          // Opacity matters as much as transform now that headings are live: the
+          // strip below leaves a LIVE node's inline style alone, so one parked at
+          // opacity 0 would stay invisible in the lip for good.
+          if (to.style.transform !== from.style.transform) {
+            // translate3d's z is always 0 here — the 3D spelling is only a GPU
+            // hint, and a copy clipped to one strip has no use for it.
+            to.style.transform = from.style.transform.replace(FLATTEN, "translate($1, $2)")
           }
+          if (to.style.opacity !== from.style.opacity) to.style.opacity = from.style.opacity
         }
       }
     }

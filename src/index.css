@@ -246,6 +246,22 @@ body {
   inset: 0;
   transform-style: preserve-3d;
 }
+/* Everything inside a copy is decorative — it is clipped to one ~34px strip and
+   never animates on its own. The real page promotes every panel to its own
+   compositor layer so dragging the reel stays cheap, but that rule is written in
+   CSS, so each of the seven copies inherits it too: four dozen panels becomes
+   four hundred layers, which is more than the compositor will hold. It starts
+   dropping them, and a dropped layer paints nothing — the lip's own background
+   shows through as a band, or a whole element vanishes. The copies give the GPU
+   nothing back for that cost, so they opt out.
+
+   preserve-3d stays: the panels' tilt is part of what the lip is showing. */
+.drum-copy .work-panel,
+.drum-copy .work-row {
+  will-change: auto;
+  backface-visibility: visible;
+}
+
 /* One flat quad of the arc. It clips to its own span of the copy behind it, and
    is hung off the end of the strip above by the transform the script writes. */
 .drum-slice {
