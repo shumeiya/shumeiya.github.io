@@ -33,10 +33,10 @@ export default function HelloPanel() {
         <Link
           to="/about"
           aria-label="About Shumei Zhang"
-          className="group inline-flex items-end gap-1.5 transition-transform duration-200 active:scale-[0.97] sm:gap-3"
+          className="group inline-flex items-start gap-1.5 transition-transform duration-200 active:scale-[0.97] sm:gap-3"
         >
-          {/* The underline is positioned, not in flow, so this span's height stays equal to
-              the word itself — which is what lets items-end sit the arrow on Hello's baseline. */}
+          {/* The underline is positioned, not in flow, so sweeping it in on hover never
+              changes this span's height or nudges the arrow beside it. */}
           <span className="relative block">
             <h2 className="font-serif text-3xl leading-[0.95] text-cream/90 transition-colors duration-300 group-hover:text-cream sm:text-6xl">
               Hello
@@ -46,13 +46,14 @@ export default function HelloPanel() {
               className="absolute -bottom-1.5 left-0 h-px w-full origin-left scale-x-0 bg-ink/40 transition-transform duration-300 group-hover:scale-x-100"
             />
           </span>
-          {/* lucide draws this glyph inset ~29% inside its 24x24 box, so the SVG
-              bottom sits well below the visible arrow. The negative margin pulls that
-              padding out and lands the arrow on Hello's baseline. */}
+          {/* lucide insets this glyph ~29% inside its 24x24 box, so the SVG's top edge
+              sits above the visible arrow by more than the font's own ascender gap —
+              measured at 14px of padding against 10.5px of gap. The negative margin
+              closes that 3.5px difference so the arrow starts level with Hello's cap. */}
           <ArrowUpRight
             aria-hidden="true"
             strokeWidth={1.75}
-            className="-mb-2 size-7 shrink-0 -translate-x-1 text-fog opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:text-cream group-hover:opacity-100 sm:-mb-4 sm:size-12"
+            className="-mt-[3px] size-7 shrink-0 -translate-x-1 text-fog opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:text-cream group-hover:opacity-100 sm:-mt-1 sm:size-12"
           />
         </Link>
       </motion.div>
