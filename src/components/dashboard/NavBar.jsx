@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { Moon, Sun } from "lucide-react"
 import { project } from "../../data/project"
 import { useDarkMode } from "../../hooks/useDarkMode"
@@ -19,9 +19,13 @@ export default function NavBar() {
   return (
     <header className="sticky top-0 z-50">
       <nav className="relative mx-auto flex max-w-9xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:flex-nowrap sm:px-8 lg:px-8">
-        <span className="text-sm font-semibold tracking-tight text-ink sm:text-base">
+        <Link
+          to="/"
+          aria-label="Back to dashboard"
+          className="text-sm font-semibold tracking-tight text-ink transition-colors hover:text-cream sm:text-base"
+        >
           {project.name.toUpperCase()}
-        </span>
+        </Link>
 
         <button
           onClick={() => setIsDark((v) => !v)}
