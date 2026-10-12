@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import { ArrowDown, ArrowUpRight } from "lucide-react"
-import { intro, education, experience, skills } from "../data/about"
+import { intro, education, experience, skills, scatter, opener } from "../data/about"
 
 const rise = {
   initial: { opacity: 0, y: 14 },
@@ -66,48 +66,84 @@ function Meta({ items }) {
 
 export default function About() {
   return (
-    <main className="mx-auto w-full max-w-3xl px-5 pb-32 pt-10 sm:px-6 sm:pt-16 lg:px-8">
-      {/* Hero */}
-      <motion.header
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <p className="font-mono-tight text-[11px] uppercase tracking-[0.22em] text-fog">
-          {intro.role}
-        </p>
-        <h1 className="mt-5 font-condensed text-[17vw] uppercase leading-[0.84] tracking-[-0.02em] text-cream sm:text-[7.5rem]">
-          {intro.name.split(" ").map((word) => (
-            <span key={word} className="block">
-              {word}
+    <main className="mx-auto w-full max-w-5xl px-5 pb-32 pt-6 sm:px-6 lg:px-8">
+      {/* Hero — stickers strewn around a single centred statement, the way the
+          reference page opens: mostly air, with the eye pulled to one line. */}
+      <header className="relative isolate grid min-h-[78vh] place-items-center">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none">
+          {/* Two elements on purpose: motion writes the element's transform to run
+              its own animation, so the placement and the tilt have to live on a
+              wrapper or they get overwritten the moment the fade starts. */}
+          {scatter.map((s, i) => (
+            <span
+              key={s.src}
+              className={`absolute ${s.sm ? "hidden sm:block" : "block"}`}
+              style={{
+                left: s.left,
+                top: s.top,
+                width: s.w,
+                maxWidth: "22vw",
+                transform: `translate(-50%, -50%) rotate(${s.rotate}deg)`,
+              }}
+            >
+              <motion.img
+                src={s.src}
+                alt=""
+                loading="lazy"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.15 + i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                className="block w-full"
+              />
             </span>
           ))}
-        </h1>
+        </div>
 
-        <ul className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3">
-          {intro.resumes.map((r) => (
-            <li key={r.href}>
-              <a
-                href={r.href}
-                download
-                className="group inline-flex items-center gap-2 text-sm text-ink transition-colors hover:text-cream"
-              >
-                <ArrowDown
-                  size={14}
-                  className="text-fog transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-cream"
-                />
-                <span className="relative">
-                  {r.label}
-                  <span
-                    aria-hidden="true"
-                    className="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-ink/40 transition-transform duration-300 group-hover:origin-left group-hover:scale-x-100"
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative text-center"
+        >
+          <p className="font-mono-tight text-[11px] uppercase tracking-[0.22em] text-fog">
+            {intro.role}
+          </p>
+          <h1 className="mt-5 font-condensed text-[15vw] uppercase leading-[0.84] tracking-[-0.02em] text-cream sm:text-[8rem]">
+            {intro.name.split(" ").map((word) => (
+              <span key={word} className="block">
+                {word}
+              </span>
+            ))}
+          </h1>
+          <p className="mt-7 font-mono-tight text-xs tracking-[0.14em] text-fog sm:text-sm">
+            {opener}
+          </p>
+
+          <ul className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+            {intro.resumes.map((r) => (
+              <li key={r.href}>
+                <a
+                  href={r.href}
+                  download
+                  className="group inline-flex items-center gap-2 text-sm text-ink transition-colors hover:text-cream"
+                >
+                  <ArrowDown
+                    size={14}
+                    className="text-fog transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-cream"
                   />
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </motion.header>
+                  <span className="relative">
+                    {r.label}
+                    <span
+                      aria-hidden="true"
+                      className="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-ink/40 transition-transform duration-300 group-hover:origin-left group-hover:scale-x-100"
+                    />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      </header>
 
       {/* Self-introduction video */}
       <motion.section {...rise} transition={{ duration: 0.6 }} className="mt-16">
@@ -147,36 +183,76 @@ export default function About() {
         </ul>
       </Section>
 
-      {/* Experience */}
-      <Section label="Experience">
-        <ol>
-          {experience.map((x, i) => (
-            <motion.div
+      {/* Work Experience — the reference page's ledger format: each post gets a
+          running W/00n mark, and its particulars are numbered off it. Reversed to
+          newest-first, which is the order that reading actually wants. */}
+      <section className="mt-28">
+        <p className="font-mono-tight text-[11px] uppercase tracking-[0.22em] text-fog">
+          My Experience
+        </p>
+        <h2 className="mt-4 font-condensed text-5xl uppercase leading-[0.9] tracking-tight text-cream sm:text-7xl">
+          Work Experience
+        </h2>
+
+        <ol className="mt-14">
+          {[...experience].reverse().map((x, i) => (
+            <motion.li
               key={`${x.company}-${x.period}`}
               {...rise}
               transition={{ duration: 0.5, delay: Math.min(i, 4) * 0.04 }}
+              className="group border-t border-line py-9"
             >
-              <Row period={x.period} current={x.current}>
-                <div className="flex gap-4">
-                  <LogoDot src={x.logo} alt={x.company} />
-                  <div className="min-w-0 pt-1">
-                    <h3 className="text-lg font-medium leading-tight text-cream">{x.role}</h3>
-                    <p className="mt-2 text-sm text-ink">
-                      {x.company}
-                      {x.team && <span className="text-fog"> · {x.team}</span>}
-                    </p>
-                    <p className="mt-1 text-sm text-fog">{x.place}</p>
-                    {x.tags && <Meta items={x.tags} />}
-                  </div>
+              <div className="flex items-start justify-between gap-6">
+                <div className="min-w-0">
+                  <h3 className="flex flex-wrap items-center gap-x-3 gap-y-1 text-lg font-medium leading-tight text-cream sm:text-xl">
+                    <LogoDot src={x.logo} alt={x.company} />
+                    <span>{x.company}</span>
+                    <span aria-hidden="true" className="text-line">|</span>
+                    <span>{x.role}</span>
+                    {x.team && (
+                      <>
+                        <span aria-hidden="true" className="text-line">|</span>
+                        <span className="text-fog">{x.team}</span>
+                      </>
+                    )}
+                  </h3>
+                  <p className="mt-3 flex flex-wrap items-center gap-x-2.5 font-mono-tight text-xs tabular-nums text-fog">
+                    {x.current && (
+                      <span aria-hidden="true" className="size-1.5 rounded-full bg-ac-green" />
+                    )}
+                    <span>{x.place}</span>
+                    <span aria-hidden="true" className="text-line">|</span>
+                    <span>{x.period}</span>
+                  </p>
                 </div>
-              </Row>
-            </motion.div>
+
+                <span className="shrink-0 font-mono-tight text-xs tabular-nums tracking-[0.14em] text-fog transition-colors duration-300 group-hover:text-ink">
+                  W/{String(i + 1).padStart(3, "0")}
+                </span>
+              </div>
+
+              {x.tags && (
+                <div className="mt-7 sm:grid sm:grid-cols-[150px_1fr] sm:gap-x-10">
+                  <p className="font-mono-tight text-xs text-fog">Details:</p>
+                  <ul className="mt-4 space-y-3 sm:mt-0">
+                    {x.tags.map((t, j) => (
+                      <li key={t} className="flex gap-4 text-sm text-ink">
+                        <span className="shrink-0 font-mono-tight text-xs tabular-nums text-fog">
+                          [ {i + 1}.{j + 1}
+                        </span>
+                        <span>{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </motion.li>
           ))}
         </ol>
         <p className="border-t border-line pt-7 font-mono-tight text-[11px] uppercase tracking-[0.22em] text-fog">
           To be continued
         </p>
-      </Section>
+      </section>
 
       {/* Skills */}
       <Section label="Skill">

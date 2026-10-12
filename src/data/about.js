@@ -86,3 +86,21 @@ export const skills = [
   { name: "After Effects", icon: "/about/skill/ae.png" },
   { name: "Adobe XD", icon: "/about/skill/xd.png" },
 ]
+
+// Stickers strewn around the opening statement — the same cast as the dashboard's
+// pile, resized down since nothing here is bigger than a few hundred pixels.
+// Positions are percentages so the scatter keeps its shape as the column narrows;
+// `sm` marks the ones that drop away on a phone, where there is no room to strew.
+export const scatter = [
+  { src: "/about/scatter/s1.png", left: "4%", top: "6%", w: 112, rotate: -9 },
+  { src: "/about/scatter/s2.png", left: "80%", top: "2%", w: 96, rotate: 11, sm: true },
+  { src: "/about/scatter/s3.png", left: "16%", top: "62%", w: 104, rotate: 7, sm: true },
+  { src: "/about/scatter/s4.png", left: "88%", top: "44%", w: 88, rotate: -13 },
+  { src: "/about/scatter/s5.png", left: "70%", top: "76%", w: 120, rotate: 5, sm: true },
+  { src: "/about/scatter/s6.png", left: "0%", top: "34%", w: 86, rotate: 14, sm: true },
+  { src: "/about/scatter/s7.png", left: "46%", top: "88%", w: 92, rotate: -6, sm: true },
+  { src: "/about/scatter/s8.png", left: "62%", top: "18%", w: 78, rotate: 17, sm: true },
+]
+
+// The opening line, set in brackets the way the reference page does.
+export const opener = "[ Let's start this page with me ]"
