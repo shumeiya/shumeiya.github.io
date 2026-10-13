@@ -6,8 +6,19 @@ export const intro = {
   role: "UX & UI Designer",
   video: "https://www.youtube.com/embed/GgV5PRF9mPs",
   resumes: [
-    { label: "Download resume", href: "/documents/shumei-zhang-resume.pdf" },
-    { label: "下载中文简历", href: "/documents/shumei-zhang-resume-cn.pdf" },
+    // `href` is kept ASCII and hyphenated — spaces, @ and CJK in a URL are
+    // fragile across servers and CDNs. `file` is what the browser saves it as,
+    // so the reader still gets a name they can read.
+    {
+      label: "Download resume",
+      href: "/documents/shumei-zhang-resume.pdf",
+      file: "Shumei Zhang — Resume.pdf",
+    },
+    {
+      label: "下载中文简历",
+      href: "/documents/shumei-zhang-resume-cn.pdf",
+      file: "张淑镁 — 交互设计简历.pdf",
+    },
   ],
 }
 
@@ -17,7 +28,7 @@ export const intro = {
 export const education = [
   {
     school: "Politecnico di Torino",
-    degree: "MSc in Systems Design",
+    degree: "MSc in Systemic Design",
     place: "Turin, Italy",
     period: "2021.10 – 2024.07",
     details: [
@@ -84,7 +95,7 @@ export const experience = [
   },
   {
     company: "Granstudio",
-    role: "UX/UI Design Intern",
+    role: "HMI Design Intern",
     place: "Turin, Italy",
     period: "2024.02 – 2024.05",
     logo: "/about/logo/granstudio.png",
@@ -141,7 +152,7 @@ export const experience = [
   },
   {
     company: "Kyrall GmbH",
-    role: "AI Product Design Engineer",
+    role: "UX/UI Design Engineer",
     place: "Munich, Germany",
     period: "2025.09 – Present",
     current: true,

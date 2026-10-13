@@ -3,7 +3,7 @@
 // reel; name, colour and detail link are pulled from projectList so nothing forks.
 import { projectList } from "./project"
 
-const featured = ["kyrall", "weather-pets", "slow-food", "hmi"]
+const featured = ["kyrall", "weather-pets", "codemao", "abc-mouse"]
 
 // Each project's strip is a row of big rounded panels that loops forever. A panel
 // groups screens that belong together and captions them once, at the top — so a
@@ -79,6 +79,40 @@ const panels = {
       body: "Illustrated produce carries the identity from the mark through to every screen of the app.",
     },
   ],
+  codemao: [
+    { label: "Codemao CMS — course management for schools and training institutions", size: "xl", shots: ["/project/codemao/1.jpg"] },
+    { label: "The platform in use", size: "xl", shots: ["/gallery/detail/codemao-mockup.jpg"] },
+    {
+      kind: "note",
+      tone: "accent",
+      size: "md",
+      eyebrow: "Codemao",
+      title: "Three weeks, P0 only",
+      body: "The framework was tangled and the platform had to be in schools before September. So the work was a prioritised set of changes that leave the structure standing — triage, not a redesign.",
+    },
+    { label: "Super Courseware — editable templates and a simplified teaching flow", size: "xl", shots: ["/project/codemao/5.jpg"] },
+    { label: "Structure and feature access, reorganised", size: "xl", shots: ["/project/codemao/9.jpg"] },
+    { label: "Courseware types — image, slideshow, video, built-in tools", size: "lg", shots: ["/project/codemao/ui-a.jpg"] },
+  ],
+  "abc-mouse": [
+    { label: "ABC Mouse — learning games for children aged 3-8", size: "xl", shots: ["/project/abc-mouse/hero.jpg"] },
+    {
+      label: "Before — ABCmouse (US). Now — the Chinese edition.",
+      size: "xl",
+      shots: ["/project/abc-mouse/1.jpg", "/project/abc-mouse/2.jpg"],
+    },
+    {
+      kind: "note",
+      tone: "accent",
+      size: "md",
+      eyebrow: "Tencent",
+      title: "The same product, drawn twice",
+      body: "A cross-border team: the American product on one side, the Chinese edition on the other, and a design language that had to hold across both.",
+    },
+    { label: "Frey, Amy and Sofia — who the activities are built for", size: "xl", shots: ["/project/abc-mouse/13.jpg"] },
+    { label: "Each painpoint against its solution, before and after", size: "xl", shots: ["/project/abc-mouse/10.jpg"] },
+    { label: "Child psychology and player types, resolved into gamification", size: "lg", shots: ["/project/abc-mouse/users.jpg"] },
+  ],
   hmi: [
     { label: "Cluster + centre display", size: "lg", shots: ["/gallery/hmi.jpg"] },
     { label: "In the car", size: "xl", shots: ["/gallery/detail/hmi-mockup.jpg"] },
@@ -109,6 +143,14 @@ const meta = {
     year: "2025",
     isNew: true,
     lead: "A weather app concept built around an animated companion pet, whose mood and behaviour react to the forecast — so checking the weather becomes something you want to do.",
+  },
+  codemao: {
+    year: "2021",
+    lead: "A ToB platform upgrade at Codemao — the CMS schools and training institutions use to run programming courses, rebuilt around what teachers actually do with it.",
+  },
+  "abc-mouse": {
+    year: "2020",
+    lead: "Educational app design for Tencent's ToC learning platform, built with a cross-border team — gamified activities for 3-8 year olds, grounded in how children that age actually learn.",
   },
   "slow-food": {
     year: "2023",

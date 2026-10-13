@@ -366,7 +366,7 @@ export default function About() {
               <li key={r.href}>
                 <a
                   href={r.href}
-                  download
+                  download={r.file ?? true}
                   className="group inline-flex items-center gap-2 text-sm text-ink transition-colors hover:text-cream"
                 >
                   <ArrowDown
@@ -506,7 +506,19 @@ export default function About() {
       <motion.div {...rise} transition={{ duration: 0.5 }} className="mt-24 border-t border-line">
         <Link to="/project" className="group flex items-center justify-between gap-6 py-8">
           <p className="text-2xl font-medium text-cream sm:text-3xl lg:text-8xl">
-            Go to see my project
+            {/* The underline is positioned rather than in flow, so sweeping it in
+                never changes this line's height or shifts the arrow beside it.
+                It wipes out to the right and back in from the left — the same
+                idiom the résumé links use — and the text leans after the arrow.
+                Both rule and offset grow with the type, or a hairline under
+                96px copy reads as a stray scratch. */}
+            <span className="relative inline-block transition-transform duration-300 group-hover:translate-x-1">
+              Go to see my project
+              <span
+                aria-hidden="true"
+                className="absolute -bottom-1 left-0 h-0.5 w-full origin-right scale-x-0 bg-cream transition-transform duration-300 group-hover:origin-left group-hover:scale-x-100 lg:-bottom-3 lg:h-1"
+              />
+            </span>
           </p>
           <ArrowUpRight
             strokeWidth={1.5}

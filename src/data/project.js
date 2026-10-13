@@ -83,6 +83,27 @@ export const projectCategories = [
 ]
 
 // "size" drives the bento-grid span in MyProject.jsx — lg (2x2), wide (2x1), tall (1x2), sm (1x1).
+/**
+ * Archive bento grid (ProjectArchive.jsx).
+ *
+ * `shape` picks the tile: "lg" = a 2x2 wide cover for the meaty projects,
+ * "sm" = the same ratio at 1x1, "portrait" = a 1x2 phone-shaped cover for the
+ * mobile-first work. `cover` overrides `image` when the card needs a portrait
+ * crop the landscape hero can't give.
+ *
+ * `place` pins the tile on the 4-column desktop grid, which is three bands of
+ * two rows. Every band holds one big cover, one phone and two small covers, but
+ * in a different arrangement, so neither a row nor a column ever repeats the
+ * same shape twice running:
+ *
+ *   rows 1-2   big . .   phone   small / small
+ *   rows 3-4   small     phone   big . .
+ *              small
+ *   rows 5-6   phone     big . .         small / small
+ *
+ * Below lg the grid drops to two columns and places the tiles itself, so the
+ * source order below is the reading order: left to right, top to bottom.
+ */
 export const projectList = [
   {
     name: "Kyrall Web App",
@@ -93,40 +114,22 @@ export const projectList = [
     image: "/project/kyrall/121.png",
     color: "var(--color-ac-blue)",
     href: "/project/kyrall",
-    size: "lg",
+    shape: "lg",
+    place: "lg:col-start-1 lg:row-start-1",
   },
-    {
+  {
     name: "Weather Pets",
     slug: "weather-pets",
-    category: "ai",
+    category: "UX/UI",
     categories: ["uxui"],
     description: "A playful weather app concept with animated companion pets, explored at wetter.com.",
     image: "/gallery/weatherpets.jpg",
+    // Phone cropped out of the landscape hero — the app is mobile-only.
+    cover: "/gallery/covers/weatherpets-portrait.jpg",
     color: "var(--color-ac-orange)",
     href: "/project/weather-pets",
-    size: "lg",
-  },
-    {
-    name: "Slow Food",
-    slug: "slow-food",
-    category: "UX/UI",
-    categories: ["brand"],
-    description: "Reviving a Slow Food restaurant in Bra with an app for virtual planting and offline activities.",
-    image: "/gallery/slowfood.jpg",
-    color: "var(--color-ac-green)",
-    href: "/project/slow-food",
-    size: "tall",
-  },
-    {
-    name: "HMI Design",
-    slug: "hmi",
-    category: "HMI",
-    categories: ["hmi"],
-    description: "Designing the handover from manual to autonomous driving mode, prototyped in ProtoPie.",
-    image: "/gallery/hmi.jpg",
-    color: "var(--color-ac-red)",
-    href: "/project/hmi",
-    size: "sm",
+    shape: "portrait",
+    place: "lg:col-start-3 lg:row-start-1",
   },
   {
     name: "TIDE",
@@ -137,19 +140,8 @@ export const projectList = [
     image: "/gallery/tide.jpg",
     color: "var(--color-ac-blue)",
     href: "/project/tide",
-    size: "sm",
-  },
-
-  {
-    name: "ABC Mouse",
-    slug: "abc-mouse",
-    category: "UX/UI",
-    categories: ["uxui"],
-    description: "Educational app design for Tencent's ToC learning platform, built with a cross-border team.",
-    image: "/gallery/abcmouse.jpg",
-    color: "var(--color-ac-orange)",
-    href: "/project/abc-mouse",
-    size: "lg",
+    shape: "sm",
+    place: "lg:col-start-4 lg:row-start-1",
   },
   {
     name: "CodeMao",
@@ -160,19 +152,8 @@ export const projectList = [
     image: "/gallery/codemao.jpg",
     color: "var(--color-ac-pink)",
     href: "/project/codemao",
-    size: "lg",
-  },
-
-  {
-    name: "Puzzle Game",
-    slug: "puzzle-game",
-    category: "UX/UI",
-    categories: ["game"],
-    description: "A jigsaw puzzle app with smooth, tactile interaction design.",
-    image: "/gallery/puzzle.jpg",
-    size: "tall",
-    color: "var(--color-ac-green)",
-    href: "/project/puzzle-game",
+    shape: "sm",
+    place: "lg:col-start-4 lg:row-start-2",
   },
   {
     name: "Fire Rescue Drone",
@@ -183,29 +164,34 @@ export const projectList = [
     image: "/gallery/firesystem.jpg",
     color: "var(--color-ac-green)",
     href: "/project/fire-rescue-drone",
-    size: "sm",
+    shape: "sm",
+    place: "lg:col-start-1 lg:row-start-3",
   },
   {
-    name: "Place Life",
-    slug: "stationery",
-    category: "Product",
-    categories: ["product"],
-    description: "Desk stationery built from the Four Treasures of the Study and Chinese mortise-and-tenon joints.",
-    image: "/project/stationery/hero.jpg",
-    color: "var(--color-ac-orange)",
-    href: "/project/stationery",
-    size: "sm",
-  },
-  {
-    name: "E-Pack",
-    slug: "e-pack",
-    category: "Product",
-    categories: ["product"],
-    description: "Master's thesis — smart packaging as a way to enhance Made in Italy fashion.",
-    image: "/project/e-pack/cover.jpg",
+    name: "Slow Food",
+    slug: "slow-food",
+    category: "UX/UI",
+    categories: ["uxui"],
+    description: "Reviving a Slow Food restaurant in Bra with an app for virtual planting and offline activities.",
+    image: "/gallery/slowfood.jpg",
+    // Shipped app screen — already phone-shaped, no crop needed.
+    cover: "/gallery/works/slow-food/screen-26.jpg",
     color: "var(--color-ac-green)",
-    href: "/project/e-pack",
-    size: "wide",
+    href: "/project/slow-food",
+    shape: "portrait",
+    place: "lg:col-start-2 lg:row-start-3",
+  },
+  {
+    name: "ABC Mouse",
+    slug: "abc-mouse",
+    category: "UX/UI",
+    categories: ["uxui"],
+    description: "Educational app design for Tencent's ToC learning platform, built with a cross-border team.",
+    image: "/gallery/abcmouse.jpg",
+    color: "var(--color-ac-orange)",
+    href: "/project/abc-mouse",
+    shape: "lg",
+    place: "lg:col-start-3 lg:row-start-3",
   },
   {
     name: "Guido Gobino",
@@ -216,6 +202,57 @@ export const projectList = [
     image: "/project/gobino/1.jpg",
     color: "var(--color-ac-red)",
     href: "/project/gobino",
-    size: "sm",
+    shape: "sm",
+    place: "lg:col-start-1 lg:row-start-4",
+  },
+  {
+    name: "Puzzle Game",
+    slug: "puzzle-game",
+    category: "UX/UI",
+    categories: ["uxui"],
+    description: "A jigsaw puzzle app with smooth, tactile interaction design.",
+    image: "/gallery/puzzle.jpg",
+    // Phone cropped out of the two-device mockup.
+    cover: "/gallery/covers/puzzle-portrait.jpg",
+    color: "var(--color-ac-green)",
+    href: "/project/puzzle-game",
+    shape: "portrait",
+    place: "lg:col-start-1 lg:row-start-5",
+  },
+  {
+    name: "HMI Design",
+    slug: "hmi",
+    category: "HMI",
+    categories: ["hmi"],
+    description: "Designing the handover from manual to autonomous driving mode, prototyped in ProtoPie.",
+    image: "/gallery/hmi.jpg",
+    color: "var(--color-ac-red)",
+    href: "/project/hmi",
+    shape: "lg",
+    place: "lg:col-start-2 lg:row-start-5",
+  },
+  {
+    name: "E-Pack",
+    slug: "e-pack",
+    category: "Product",
+    categories: ["product"],
+    description: "Master's thesis — smart packaging as a way to enhance Made in Italy fashion.",
+    image: "/project/e-pack/cover.jpg",
+    color: "var(--color-ac-green)",
+    href: "/project/e-pack",
+    shape: "sm",
+    place: "lg:col-start-4 lg:row-start-5",
+  },
+  {
+    name: "Place Life",
+    slug: "stationery",
+    category: "Product",
+    categories: ["product"],
+    description: "Desk stationery built from the Four Treasures of the Study and Chinese mortise-and-tenon joints.",
+    image: "/project/stationery/hero.jpg",
+    color: "var(--color-ac-orange)",
+    href: "/project/stationery",
+    shape: "sm",
+    place: "lg:col-start-4 lg:row-start-6",
   },
 ]
