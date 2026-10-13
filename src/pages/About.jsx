@@ -153,7 +153,7 @@ function Sticker({ s, i, progress, px, py }) {
 // to stretch to the row's full height or the pin has nowhere to travel.
 //
 // Right: the particulars, ruled off from one another and bulleted.
-function CvEntry({ title, name, logo, invert, mask, details = [] }) {
+function CvEntry({ heading, meta = [], footer, name, logo, invert, mask, details = [] }) {
   return (
     <li className="flex flex-col gap-[30px]">
       {/* The rule that opens each entry runs under both columns, so one post is
@@ -163,11 +163,20 @@ function CvEntry({ title, name, logo, invert, mask, details = [] }) {
       <div className="flex flex-col gap-[15px] md:flex-row md:items-start">
         <div className="flex flex-1 flex-col self-stretch">
           <div className="flex flex-col gap-[30px] md:sticky md:top-[150px]">
-            <Words
-              as="h3"
-              text={title}
-              className="max-w-[377px] text-[22px] leading-[1.1] tracking-[-0.02em] text-cream"
-            />
+            <div className="flex flex-col gap-3">
+              <Words
+                as="h3"
+                text={heading}
+                className="max-w-[377px] text-[22px] leading-[1.1] tracking-[-0.02em] text-cream"
+              />
+              {meta.length > 0 && (
+                <p className="flex flex-col gap-1 text-sm leading-[1.4] text-fog">
+                  {meta.map((m, k) => (
+                    <Words key={m} text={m} delay={0.04 + k * 0.04} />
+                  ))}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* The mark, as it was drawn — no disc behind it. `mt-auto` drops it
@@ -175,8 +184,16 @@ function CvEntry({ title, name, logo, invert, mask, details = [] }) {
               opens it. Without the disc the monochrome-dark logos would vanish
               into the dark theme, so those carry `invert` and are flipped back
               into view. */}
-          {logo &&
-            (mask ? (
+          {/* The foot of the column is the mark's slot. A school has no logo on
+              this page, so its name stands in — set in the display face, since
+              it is filling a wordmark's place. Unlike the logos it is never
+              hidden on a phone: dropping it would lose the institution. */}
+          {footer ? (
+            <p className="mt-auto pt-10 font-condensed text-2xl uppercase leading-none tracking-tight text-cream">
+              {footer}
+            </p>
+          ) : logo ? (
+            mask ? (
               // A monochrome wordmark: painted as a mask so it takes a site
               // token and reads on both themes, the way the skill icons do.
               <span
@@ -203,7 +220,8 @@ function CvEntry({ title, name, logo, invert, mask, details = [] }) {
                   invert ? "dark:invert" : ""
                 }`}
               />
-            ))}
+            )
+          ) : null}
         </div>
 
         {/* The particulars. No heading over them — the rule and the bullets say
@@ -405,7 +423,8 @@ export default function About() {
           {[...experience].reverse().map((x) => (
             <CvEntry
               key={`${x.company}-${x.period}`}
-              title={[x.company, x.role, x.place, x.period].filter(Boolean).join(" | ")}
+              heading={x.role}
+              meta={[x.period, x.place].filter(Boolean)}
               name={x.company}
               logo={x.logo}
               invert={x.invert}
@@ -416,12 +435,6 @@ export default function About() {
           ))}
         </ol>
 
-        <div className="mt-[60px] flex flex-col gap-5">
-          <Rule />
-          <p className="font-mono-tight text-sm uppercase leading-[1.6em] tracking-[-0.02em] text-fog">
-            To be continued
-          </p>
-        </div>
       </section>
 
       {/* Education — the same ledger, after the posts: the schooling reads as
@@ -438,10 +451,10 @@ export default function About() {
           {education.map((e) => (
             <CvEntry
               key={e.school}
-              title={[e.school, e.degree, e.place, e.period].filter(Boolean).join(" | ")}
+              heading={e.degree}
+              meta={[e.period, e.place].filter(Boolean)}
+              footer={e.school}
               name={e.school}
-              logo={e.logo}
-              invert={e.invert}
               details={e.details}
             />
           ))}
@@ -456,7 +469,7 @@ export default function About() {
           delay={0.08}
           className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
         />
-        <ul className="mt-16 grid grid-cols-4 gap-x-5 gap-y-10 sm:grid-cols-6 lg:grid-cols-8">
+        <ul className="mt-16 grid grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-6 lg:grid-cols-9">
           {skills.map((s, i) => (
             <motion.li
               key={s.name}
@@ -464,12 +477,9 @@ export default function About() {
               transition={{ duration: 0.45, delay: (i % 5) * 0.04 }}
               className="group flex flex-col items-center gap-3"
             >
-              {/* Painted as a mask, not drawn as an image: the files all ship a
-                  brand red, and a mask throws that away and keeps only the
-                  shape, so the icon takes a site token and follows the theme. */}
               <span
                 aria-hidden="true"
-                className="block size-11 bg-ink transition-colors duration-300 group-hover:bg-cream"
+                className="block size-18 bg-ink transition-colors duration-300 group-hover:bg-cream"
                 style={{
                   maskImage: `url(${s.icon})`,
                   WebkitMaskImage: `url(${s.icon})`,
@@ -481,7 +491,7 @@ export default function About() {
                   WebkitMaskPosition: "center",
                 }}
               />
-              <span className="text-center text-xs text-fog transition-colors duration-300 group-hover:text-ink">
+              <span className="text-center text-base text-fog transition-colors duration-300 group-hover:text-ink">
                 {s.name}
               </span>
             </motion.li>
@@ -495,17 +505,12 @@ export default function About() {
       {/* CTA */}
       <motion.div {...rise} transition={{ duration: 0.5 }} className="mt-24 border-t border-line">
         <Link to="/project" className="group flex items-center justify-between gap-6 py-8">
-          <div>
-            <p className="font-mono-tight text-[11px] uppercase tracking-[0.22em] text-fog">
-              Next
-            </p>
-            <p className="mt-2 text-2xl font-medium text-cream sm:text-3xl">
-              Go to see my project
-            </p>
-          </div>
+          <p className="text-2xl font-medium text-cream sm:text-3xl lg:text-8xl">
+            Go to see my project
+          </p>
           <ArrowUpRight
-            size={26}
-            className="shrink-0 text-fog transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cream"
+            strokeWidth={1.5}
+            className="size-20 shrink-0 text-fog transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cream sm:size-32"
           />
         </Link>
       </motion.div>

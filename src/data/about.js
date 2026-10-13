@@ -20,8 +20,6 @@ export const education = [
     degree: "MSc in Systems Design",
     place: "Turin, Italy",
     period: "2021.10 – 2024.07",
-    logo: "/about/logo/polito.png",
-    invert: true,
     details: [
       { label: "GPA", text: "91 / 100" },
       {
@@ -35,7 +33,6 @@ export const education = [
     degree: "Bachelor in Industrial Design",
     place: "Shenzhen, China",
     period: "2017.09 – 2021.07",
-    logo: "/about/logo/szu.png",
     details: [
       { label: "GPA", text: "93 / 100" },
       {
