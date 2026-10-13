@@ -1,9 +1,9 @@
-import { useRef, useState } from "react"
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion"
+import { useEffect, useRef } from "react"
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion"
 import { Link } from "react-router-dom"
 import { ArrowDown, ArrowUpRight } from "lucide-react"
 import NameScatter from "../components/about/NameScatter"
-import { intro, education, experience, skills, scatter, opener } from "../data/about"
+import { intro, education, experience, skills, scatter} from "../data/about"
 
 const rise = {
   initial: { opacity: 0, y: 14 },
@@ -30,8 +30,16 @@ function Section({ label, children, className = "" }) {
 // in both themes while staying quiet enough not to compete with the type.
 function LogoDot({ src, alt }) {
   return (
-    <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-paper">
-      <img src={src} alt={alt} loading="lazy" className="block size-6 object-contain" />
+    <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden">
+      {src ? (
+        <img src={src} alt={alt} loading="lazy" className="block size-6 object-contain" />
+      ) : (
+        // No mark on file for this one. A monogram in the same disc keeps the
+        // row's rhythm instead of leaving a hole where every other row has one.
+        <span aria-hidden="true" className="font-condensed text-base uppercase leading-none text-page">
+          {alt?.[0] ?? ""}
+        </span>
+      )}
     </span>
   )
 }
@@ -72,13 +80,44 @@ function Meta({ items }) {
 const SPRING = { type: "spring", bounce: 0.2, duration: 0.4 }
 const SPRING_SLOW = { type: "spring", bounce: 0, duration: 1.2 }
 
-// One strewn sticker. Three jobs stacked on one another, which is why there are
-// two elements and a motion value rather than one tidy div: the wrapper owns the
-// placement and the resting tilt, `progress` sinks and turns it as the curtain
-// comes over, and motion owns the fade. Placement cannot live on the inner
-// element because motion overwrites its transform to run the fade.
-function Sticker({ s, i, progress }) {
-  const y = useTransform(progress, [0, 1], [0, s.drift ?? 0])
+// Where the pointer is across the viewport, as -1 to 1 on each axis, run through
+// a soft spring so the field eases after the cursor instead of snapping to it.
+// Coarse pointers get nothing: there is no hover on a phone, and a touch would
+// only make the stickers jump to wherever the last tap landed.
+function usePointerField() {
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const ease = { stiffness: 55, damping: 18, mass: 0.7 }
+  const sx = useSpring(x, ease)
+  const sy = useSpring(y, ease)
+
+  useEffect(() => {
+    if (matchMedia("(pointer: coarse)").matches) return
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    const move = (e) => {
+      x.set((e.clientX / window.innerWidth) * 2 - 1)
+      y.set((e.clientY / window.innerHeight) * 2 - 1)
+    }
+    window.addEventListener("pointermove", move, { passive: true })
+    return () => window.removeEventListener("pointermove", move)
+  }, [x, y])
+
+  return [sx, sy]
+}
+
+// One strewn sticker. Four jobs stacked on one another, which is why there are
+// two elements and a handful of motion values rather than one tidy div: the
+// wrapper owns the placement and the resting tilt, `progress` sinks and turns it
+// as the curtain comes over, the pointer slides it, and motion owns the fade.
+// Placement cannot live on the inner element because motion overwrites its
+// transform to run the fade.
+//
+// The pointer slide and the curtain's sink share the vertical axis, so they are
+// summed into one value rather than fighting over `y`.
+function Sticker({ s, i, progress, px, py }) {
+  const depth = s.depth ?? 0
+  const x = useTransform(px, (v) => v * depth)
+  const y = useTransform([progress, py], ([p, v]) => p * (s.drift ?? 0) + v * depth)
   const rotate = useTransform(progress, [0, 1], [0, s.wobble ?? 0])
   return (
     <span
@@ -95,7 +134,7 @@ function Sticker({ s, i, progress }) {
         src={s.src}
         alt=""
         loading="lazy"
-        style={{ y, rotate }}
+        style={{ x, y, rotate }}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, delay: 0.15 + i * 0.07, ease: [0.22, 1, 0.36, 1] }}
@@ -105,63 +144,120 @@ function Sticker({ s, i, progress }) {
   )
 }
 
-// A line of the ledger that carries a crest. The crest sits at a fixed spot in
-// the row — between the title and the school — and flashes in on hover rather
-// than trailing the pointer, so it lands in the same place every time.
-function LedgerRow({ index, title, note, meta, logo, alt, delay = 0 }) {
-  const [lit, setLit] = useState(false)
+// One entry of the ledger — the shape both halves of the CV are set in.
+//
+// Left: the post and its mark, pinned while its own entry is on screen. Sticky
+// inside the row, so it holds at 150px down the viewport, rides along as the
+// particulars scroll past, and is let go only when this entry's bottom catches
+// up with it — which is the next post arriving to push it out. The column has
+// to stretch to the row's full height or the pin has nowhere to travel.
+//
+// Right: the particulars, ruled off from one another and bulleted.
+function CvEntry({ title, name, logo, invert, mask, details = [] }) {
   return (
-    <li
-      onPointerEnter={() => setLit(true)}
-      onPointerLeave={() => setLit(false)}
-      className="group relative flex flex-col gap-5"
-    >
-      <Rule delay={delay} />
-      <div className="flex flex-col gap-4 py-2 md:flex-row md:items-baseline md:gap-10">
-        <span className="shrink-0 font-mono-tight text-sm uppercase leading-[1.6em] tracking-[-0.02em] text-fog md:w-[90px]">
-          {index}
-        </span>
-        <h3 className="flex-1 text-[22px] leading-[1.1] tracking-[-0.02em] text-cream">
-          <Words text={title} delay={delay + 0.04} />
-          {note && (
-            <span className="ml-2.5 align-middle font-mono-tight text-[10px] uppercase tracking-[0.14em] text-fog">
-              {note}
-            </span>
-          )}
-        </h3>
-        <span className="shrink-0 text-sm leading-[1.2] text-fog md:w-[280px] md:text-right">
-          {meta}
-        </span>
-      </div>
+    <li className="flex flex-col gap-[30px]">
+      {/* The rule that opens each entry runs under both columns, so one post is
+          read off from the next rather than only its own particulars being
+          ruled off from each other. */}
+      <Rule />
+      <div className="flex flex-col gap-[15px] md:flex-row md:items-start">
+        <div className="flex flex-1 flex-col self-stretch">
+          <div className="flex flex-col gap-[30px] md:sticky md:top-[150px]">
+            <Words
+              as="h3"
+              text={title}
+              className="max-w-[377px] text-[22px] leading-[1.1] tracking-[-0.02em] text-cream"
+            />
+          </div>
 
-      {/* The crest. Decorative — the row already names the school. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 md:block"
-      >
-        <AnimatePresence>
-          {lit && (
-            <motion.span
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ type: "spring", bounce: 0.35, duration: 0.3 }}
-              className="flex size-[120px] items-center justify-center overflow-hidden rounded-full bg-paper shadow-lg"
-            >
-              <img src={logo} alt={alt} className="size-[86px] object-contain" />
-            </motion.span>
-          )}
-        </AnimatePresence>
+          {/* The mark, as it was drawn — no disc behind it. `mt-auto` drops it
+              to the foot of the column, so it closes the entry the way the rule
+              opens it. Without the disc the monochrome-dark logos would vanish
+              into the dark theme, so those carry `invert` and are flipped back
+              into view. */}
+          {logo &&
+            (mask ? (
+              // A monochrome wordmark: painted as a mask so it takes a site
+              // token and reads on both themes, the way the skill icons do.
+              <span
+                aria-label={name}
+                role="img"
+                className="mt-auto hidden h-8 w-[200px] max-w-full bg-cream md:block"
+                style={{
+                  maskImage: `url(${logo})`,
+                  WebkitMaskImage: `url(${logo})`,
+                  maskSize: "contain",
+                  WebkitMaskSize: "contain",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskPosition: "left center",
+                  WebkitMaskPosition: "left center",
+                }}
+              />
+            ) : (
+              <img
+                src={logo}
+                alt={name}
+                loading="lazy"
+                className={`mt-auto hidden h-10 w-auto max-w-[200px] object-contain object-left md:block ${
+                  invert ? "dark:invert" : ""
+                }`}
+              />
+            ))}
+        </div>
+
+        {/* The particulars. No heading over them — the rule and the bullets say
+            what this column is, and the post opposite says whose it is. */}
+        <div className="flex flex-1 flex-col gap-5">
+          {details.map((d, j) => (
+            <div key={`${d.label}-${j}`} className="flex flex-col gap-5">
+              {/* A post covering more than one brief names each one above its
+                  own run of bullets. */}
+              {d.group && (
+                <p
+                  className={`font-mono-tight text-sm uppercase leading-[1.6em] tracking-[-0.02em] text-cream ${
+                    j > 0 ? "mt-5" : ""
+                  }`}
+                >
+                  {d.group}
+                </p>
+              )}
+              {/* The first entry's own rule would sit right under the one that
+                  opens the row, so it starts straight in. */}
+              {(j > 0 || d.group) && <Rule delay={j * 0.06} />}
+              <div className="flex w-full items-start justify-between">
+                <div className="flex w-[90%] items-start gap-[19px]">
+                  {/* Drawn, not typed: Urbanist's own bullet glyph is a speck at
+                      this size. 10px down puts a 5px disc on the optical centre
+                      of a 24px first line. */}
+                  <span
+                    aria-hidden="true"
+                    className="mt-[10px] size-[5px] shrink-0 rounded-full bg-ink"
+                  />
+                  {/* The lead-in carries the weight the résumé gives it by going
+                      brighter, not bolder — Urbanist's heavier cuts would fight
+                      the condensed headings. A sentence is dozens of words, so
+                      they arrive on a much shorter step than a heading's. */}
+                  <p className="text-base leading-[1.5] text-ink">
+                    <span className="text-cream">{d.label}: </span>
+                    <Words text={d.text} delay={0.06 + j * 0.06} step={0.012} />
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </li>
   )
 }
 
+
 // Text arrives a word at a time, each one starting small and nearly transparent.
 // The words are inline-block because a transform does nothing to an inline box,
 // and the space between them is a real text node so the line still wraps and
 // still reads as one sentence to a screen reader.
-function Words({ text, className = "", delay = 0, as: Tag = "span" }) {
+function Words({ text, className = "", delay = 0, step = 0.04, as: Tag = "span" }) {
   const words = text.split(" ")
   return (
     <Tag className={className}>
@@ -171,7 +267,7 @@ function Words({ text, className = "", delay = 0, as: Tag = "span" }) {
             initial={{ opacity: 0.001, scale: 0.7 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-8% 0px" }}
-            transition={{ ...SPRING, delay: delay + i * 0.04 }}
+            transition={{ ...SPRING, delay: delay + i * step }}
             className="inline-block"
           >
             {w}
@@ -205,6 +301,7 @@ export default function About() {
   // screenful. Drives the jostle on the stickers below it.
   const { scrollY } = useScroll()
   const covered = useTransform(scrollY, [0, 700], [0, 1], { clamp: true })
+  const [px, py] = usePointerField()
 
   return (
     <>
@@ -212,7 +309,7 @@ export default function About() {
           30px of side padding, which is what gives its rows room to breathe.
           Its own vertical rhythm too — 120px above, 150px below, tightening at
           each breakpoint. */}
-      <main className="w-full px-[15px] pb-[150px] pt-20 md:px-5 md:py-[60px] lg:px-[30px] lg:pb-[150px] lg:pt-[120px]">
+      <main className="w-full px-4 pb-37.5 md:px-5 md:pb-15 lg:px-8 lg:pb-37.5">
       {/* Hero — stickers strewn around a single centred statement, the way the
           reference page opens: mostly air, with the eye pulled to one line. */}
       {/* The opening is the curtain: it pins at the top of the viewport for one
@@ -225,7 +322,7 @@ export default function About() {
       >
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none">
           {scatter.map((s, i) => (
-            <Sticker key={s.src} s={s} i={i} progress={covered} />
+            <Sticker key={s.src} s={s} i={i} progress={covered} px={px} py={py} />
           ))}
         </div>
 
@@ -235,19 +332,16 @@ export default function About() {
           transition={{ duration: 0.6 }}
           className="relative text-center"
         >
-          <p className="font-mono-tight text-[11px] uppercase tracking-[0.22em] text-fog">
+          <p className="font-mono-tight text-md uppercase tracking-[0.22em] text-fog">
             {intro.role}
           </p>
-          <h1 className="mt-5 font-condensed text-[15vw] uppercase leading-[0.84] tracking-[-0.02em] text-cream sm:text-[8rem]">
+          <h1 className="mt-5 font-condensed text-[15vw] uppercase leading-none tracking-[0.02em] text-cream sm:text-[8rem]">
             {intro.name.split(" ").map((word) => (
               <span key={word} className="block">
                 {word}
               </span>
             ))}
           </h1>
-          <p className="mt-7 font-mono-tight text-xs tracking-[0.14em] text-fog sm:text-sm">
-            {opener}
-          </p>
 
           <ul className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
             {intro.resumes.map((r) => (
@@ -295,108 +389,31 @@ export default function About() {
         </div>
       </motion.section>
 
-      {/* Education — the same ledger shape as the posts below, and the only place
-          the crests appear: under the pointer, not in the line. */}
-      <section className="mt-[120px]">
-        <Words
-          as="p"
-          text="Education"
-          className="font-mono-tight text-sm uppercase leading-[1.6em] tracking-[-0.02em] text-fog"
-        />
-        <ul className="mt-12 flex flex-col gap-5">
-          {education.map((e, i) => (
-            <LedgerRow
-              key={e.school}
-              index={`E/${String(i + 1).padStart(3, "0")}`}
-              title={e.degree}
-              note={e.level}
-              meta={`${e.school} · ${e.period}`}
-              logo={e.logo}
-              alt={e.school}
-              delay={i * 0.06}
-            />
-          ))}
-        </ul>
-      </section>
-
       {/* Work Experience — the reference's own measurements: a two-column row on
           a 15px gap, each column taking half; the title boxed to 377px; 46px
           down the left, 60px down the right, 20px between entries. Type is 22px
           for the post and 14px for everything else, the labels in caps. */}
       <section className="mt-[120px]">
         <Words
-          as="p"
-          text="My Experience"
-          className="font-mono-tight text-sm uppercase leading-[1.6em] tracking-[-0.02em] text-fog"
-        />
-        <Words
           as="h2"
           text="Work Experience"
           delay={0.08}
-          className="mt-4 font-condensed text-5xl uppercase leading-[0.9] tracking-tight text-cream sm:text-7xl"
+          className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
         />
 
         <ol className="mt-16 flex flex-col gap-[60px]">
-          {[...experience].reverse().map((x, i) => {
-            const title = [x.company, x.role, x.team, x.place, x.period]
-              .filter(Boolean)
-              .join(" | ")
-            return (
-              <li key={`${x.company}-${x.period}`} className="flex flex-col gap-[15px] md:flex-row md:items-start">
-                {/* Left: the post and its mark, pinned while its own entry is on
-                    screen. Sticky inside the row — so it holds at 150px down the
-                    viewport, rides along as the particulars scroll past, and is
-                    let go only when this entry's bottom catches up with it, which
-                    is the next post arriving to push it out. The column has to
-                    stretch to the row's full height or the pin has nowhere to
-                    travel. */}
-                <div className="flex flex-1 flex-col self-stretch">
-                  <div className="flex flex-col gap-[30px] md:sticky md:top-[150px]">
-                    <div className="flex items-start gap-3">
-                      <LogoDot src={x.logo} alt={x.company} />
-                      <Words
-                        as="h3"
-                        text={title}
-                        className="max-w-[377px] text-[22px] leading-[1.1] tracking-[-0.02em] text-cream"
-                      />
-                    </div>
-                    <p className="flex items-center gap-2 font-mono-tight text-sm uppercase leading-[1.6em] tracking-[-0.02em] text-fog">
-                      {x.current && (
-                        <span aria-hidden="true" className="size-1.5 rounded-full bg-ac-green" />
-                      )}
-                      W/{String(i + 1).padStart(3, "0")}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Right: the particulars, each ruled off above. */}
-                <div className="flex flex-1 flex-col gap-[60px]">
-                  <p className="font-mono-tight text-sm uppercase leading-[1.6em] tracking-[-0.02em] text-fog">
-                    Details:
-                  </p>
-                  <div className="flex flex-col gap-5">
-                    {(x.tags ?? []).map((t, j) => (
-                      <div key={t} className="flex flex-col gap-5">
-                        <Rule delay={j * 0.06} />
-                        <div className="flex w-full items-start justify-between">
-                          <div className="flex w-[90%] items-start gap-[19px]">
-                            <span className="shrink-0 whitespace-pre font-mono-tight text-sm uppercase leading-[1.6em] tracking-[-0.02em] text-fog">
-                              [ {i + 1}.{j + 1}
-                            </span>
-                            <Words
-                              text={t}
-                              delay={0.06 + j * 0.06}
-                              className="text-sm leading-[1.2] text-ink"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </li>
-            )
-          })}
+          {[...experience].reverse().map((x) => (
+            <CvEntry
+              key={`${x.company}-${x.period}`}
+              title={[x.company, x.role, x.place, x.period].filter(Boolean).join(" | ")}
+              name={x.company}
+              logo={x.logo}
+              invert={x.invert}
+              mask={x.mask}
+              current={x.current}
+              details={x.details}
+            />
+          ))}
         </ol>
 
         <div className="mt-[60px] flex flex-col gap-5">
@@ -407,25 +424,73 @@ export default function About() {
         </div>
       </section>
 
+      {/* Education — the same ledger, after the posts: the schooling reads as
+          the footnote to the career rather than the preamble to it. */}
+      <section className="mt-[120px]">
+        <Words
+          as="h2"
+          text="Education"
+          delay={0.08}
+          className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
+        />
+
+        <ol className="mt-16 flex flex-col gap-[60px]">
+          {education.map((e) => (
+            <CvEntry
+              key={e.school}
+              title={[e.school, e.degree, e.place, e.period].filter(Boolean).join(" | ")}
+              name={e.school}
+              logo={e.logo}
+              invert={e.invert}
+              details={e.details}
+            />
+          ))}
+        </ol>
+      </section>
+
       {/* Skills */}
-      <Section label="Skill">
-        <ul className="grid grid-cols-3 gap-x-6 gap-y-9 sm:grid-cols-5">
+      <Section>
+         <Words
+          as="h2"
+          text="Skills"
+          delay={0.08}
+          className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
+        />
+        <ul className="mt-16 grid grid-cols-4 gap-x-5 gap-y-10 sm:grid-cols-6 lg:grid-cols-8">
           {skills.map((s, i) => (
             <motion.li
               key={s.name}
               {...rise}
               transition={{ duration: 0.45, delay: (i % 5) * 0.04 }}
-              className="flex flex-col items-center gap-3"
+              className="group flex flex-col items-center gap-3"
             >
-              <LogoDot src={s.icon} alt={s.name} />
-              <span className="text-center text-xs text-fog">{s.name}</span>
+              {/* Painted as a mask, not drawn as an image: the files all ship a
+                  brand red, and a mask throws that away and keeps only the
+                  shape, so the icon takes a site token and follows the theme. */}
+              <span
+                aria-hidden="true"
+                className="block size-11 bg-ink transition-colors duration-300 group-hover:bg-cream"
+                style={{
+                  maskImage: `url(${s.icon})`,
+                  WebkitMaskImage: `url(${s.icon})`,
+                  maskSize: "contain",
+                  WebkitMaskSize: "contain",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskPosition: "center",
+                  WebkitMaskPosition: "center",
+                }}
+              />
+              <span className="text-center text-xs text-fog transition-colors duration-300 group-hover:text-ink">
+                {s.name}
+              </span>
             </motion.li>
           ))}
         </ul>
       </Section>
 
       {/* The sign-off: the name dropped into a heap along the floor of the band. */}
-      <NameScatter text="shumeizhang" className="mt-[120px] h-[46vh] min-h-[300px] w-full" />
+      <NameScatter text="shumeizhang" className=" h-[46vh] min-h-[300px] w-full" />
 
       {/* CTA */}
       <motion.div {...rise} transition={{ duration: 0.5 }} className="mt-24 border-t border-line">
