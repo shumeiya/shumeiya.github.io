@@ -33,7 +33,7 @@ export const projectDetails = {
         lead: "Design and manufacture hardware at the speed of thought.",
         blocks: [
           { text: "Engineering is undergoing its most profound shift since the internet. For decades, certain processes were treated as immovable. Kyrall challenges that." },
-          { type: "image", src: "/project/kyrall/121.png", caption: "Brand key visual — automating design for the physical world." },
+          { type: "image", src: "/project/kyrall/1.png", caption: "Brand key visual — automating design for the physical world." },
           {
             type: "defs",
             items: [

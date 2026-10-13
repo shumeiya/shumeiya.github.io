@@ -31,7 +31,14 @@ const BLEED = 1 // px of overlap, so no seam shows between neighbouring strips
 // margin that run happens while the heading is crossing the lip. Leaving it out
 // meant the copy sat at rest while the original was still 24px high, which is
 // the tear you see sliding past a project title.
-const LIVE = ".work-stage, .work-row, .work-panel, .work-indent"
+//
+// The fifth is the strip's position dots, and they move a different way: the
+// active one is a class, not an inline style. A class change is an attribute
+// mutation, which the observer below deliberately ignores, so a copy kept the
+// dot lit wherever it happened to be at snapshot time — and since the dots sit
+// low in a section, the lip is often exactly where you are looking at them.
+// That is why the sync carries className as well.
+const LIVE = ".work-stage, .work-row, .work-panel, .work-indent, .work-dot"
 
 // translate3d(x, y, 0) → translate(x, y): same pixels, no layer request.
 const FLATTEN = /translate3d\(([^,]+),\s*([^,]+),\s*0(?:px)?\)/
@@ -210,6 +217,7 @@ export default function DrumStage({ children, className = "" }) {
             to.style.transform = from.style.transform.replace(FLATTEN, "translate($1, $2)")
           }
           if (to.style.opacity !== from.style.opacity) to.style.opacity = from.style.opacity
+          if (to.className !== from.className) to.className = from.className
         }
       }
     }

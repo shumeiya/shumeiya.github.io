@@ -17,15 +17,9 @@ const EASE = 0.14 // how fast the row catches up to where it's headed
 // holds as long as one copy is at least a viewport wide (true for 2+ panels).
 const COPIES = 3
 
-const SIZE = {
-  md: "w-[86vw] sm:w-[44vw] lg:w-[38vw]",
-  lg: "w-[88vw] sm:w-[56vw] lg:w-[50vw]",
-  xl: "w-[92vw] sm:w-[64vw] lg:w-[58vw]",
-}
-
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max)
 
-export default function WorkStrip({ panels, accent }) {
+export default function WorkStrip({ panels, accent, name }) {
   const clipRef = useRef(null)
   const stageRef = useRef(null)
   const rowRef = useRef(null)
@@ -256,9 +250,7 @@ export default function WorkStrip({ panels, accent }) {
                 key={i}
                 ref={(el) => (panelRefs.current[i] = el)}
                 aria-hidden={i >= count ? "true" : undefined}
-                className={`work-panel h-[58vh] max-h-[720px] min-h-[300px] shrink-0 overflow-hidden rounded-[2rem] sm:h-[66vh] ${
-                  SIZE[panel.size] ?? SIZE.lg
-                }`}
+                className="work-panel aspect-video h-[58vh] max-h-[720px] min-h-[300px] shrink-0 overflow-hidden rounded-[1rem] sm:h-[66vh]"
                 style={{
                   backgroundColor: panel.tone === "accent" ? accent : "var(--color-box)",
                   color: panel.tone === "accent" ? "var(--color-paper-ink)" : undefined,
@@ -279,24 +271,17 @@ export default function WorkStrip({ panels, accent }) {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex h-full flex-col">
-                    {panel.label && (
-                      <p className="shrink-0 px-6 pt-6 text-center text-sm text-ink/70 sm:pt-7 sm:text-base">
-                        {panel.label}
-                      </p>
-                    )}
-                    <div className="flex min-h-0 flex-1 items-center justify-center gap-3 p-5 sm:gap-4 sm:p-7">
-                      {panel.shots.map((src) => (
-                        <img
-                          key={src}
-                          src={src}
-                          alt={panel.label ?? ""}
-                          loading="lazy"
-                          draggable={false}
-                          className="h-full w-auto max-w-full object-contain"
-                        />
-                      ))}
-                    </div>
+                  <div className="flex h-full">
+                    {panel.shots.map((src) => (
+                      <img
+                        key={src}
+                        src={src}
+                        alt={name ?? ""}
+                        loading="lazy"
+                        draggable={false}
+                        className="h-full min-w-0 flex-1 object-cover"
+                      />
+                    ))}
                   </div>
                 )}
               </article>
@@ -310,11 +295,11 @@ export default function WorkStrip({ panels, accent }) {
         <div className="mt-7 flex items-center justify-center gap-2.5">
           {panels.map((panel, i) => (
             <button
-              key={panel.label ?? panel.title ?? i}
+              key={panel.title ?? i}
               onClick={() => goTo(i)}
-              aria-label={`Show ${panel.label ?? panel.title ?? `panel ${i + 1}`}`}
+              aria-label={`Show ${panel.title ?? `panel ${i + 1}`}`}
               aria-current={i === active ? "true" : undefined}
-              className={`h-2.5 w-2.5 rounded-full transition-colors duration-300 ${
+              className={`work-dot h-2.5 w-2.5 rounded-full transition-colors duration-300 ${
                 i === active ? "bg-ink" : "bg-ink/25 hover:bg-ink/50"
               }`}
             />

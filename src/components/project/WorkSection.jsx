@@ -42,7 +42,7 @@ export default function WorkSection({ work }) {
       </motion.header>
 
       <div className="mt-10 sm:mt-12">
-        <WorkStrip panels={work.panels} accent={work.color} indent="var(--work-indent)" />
+        <WorkStrip panels={work.panels} accent={work.color} name={work.name} indent="var(--work-indent)" />
       </div>
     </section>
   )

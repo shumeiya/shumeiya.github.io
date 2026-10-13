@@ -58,7 +58,7 @@ export const experience = [
 ]
 
 export const galleryProjects = [
-  { name: "Kyrall Web App", slug: "kyrall", tag: "ai tool", image: "/project/kyrall/121.png", color: "var(--color-ac-blue)" },
+  { name: "Kyrall Web App", slug: "kyrall", tag: "ai tool", image: "/project/kyrall/1.png", color: "var(--color-ac-blue)" },
   { name: "Weather Pets", slug: "weather-pets", tag: "wetter.com · App Concept", image: "/gallery/weatherpets.jpg", color: "var(--color-ac-orange)" },
   { name: "Slow Food", slug: "slow-food", tag: "Service / System Design", image: "/gallery/slowfood.jpg", color: "var(--color-ac-green)" },
   { name: "HMI", slug: "hmi", tag: "Automotive · HMI", image: "/gallery/hmi.jpg", color: "var(--color-ac-red)" },
@@ -111,7 +111,7 @@ export const projectList = [
     category: "AI Product",
     categories: ["ai"],
     description: "An AI tool that takes an idea from concept to a manufacturable model in minutes.",
-    image: "/project/kyrall/121.png",
+    image: "/project/kyrall/1.png",
     color: "var(--color-ac-blue)",
     href: "/project/kyrall",
     shape: "lg",
