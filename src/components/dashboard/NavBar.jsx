@@ -2,17 +2,21 @@ import { Link, NavLink } from "react-router-dom"
 import { Moon, Sun } from "lucide-react"
 import { project } from "../../data/project"
 import { useDarkMode } from "../../hooks/useDarkMode"
+import { useT } from "../../i18n/lang"
+import { ui } from "../../i18n/ui"
+import LanguageToggle from "./LanguageToggle"
 
 const links = [
-  { to: "/", label: "Dashboard" },
-  { to: "/about", label: "About" },
-  { to: "/project", label: "Projects" },
-  // { to: "/case-study", label: "Studies" },
-  { to: "/my-world", label: "My world" },
+  { to: "/", label: ui.navDashboard },
+  { to: "/about", label: ui.navAbout },
+  { to: "/project", label: ui.navProjects },
+  // { to: "/case-study", label: ui.navStudies },
+  { to: "/my-world", label: ui.navMyWorld },
 ]
 
 export default function NavBar() {
   const [isDark, setIsDark] = useDarkMode()
+  const t = useT()
 
   // The bar itself stays transparent: an element with backdrop-filter opens a
   // backdrop root, so a blur here would leave the glass pills inside with
@@ -22,19 +26,25 @@ export default function NavBar() {
       <nav className="relative mx-auto flex max-w-9xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:flex-nowrap sm:px-8 lg:px-8">
         <Link
           to="/"
-          aria-label="Back to dashboard"
+          aria-label={t(ui.navHome)}
           className="text-sm font-semibold tracking-tight text-ink transition-colors hover:text-cream sm:text-base"
         >
           {project.name.toUpperCase()}
         </Link>
 
-        <button
-          onClick={() => setIsDark((v) => !v)}
-          aria-label="Toggle dark mode"
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line/60 bg-box/50 text-ink shadow-sm backdrop-blur-xl backdrop-saturate-150 transition-colors hover:text-ac-blue"
-        >
-          {isDark ? <Sun size={15} /> : <Moon size={15} />}
-        </button>
+        {/* Theme and language travel together — two switches for how the page is
+            read, kept as one cluster rather than scattered along the bar. */}
+        <div className="flex shrink-0 items-center gap-2">
+          <LanguageToggle />
+
+          <button
+            onClick={() => setIsDark((v) => !v)}
+            aria-label={t(ui.toggleTheme)}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line/60 bg-box/50 text-ink shadow-sm backdrop-blur-xl backdrop-saturate-150 transition-colors hover:text-ac-blue"
+          >
+            {isDark ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
+        </div>
 
         <ul className="order-3 flex w-full items-center gap-1 overflow-x-auto rounded-full border border-line/60 bg-box-2/55 p-1 shadow-sm backdrop-blur-xl backdrop-saturate-150 sm:order-0 sm:w-auto sm:absolute sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:overflow-visible">
           {links.map((link) => (
@@ -50,7 +60,7 @@ export default function NavBar() {
                   }`
                 }
               >
-                {link.label}
+                {t(link.label)}
               </NavLink>
             </li>
           ))}

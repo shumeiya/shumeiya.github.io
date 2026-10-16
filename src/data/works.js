@@ -1,6 +1,7 @@
 // Featured works — the reel the /project page walks through, one screenful per
 // project. Order and cast live here: swap a slug in `featured` to re-cast the
 // reel; name, colour and detail link are pulled from projectList so nothing forks.
+import { tt } from "../i18n/t"
 import { projectList } from "./project"
 
 const featured = ["kyrall", "weather-pets", "codemao", "abc-mouse"]
@@ -47,9 +48,12 @@ const panels = {
     {
       kind: "note",
       tone: "accent",
-      eyebrow: "Brand + Web",
-      title: "Ingredients as characters",
-      body: "Illustrated produce carries the identity from the mark through to every screen of the app.",
+      eyebrow: tt("Brand + Web", "品牌 + 网页"),
+      title: tt("Ingredients as characters", "把食材画成角色"),
+      body: tt(
+        "Illustrated produce carries the identity from the mark through to every screen of the app.",
+        "插画化的农产品，把品牌识别从标志一路带到 App 的每一屏。"
+      ),
     },
   ],
   codemao: [
@@ -73,9 +77,12 @@ const panels = {
     {
       kind: "note",
       tone: "accent",
-      eyebrow: "Granstudio",
-      title: "Two screens, one system",
-      body: "Navigation, vehicle status and media laid out so the cluster and the centre display never contradict each other.",
+      eyebrow: tt("Granstudio", "Granstudio"),
+      title: tt("Two screens, one system", "两块屏，一套系统"),
+      body: tt(
+        "Navigation, vehicle status and media laid out so the cluster and the centre display never contradict each other.",
+        "导航、车辆状态与媒体的排布方式，让仪表盘与中控屏永远不会互相矛盾。"
+      ),
     },
   ],
 }
@@ -84,30 +91,48 @@ const panels = {
 // this layout — the archive grid uses the shorter `description` from projectList.
 const meta = {
   "kyrall": {
-    year: "now",
+    year: tt("now", "进行中"),
     isNew: true,
-    lead: "Start building now from concept to manufacturable model in minutes.",
+    lead: tt(
+      "Start building now from concept to manufacturable model in minutes.",
+      "现在就开始动手：从概念到可直接制造的模型，只要几分钟。"
+    ),
   },
   "weather-pets": {
     year: "2025",
     isNew: true,
-    lead: "A weather app concept built around an animated companion pet, whose mood and behaviour react to the forecast — so checking the weather becomes something you want to do.",
+    lead: tt(
+      "A weather app concept built around an animated companion pet, whose mood and behaviour react to the forecast — so checking the weather becomes something you want to do.",
+      "一个围绕会动的陪伴宠物展开的天气应用概念：它的心情与举动随预报变化 —— 于是查天气变成一件你愿意主动去做的事。"
+    ),
   },
   codemao: {
     year: "2021",
-    lead: "A ToB platform upgrade at Codemao — the CMS schools and training institutions use to run programming courses, rebuilt around what teachers actually do with it.",
+    lead: tt(
+      "A ToB platform upgrade at Codemao — the CMS schools and training institutions use to run programming courses, rebuilt around what teachers actually do with it.",
+      "编程猫的 ToB 平台升级 —— 学校与培训机构用来开设编程课的后台系统，围绕老师真实的使用方式重做了一遍。"
+    ),
   },
   "abc-mouse": {
     year: "2020",
-    lead: "Educational app design for Tencent's ToC learning platform, built with a cross-border team — gamified activities for 3-8 year olds, grounded in how children that age actually learn.",
+    lead: tt(
+      "Educational app design for Tencent's ToC learning platform, built with a cross-border team — gamified activities for 3-8 year olds, grounded in how children that age actually learn.",
+      "为腾讯 ToC 教育平台做的学习 App 设计，与跨国团队共同完成 —— 面向 3-8 岁孩子的游戏化活动，建立在这个年龄真实的学习方式之上。"
+    ),
   },
   "slow-food": {
     year: "2023",
-    lead: "Brand and web design for Slow Food, built around a playful, ingredient-led visual identity that runs from the mark through to the live site.",
+    lead: tt(
+      "Brand and web design for Slow Food, built around a playful, ingredient-led visual identity that runs from the mark through to the live site.",
+      "为 Slow Food 做的品牌与网页设计：一套以食材为主角、带点俏皮的视觉识别，从标志一路延伸到上线的站点。"
+    ),
   },
   hmi: {
     year: "2022",
-    lead: "Automotive HMI interaction design at Granstudio — navigation, vehicle status and media control laid out across the instrument cluster and the centre display.",
+    lead: tt(
+      "Automotive HMI interaction design at Granstudio — navigation, vehicle status and media control laid out across the instrument cluster and the centre display.",
+      "在 Granstudio 做的汽车 HMI 交互设计 —— 把导航、车辆状态与媒体控制，分布在仪表盘与中控屏之间。"
+    ),
   },
 }
 

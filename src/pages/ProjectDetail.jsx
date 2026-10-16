@@ -6,11 +6,18 @@ import { projectDetails } from "../data/projectDetails"
 import DetailToc from "../components/project/DetailToc"
 import ScrollRail from "../components/project/ScrollRail"
 import DetailBlocks from "../components/project/DetailBlocks"
+import { useLocale, useT } from "../i18n/lang"
+import { ui } from "../i18n/ui"
 
 export default function ProjectDetail() {
   const { slug } = useParams()
-  const project = projectList.find((p) => p.slug === slug)
-  const detail = project && projectDetails[slug]
+  // Resolved per language and cached by source object, so `detail` keeps a
+  // stable identity between renders and the scroll-spy effect below doesn't
+  // re-subscribe on every paint.
+  const project = useLocale(projectList.find((p) => p.slug === slug))
+  const detail = useLocale(project && projectDetails[slug])
+  const nextProject = useLocale(projectList)
+  const t = useT()
 
   const [active, setActive] = useState(detail?.sections[0]?.id)
 
@@ -47,8 +54,8 @@ export default function ProjectDetail() {
 
   if (!project || !detail) return <Navigate to="/project" replace />
 
-  const idx = projectList.findIndex((p) => p.slug === slug)
-  const next = projectList[(idx + 1) % projectList.length]
+  const idx = nextProject.findIndex((p) => p.slug === slug)
+  const next = nextProject[(idx + 1) % nextProject.length]
 
   return (
     <main className="relative mx-auto max-w-9xl px-4 pb-28 pt-6 sm:px-6 lg:px-8">
@@ -83,11 +90,13 @@ export default function ProjectDetail() {
 
             <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-3 border-t border-line pt-5">
               <div>
-                <dt className="font-mono-tight text-[11px] uppercase tracking-wide text-fog">Role</dt>
+                <dt className="font-mono-tight text-[11px] uppercase tracking-wide text-fog">{t(ui.labelRole)}</dt>
                 <dd className="mt-1 text-sm text-ink">{detail.role}</dd>
               </div>
               <div>
-                <dt className="font-mono-tight text-[11px] uppercase tracking-wide text-fog">Category</dt>
+                <dt className="font-mono-tight text-[11px] uppercase tracking-wide text-fog">
+                  {t(ui.labelCategory)}
+                </dt>
                 <dd className="mt-1 text-sm text-ink">{project.category}</dd>
               </div>
             </dl>
@@ -129,7 +138,7 @@ export default function ProjectDetail() {
           <footer className="mt-8 border-t border-line pt-8">
             <Link to={`/project/${next.slug}`} className="group flex items-center justify-between gap-4">
               <div>
-                <p className="font-mono-tight text-xs uppercase tracking-wide text-fog">Next project</p>
+                <p className="font-mono-tight text-xs uppercase tracking-wide text-fog">{t(ui.nextProject)}</p>
                 <p className="mt-1 text-lg font-medium text-cream">{next.name}</p>
               </div>
               <ArrowUpRight

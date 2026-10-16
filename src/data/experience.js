@@ -12,6 +12,8 @@
 //   `color`  a design-system accent token, so the map recolours with the theme.
 //   `z`      stacking order, so an expanded card covers its neighbours.
 
+import { tt } from "../i18n/t"
+
 export const MAP_VIEWBOX = { width: 66, height: 38 }
 
 // Percent helpers — markers are absolutely positioned in % of the map box.
@@ -23,7 +25,7 @@ export const toPercent = ({ x, y }) => ({
 export const cities = [
   {
     id: "shenzhen",
-    name: "SHENZHEN",
+    name: tt("SHENZHEN", "深圳"),
     coords: "22.5431° N, 114.0579° E",
     color: "var(--color-ac-blue)",
     icon: "graduation-cap",
@@ -33,13 +35,13 @@ export const cities = [
     label: { x: 52, y: 25.5 },
     z: 2,
     blocks: [
-      ["/ BA in Industrial Design at Shenzhen University"],
-      ["/ First interaction design internship at Tencent"],
+      [tt("/ BA in Industrial Design at Shenzhen University", "/ 深圳大学 工业设计学士")],
+      [tt("/ First interaction design internship at Tencent", "/ 在腾讯的第一份交互设计实习")],
     ],
   },
   {
     id: "turin",
-    name: "TORINO",
+    name: tt("TORINO", "都灵"),
     coords: "45.0703° N, 7.6869° E",
     color: "var(--color-ac-green)",
     icon: "book-open",
@@ -50,11 +52,11 @@ export const cities = [
     shapeSize: 0.85,
     label: { x: 17.5, y: 21 },
     z: 2,
-    blocks: [["/ MSc in Systemic Design at Politecnico di Torino"]],
+    blocks: [[tt("/ MSc in Systemic Design at Politecnico di Torino", "/ 都灵理工大学 系统设计硕士")]],
   },
   {
     id: "munich",
-    name: "MUNICH",
+    name: tt("MUNICH", "慕尼黑"),
     coords: "48.1351° N, 11.5820° E",
     color: "var(--color-ac-red)",
     icon: "briefcase",
@@ -67,8 +69,8 @@ export const cities = [
     label: { x: 22, y: 8.5 },
     z: 3,
     blocks: [
-      ["/ Interaction design for AI product projects at wetter.com"],
-      ["/ Interaction design and front-end for CAD AI products at Kyrall"],
+      [tt("/ Interaction design for AI product projects at wetter.com", "/ 在 wetter.com 做 AI 产品项目的交互设计")],
+      [tt("/ Interaction design and front-end for CAD AI products at Kyrall", "/ 在 Kyrall 做 CAD AI 产品的交互设计与前端")],
     ],
   },
 ]

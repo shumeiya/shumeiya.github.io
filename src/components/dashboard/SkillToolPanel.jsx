@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
 import Panel, { PanelHeader, TOP_ROW_HEIGHT } from "./Panel"
 import { radarSkills } from "../../data/project"
+import { useLocale, useT } from "../../i18n/lang"
+import { ui } from "../../i18n/ui"
 
 const CX = 100
 const CY = 100
@@ -151,6 +153,10 @@ function renderField() {
 }
 
 export default function SkillToolPanel() {
+  // Only the labels are translated — the geometry above is computed from the
+  // scores, which are language-independent.
+  const labels = useLocale(radarSkills)
+  const t = useT()
   const ref = useRef(null)
   const canvasRef = useRef(null)
   const boxRef = useRef(null)
@@ -219,7 +225,7 @@ export default function SkillToolPanel() {
 
   return (
     <Panel ref={ref} className={`flex ${TOP_ROW_HEIGHT} flex-col p-2 sm:p-3`}>
-      <PanelHeader label="SKILL" />
+      <PanelHeader label={t(ui.panelSkill)} />
 
       <div ref={boxRef} className="flex min-h-0 flex-1 items-center justify-center">
         <div className="relative" style={{ width: square, height: square }}>
@@ -244,11 +250,11 @@ export default function SkillToolPanel() {
               />
             ))}
 
-            {radarSkills.map((skill, i) => {
+            {radarSkills.map((_, i) => {
               const p = pointAt(i, 1)
               return (
                 <line
-                  key={skill.label}
+                  key={i}
                   x1={CX}
                   y1={CY}
                   x2={p.x}
@@ -262,7 +268,7 @@ export default function SkillToolPanel() {
           </svg>
 
           <div className="pointer-events-none absolute inset-0">
-            {radarSkills.map((skill, i) => {
+            {labels.map((skill, i) => {
               const p = pointAt(i, LABEL_R)
               const xPct = (p.x / 200) * 100
               const yPct = (p.y / 200) * 100

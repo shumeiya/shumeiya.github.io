@@ -3,35 +3,40 @@ import { LayoutGrid, ArrowRight } from "lucide-react"
 import Panel, { PanelHeader, BOTTOM_ROW_HEIGHT } from "./Panel"
 import AccordionGallery from "../reactbits/AccordionGallery"
 import { galleryProjects } from "../../data/project"
+import { useLocale, useT } from "../../i18n/lang"
+import { ui } from "../../i18n/ui"
 
 const featured = galleryProjects.slice(0, 4)
 
 // The gallery items keep their route on `link` so each panel stays a real anchor
 // (middle-click / open-in-new-tab still work); `onItemSelect` intercepts plain
 // clicks so the router handles them without a full page reload.
-const items = featured.map(p => ({
-  image: p.image,
-  label: p.name,
-  sublabel: p.tag,
-  color: p.color,
-  link: `/project/${p.slug}`,
-  slug: p.slug,
-}))
+const toItems = (projects) =>
+  projects.map(p => ({
+    image: p.image,
+    label: p.name,
+    sublabel: p.tag,
+    color: p.color,
+    link: `/project/${p.slug}`,
+    slug: p.slug,
+  }))
 
 export default function ProjectGallery() {
   const navigate = useNavigate()
+  const items = toItems(useLocale(featured))
+  const t = useT()
 
   return (
     <Panel className={`flex ${BOTTOM_ROW_HEIGHT} flex-col p-2 sm:p-3`}>
       <PanelHeader
         icon={LayoutGrid}
-        label="PROJECTS"
+        label={t(ui.panelProjects)}
         right={
           <button
             onClick={() => navigate("/project")}
             className="flex items-center gap-1 font-mono-tight text-xs text-fog transition-colors hover:text-cream"
           >
-            View all
+            {t(ui.viewAll)}
             <ArrowRight size={12} strokeWidth={2} />
           </button>
         }

@@ -3,11 +3,23 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-mono: "Urbanist", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Urbanist", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Urbanist", ui-sans-serif, system-ui, sans-serif;
-  --font-chapter: "Urbanist", ui-sans-serif, system-ui, sans-serif;
-  --font-condensed: "Anton", "Urbanist", ui-sans-serif, system-ui, sans-serif;
+  /* Urbanist and Anton carry no CJK, so every stack ends in the platform's own
+     Chinese face — the browser falls through per glyph, which is what keeps a
+     mixed line ("Kyrall 的设计系统") from switching fonts mid-word on the Latin
+     part. `--font-cjk` is declared once and spliced into each stack so adding a
+     webfont later is a one-line change. */
+  --font-cjk: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+  --font-mono: "Urbanist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Urbanist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Urbanist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    ui-sans-serif, system-ui, sans-serif;
+  --font-chapter: "Urbanist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    ui-sans-serif, system-ui, sans-serif;
+  --font-condensed: "Anton", "Urbanist", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
 
   /* Themed tokens — light-mode defaults here, dark-mode overrides in the .dark block below. */
   --color-page: #f2ede4;
@@ -97,6 +109,21 @@ body {
 .font-mono-tight {
   font-family: var(--font-mono);
   letter-spacing: -0.01em;
+}
+
+/* Chinese typography. Anton is a tall narrow face and the display headings are
+   tracked out for it; the CJK fallback is square and already generously spaced,
+   so the same tracking opens the characters into separate marks. Headings tighten
+   instead, and the heaviest cut available stands in for Anton's weight. Body copy
+   gets a touch more leading, which is what CJK needs to stay readable at these
+   sizes. */
+html[data-lang="zh"] .font-condensed {
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+html[data-lang="zh"] body {
+  line-height: 1.6;
 }
 
 /* World map (My World) — pastel continent plates, tinted with theme tokens so the

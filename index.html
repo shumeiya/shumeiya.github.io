@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -11,6 +11,16 @@
         var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
         var isDark = stored ? stored === "dark" : prefersDark
         document.documentElement.classList.toggle("dark", isDark)
+
+        // Same idea for the language: resolve it before first paint, so the
+        // CJK font stack is already in force and the page never flashes in
+        // one language before swapping to the other.
+        var lang = localStorage.getItem("lang")
+        if (lang !== "en" && lang !== "zh") {
+          lang = (navigator.language || "").toLowerCase().indexOf("zh") === 0 ? "zh" : "en"
+        }
+        document.documentElement.lang = lang === "zh" ? "zh-CN" : "en"
+        document.documentElement.setAttribute("data-lang", lang)
       })()
     </script>
   </head>

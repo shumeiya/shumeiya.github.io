@@ -4,6 +4,9 @@ import { Link } from "react-router-dom"
 import { ArrowDown, ArrowUpRight } from "lucide-react"
 import NameScatter from "../components/about/NameScatter"
 import { intro, education, experience, skills, scatter} from "../data/about"
+import { useLocale, useT } from "../i18n/lang"
+import { ui } from "../i18n/ui"
+import { splitUnits } from "../i18n/t"
 
 const rise = {
   initial: { opacity: 0, y: 14 },
@@ -276,10 +279,12 @@ function CvEntry({ heading, meta = [], footer, name, logo, invert, mask, details
 // and the space between them is a real text node so the line still wraps and
 // still reads as one sentence to a screen reader.
 function Words({ text, className = "", delay = 0, step = 0.04, as: Tag = "span" }) {
-  const words = text.split(" ")
+  // A word is the unit in English; Chinese has no spaces to split on, so there
+  // the unit is the character and nothing is inserted between them.
+  const { units, joiner } = splitUnits(text)
   return (
     <Tag className={className}>
-      {words.map((w, i) => (
+      {units.map((w, i) => (
         <span key={`${w}-${i}`}>
           <motion.span
             initial={{ opacity: 0.001, scale: 0.7 }}
@@ -290,7 +295,7 @@ function Words({ text, className = "", delay = 0, step = 0.04, as: Tag = "span" 
           >
             {w}
           </motion.span>
-          {i < words.length - 1 ? " " : null}
+          {joiner && i < units.length - 1 ? joiner : null}
         </span>
       ))}
     </Tag>
@@ -314,6 +319,10 @@ function Rule({ delay = 0 }) {
 }
 
 export default function About() {
+  // The whole page's copy, resolved once: the ledger rows, the résumé links and
+  // the skill names all come out of here as plain strings.
+  const copy = useLocale({ intro, education, experience, skills })
+  const t = useT()
   const curtain = useRef(null)
   // How far the curtain has travelled over the opening, 0 to 1 across the first
   // screenful. Drives the jostle on the stickers below it.
@@ -351,10 +360,13 @@ export default function About() {
           className="relative text-center"
         >
           <p className="font-mono-tight text-md uppercase tracking-[0.22em] text-fog">
-            {intro.role}
+            {copy.intro.role}
           </p>
           <h1 className="mt-5 font-condensed text-[15vw] uppercase leading-none tracking-[0.02em] text-cream sm:text-[8rem]">
-            {intro.name.split(" ").map((word) => (
+            {/* One line per word, which is what the display setting is built for.
+                A Chinese name has no spaces, so it stays on one line rather than
+                being stacked a character at a time. */}
+            {copy.intro.name.split(" ").map((word) => (
               <span key={word} className="block">
                 {word}
               </span>
@@ -362,7 +374,7 @@ export default function About() {
           </h1>
 
           <ul className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-            {intro.resumes.map((r) => (
+            {copy.intro.resumes.map((r) => (
               <li key={r.href}>
                 <a
                   href={r.href}
@@ -397,8 +409,8 @@ export default function About() {
       <motion.section {...rise} transition={{ duration: 0.6 }} className="mt-16">
         <div className="aspect-video w-full overflow-hidden rounded-lg border border-line bg-box">
           <iframe
-            src={intro.video}
-            title={`${intro.name} — self introduction`}
+            src={copy.intro.video}
+            title={`${copy.intro.name} — ${t(ui.selfIntro)}`}
             loading="lazy"
             allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
             allowFullScreen
@@ -414,13 +426,13 @@ export default function About() {
       <section className="mt-[120px]">
         <Words
           as="h2"
-          text="Work Experience"
+          text={t(ui.aboutExperience)}
           delay={0.08}
           className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
         />
 
         <ol className="mt-16 flex flex-col gap-[60px]">
-          {[...experience].reverse().map((x) => (
+          {[...copy.experience].reverse().map((x) => (
             <CvEntry
               key={`${x.company}-${x.period}`}
               heading={x.role}
@@ -442,13 +454,13 @@ export default function About() {
       <section className="mt-[120px]">
         <Words
           as="h2"
-          text="Education"
+          text={t(ui.aboutEducation)}
           delay={0.08}
           className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
         />
 
         <ol className="mt-16 flex flex-col gap-[60px]">
-          {education.map((e) => (
+          {copy.education.map((e) => (
             <CvEntry
               key={e.school}
               heading={e.degree}
@@ -465,12 +477,12 @@ export default function About() {
       <Section>
          <Words
           as="h2"
-          text="Skills"
+          text={t(ui.aboutSkills)}
           delay={0.08}
           className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
         />
         <ul className="mt-16 grid grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-6 lg:grid-cols-9">
-          {skills.map((s, i) => (
+          {copy.skills.map((s, i) => (
             <motion.li
               key={s.name}
               {...rise}
@@ -513,7 +525,7 @@ export default function About() {
                 Both rule and offset grow with the type, or a hairline under
                 96px copy reads as a stray scratch. */}
             <span className="relative inline-block transition-transform duration-300 group-hover:translate-x-1">
-              Go to see my project
+              {t(ui.aboutCta)}
               <span
                 aria-hidden="true"
                 className="absolute -bottom-1 left-0 h-0.5 w-full origin-right scale-x-0 bg-cream transition-transform duration-300 group-hover:origin-left group-hover:scale-x-100 lg:-bottom-3 lg:h-1"

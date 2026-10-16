@@ -3,6 +3,9 @@ import { motion, useInView } from "framer-motion"
 import { Clock3 } from "lucide-react"
 import Panel, { PanelHeader, TOP_ROW_HEIGHT } from "./Panel"
 import { CHUANGHUA_PATHS } from "../../data/chuanghua"
+import { useLocale, useT } from "../../i18n/lang"
+import { months as MONTH_LABELS, dayLabels as DAY_LABEL_COPY, ui } from "../../i18n/ui"
+import { tt } from "../../i18n/t"
 
 function Chuanghua({ variant, color, className = "" }) {
   return (
@@ -32,12 +35,12 @@ function SmileyFace({ className = "" }) {
 
 // Projects I'm building right now.
 const PROJECTS = [
-  { key: "kyrall", name: "Kyrall", pct: 55, variant: 4, color: "var(--color-ac-green)" },
-  { key: "aitool", name: "AITool Explore", pct: 18, variant: 3, color: "var(--color-ac-blue)" },
-  { key: "embodied", name: "Embodied AI", pct: 12, variant: 1, color: "var(--color-ac-pink)" },
-  { key: "website", name: "Personal Website", pct: 5, variant: 2, color: "var(--color-ac-red)" },
+  { key: "kyrall", name: tt("Kyrall", "Kyrall"), pct: 55, variant: 4, color: "var(--color-ac-green)" },
+  { key: "aitool", name: tt("AITool Explore", "AI 工具探索"), pct: 18, variant: 3, color: "var(--color-ac-blue)" },
+  { key: "embodied", name: tt("Embodied AI", "具身智能"), pct: 12, variant: 1, color: "var(--color-ac-pink)" },
+  { key: "website", name: tt("Personal Website", "个人网站"), pct: 5, variant: 2, color: "var(--color-ac-red)" },
 ]
-const ENJOY = { key: "enjoy", name: "Enjoy Life", pct: 10 }
+const ENJOY = { key: "enjoy", name: tt("Enjoy Life", "享受生活"), pct: 10 }
 const ALL_BY_KEY = Object.fromEntries([...PROJECTS, ENJOY].map((p) => [p.key, p]))
 
 // Hover-preview media per project. Empty for now — drop files in later, e.g.:
@@ -57,8 +60,9 @@ const COLS = 32
 const ROWS = 7
 const WEEKDAY_ROWS = 5
 const TOTAL = COLS * ROWS
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"]
-const DAY_LABELS = { 0: "Mon", 2: "Wed", 4: "Fri" }
+// Eight columns of the heat-map, Jan'26 → Aug'26. The labels themselves are
+// bilingual (see src/i18n/ui.js); only the count matters to the geometry below.
+const MONTHS = MONTH_LABELS
 
 // Cell counts per region (they must sum to each region's cell count):
 //   weekday area = 5 × 32 = 160, weekend area = 2 × 32 = 64.
@@ -206,13 +210,15 @@ function buildGrid() {
 const GRID = buildGrid()
 
 function LivePulse() {
+  const t = useT()
+
   return (
     <span className="flex items-center gap-1.5 text-fog">
       <span className="relative flex h-1.5 w-1.5">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ac-green opacity-70" />
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-ac-green" />
       </span>
-      <span className="font-mono-tight text-[10px] uppercase tracking-wide">in progress</span>
+      <span className="font-mono-tight text-[10px] uppercase tracking-wide">{t(ui.inProgress)}</span>
     </span>
   )
 }
@@ -226,6 +232,7 @@ function CellMark({ projectKey, className }) {
 // Right-side preview: shows the hovered project's media (image slideshow or video).
 // No assets yet, so it renders a labelled placeholder until PREVIEW_MEDIA is filled.
 function ProjectPreview({ activeKey }) {
+  const t = useT()
   const meta = activeKey ? ALL_BY_KEY[activeKey] : null
   const media = activeKey ? PREVIEW_MEDIA[activeKey] : null
   const hasMedia = !!(media && media.sources && media.sources.length)
@@ -247,7 +254,7 @@ function ProjectPreview({ activeKey }) {
         style={{ borderColor: "var(--color-box-2)" }}
       >
         <span className="font-mono-tight text-[9px] uppercase tracking-wide text-fog/60">
-          hover a project
+          {t(ui.hoverAProject)}
         </span>
       </div>
     )
@@ -274,15 +281,15 @@ function ProjectPreview({ activeKey }) {
       ) : hasMedia ? (
         <img
           src={media.sources[idx]}
-          alt={meta.name}
+          alt={t(meta.name)}
           className="absolute inset-0 h-full w-full object-contain"
         />
       ) : (
         <div className="flex flex-col items-center gap-1.5 text-center">
           <CellMark projectKey={activeKey} className="h-7 w-7" />
-          <span className="text-xs text-cream">{meta.name}</span>
+          <span className="text-xs text-cream">{t(meta.name)}</span>
           <span className="font-mono-tight text-[9px] uppercase tracking-wide text-fog">
-            preview coming soon
+            {t(ui.previewComingSoon)}
           </span>
         </div>
       )}
@@ -291,19 +298,23 @@ function ProjectPreview({ activeKey }) {
 }
 
 export default function StatusLog() {
+  const legend = useLocale([...PROJECTS, ENJOY])
+  const monthNames = useLocale(MONTHS)
+  const dayNames = useLocale(DAY_LABEL_COPY)
+  const t = useT()
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: "-10% 0px" })
   const [hoveredKey, setHoveredKey] = useState(null)
 
   return (
     <Panel ref={ref} className={`flex ${TOP_ROW_HEIGHT} flex-col p-2 sm:p-3`}>
-      <PanelHeader label="STATUS.LOG" right={<LivePulse />} />
+      <PanelHeader label={t(ui.panelStatus)} right={<LivePulse />} />
 
       <div className="flex min-h-0 flex-1 flex-col gap-3">
         {/* top row: legend (left) + hover preview (right) — fills the space above the calendar */}
         <div className="flex min-h-0 flex-1 items-stretch gap-4">
           <div className="flex flex-col gap-y-1">
-            {[...PROJECTS, ENJOY].map((p) => (
+            {legend.map((p) => (
             <div
               key={p.key}
               onMouseEnter={() => setHoveredKey(p.key)}
@@ -329,7 +340,7 @@ export default function StatusLog() {
               className="grid flex-1"
               style={{ gridTemplateColumns: `repeat(${COLS}, minmax(0, 1fr))` }}
             >
-              {MONTHS.map((month, i) => (
+              {monthNames.map((month, i) => (
                 <span
                   key={i}
                   className="whitespace-nowrap text-[8px] leading-none text-fog"
@@ -352,7 +363,7 @@ export default function StatusLog() {
                   key={r}
                   className="flex items-center justify-end text-[8px] leading-none text-fog"
                 >
-                  {DAY_LABELS[r] || ""}
+                  {dayNames[r] || ""}
                 </span>
               ))}
             </div>

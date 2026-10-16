@@ -1,7 +1,11 @@
 // Left-hand chapter index — geometry, type and transitions matched to the reference layout:
 // fixed at left:16px, vertically centred, 16px row gap, and an active item
 // that steps up from 20px/400 at 0.4 opacity to 28px/500 at full opacity over 0.3s.
+import { useT } from "../../i18n/lang"
+import { ui } from "../../i18n/ui"
+
 export default function DetailToc({ sections, active }) {
+  const t = useT()
   const jump = (id) => (e) => {
     e.preventDefault()
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })
@@ -9,7 +13,7 @@ export default function DetailToc({ sections, active }) {
 
   return (
     <nav
-      aria-label="Section index"
+      aria-label={t(ui.sectionIndex)}
       className="fixed left-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col gap-4 lg:flex"
     >
       {sections.map((section) => {

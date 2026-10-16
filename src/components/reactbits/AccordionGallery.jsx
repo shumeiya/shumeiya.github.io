@@ -10,6 +10,8 @@
 // `minItemSize` the floor under the collapsed panels — on a container too tall or too narrow to
 // honour the aspect, those two win and the ratio bends rather than the layout breaking.
 import { useRef, useEffect, useState, useCallback } from "react"
+import { useT } from "../../i18n/lang"
+import { ui } from "../../i18n/ui"
 import { gsap } from "gsap"
 
 const DEFAULT_ITEMS = [
@@ -57,6 +59,7 @@ const AccordionGallery = ({
   onItemSelect,
   className = "",
 }) => {
+  const t = useT()
   const rootRef = useRef(null)
   const panelRefs = useRef([])
   const mediaRefs = useRef([])
@@ -247,7 +250,7 @@ const AccordionGallery = ({
       className={`flex ${vertical ? "flex-col" : "flex-row"} w-full max-w-full [perspective:1400px] max-[520px]:!flex-col max-[520px]:[perspective:none] ${className}`}
       style={{ gap: `${gap}px`, height: rootHeight }}
       role="list"
-      aria-label="Image accordion gallery"
+      aria-label={t(ui.gallery)}
     >
       {items.map((item, i) => {
         const isActive = i === active

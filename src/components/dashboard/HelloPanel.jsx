@@ -3,8 +3,12 @@ import { Link } from "react-router-dom"
 import { ArrowUpRight } from "lucide-react"
 import Panel, { TOP_ROW_HEIGHT } from "./Panel"
 import StickerPile from "./StickerPile"
+import { useT } from "../../i18n/lang"
+import { ui } from "../../i18n/ui"
 
 export default function HelloPanel() {
+  const t = useT()
+
   return (
     <Panel className={`flex ${TOP_ROW_HEIGHT} flex-col justify-between p-2 sm:p-3`}>
       <div
@@ -32,14 +36,14 @@ export default function HelloPanel() {
       >
         <Link
           to="/about"
-          aria-label="About Shumei Zhang"
+          aria-label={t(ui.helloAria)}
           className="group inline-flex items-start gap-1.5 transition-transform duration-200 active:scale-[0.97] sm:gap-3"
         >
           {/* The underline is positioned, not in flow, so sweeping it in on hover never
               changes this span's height or nudges the arrow beside it. */}
           <span className="relative block">
             <h2 className="font-serif text-3xl leading-[0.95] text-cream/90 transition-colors duration-300 group-hover:text-cream sm:text-6xl">
-              Hello
+              {t(ui.hello)}
             </h2>
             <span
               aria-hidden="true"

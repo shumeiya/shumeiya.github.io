@@ -3,6 +3,7 @@ import dottedWorld from "../../assets/dotted-world.svg?raw"
 import { CHUANGHUA_PATHS } from "../../data/chuanghua"
 import { MAP_VIEWBOX, anchors, arcs, cities } from "../../data/experience"
 import ExperienceMarker from "./ExperienceMarker"
+import { useLocale } from "../../i18n/lang"
 
 // A quadratic curve from `from` to `to`, pushed `bow` units off the chord along
 // its normal — positive bows north. Same trick the reference site draws its
@@ -56,6 +57,10 @@ function ShimmerArc({ d, color, loopDelay }) {
 // its own aspect ratio so every marker's percentage lands on the grid cell it
 // was measured against.
 export default function ExperienceMap() {
+  // Only the markers carry copy; the arcs and ornaments are pure geometry, so
+  // they keep reading the source data.
+  const localisedCities = useLocale(cities)
+
   return (
     <div
       className="exp-map relative w-full"
@@ -94,7 +99,7 @@ export default function ExperienceMap() {
         ))}
       </svg>
 
-      {cities.map((city, i) => (
+      {localisedCities.map((city, i) => (
         <ExperienceMarker key={city.id} city={city} appearDelay={0.5 + i * 0.06} />
       ))}
     </div>

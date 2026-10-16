@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ArrowLeft } from "lucide-react"
 import Masonry from "../components/myworld/Masonry"
 import { worldImages } from "../data/myworld"
+import { useLocale, useT } from "../i18n/lang"
+import { ui } from "../i18n/ui"
 
 // A serpentine "road": images stand in rows on a horizontal line that U-turns at each
 // row end to snake down to the next row. Rows can have different lengths.
@@ -108,6 +110,8 @@ function RoadImage({ img, x, y, delay, onSelect }) {
 
 // Full-screen photo-wall page for a clicked image. Back button + Esc close it.
 function PlaceDetail({ place, onClose }) {
+  const t = useT()
+
   useEffect(() => {
     const prev = document.body.style.overflow
     document.body.style.overflow = "hidden"
@@ -138,7 +142,7 @@ function PlaceDetail({ place, onClose }) {
             onClick={onClose}
             className="mb-3 flex items-center gap-1.5 text-base text-ink/60 transition-colors hover:text-ink"
           >
-            <ArrowLeft size={20} /> Back
+            <ArrowLeft size={20} /> {t(ui.back)}
           </button>
           <div className="text-right">
             <h1 className="text-2xl font-semibold tracking-tight text-ink sm:text-3xl lg:text-4xl">
@@ -157,6 +161,9 @@ function PlaceDetail({ place, onClose }) {
 }
 
 export default function Myworld() {
+  // The road's cast, in the current language. Captions and names are the only
+  // copy here; the placement maths below is untouched by it.
+  const images = useLocale(worldImages)
   const ref = useRef(null)
   const [size, setSize] = useState({ w: 0, h: 0 })
   const [selected, setSelected] = useState(null)
@@ -180,9 +187,9 @@ export default function Myworld() {
     if (!W || !H) return { placed: [], pathD: "", total: 0 }
 
     const sizes =
-      ROW_COUNTS.length === ROWS && ROW_COUNTS.reduce((a, b) => a + b, 0) === worldImages.length
+      ROW_COUNTS.length === ROWS && ROW_COUNTS.reduce((a, b) => a + b, 0) === images.length
         ? ROW_COUNTS
-        : rowSizes(worldImages.length, ROWS)
+        : rowSizes(images.length, ROWS)
     const rowY = Array.from(
       { length: ROWS },
       (_, r) => (Y_TOP + (Y_BOTTOM - Y_TOP) * (ROWS > 1 ? r / (ROWS - 1) : 0)) * H
@@ -218,7 +225,7 @@ export default function Myworld() {
       const lo = Lpx[r]
       const hi = Rpx[r]
       for (let j = 0; j < m; j++) {
-        const img = worldImages[idx]
+        const img = images[idx]
         const t = m > 1 ? j / (m - 1) : 0.5
         const autoX = r % 2 === 0 ? lo + (hi - lo) * t : hi - (hi - lo) * t
         // `x` in data (0..1 fraction of width) overrides the even spacing for that image.
@@ -253,7 +260,7 @@ export default function Myworld() {
       cumBefore[ROWS - 1] + Math.abs(B[ROWS - 1] - A[ROWS - 1]) + exitLen
 
     return { placed, pathD: d, total }
-  }, [size.w, size.h])
+  }, [size.w, size.h, images])
 
   return (
     <main ref={ref} className="relative h-[calc(100vh-3.5rem)] min-h-130 w-full overflow-hidden">

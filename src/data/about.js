@@ -1,21 +1,26 @@
 // About-page content, carried over from the 2025 site's about page.
 // Logos live in /public/about; the two résumés in /public/documents.
+//
+// Every line a reader sees is written as tt("English", "中文") — see src/i18n/t.js.
+// The page resolves the whole tree once at the top, so the components below it
+// still receive plain strings.
+import { tt } from "../i18n/t"
 
 export const intro = {
-  name: "Shumei Zhang",
-  role: "UX & UI Designer",
+  name: tt("Shumei Zhang", "张淑镁"),
+  role: tt("UX & UI Designer", "UX / UI 设计师"),
   video: "https://www.youtube.com/embed/GgV5PRF9mPs",
   resumes: [
     // `href` is kept ASCII and hyphenated — spaces, @ and CJK in a URL are
     // fragile across servers and CDNs. `file` is what the browser saves it as,
     // so the reader still gets a name they can read.
     {
-      label: "Download resume",
+      label: tt("Download resume (EN)", "下载英文简历"),
       href: "/documents/shumei-zhang-resume.pdf",
       file: "Shumei Zhang — Resume.pdf",
     },
     {
-      label: "下载中文简历",
+      label: tt("Download resume (CN)", "下载中文简历"),
       href: "/documents/shumei-zhang-resume-cn.pdf",
       file: "张淑镁 — 交互设计简历.pdf",
     },
@@ -27,28 +32,34 @@ export const intro = {
 // not reverse this one; the résumé already reads this way.
 export const education = [
   {
-    school: "Politecnico di Torino",
-    degree: "MSc in Systemic Design",
-    place: "Turin, Italy",
+    school: tt("Politecnico di Torino", "都灵理工大学"),
+    degree: tt("MSc in Systemic Design", "系统设计 硕士"),
+    place: tt("Turin, Italy", "意大利 都灵"),
     period: "2021.10 – 2024.07",
     details: [
-      { label: "GPA", text: "91 / 100" },
+      { label: tt("GPA", "成绩"), text: tt("91 / 100", "91 / 100") },
       {
-        label: "Coursework",
-        text: "Innovative Design, Human-Computer Interaction, Virtual Design, Product Component Design, System Design, Ecology, Economic Project Management.",
+        label: tt("Coursework", "主要课程"),
+        text: tt(
+          "Innovative Design, Human-Computer Interaction, Virtual Design, Product Component Design, System Design, Ecology, Economic Project Management.",
+          "创新设计、人机交互、虚拟设计、产品零部件设计、系统设计、生态学、经济项目管理。"
+        ),
       },
     ],
   },
   {
-    school: "Shenzhen University",
-    degree: "Bachelor in Industrial Design",
-    place: "Shenzhen, China",
+    school: tt("Shenzhen University", "深圳大学"),
+    degree: tt("Bachelor in Industrial Design", "工业设计 学士"),
+    place: tt("Shenzhen, China", "中国 深圳"),
     period: "2017.09 – 2021.07",
     details: [
-      { label: "GPA", text: "93 / 100" },
+      { label: tt("GPA", "成绩"), text: tt("93 / 100", "93 / 100") },
       {
-        label: "Coursework",
-        text: "Design Thinking, Fundamentals of Product Design, Design Thinking and Innovation for Smart Products, Product Design Methodology, Ergonomics.",
+        label: tt("Coursework", "主要课程"),
+        text: tt(
+          "Design Thinking, Fundamentals of Product Design, Design Thinking and Innovation for Smart Products, Product Design Methodology, Ergonomics.",
+          "设计思维、产品设计基础、智能产品的设计思维与创新、产品设计方法学、人因工程学。"
+        ),
       },
     ],
   },
@@ -60,101 +71,140 @@ export const education = [
 // names a project when one post covers more than one (Granstudio's two briefs).
 export const experience = [
   {
-    company: "Tencent CSIG Business Group",
-    role: "Interaction Design Intern",
-    place: "Shenzhen, China",
+    company: tt("Tencent CSIG Business Group", "腾讯 CSIG 事业群"),
+    role: tt("Interaction Design Intern", "交互设计实习生"),
+    place: tt("Shenzhen, China", "中国 深圳"),
     period: "2021.03 – 2021.07",
     logo: "/about/logo/abcmouse.png",
     details: [
       {
-        label: "Interaction Design",
-        text: "Responsible for the interactive design of gamified teaching activities, with over 10 activities already launched.",
+        label: tt("Interaction Design", "交互设计"),
+        text: tt(
+          "Responsible for the interactive design of gamified teaching activities, with over 10 activities already launched.",
+          "负责游戏化教学活动的交互设计，已上线活动 10 个以上。"
+        ),
       },
       {
-        label: "User Testing",
-        text: "Conducted user testing, observing interaction and completion rates, and iteratively optimizing results.",
+        label: tt("User Testing", "用户测试"),
+        text: tt(
+          "Conducted user testing, observing interaction and completion rates, and iteratively optimizing results.",
+          "开展用户测试，观察互动率与完成率，并据此迭代优化方案。"
+        ),
       },
     ],
   },
   {
-    company: "Dianmao Technology Co., Ltd.",
-    role: "Interaction Designer",
-    place: "Shenzhen, China",
+    company: tt("Dianmao Technology Co., Ltd.", "点猫科技（编程猫）"),
+    role: tt("Interaction Designer", "交互设计师"),
+    place: tt("Shenzhen, China", "中国 深圳"),
     period: "2021.07 – 2021.08",
     logo: "/about/logo/codemao.png",
     details: [
       {
-        label: "Course Platform Design",
-        text: "Drove iteration of the B-side admin platform from back-office usage data, covering course management, courseware templates and related functions.",
+        label: tt("Course Platform Design", "课程平台设计"),
+        text: tt(
+          "Drove iteration of the B-side admin platform from back-office usage data, covering course management, courseware templates and related functions.",
+          "以后台使用数据驱动 B 端管理平台的迭代，覆盖课程管理、课件模板等相关功能。"
+        ),
       },
       {
-        label: "Design Iteration",
-        text: "Iterated the teacher-facing and student-facing designs of the in-school platform against user testing results and user data.",
+        label: tt("Design Iteration", "设计迭代"),
+        text: tt(
+          "Iterated the teacher-facing and student-facing designs of the in-school platform against user testing results and user data.",
+          "结合用户测试结果与用户数据，迭代校内平台的教师端与学生端设计。"
+        ),
       },
     ],
   },
   {
-    company: "Granstudio",
-    role: "HMI Design Intern",
-    place: "Turin, Italy",
+    company: tt("Granstudio", "Granstudio"),
+    role: tt("HMI Design Intern", "HMI 设计实习生"),
+    place: tt("Turin, Italy", "意大利 都灵"),
     period: "2024.02 – 2024.05",
     logo: "/about/logo/granstudio.png",
     invert: true,
     details: [
       {
-        group: "Interactive / Visual Design for JIYUE Supercar",
-        label: "Interaction Design",
-        text: "Defined and optimized infotainment system interaction design, establishing interaction guidelines.",
+        group: tt("Interactive / Visual Design for JIYUE Supercar", "极越超跑的交互 / 视觉设计"),
+        label: tt("Interaction Design", "交互设计"),
+        text: tt(
+          "Defined and optimized infotainment system interaction design, establishing interaction guidelines.",
+          "定义并优化车机信息娱乐系统的交互设计，建立交互规范。"
+        ),
       },
       {
-        label: "Visual Design",
-        text: "Converted conceptual ideas into visual and animation solutions through interaction analysis.",
+        label: tt("Visual Design", "视觉设计"),
+        text: tt(
+          "Converted conceptual ideas into visual and animation solutions through interaction analysis.",
+          "通过交互分析，把概念想法转化为视觉与动效方案。"
+        ),
       },
       {
-        group: "HMI Experience Design for a Haier Smart Home Appliance",
-        label: "Trend Research",
-        text: "Performed industry research on competitors, electronics, and in-car interfaces, summarizing 27 trends related to technology, UI, and UX.",
+        group: tt("HMI Experience Design for a Haier Smart Home Appliance", "海尔智能家电的 HMI 体验设计"),
+        label: tt("Trend Research", "趋势研究"),
+        text: tt(
+          "Performed industry research on competitors, electronics, and in-car interfaces, summarizing 27 trends related to technology, UI, and UX.",
+          "针对竞品、消费电子与车载界面做行业研究，梳理出 27 条技术、UI 与 UX 趋势。"
+        ),
       },
       {
-        label: "Conceptual Solutions",
-        text: "Created innovative user experience concepts by integrating brand characteristics and research, generating 3 sets of conceptual proposals.",
+        label: tt("Conceptual Solutions", "概念方案"),
+        text: tt(
+          "Created innovative user experience concepts by integrating brand characteristics and research, generating 3 sets of conceptual proposals.",
+          "结合品牌特征与研究结论，产出 3 套创新的用户体验概念提案。"
+        ),
       },
       {
-        label: "Solution Outputs",
-        text: "Delivered one comprehensive set of user experience design solutions, covering the entire process from concept to UX/UI implementation.",
+        label: tt("Solution Outputs", "方案交付"),
+        text: tt(
+          "Delivered one comprehensive set of user experience design solutions, covering the entire process from concept to UX/UI implementation.",
+          "交付一套完整的用户体验设计方案，覆盖从概念到 UX/UI 落地的全流程。"
+        ),
       },
     ],
   },
   {
-    company: "DPS & wetter.com",
-    role: "UX/UI Design Engineer",
-    place: "Munich, Germany",
+    company: tt("DPS & wetter.com", "DPS & wetter.com"),
+    role: tt("UX/UI Design Engineer", "UX/UI 设计工程师"),
+    place: tt("Munich, Germany", "德国 慕尼黑"),
     period: "2024.09 – 2025.07",
     logo: "/about/logo/wetter.svg",
     details: [
       {
-        label: "AI Concept & Research",
-        text: "Surveyed 260 users and conducted 25 interviews to define a GenAI mascot-outfit weather app concept for younger audiences.",
+        label: tt("AI Concept & Research", "AI 概念与研究"),
+        text: tt(
+          "Surveyed 260 users and conducted 25 interviews to define a GenAI mascot-outfit weather app concept for younger audiences.",
+          "调研 260 位用户、完成 25 场访谈，定义出面向年轻用户的「生成式 AI 吉祥物换装」天气应用概念。"
+        ),
       },
       {
-        label: "UX&UI Design & Prototyping",
-        text: "Developed an GenAi Mascot that adapts outfits to the weather, enhancing engagement through A/B-tested high-fidelity prototypes.",
+        label: tt("UX&UI Design & Prototyping", "UX / UI 设计与原型"),
+        text: tt(
+          "Developed an GenAi Mascot that adapts outfits to the weather, enhancing engagement through A/B-tested high-fidelity prototypes.",
+          "做出会按天气换装的生成式 AI 吉祥物，并以 A/B 测试过的高保真原型提升用户参与度。"
+        ),
       },
       {
-        label: "Design System",
-        text: "Built high-fidelity prototypes and iterated AI mascot interactions through testing, then implemented responsive UI using Tailwind CSS.",
+        label: tt("Design System", "设计系统"),
+        text: tt(
+          "Built high-fidelity prototypes and iterated AI mascot interactions through testing, then implemented responsive UI using Tailwind CSS.",
+          "搭建高保真原型，通过测试迭代 AI 吉祥物的交互，并用 Tailwind CSS 实现响应式界面。"
+        ),
       },
       {
-        label: "Frontend",
-        text: "Developed the onboarding page and implemented responsive front-end styling for the mobile app",
+        label: tt("Frontend", "前端实现"),
+        text: tt(
+          "Developed the onboarding page and implemented responsive front-end styling for the mobile app",
+          "开发 onboarding 引导页，并为移动端应用实现响应式前端样式。"
+        ),
       },
     ],
   },
   {
-    company: "Kyrall GmbH",
-    role: "UX/UI Design Engineer",
-    place: "Munich, Germany",
-    period: "2025.09 – Present",
+    company: tt("Kyrall GmbH", "Kyrall GmbH"),
+    role: tt("UX/UI Design Engineer", "UX/UI 设计工程师"),
+    place: tt("Munich, Germany", "德国 慕尼黑"),
+    period: tt("2025.09 – Present", "2025.09 – 至今"),
     current: true,
     // A near-white wordmark, so it is painted as a mask like the skill icons
     // rather than placed as an image — that way it takes a site token and is
@@ -163,20 +213,32 @@ export const experience = [
     mask: true,
     details: [
       {
-        label: "AI Strategy & Feature Definition",
-        text: "Explored and defined AI-assisted CAD modeling features, including AI suggestions, generation guidance, and non-chatbox interaction patterns for engineering workflows.",
+        label: tt("AI Strategy & Feature Definition", "AI 策略与功能定义"),
+        text: tt(
+          "Explored and defined AI-assisted CAD modeling features, including AI suggestions, generation guidance, and non-chatbox interaction patterns for engineering workflows.",
+          "探索并定义 AI 辅助 CAD 建模的功能，包括 AI 建议、生成引导，以及面向工程流程的非对话框交互范式。"
+        ),
       },
       {
-        label: "Product & UX/UI Ownership",
-        text: "Built the design system and led UX/UI design across the web app and website, shaping core product flows and iterating designs based on testing and feedback.",
+        label: tt("Product & UX/UI Ownership", "产品与 UX/UI 主导"),
+        text: tt(
+          "Built the design system and led UX/UI design across the web app and website, shaping core product flows and iterating designs based on testing and feedback.",
+          "搭建设计系统，主导 Web 应用与官网的 UX/UI 设计，定义核心产品流程，并依据测试与反馈持续迭代。"
+        ),
       },
       {
-        label: "AI Workflow Design",
-        text: "Designed end-to-end workflows for AI-driven CAD generation, from multi-prompt input to generation feedback, waiting states, result review, and post-editing.",
+        label: tt("AI Workflow Design", "AI 工作流设计"),
+        text: tt(
+          "Designed end-to-end workflows for AI-driven CAD generation, from multi-prompt input to generation feedback, waiting states, result review, and post-editing.",
+          "设计 AI 驱动 CAD 生成的端到端流程：从多段提示输入，到生成反馈、等待状态、结果审阅与后续编辑。"
+        ),
       },
       {
-        label: "Frontend Implementation",
-        text: "Implemented editor and dashboard UI components with React, HTML, and CSS, including layout, styling, and interaction logic.",
+        label: tt("Frontend Implementation", "前端实现"),
+        text: tt(
+          "Implemented editor and dashboard UI components with React, HTML, and CSS, including layout, styling, and interaction logic.",
+          "用 React、HTML 与 CSS 实现编辑器与 Dashboard 的界面组件，涵盖布局、样式与交互逻辑。"
+        ),
       },
     ],
   },
@@ -186,6 +248,8 @@ export const experience = [
 // than images, so whatever each file paints itself is ignored and the icon takes
 // a site token — which is also why they follow the light and dark themes. The
 // space in Claude Code's filename is percent-encoded; a raw one breaks the URL.
+//
+// Names are product names, the same in both languages, so they are left unwrapped.
 export const skills = [
   { name: "Figma", icon: "/about/skill/Figma.svg" },
   { name: "ProtoPie", icon: "/about/skill/Protopie.svg" },

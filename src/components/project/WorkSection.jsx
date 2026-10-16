@@ -1,12 +1,16 @@
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 import WorkStrip from "./WorkStrip"
+import { useT } from "../../i18n/lang"
+import { ui } from "../../i18n/ui"
 
 // One project, one screenful. The write-up and the first panel share the same
 // left edge (--work-indent), and the panels run taller than the fold so the
 // strip is still unfolding as you scroll into the next project.
 
 export default function WorkSection({ work }) {
+  const t = useT()
+
   return (
     <section id={work.slug} className="relative pb-16 pt-14 sm:pt-16">
       <motion.header
@@ -19,7 +23,7 @@ export default function WorkSection({ work }) {
         <div className="mb-4 flex items-center gap-3">
           {work.isNew && (
             <span className="rounded-full border border-ink/40 px-3.5 py-1 font-mono-tight text-xs uppercase tracking-wide text-ink">
-              New
+              {t(ui.badgeNew)}
             </span>
           )}
           <span className="font-mono-tight text-sm tracking-wide text-ink/70">{work.year}</span>
@@ -37,7 +41,7 @@ export default function WorkSection({ work }) {
           to={work.href}
           className="inline-flex items-center rounded-full border border-ink/30 px-8 py-4 text-base text-ink transition-colors hover:border-ink hover:bg-ink hover:text-page sm:text-lg"
         >
-          View Case Study
+          {t(ui.viewCaseStudy)}
         </Link>
       </motion.header>
 
