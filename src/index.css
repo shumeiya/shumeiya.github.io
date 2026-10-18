@@ -92,6 +92,110 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+/* Same treatment for a panel that scrolls inside the page — a figure too wide for
+   its column. The page hides its own scrollbar, so one appearing mid-article reads
+   as a mistake; the panel still scrolls by trackpad, wheel and touch. */
+/* 字号死规定 / Type-size rule for the project pages.
+   Body copy is 20px and nothing drops below 18px, in either language and at every
+   breakpoint — see CLAUDE.md. These two utilities are the only sizes a project page
+   should reach for, so the rule is greppable instead of scattered across `text-sm`,
+   `text-base` and a pile of `sm:` overrides. Headings may of course be larger.
+   The two Figma board replicas are exempt: their sizes are artboard units, not
+   screen pixels. */
+@utility text-copy {
+  font-size: 20px;
+}
+
+@utility text-note {
+  font-size: 18px;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* The project detail hero. Its key visual is veiled in the page's own colour rather
+   than in black: on a dark page that darkens the picture, on a light one it pales it
+   into a watermark, and either way the copy over it can use the theme's ordinary ink
+   instead of a fixed white that only works in one mode. */
+.hero-veil {
+  --hero-veil: rgba(242, 237, 228, 0.84);
+}
+
+.dark .hero-veil {
+  --hero-veil: rgba(3, 11, 21, 0.74);
+}
+
+/* The Kyrall deck boards (the "From 0 to 1" workflow and the "Background" poster)
+   keep the deck's own palette rather than the site tokens — they are reproductions of
+   slides, and their chips carry meaning by colour. Light mode gets the counterpart
+   rather than the same values: the accent darkens just enough to hold on paper, and a
+   chip that is white-on-black in the deck is black-on-white here. Which chip is accent
+   and which is quiet never changes.
+
+   `accent` paints fills and strokes, which sit against a surface; `accent-ink` paints
+   type and line art, which sit on the page — the deck's yellow-green is unreadable at
+   that job on paper, so in light mode it darkens to the same hue at ink weight.
+   `figure` backs the deck's white 3D renders. It flips with the rest, and the two
+   CSS rules below keep the artwork readable once it does: the renders invert, and
+   the CAD tiles — white cards in their own right — take a hairline frame instead.
+   `on-rule` is the one value that never flips: it labels the grey progress bar,
+   which is dark in both themes. */
+.kyrall-deck {
+  --deck-accent: #c2f000;
+  --deck-accent-ink: #5c7200;
+  --deck-on-accent: #191717;
+  --deck-surface: #fdfdfd;
+  --deck-on-surface: #191717;
+  --deck-rule: #5c5b59;
+  --deck-band: #e9e4d9;
+  --deck-on-band: #4a4844;
+  /* The outlined rail: its copy sits on the page's own value. */
+  --deck-on-rail: #191717;
+  --deck-figure: #fdfdfd;
+  --deck-on-figure: #191717;
+  --deck-on-rule: #fdfdfd;
+}
+
+.dark .kyrall-deck {
+  --deck-accent: #c4ff35;
+  --deck-accent-ink: #c4ff35;
+  --deck-on-accent: #191717;
+  --deck-surface: #191717;
+  --deck-on-surface: #fdfdfd;
+  --deck-rule: #5c5b59;
+  --deck-band: #2f2f2f;
+  --deck-on-band: #efede8;
+  --deck-on-rail: #c4ff35;
+  --deck-figure: #191717;
+  --deck-on-figure: #fdfdfd;
+  --deck-on-rule: #fdfdfd;
+}
+
+/* Light mode only: the renders are lit white-on-black. Inverting them reads as a
+   negative — the highlights turn into the darkest mass on the card — so they are
+   darkened instead: the model keeps its own lighting and simply changes material,
+   from white plastic to graphite, which sits on paper without going black. The CAD
+   tiles are already white cards, so they get an outline rather than a filter. */
+.kyrall-deck .deck-render img {
+  filter: brightness(0.6) contrast(1.1);
+}
+
+.kyrall-deck .deck-tile {
+  box-shadow: inset 0 0 0 1px var(--deck-rule);
+}
+
+.dark .kyrall-deck .deck-render img,
+.dark .kyrall-deck .deck-tile {
+  filter: none;
+  box-shadow: none;
+}
+
 body {
   margin: 0;
   background-color: var(--color-page);

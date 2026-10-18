@@ -5,6 +5,10 @@
 // Every line a reader sees is tt("English", "中文") — the two languages sit side by side so a
 // copy edit is one edit, not two files to keep in step. See src/i18n/t.js.
 import { tt } from "../i18n/t"
+import { kyrallWorkflow } from "./kyrallWorkflow"
+import { kyrallBackground } from "./kyrallBackground"
+import { kyrallCompetitors } from "./kyrallCompetitors"
+import { kyrallPersona } from "./kyrallPersona"
 
 export const projectDetails = {
   kyrall: {
@@ -13,6 +17,13 @@ export const projectDetails = {
       "Designing Kyrall from zero as its sole product designer.",
       "作为唯一的产品设计师，从零开始设计 Kyrall。"
     ),
+    hero: {
+      image: "/project/kyrall/4.png",
+      headline: tt(
+        "Design and manufacture hardware at the speed of thought.",
+        "以思考的速度，设计并制造硬件。"
+      ),
+    },
     tags: [
       tt("0→1 product design", "0→1 产品设计"),
       tt("AI + CAD", "AI + CAD"),
@@ -21,161 +32,41 @@ export const projectDetails = {
     ],
     sections: [
       {
-        id: "context",
-        eyebrow: tt("00 · Context", "00 · 背景"),
-        label: tt("Context", "背景"),
+        id: "workflow",
+        label: tt("Work flow", "工作流"),
         lead: tt(
-          "Mechanical design is still slow and fragmented.",
-          "机械设计至今仍然缓慢而割裂。"
+          "From 0 to 1: designing Kyrall's end-to-end product experience.",
+          "从 0 到 1: 独立设计 Kyrall 的完整产品体验。"
         ),
-        blocks: [
-          {
-            text: tt(
-              "Turning an engineering idea into a manufacturable product often means moving through disconnected stages — CAD, simulation, prototyping, testing and manufacturing. The company thesis was that too much engineering time is still spent translating requirements, rebuilding geometry and repeating manual design work instead of making new design decisions.",
-              "把一个工程想法变成可制造的产品，往往要穿过一连串彼此脱节的阶段 —— CAD、仿真、打样、测试、制造。公司的判断是：工程师太多时间花在翻译需求、重建几何、重复手工建模上，而不是做新的设计决策。"
-            ),
-          },
-          {
-            type: "note",
-            text: tt(
-              "Opportunity — reduce the manual translation between engineering intent and geometry.",
-              "机会点 —— 减少工程意图与几何模型之间的人工翻译。"
-            ),
-          },
-          {
-            text: tt(
-              "Specs, requirements and legacy designs go in; a manufacturable 3D parametric model comes out. Under the hood an orchestration layer coordinates simulation, editing and manufacturability checks before export. Kyrall sits inside the existing CAD → CAE → CAM pipeline rather than replacing it.",
-              "输入是规格、需求与历史设计，输出是一个可制造的三维参数化模型。底层有一个编排层，在导出之前协调仿真、编辑与可制造性校验。Kyrall 嵌进既有的 CAD → CAE → CAM 流程，而不是取代它。"
-            ),
-          },
-          {
-            type: "stats",
-            items: [
-              {
-                value: tt("1 day", "1 天"),
-                label: tt("Down from 6–8 weeks", "原本需要 6–8 周"),
-                note: tt("Time previously spent on manual modeling.", "此前花在手工建模上的时间。"),
-              },
-              {
-                value: "0%",
-                label: tt("Down from 40% of budget", "原本占预算的 40%"),
-                note: tt("Project budget previously lost to rework.", "此前因返工而损失的项目预算。"),
-              },
-            ],
-          },
-          {
-            type: "note",
-            text: tt(
-              "This is the product thesis I was designing for. Everything from here on is my own work as sole product designer — my job was to turn this promise into an interface engineers would trust enough to actually adopt.",
-              "这是我所服务的产品命题。从这里往后，都是我作为唯一产品设计师的工作 —— 我要做的，是把这个承诺变成工程师愿意信任、并且真的会用的界面。"
-            ),
-          },
-        ],
+        blocks: [{ type: "workflow", board: kyrallWorkflow }],
       },
       {
-        id: "vision",
-        eyebrow: tt("01 · Vision & mission", "01 · 愿景与使命"),
-        label: tt("Vision", "愿景"),
-        lead: tt(
-          "Design and manufacture hardware at the speed of thought.",
-          "以思考的速度，设计并制造硬件。"
-        ),
-        blocks: [
-          {
-            text: tt(
-              "Engineering is undergoing its most profound shift since the internet. For decades, certain processes were treated as immovable. Kyrall challenges that.",
-              "工程行业正在经历自互联网以来最深刻的一次转变。几十年来，有些流程一直被当作不可动摇的前提。Kyrall 要挑战的正是这一点。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/kyrall/1.png",
-            caption: tt(
-              "Brand key visual — automating design for the physical world.",
-              "品牌主视觉 —— 为物理世界把设计自动化。"
-            ),
-          },
-          {
-            type: "defs",
-            items: [
-              { term: tt("Ownership", "数据归属"), text: tt("Keep your data yours.", "你的数据始终属于你。") },
-              { term: tt("Control", "自主可控"), text: tt("Runs on your infrastructure.", "运行在你自己的基础设施上。") },
-              { term: tt("Precision", "精确"), text: tt("Built for engineering problems.", "为工程问题而生。") },
-              { term: tt("Security", "安全"), text: tt("Removes cloud dependency.", "去掉对云端的依赖。") },
-              { term: tt("Sovereignty", "技术自主"), text: tt("Developed entirely independently.", "完全自主研发。") },
-            ],
-          },
-        ],
+        id: "background",
+        eyebrow: tt("01 · Background", "01 · 需求背景"),
+        // The board opens with its own title, so the page's heading stays for the
+        // chapter index and the outline but is not drawn twice.
+        label: tt("Background", "需求背景"),
+        titleHidden: true,
+        blocks: [{ type: "background", board: kyrallBackground }],
       },
       {
-        id: "role",
-        eyebrow: tt("03 · Project", "03 · 项目"),
-        label: tt("Role", "角色"),
-        lead: tt(
-          "Describe what you need. Kyrall generates the 3D model.",
-          "描述你的需求，Kyrall 生成三维模型。"
-        ),
-        blocks: [
-          {
-            text: tt(
-              "The design challenge was turning that promise into a product engineers could actually continue working in. The scope grew with the product — from a generation interface into a broader engineering workspace.",
-              "设计上的挑战，是把这个承诺变成工程师真的能持续在里面工作的产品。范围随产品一起长大 —— 从一个生成界面，长成一个更完整的工程工作台。"
-            ),
-          },
-          {
-            type: "bullets",
-            title: tt("Sole product designer", "唯一产品设计师"),
-            items: [
-              tt(
-                "Defined the first information architecture and core generation flow.",
-                "定义了最初的信息架构与核心生成流程。"
-              ),
-              tt(
-                "Built the visual language and reusable design system.",
-                "建立了视觉语言与可复用的设计系统。"
-              ),
-              tt(
-                "Designed the Editor interaction model and feature states.",
-                "设计了编辑器的交互模型与各功能状态。"
-              ),
-              tt(
-                "Used product analytics to find friction and guide later iteration.",
-                "用产品数据找出摩擦点，指导后续迭代。"
-              ),
-            ],
-          },
-          {
-            text: tt(
-              "The design problem changed as the product matured. Instead of treating every new feature as a separate screen, I used a growing set of product questions to guide the system.",
-              "随着产品成熟，设计问题也变了。我没有把每个新功能当成一块独立的页面，而是用一组不断增加的产品问题来引导整个系统。"
-            ),
-          },
-          {
-            type: "defs",
-            items: [
-              { term: tt("Generate", "生成"), text: tt("How should a user express intent?", "用户该如何表达意图？") },
-              { term: tt("Control", "控制"), text: tt("How should a user refine AI output?", "用户该如何修正 AI 的产出？") },
-              {
-                term: tt("Understand", "理解"),
-                text: tt("How should the system expose what AI is doing?", "系统该如何让人看懂 AI 正在做什么？"),
-              },
-              {
-                term: tt("Recover", "恢复"),
-                text: tt(
-                  "How should users diagnose and reverse unwanted changes?",
-                  "用户该如何诊断并撤回不想要的改动？"
-                ),
-              },
-              {
-                term: tt("Manage", "管理"),
-                text: tt(
-                  "How does one generation become an ongoing workflow?",
-                  "一次生成，如何变成一条持续的工作流？"
-                ),
-              },
-            ],
-          },
-        ],
+        id: "competitors",
+        eyebrow: tt("02 · Competitors", "02 · 竞品分析"),
+        // Same arrangement as the Background board: the board opens with its own
+        // title, so the page's heading stays for the chapter index and the outline
+        // but is not drawn twice.
+        label: tt("Competitors", "竞品分析"),
+        titleHidden: true,
+        blocks: [{ type: "competitors", board: kyrallCompetitors }],
+      },
+      {
+        id: "persona",
+        eyebrow: tt("03 · Persona", "03 · 用户画像"),
+        // The board opens with its own title, so the page's heading stays for the
+        // chapter index and the outline but is not drawn twice.
+        label: tt("Persona", "用户画像"),
+        titleHidden: true,
+        blocks: [{ type: "persona", board: kyrallPersona }],
       },
       {
         id: "system",

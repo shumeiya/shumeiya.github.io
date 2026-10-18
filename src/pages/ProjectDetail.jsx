@@ -6,6 +6,7 @@ import { projectDetails } from "../data/projectDetails"
 import DetailToc from "../components/project/DetailToc"
 import ScrollRail from "../components/project/ScrollRail"
 import DetailBlocks from "../components/project/DetailBlocks"
+import ProjectHero from "../components/project/ProjectHero"
 import { useLocale, useT } from "../i18n/lang"
 import { ui } from "../i18n/ui"
 
@@ -63,62 +64,37 @@ export default function ProjectDetail() {
       <ScrollRail />
 
       <div className="flex justify-center">
-        <article className="min-w-0 max-w-2xl flex-1">
-          <header className="mb-16">
-            <p className="font-mono-tight text-xs uppercase tracking-wide text-fog">
-              {project.category}
-            </p>
-            <h1 className="mt-2 text-4xl font-semibold tracking-tight text-cream sm:text-5xl">
-              {project.name}
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-fog">
-              {detail.summary ?? project.description}
-            </p>
-
-            {detail.tags && (
-              <ul className="mt-5 flex flex-wrap gap-x-2 gap-y-2">
-                {detail.tags.map((tag) => (
-                  <li
-                    key={tag}
-                    className="rounded-full border border-line px-3 py-1 font-mono-tight text-[11px] uppercase tracking-wide text-fog"
-                  >
-                    {tag}
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-3 border-t border-line pt-5">
-              <div>
-                <dt className="font-mono-tight text-[11px] uppercase tracking-wide text-fog">{t(ui.labelRole)}</dt>
-                <dd className="mt-1 text-sm text-ink">{detail.role}</dd>
-              </div>
-              <div>
-                <dt className="font-mono-tight text-[11px] uppercase tracking-wide text-fog">
-                  {t(ui.labelCategory)}
-                </dt>
-                <dd className="mt-1 text-sm text-ink">{project.category}</dd>
-              </div>
-            </dl>
-          </header>
+        <article className="min-w-0 max-w-5xl flex-1">
+          <ProjectHero project={project} detail={detail} />
 
           {detail.sections.map((section) => (
             <section key={section.id} id={section.id} className="mb-20 scroll-mt-24">
               {section.eyebrow && (
-                <p className="font-mono-tight text-xs uppercase tracking-wide text-fog">
+                <p className="font-mono-tight text-note uppercase tracking-wide text-fog">
                   {section.eyebrow}
                 </p>
               )}
-              <h2 className="mt-2 text-xl font-semibold text-cream sm:text-2xl">{section.label}</h2>
+              {/* A section whose figure carries its own title doesn't need the page's
+                  one twice over — but the heading still has to exist, for the chapter
+                  index that links to it and for the document outline. */}
+              <h2
+                className={
+                  section.titleHidden
+                    ? "sr-only"
+                    : "mt-2 text-xl font-semibold text-cream sm:text-2xl"
+                }
+              >
+                {section.label}
+              </h2>
 
               {section.lead && (
-                <p className="mt-3 text-base leading-relaxed text-ink sm:text-lg">{section.lead}</p>
+                <p className="mt-3 text-copy leading-relaxed text-ink">{section.lead}</p>
               )}
 
               {section.blocks && <DetailBlocks blocks={section.blocks} accent={project.color} />}
 
               {section.body?.map((paragraph, i) => (
-                <p key={i} className="mt-4 text-sm leading-relaxed text-fog sm:text-base">
+                <p key={i} className="mt-4 text-copy leading-relaxed text-fog">
                   {paragraph}
                 </p>
               ))}
@@ -138,8 +114,8 @@ export default function ProjectDetail() {
           <footer className="mt-8 border-t border-line pt-8">
             <Link to={`/project/${next.slug}`} className="group flex items-center justify-between gap-4">
               <div>
-                <p className="font-mono-tight text-xs uppercase tracking-wide text-fog">{t(ui.nextProject)}</p>
-                <p className="mt-1 text-lg font-medium text-cream">{next.name}</p>
+                <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{t(ui.nextProject)}</p>
+                <p className="mt-1 text-copy font-medium text-cream">{next.name}</p>
               </div>
               <ArrowUpRight
                 size={20}

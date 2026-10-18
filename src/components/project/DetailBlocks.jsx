@@ -1,4 +1,8 @@
 import { ArrowUpRight } from "lucide-react"
+import WorkflowBoard from "./WorkflowBoard"
+import BackgroundBoard from "./BackgroundBoard"
+import CompetitorsBoard from "./CompetitorsBoard"
+import PersonaBoard from "./PersonaBoard"
 
 // Typed content blocks for a case-study section. A deck-shaped case study needs
 // more than paragraphs — figures, definition rows, a process sequence and the
@@ -6,14 +10,14 @@ import { ArrowUpRight } from "lucide-react"
 // written as prose. Each block keeps its own shape and its own visual weight.
 
 function Text({ text }) {
-  return <p className="mt-4 text-sm leading-relaxed text-fog sm:text-base">{text}</p>
+  return <p className="mt-4 text-copy leading-relaxed text-fog">{text}</p>
 }
 
 // The author talking about their own work — an open question, a caveat, a risk
 // they are still watching. Set apart so it never reads as product copy.
 function Note({ text }) {
   return (
-    <p className="mt-6 border-l-2 border-line bg-box-2/60 py-3 pl-4 pr-3 text-sm italic leading-relaxed text-fog">
+    <p className="mt-6 border-l-2 border-line bg-box-2/60 py-3 pl-4 pr-3 text-copy italic leading-relaxed text-fog">
       {text}
     </p>
   )
@@ -23,11 +27,11 @@ function Bullets({ title, items }) {
   return (
     <div className="mt-6">
       {title && (
-        <p className="font-mono-tight text-[11px] uppercase tracking-wide text-fog">{title}</p>
+        <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{title}</p>
       )}
       <ul className={`${title ? "mt-3" : ""} space-y-2.5`}>
         {items.map((item) => (
-          <li key={item} className="flex gap-3 text-sm leading-relaxed text-fog sm:text-base">
+          <li key={item} className="flex gap-3 text-copy leading-relaxed text-fog">
             <span aria-hidden="true" className="mt-[0.6em] size-1 shrink-0 rounded-full bg-ink/40" />
             <span>{item}</span>
           </li>
@@ -44,8 +48,8 @@ function Defs({ items }) {
     <dl className="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2">
       {items.map((d) => (
         <div key={d.term} className="border-t border-line pt-3">
-          <dt className="font-mono-tight text-[11px] uppercase tracking-wide text-ink">{d.term}</dt>
-          <dd className="mt-1.5 text-sm leading-relaxed text-fog">{d.text}</dd>
+          <dt className="font-mono-tight text-note uppercase tracking-wide text-ink">{d.term}</dt>
+          <dd className="mt-1.5 text-copy leading-relaxed text-fog">{d.text}</dd>
         </div>
       ))}
     </dl>
@@ -61,8 +65,8 @@ function Stats({ items, accent }) {
       {items.map((s) => (
         <div key={s.label}>
           <dd className="text-3xl font-semibold tracking-tight text-cream">{s.value}</dd>
-          <dt className="mt-1 text-sm font-medium text-ink">{s.label}</dt>
-          {s.note && <p className="mt-1 text-sm leading-relaxed text-fog">{s.note}</p>}
+          <dt className="mt-1 text-copy font-medium text-ink">{s.label}</dt>
+          {s.note && <p className="mt-1 text-note leading-relaxed text-fog">{s.note}</p>}
         </div>
       ))}
     </dl>
@@ -75,7 +79,7 @@ function Steps({ items }) {
     <ol className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-2">
       {items.map((step, i) => (
         <li key={step} className="flex items-center gap-2">
-          <span className="rounded-full border border-line px-3 py-1.5 font-mono-tight text-[11px] uppercase tracking-wide text-ink">
+          <span className="rounded-full border border-line px-3 py-1.5 font-mono-tight text-note uppercase tracking-wide text-ink">
             {step}
           </span>
           {i < items.length - 1 && (
@@ -105,7 +109,7 @@ function Figure({ src, caption, size }) {
       <div className="bg-box">
         <img src={src} alt={caption ?? ""} loading="lazy" className="block h-auto w-full" />
       </div>
-      {caption && <figcaption className="mt-2.5 text-xs leading-relaxed text-fog">{caption}</figcaption>}
+      {caption && <figcaption className="mt-2.5 text-note leading-relaxed text-fog">{caption}</figcaption>}
     </figure>
   )
 }
@@ -125,10 +129,10 @@ function Links({ items }) {
             className="group flex items-start justify-between gap-4 border-t border-line pt-3"
           >
             <span className="min-w-0">
-              <span className="block text-sm font-medium text-ink transition-colors group-hover:text-cream">
+              <span className="block text-copy font-medium text-ink transition-colors group-hover:text-cream">
                 {l.label}
               </span>
-              {l.note && <span className="mt-1 block text-sm leading-relaxed text-fog">{l.note}</span>}
+              {l.note && <span className="mt-1 block text-note leading-relaxed text-fog">{l.note}</span>}
             </span>
             <ArrowUpRight
               size={16}
@@ -156,7 +160,7 @@ function Video({ src, title, caption }) {
           className="h-full w-full border-0"
         />
       </div>
-      {caption && <figcaption className="mt-2.5 text-xs leading-relaxed text-fog">{caption}</figcaption>}
+      {caption && <figcaption className="mt-2.5 text-note leading-relaxed text-fog">{caption}</figcaption>}
     </figure>
   )
 }
@@ -180,6 +184,14 @@ export default function DetailBlocks({ blocks, accent }) {
         return <Links key={i} items={block.items} />
       case "video":
         return <Video key={i} src={block.src} title={block.title} caption={block.caption} />
+      case "workflow":
+        return <WorkflowBoard key={i} board={block.board} accent={accent} />
+      case "background":
+        return <BackgroundBoard key={i} board={block.board} />
+      case "competitors":
+        return <CompetitorsBoard key={i} board={block.board} />
+      case "persona":
+        return <PersonaBoard key={i} board={block.board} />
       default:
         return <Text key={i} text={block.text} />
     }

@@ -48,6 +48,8 @@ export const ui = {
   labelCategory: tt("Category", "类别"),
   nextProject: tt("Next project", "下一个项目"),
   sectionIndex: tt("Section index", "章节目录"),
+  // Shown under a figure that is wider than the column it is read in.
+  scrollSideways: tt("Scroll sideways to see the whole board", "左右滑动查看完整图板"),
 
   // About
   aboutExperience: tt("Work Experience", "工作经历"),
