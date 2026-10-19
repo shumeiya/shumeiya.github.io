@@ -21,8 +21,45 @@ import { ui } from "../../i18n/ui"
 const OX = 78
 const OY = 136
 const BOARD_W = 1762
-const BOARD_H = 2411
+// The stacked WHO block is this much taller than the side-by-side one it replaced,
+// so everything below it moves down by the same amount and the board grows. The
+// figure includes the gap the deck leaves between acts, which the taller block needs
+// more of than the shallow one did.
+const WHO_SHIFT = 564
+// Re-spacing the BEFORE and AFTER acts at the page's type sizes adds this much again:
+// the deck's gaps were measured around 18px Chinese, and at 25px the same numbers read
+// as crowding. One break between acts is 128, a title sits 46 under its eyebrow, and
+// the first thing under a title sits 76 below it.
+const SPACING_GROW = 311
+const BOARD_H = 2411 + SPACING_GROW + WHO_SHIFT
 const MIN_SCALE = 0.45
+
+// The board is drawn at artboard scale and then scaled into the reading column, so a
+// size written here lands on screen at size × (column / BOARD_W) — about 0.58 at the
+// column's full width. These are written the other way round: the artboard number
+// that puts a wanted size on the reader's screen.
+const COLUMN_W = 1024
+// Rounded up, never down: these are floors, and 24 would land at 13.95px.
+const onScreen = (target) => Math.ceil((target * BOARD_W) / COLUMN_W)
+const SIZE_BODY = onScreen(16)
+// Every act's eyebrow and section title is set from this pair, so the four acts read
+// at one size rather than at whatever the slide happened to give each of them.
+const SIZE_META = onScreen(14)
+const SIZE_TITLE = 50
+const SIZE_COST = onScreen(18)
+
+// The bracket chips are 44 tall and their word is one line of SIZE_META at 1.4, so
+// this is where that line starts if it is to sit in the middle of the box.
+const CHIP_H = 44
+const CHIP_TEXT_Y = (top) => top + (CHIP_H - SIZE_META * 1.4) / 2
+
+// A bracket chip sits ON its bracket's rule, not under it. Both brackets are drawn
+// 48 tall, but the rule inside each SVG is at a different fraction of its own height
+// — 24 of 49.562 for hours, 25.562 of 50.2902 for weeks — so the chip's top is
+// derived rather than guessed at.
+const BRACKET_H = 48
+const RULE_IN = { hours: (BRACKET_H * 24) / 49.562, weeks: (BRACKET_H * 25.562) / 50.2902 }
+const CHIP_Y = (bracketY, which) => bracketY + RULE_IN[which] - CHIP_H / 2
 
 const ACCENT = "var(--deck-accent)"
 const ACCENT_INK = "var(--deck-accent-ink)"
@@ -73,7 +110,7 @@ function Text({ x, y, w, children, size = 20, weight = 400, color = "var(--color
 
 // Line art from the deck, used as a mask so the drawing keeps its exact shape while
 // the theme decides its colour.
-function Art({ src, x, y, w, h, color = ACCENT_INK }) {
+function Art({ src, x, y, w, h, color = ACCENT_INK, rotate }) {
   const mask = {
     maskImage: `url(${ART}/${src})`,
     WebkitMaskImage: `url(${ART}/${src})`,
@@ -82,7 +119,12 @@ function Art({ src, x, y, w, h, color = ACCENT_INK }) {
     maskRepeat: "no-repeat",
     WebkitMaskRepeat: "no-repeat",
   }
-  return <div aria-hidden="true" style={{ ...at(x, y, w, h), background: color, ...mask }} />
+  return (
+    <div
+      aria-hidden="true"
+      style={{ ...at(x, y, w, h), background: color, ...mask, transform: rotate ? `rotate(${rotate}deg)` : undefined }}
+    />
+  )
 }
 
 // The deck's dashes: 2.02 on, 2.02 off.
@@ -123,20 +165,6 @@ function Sprite({ sheet, x, y, w, h, img, className }) {
   )
 }
 
-function Chip({ x, y, w, h, cut, children, size = 18 }) {
-  const pad = h === 44 ? [16, 10] : [14, 8]
-  return (
-    <>
-      <div style={at(x, y, w, h)}>
-        <Chamfer stroke={RULE} cut={cut} width={1} />
-      </div>
-      <Text x={x + pad[0]} y={y + pad[1]} size={size}>
-        {children}
-      </Text>
-    </>
-  )
-}
-
 // --- the board ---------------------------------------------------------------
 
 export default function BackgroundBoard({ board }) {
@@ -157,7 +185,11 @@ export default function BackgroundBoard({ board }) {
   const { who, before, after, oneLine } = board
 
   // Geometry constants lifted straight from the frame.
-  const STAGE_X = [80, 465, 850, 1235, 1620]
+  // The deck set these 220 wide with 165px of air between them, which fits a 18px
+  // Chinese label. At the size the page needs, "05 MANUFACTURING" is wider than the
+  // card — so the air pays for the width: 307 wide, 56 apart, same span.
+  const STAGE_X = [80, 443, 806, 1169, 1532]
+  const STAGE_W = 307
   const PANEL = [
     { x: 80, w: 439, pitch: 13.3015 },
     { x: 579, w: 761, pitch: 24.6397 },
@@ -183,43 +215,66 @@ export default function BackgroundBoard({ board }) {
             </Text>
 
             {/* ---- 01 · WHO ---- */}
-            <Text x={80} y={334} size={18} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
+            <Text x={80} y={334} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
               {who.eyebrow}
             </Text>
-            <Text x={80} y={374} size={36} weight={500} color="var(--color-cream)">
+            <Text x={80} y={380} size={SIZE_TITLE} weight={500} color="var(--color-cream)">
               {who.title}
             </Text>
-            <Text x={80} y={438} w={720} size={20} lh={1.6}>
+            <Text x={80} y={462} w={1100} size={SIZE_BODY} lh={1.5}>
               {who.body}
             </Text>
-            {who.chips.map((chip, i) => (
-              <Chip key={i} x={[80, 253, 422][i]} y={526} w={[161, 157, 144][i]} h={44} cut={8}>
-                {chip}
-              </Chip>
-            ))}
-            <Art src="chevron.svg" x={857} y={370} w={91} h={115} />
+            {/* Auto-width rather than the deck's fixed boxes: at this size the two
+                languages no longer set to the same widths. */}
+            <div style={{ ...at(80, 576), display: "flex", gap: 20 }}>
+              {who.chips.map((chip, i) => (
+                <span
+                  key={i}
+                  style={{
+                    position: "relative",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    height: 52,
+                    padding: "0 20px",
+                    fontFamily: SANS,
+                    fontSize: SIZE_META,
+                    lineHeight: 1,
+                    color: "var(--color-ink)",
+                  }}
+                >
+                  <Chamfer stroke={RULE} cut={8} width={1} />
+                  <span style={{ position: "relative" }}>{chip}</span>
+                </span>
+              ))}
+            </div>
+            {/* The deck points this chevron sideways, from the copy to the cards. The
+                cards are underneath now, so it turns to point at them. */}
+            <Art src="chevron.svg" x={914} y={654} w={91} h={115} rotate={90} />
             {who.needs.map((need, i) => {
-              const x = [980, 1267, 1553][i]
+              const x = [80, 680, 1280][i]
               return (
                 <div key={i}>
-                  <div style={at(x, 361, 267, 225)}>
+                  <div style={at(x, 790, 560, 290)}>
                     <Chamfer stroke={need.lit ? ACCENT : RULE} cut={12} />
                   </div>
-                  <Text x={x + 24} y={389} size={40} weight={500} color="var(--color-cream)">
+                  <Text x={x + 32} y={820} size={55} weight={500} color="var(--color-cream)">
                     {need.title}
                   </Text>
-                  <Text x={x + 24} y={454} w={219} size={18} lh={1.5}>
+                  <Text x={x + 32} y={908} w={496} size={SIZE_BODY} lh={1.5}>
                     {need.body}
                   </Text>
                 </div>
               )
             })}
 
+            {/* Everything below the WHO block keeps the deck's own coordinates and
+                is simply offset, so the acts below did not have to be renumbered. */}
+            <div style={{ position: "absolute", left: 0, top: WHO_SHIFT, width: BOARD_W }}>
             {/* ---- 02 · BEFORE ---- */}
-            <Text x={80} y={644} size={18} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
+            <Text x={80} y={644} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
               {before.eyebrow}
             </Text>
-            <Text x={80} y={684} size={40} weight={500} color="var(--color-cream)">
+            <Text x={80} y={684} size={SIZE_TITLE} weight={500} color="var(--color-cream)">
               {before.title}
             </Text>
             {/* the five silos — picture frames, so they keep a dark surface */}
@@ -227,14 +282,14 @@ export default function BackgroundBoard({ board }) {
               <div key={i}>
                 <div
                   style={{
-                    ...at(STAGE_X[i], 818, 220, 226),
+                    ...at(STAGE_X[i], 818, STAGE_W, 226),
                     background: FIGURE,
                     border: `${stage.lit ? 2 : 1}px solid ${stage.lit ? ACCENT : RULE}`,
                   }}
                 />
                 <div
                   style={{
-                    ...at(STAGE_X[i], 818 + 184, 220, 22),
+                    ...at(STAGE_X[i], 818 + 182, STAGE_W, 32),
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -243,28 +298,28 @@ export default function BackgroundBoard({ board }) {
                     textTransform: "uppercase",
                   }}
                 >
-                  <span style={{ fontFamily: MONO, fontSize: 20, fontWeight: 500, letterSpacing: "0.4px", lineHeight: 1.1 }}>
+                  <span style={{ fontFamily: MONO, fontSize: SIZE_META + 2, fontWeight: 500, letterSpacing: "0.4px", lineHeight: 1.1 }}>
                     {stage.n}
                   </span>
-                  <span style={{ fontFamily: SANS, fontSize: 18, fontWeight: 500 }}>{stage.label}</span>
+                  <span style={{ fontFamily: SANS, fontSize: SIZE_META, fontWeight: 500 }}>{stage.label}</span>
                 </div>
               </div>
             ))}
-            <Sprite className="deck-render" sheet="stage-icons.png" x={110} y={830} w={160} h={160} img={{ height: "201.05%", left: "-10.13%", top: "-6.96%", width: "348.1%" }} />
-            <Sprite className="deck-render" sheet="stage-icons.png" x={488} y={830} w={174} h={160} img={{ height: "207.17%", left: "-56.18%", top: "-107.18%", width: "330%" }} />
+            <Sprite className="deck-render" sheet="stage-icons.png" x={154} y={830} w={160} h={160} img={{ height: "201.05%", left: "-10.13%", top: "-6.96%", width: "348.1%" }} />
+            <Sprite className="deck-render" sheet="stage-icons.png" x={510} y={830} w={174} h={160} img={{ height: "207.17%", left: "-56.18%", top: "-107.18%", width: "330%" }} />
             <Sprite className="deck-render" sheet="stage-icons.png" x={880} y={830} w={160} h={160} img={{ height: "201.05%", left: "-230.7%", top: "-6.96%", width: "348.1%" }} />
-            <Sprite className="deck-render" sheet="stage-icons.png" x={1265} y={833} w={160} h={153} img={{ height: "226.9%", left: "-177.63%", top: "-115.65%", width: "375%" }} />
-            <Sprite className="deck-render" sheet="stage-icons.png" x={1655} y={835} w={150} h={150} img={{ height: "201.05%", left: "-130.19%", top: "-6.96%", width: "348.1%" }} />
-            {[306, 691, 1076, 1461].map((x) => (
-              <Dashes key={x} x={x} y={965} len={113} color={RULE} />
+            <Sprite className="deck-render" sheet="stage-icons.png" x={1243} y={833} w={160} h={153} img={{ height: "226.9%", left: "-177.63%", top: "-115.65%", width: "375%" }} />
+            <Sprite className="deck-render" sheet="stage-icons.png" x={1611} y={835} w={150} h={150} img={{ height: "201.05%", left: "-130.19%", top: "-6.96%", width: "348.1%" }} />
+            {[395, 758, 1121, 1484].map((x) => (
+              <Dashes key={x} x={x} y={965} len={40} color={RULE} />
             ))}
 
             {/* the weeks bracket */}
             <Art src="bracket-weeks.svg" x={80} y={1068} w={1760} h={48} />
-            <div style={at(876, 1068, 169, 44)}>
+            <div style={at(876, CHIP_Y(1068, "weeks"), 169, CHIP_H)}>
               <Chamfer stroke={ACCENT} fill={SURFACE} cut={10} width={1.5} />
             </div>
-            <Text x={876} y={1081} w={169} size={24} weight={500} mono tracking="0.24px" lh={1.4} align="center" color={ACCENT_INK}>
+            <Text x={876} y={CHIP_TEXT_Y(CHIP_Y(1068, "weeks"))} w={169} size={SIZE_META} weight={500} mono tracking="0.24px" lh={1.4} align="center" color={ACCENT_INK}>
               {before.bracket}
             </Text>
 
@@ -282,7 +337,7 @@ export default function BackgroundBoard({ board }) {
                   x={panel.x + 24}
                   y={1138 + (i === 1 ? 22 : 25)}
                   w={panel.w - 48}
-                  size={22}
+                  size={SIZE_META}
                   weight={500}
                   align="center"
                   color={ON_FIGURE}
@@ -293,9 +348,9 @@ export default function BackgroundBoard({ board }) {
                 <div style={{ ...at(panel.x + 25, 1313, panel.w - 50, 43), background: RULE }} />
                 <Text
                   x={panel.x + 25}
-                  y={1323}
+                  y={1319}
                   w={panel.w - 50}
-                  size={20}
+                  size={SIZE_META}
                   weight={300}
                   align="center"
                   color={ON_RULE}
@@ -320,119 +375,145 @@ export default function BackgroundBoard({ board }) {
             <Dashes x={1346} y={1259.5} len={48} vertical color={RULE} />
 
             {/* what it costs */}
-            <Art src="num-68.svg" x={80} y={1441} w={180} h={64.28} />
+            <Art src="num-68.svg" x={80} y={1461} w={180} h={64.28} />
             <Text x={277} y={1476} size={28} weight={500} lh={1.5} color={ACCENT_INK}>
               {before.weeksWord}
             </Text>
-            <Art src="num-4.svg" x={619} y={1441} w={63.73} h={63.92} />
-            <Art src="num-0.svg" x={690.73} y={1446.82} w={64} h={64.26} />
-            <Art src="num-pct.svg" x={762.73} y={1476.23} w={27.09} h={28.69} />
-            <Art src="num-x.svg" x={1410} y={1441} w={56.09} h={64} />
-            <Art src="word-times.svg" x={1482} y={1476} w={107.3} h={28.41} />
-            <Art src="chevron.svg" x={1179} y={1496.5} w={91} h={115} />
+            <Art src="num-4.svg" x={619} y={1461} w={63.73} h={63.92} />
+            <Art src="num-0.svg" x={690.73} y={1466.82} w={64} h={64.26} />
+            <Art src="num-pct.svg" x={762.73} y={1496.23} w={27.09} h={28.69} />
+            <Art src="num-x.svg" x={1410} y={1461} w={56.09} h={64} />
+            <Art src="word-times.svg" x={1482} y={1496} w={107.3} h={28.41} />
+            <Art src="chevron.svg" x={1179} y={1516.5} w={91} h={115} />
             {before.costs.map((cost, i) => (
               <div key={i}>
-                <Text x={[80, 619, 1410][i]} y={1531} w={420} size={28} weight={500} lh={1.5} color="var(--color-cream)">
+                <Text x={[80, 619, 1410][i]} y={1551} w={[480, 480, 420][i]} size={SIZE_COST} weight={500} lh={1.4} color="var(--color-cream)">
                   {cost.title}
                 </Text>
-                <Text x={[80, 619, 1410][i]} y={1583} w={[371, 406, 376][i]} size={20} lh={1.5}>
+                <Text x={[80, 619, 1410][i]} y={1610} w={[480, 480, 420][i]} size={SIZE_META} lh={1.5}>
                   {cost.body}
                 </Text>
               </div>
             ))}
 
             {/* ---- 03 · AFTER ---- */}
-            <Text x={80} y={1752} size={18} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
+            <Text x={80} y={1850} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
               {after.eyebrow}
             </Text>
-            <Text x={80} y={1792} size={40} weight={500} color="var(--color-cream)">
+            <Text x={80} y={1890} size={SIZE_TITLE} weight={500} color="var(--color-cream)">
               {after.title}
             </Text>
 
-            <div style={at(78, 1887, 300, 271)}>
+            {/* The deck's five cards were sized around 18px Chinese. At the page's
+                sizes the copy needs roughly a third more room, so the row buys it
+                twice over: the two outer gaps come down from 100 to 56, and every
+                card grows taller. The span is still 78 → 1838. */}
+            <div style={at(78, 2026, 330, 420)}>
               <Chamfer stroke={RULE} fill={SURFACE} cut={{ tr: 16 }} />
             </div>
-            <Text x={102} y={1911} size={22} weight={500} color="var(--color-cream)">
+            <Text x={102} y={2050} size={SIZE_COST} weight={500} color="var(--color-cream)">
               {after.inputTitle}
             </Text>
-            {after.inputs.map((input, i) => (
-              <Chip key={i} x={102} y={1887 + [70, 122, 174][i]} w={[135, 167, 203][i]} h={40} cut={{ tr: 8 }}>
-                {input}
-              </Chip>
-            ))}
+            {/* Auto-width, like the WHO chips: the deck's fixed boxes were measured
+                for 18px, and the two languages no longer set to the same widths. */}
+            <div style={{ ...at(102, 2112), display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 10 }}>
+              {after.inputs.map((input, i) => (
+                <span
+                  key={i}
+                  style={{
+                    position: "relative",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    height: 46,
+                    padding: "0 18px",
+                    fontFamily: SANS,
+                    fontSize: SIZE_META,
+                    lineHeight: 1,
+                    color: "var(--color-ink)",
+                  }}
+                >
+                  <Chamfer stroke={RULE} cut={{ tr: 8 }} width={1} />
+                  <span style={{ position: "relative" }}>{input}</span>
+                </span>
+              ))}
+            </div>
 
             {after.steps.map((step, i) => {
-              const x = [478, 831, 1185][i]
+              const x = [464, 807, 1150][i]
               return (
                 <div key={i}>
-                  <div style={at(x, 1887, 313, 271)}>
+                  <div style={at(x, 2026, 303, 420)}>
                     <Chamfer stroke={ACCENT} fill={SURFACE} cut={{ tr: 16 }} />
                   </div>
-                  <Text x={x + 24} y={1907} size={18} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
+                  <Text x={x + 24} y={2050} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
                     {step.n}
                   </Text>
-                  <Text x={x + 24} y={1939} w={265} size={26} weight={500} color="var(--color-cream)">
+                  <Text x={x + 24} y={2090} w={255} size={SIZE_COST} weight={500} lh={1.2} color="var(--color-cream)">
                     {step.title}
                   </Text>
-                  <Text x={x + 24} y={i === 0 ? 2017 : 1985} w={265} size={18} lh={1.5}>
+                  {/* One offset for all three: the deck nudged each card's body to
+                      sit under a title of its own length, which only holds for one
+                      language. A fixed start keeps the three bodies on one line. */}
+                  <Text x={x + 24} y={2186} w={255} size={SIZE_META} lh={1.5}>
                     {step.body}
                   </Text>
                 </div>
               )
             })}
 
-            <div style={at(1598, 1887, 240, 271)}>
+            <div style={at(1509, 2026, 329, 420)}>
               <Chamfer stroke={ACCENT} fill={SURFACE} cut={{ tr: 16 }} />
             </div>
-            <Text x={1622} y={1911} size={22} weight={500} color={ACCENT_INK}>
+            <Text x={1533} y={2050} size={SIZE_COST} weight={500} color={ACCENT_INK}>
               {after.outputTitle}
             </Text>
-            <Text x={1622} y={1950} w={192} size={22} weight={500} lh={1.4} color="var(--color-cream)">
+            <Text x={1533} y={2096} w={281} size={SIZE_COST} weight={500} lh={1.3} color="var(--color-cream)">
               {after.output}
             </Text>
-            <Text x={1622} y={2090} w={192} size={18}>
+            <Text x={1533} y={2356} w={281} size={SIZE_META} lh={1.5}>
               {after.outputNote}
             </Text>
 
-            {/* the connectors between the flow cards */}
+            {/* the connectors between the flow cards, in the gaps they bridge */}
             {[
-              [378, 60],
-              [791, 40],
-              [1144, 41],
-              [1538, 60],
+              [408, 56],
+              [767, 40],
+              [1110, 40],
+              [1453, 56],
             ].map(([x, w]) => (
-              <div key={x} aria-hidden="true" style={{ ...at(x, 2016, w, 2), background: ACCENT_INK }} />
+              <div key={x} aria-hidden="true" style={{ ...at(x, 2236, w, 2), background: ACCENT_INK }} />
             ))}
             {[
-              [378, 100],
-              [791, 40],
-              [1144, 41],
-              [1498, 100],
+              [408, 56],
+              [767, 40],
+              [1110, 40],
+              [1453, 56],
             ].map(([x, w]) => (
-              <div key={`c${x}`} aria-hidden="true" style={{ ...at(x, 2021.5, w, 2), background: ACCENT_INK }} />
+              <div key={`c${x}`} aria-hidden="true" style={{ ...at(x, 2241.5, w, 2), background: ACCENT_INK }} />
             ))}
 
-            <Art src="bracket-hours.svg" x={478} y={2174} w={1020} h={48} />
-            <div style={at(904, 2200, 169, 44)}>
+            <Art src="bracket-hours.svg" x={464} y={2462} w={989} h={48} />
+            <div style={at(874, CHIP_Y(2462, "hours"), 169, CHIP_H)}>
               <Chamfer stroke={ACCENT} fill={SURFACE} cut={10} width={1.5} />
             </div>
-            <Text x={904} y={2213} w={169} size={24} weight={500} mono tracking="0.24px" lh={1.4} align="center" color={ACCENT_INK}>
+            <Text x={874} y={CHIP_TEXT_Y(CHIP_Y(2462, "hours"))} w={169} size={SIZE_META} weight={500} mono tracking="0.24px" lh={1.4} align="center" color={ACCENT_INK}>
               {after.bracket}
             </Text>
 
             {/* ---- the one line ---- */}
-            <div style={at(80, 2327, 1760, 220)}>
+            <div style={at(80, 2638, 1760, 220)}>
               <Chamfer stroke={ACCENT} cut={12} />
             </div>
-            <Text x={128} y={2367} size={18} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
+            <Text x={128} y={2678} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
               {oneLine.eyebrow}
             </Text>
-            <Text x={128} y={2407} size={56} weight={500} color={ACCENT_INK}>
+            <Text x={128} y={2718} size={56} weight={500} color={ACCENT_INK}>
               {oneLine.title}
             </Text>
-            <Text x={128} y={2493} size={20} weight={500} mono tracking="0.8px">
+            <Text x={128} y={2804} size={20} weight={500} mono tracking="0.8px">
               {oneLine.sub}
             </Text>
+            </div>
           </div>
         </div>
       </div>

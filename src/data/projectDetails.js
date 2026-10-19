@@ -9,6 +9,8 @@ import { kyrallWorkflow } from "./kyrallWorkflow"
 import { kyrallBackground } from "./kyrallBackground"
 import { kyrallCompetitors } from "./kyrallCompetitors"
 import { kyrallPersona } from "./kyrallPersona"
+import { kyrallStoryMap } from "./kyrallStoryMap"
+import { kyrallSystem } from "./kyrallSystem"
 
 export const projectDetails = {
   kyrall: {
@@ -66,17 +68,21 @@ export const projectDetails = {
         // chapter index and the outline but is not drawn twice.
         label: tt("Persona", "用户画像"),
         titleHidden: true,
-        blocks: [{ type: "persona", board: kyrallPersona }],
+        blocks: [
+          { type: "persona", board: kyrallPersona },
+          { type: "storymap", board: kyrallStoryMap },
+        ],
       },
       {
         id: "system",
-        eyebrow: tt("05 · Foundation", "05 · 基础"),
-        label: tt("System", "系统"),
+        eyebrow: tt("05 · Design System", "05 · 设计系统"),
+        label: tt("Design System", "设计系统"),
         lead: tt(
           "Build the system before the product gets complex.",
           "在产品变复杂之前，先把系统建起来。"
         ),
         blocks: [
+          { type: "system", board: kyrallSystem },
           {
             text: tt(
               "The design system was not a separate branding exercise. It became the rule set that let the product add tools without fragmenting the experience.",

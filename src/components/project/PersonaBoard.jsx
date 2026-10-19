@@ -18,12 +18,15 @@ import { ui } from "../../i18n/ui"
 const OX = 80
 const OY = 136
 const BOARD_W = 1760
-const BOARD_H = 773
+const BOARD_H = 729
 const MIN_SCALE = 0.45
 
 const CARD_W = 560
 const CARD_H = 613
-const CARD_Y = 296
+// The deck leaves 93 under its title, which is a slide's proportion, not a page's —
+// at the scale the board renders that reads as a hole. 49 puts the gap at about
+// three quarters of the title's own size.
+const CARD_Y = 252
 const CARD_X = [80, 680, 1280]
 
 const ACCENT = "var(--deck-accent)"

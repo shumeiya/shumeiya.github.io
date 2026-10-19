@@ -66,8 +66,8 @@ function Card({ card }) {
 function Bar({ bar }) {
   return (
     <div
-      className="absolute flex items-start justify-center"
-      style={{ left: bar.x, top: bar.y, width: bar.w, height: 46, padding: "12px 0" }}
+      className="absolute flex items-center justify-center"
+      style={{ left: bar.x, top: bar.y, width: bar.w, height: 46 }}
     >
       <Chamfer
         fill={bar.tone === "lime" ? SURFACE : "var(--deck-band)"}
@@ -77,7 +77,9 @@ function Bar({ bar }) {
         className="relative whitespace-nowrap"
         style={{
           fontFamily: SANS,
-          fontSize: 18,
+          // The deck set the rails a step smaller than the cards; on the page they
+          // match, so the board has one body size rather than two.
+          fontSize: 20,
           lineHeight: "normal",
           color: bar.tone === "lime" ? "var(--deck-on-rail)" : "var(--deck-on-band)",
         }}
