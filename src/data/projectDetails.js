@@ -81,62 +81,11 @@ export const projectDetails = {
           "Build the system before the product gets complex.",
           "在产品变复杂之前，先把系统建起来。"
         ),
-        blocks: [
-          { type: "system", board: kyrallSystem },
-          {
-            text: tt(
-              "The design system was not a separate branding exercise. It became the rule set that let the product add tools without fragmenting the experience.",
-              "设计系统不是一次独立的品牌练习。它成了一套规则，让产品能不断加功能，而体验不被切碎。"
-            ),
-          },
-          {
-            text: tt(
-              "The brand was delivered in collaboration with the Koto agency. From that foundation I built the complete Figma design system: a clip-corner shape language, Kyrall Lime Yellow, and the Ufficio and Ufficio Mono typefaces.",
-              "品牌部分由 Koto 团队协作交付。在这个基础上，我搭出了完整的 Figma 设计系统：切角的形状语言、Kyrall 青柠黄，以及 Ufficio 与 Ufficio Mono 两款字体。"
-            ),
-          },
-          {
-            type: "bullets",
-            title: tt("A system that had to scale", "一套必须能长大的系统"),
-            items: [
-              tt(
-                "Light and dark themes use semantic color tokens rather than simple inversion.",
-                "浅色与深色主题用语义化色彩 token，而不是简单反色。"
-              ),
-              tt(
-                "Typography separates product communication from technical and system information.",
-                "字体层级把产品沟通与技术、系统信息分开。"
-              ),
-              tt(
-                "Domain-specific icons make CAD actions recognizable without permanent text labels.",
-                "领域专属图标让 CAD 操作不必常驻文字标签也能被认出来。"
-              ),
-              tt(
-                "Buttons, dialogs, fields, sidebars, toolbars and panels share controlled state rules.",
-                "按钮、弹窗、输入框、侧栏、工具栏与面板共享一套受控的状态规则。"
-              ),
-            ],
-          },
-          {
-            type: "note",
-            text: tt(
-              "A detail easy to miss: the brand yellow isn’t the same hex in dark and light mode (#C4FF35 dark, #C2F000 light). The token wasn’t copied over — it was re-tuned for legibility against each background, which is where a token system becomes a real design decision rather than a naming exercise.",
-              "一个容易被忽略的细节：品牌黄在深色和浅色模式下并不是同一个色值（深色 #C4FF35，浅色 #C2F000）。token 不是照搬过去的，而是针对各自底色重新调过可读性 —— 这正是 token 系统从「命名练习」变成真正设计决策的地方。"
-            ),
-          },
-          {
-            text: tt(
-              "To keep the system from decaying into documentation nobody opens, I authored a kyrall-layout Skill file that generates on-brand slide and deck pages directly inside Figma through the Figma MCP connector. The design system stops being a rulebook someone has to check every file against and becomes a tool the team — or an external agency — can simply run.",
-              "为了不让系统退化成没人打开的文档，我写了一个 kyrall-layout 的 Skill 文件，通过 Figma MCP 连接器，直接在 Figma 里生成符合品牌的幻灯片与版面。设计系统于是不再是一本需要逐个文件对照的规则书，而变成团队——甚至外部代理商——可以直接运行的工具。"
-            ),
-          },
-          {
-            text: tt(
-              "The strongest proof of the system is not the library itself — it is how later Editor features reuse the same interaction grammar.",
-              "系统最有力的证明不是组件库本身，而是后来的编辑器功能，复用了同一套交互语法。"
-            ),
-          },
-        ],
+        // The board carries this chapter on its own: it shows the tokens, the two
+        // typefaces, the icon set and the component library in the deck's own
+        // artwork. The prose that used to follow it restated the same four points
+        // in words, so the section is the board and nothing else.
+        blocks: [{ type: "system", board: kyrallSystem }],
       },
       {
         id: "loop",

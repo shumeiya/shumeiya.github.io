@@ -29,6 +29,16 @@ const SIZE_BODY = onScreen(16)
 const SIZE_META = onScreen(14)
 const SIZE_TITLE = 40
 
+// The palette switch and the component pager are the same chip, and both sit centred
+// under the block they drive rather than off beside its title: the thing they change
+// is the wide block below, so the control belongs with it, not in the corner.
+const CTRL_W = 288
+const CTRL_H = 56
+const CTRL_X = 80 + (1760 - CTRL_W) / 2
+const CTRL_GAP = 32
+// The room a centred control takes out of the flow, which the act below it moves by.
+const CTRL_ROOM = CTRL_GAP + CTRL_H
+
 const ACCENT = "var(--deck-accent)"
 const ACCENT_INK = "var(--deck-accent-ink)"
 const RULE = "var(--deck-rule)"
@@ -178,8 +188,8 @@ function Swatch({ x, y, w, name, value }) {
 // and this switches between them — the deck stacked both, which at page sizes is a
 // lot of chips to scan before the difference becomes visible.
 function ThemeSwitch({ x, y, value, onChange, labels }) {
-  const W = 288
-  const H = 56
+  const W = CTRL_W
+  const H = CTRL_H
   const SEG = (W - 8) / 2
   return (
     <div style={at(x, y, W, H)} role="group">
@@ -221,8 +231,8 @@ function ThemeSwitch({ x, y, value, onChange, labels }) {
 // The component act's pager. Nine mock-ups is more than anyone reads at once, so
 // they run three at a time behind a window that slides.
 function Pager({ x, y, page, pages, onChange, label }) {
-  const W = 288
-  const H = 56
+  const W = CTRL_W
+  const H = CTRL_H
   const arrow = (dir) => (
     <button
       type="button"
@@ -274,11 +284,13 @@ function Pager({ x, y, page, pages, onChange, label }) {
 // The deck fits nine swatches in one row; at this size five fit, so the row wraps.
 const SW_X = [96, 445, 794, 1143, 1492]
 const SW_W = 332
+// Two rows of swatches plus the card's own label. The switch sits under this.
+const PAL_H = 355
 
 function Palette({ y, label, tokens, pick }) {
   return (
     <>
-      <div style={at(80, y, 1760, 355)}>
+      <div style={at(80, y, 1760, PAL_H)}>
         <Chamfer fill={BAND} stroke={RULE} cut={12} />
       </div>
       <Text x={96} y={y + 16} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
@@ -323,11 +335,15 @@ export default function SystemBoard({ board }) {
 
   // --- the vertical rhythm, act by act ---------------------------------------
   const COLOUR_Y = 340
-  const TYPE_Y = 1019
-  const ICON_Y = 2189
+  const PAL_Y = COLOUR_Y + 244
+  // The switch moved out from beside the act's title to under the swatch card, so
+  // every act below it starts one control lower than the deck had it.
+  const SWITCH_Y = PAL_Y + PAL_H + CTRL_GAP
+  const TYPE_Y = 1019 + CTRL_ROOM
+  const ICON_Y = 2189 + CTRL_ROOM
   // The icon act runs long — five rows of tiles plus the keyline drawings — so the
   // component act starts below where they end, not at a round number.
-  const COMP_Y = 4419
+  const COMP_Y = 4419 + CTRL_ROOM
 
   // Four specimen columns, as the deck arranges them. Each card is drawn at the
   // artwork's own pixel size so the label patches below line up exactly.
@@ -374,7 +390,7 @@ export default function SystemBoard({ board }) {
   const COMP_GRID_Y = COMP_Y + 244
   const PAGES = Math.ceil(components.items.length / 3)
 
-  const BOARD_H = COMP_GRID_Y + CARD_H - OY
+  const BOARD_H = COMP_GRID_Y + CARD_H + CTRL_ROOM - OY
 
   return (
     <figure className="mt-6">
@@ -398,18 +414,18 @@ export default function SystemBoard({ board }) {
 
             {/* ---- 01 · colour tokens ---- */}
             <ActHead y={COLOUR_Y} eyebrow={colour.eyebrow} title={colour.title} body={colour.body} />
-            <ThemeSwitch
-              x={1552}
-              y={COLOUR_Y + 58}
-              value={palette}
-              onChange={setPalette}
-              labels={{ dark: "Dark", light: "Light" }}
-            />
             <Palette
-              y={COLOUR_Y + 244}
+              y={PAL_Y}
               label={palette === "dark" ? colour.darkLabel : colour.lightLabel}
               tokens={colour.tokens}
               pick={(token) => (palette === "dark" ? token.dark : token.light)}
+            />
+            <ThemeSwitch
+              x={CTRL_X}
+              y={SWITCH_Y}
+              value={palette}
+              onChange={setPalette}
+              labels={{ dark: "Dark", light: "Light" }}
             />
 
             {/* ---- 02 · typography ---- */}
@@ -479,14 +495,6 @@ export default function SystemBoard({ board }) {
 
             {/* ---- 04 · components ---- */}
             <ActHead y={COMP_Y} eyebrow={components.eyebrow} title={components.title} body={components.body} />
-            <Pager
-              x={1552}
-              y={COMP_Y + 58}
-              page={page}
-              pages={PAGES}
-              onChange={setPage}
-              label={components.pageLabel}
-            />
             <div style={{ ...at(80, COMP_GRID_Y, 1760, CARD_H), overflow: "hidden" }}>
               <div
                 style={{
@@ -541,6 +549,14 @@ export default function SystemBoard({ board }) {
                 })}
               </div>
             </div>
+            <Pager
+              x={CTRL_X}
+              y={COMP_GRID_Y + CARD_H + CTRL_GAP}
+              page={page}
+              pages={PAGES}
+              onChange={setPage}
+              label={components.pageLabel}
+            />
           </div>
         </div>
       </div>
