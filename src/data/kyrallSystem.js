@@ -46,6 +46,19 @@ export const kyrallSystem = {
       "Ufficio 承载产品沟通信息，Ufficio Mono 承载技术与系统信息：坐标、参数、ID 与状态。字重只用 300 / 400 / 500，字号沿用 text-xs 到 text-9xl 的刻度。"
     ),
     numeralsLabel: tt("Custom numerals", "自定义数字"),
+    // The deck bakes its labels into the specimen artwork, in Chinese. Each one is
+    // covered with a patch of the card's own flat background and redrawn from here,
+    // so the English board reads in English. The English wording is kept short: it
+    // is drawn inside a 428px card, and a long phrase would run off the edge.
+    labels: {
+      weights: tt("Weights", "字重"),
+      inUse: tt("In use", "用法"),
+      detail: tt("Detail", "细节"),
+      hardAngle: tt("Hard angle", "硬朗的角度"),
+      bevel: tt("Bevel", "斜切"),
+      techDetail: tt("Tech detail", "技术细节"),
+      curve: tt("Curve", "工程化曲线"),
+    },
   },
 
   icons: {
@@ -70,6 +83,9 @@ export const kyrallSystem = {
       "From Button and Field to Toolbar and Panel, the base components are reused across the product; all of them share one set of state rules, and hold up in both the light and the dark theme.",
       "从 Button、Field 到 Toolbar 与 Panel，基础组件在整个产品中复用；所有组件共享同一套状态规则，并在 Light / Dark 两种主题下保持一致。"
     ),
+    // Nine components is more than a reader scans at once, so they are shown three
+    // at a time; this labels the pager.
+    pageLabel: tt("Components", "组件"),
     // Figure plus caption. The pixel sizes are the exported artwork's own.
     items: [
       { file: "c-textarea.png", w: 316, h: 239, label: tt("Textarea", "文本域 · Textarea") },
