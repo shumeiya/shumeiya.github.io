@@ -4,7 +4,6 @@ import BackgroundBoard from "./BackgroundBoard"
 import CompetitorsBoard from "./CompetitorsBoard"
 import PersonaBoard from "./PersonaBoard"
 import StoryMapBoard from "./StoryMapBoard"
-import SystemBoard from "./SystemBoard"
 
 // Typed content blocks for a case-study section. A deck-shaped case study needs
 // more than paragraphs — figures, definition rows, a process sequence and the
@@ -196,8 +195,6 @@ export default function DetailBlocks({ blocks, accent }) {
         return <PersonaBoard key={i} board={block.board} />
       case "storymap":
         return <StoryMapBoard key={i} board={block.board} />
-      case "system":
-        return <SystemBoard key={i} board={block.board} />
       default:
         return <Text key={i} text={block.text} />
     }
