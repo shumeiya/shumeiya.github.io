@@ -11,7 +11,6 @@
 import { tt } from "../i18n/t"
 
 export const kyrallCoreFlow = {
-  label: tt("03 · CORE FLOW", "03 · CORE FLOW · 核心流程"),
   title: tt(
     "One main line: from a single requirement to a model you can export",
     "一条主线：从一个需求输入，到可以导出的模型"
