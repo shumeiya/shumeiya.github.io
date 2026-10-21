@@ -10,6 +10,7 @@ import { kyrallBackground } from "./kyrallBackground"
 import { kyrallCompetitors } from "./kyrallCompetitors"
 import { kyrallPersona } from "./kyrallPersona"
 import { kyrallStoryMap } from "./kyrallStoryMap"
+import { kyrallSpec } from "./kyrallSpec"
 
 export const projectDetails = {
   kyrall: {
@@ -74,25 +75,13 @@ export const projectDetails = {
       },
       {
         id: "system",
-        eyebrow: tt("05 · Specification", "05 · 设计准则"),
-        label: tt("Specification", "设计准则"),
+        eyebrow: tt("05 · Design System", "05 · 设计系统"),
+        label: tt("Design System", "设计系统"),
         lead: tt(
           "Keep it consistent: document the system and its components.",
           "保持统一原则，沉淀设计系统与组件规范。"
         ),
-        // The deck's own specification slide, exported per language because its
-        // copy is set inside the artwork rather than drawn from here. `tt` resolves
-        // the path like any other string, so the figure follows the language switch.
-        blocks: [
-          {
-            type: "image",
-            src: tt("/project/kyrall/spec/spec-en.jpg", "/project/kyrall/spec/spec-zh.jpg"),
-            caption: tt(
-              "Colour tokens, type, spacing, icons and the component library — Button, Dialog, Sidebar and Toolbar — documented as one specification across Dashboard, Editor and the Mesh workspace.",
-              "颜色 Token、字体、间距、图标与组件库 —— Button、Dialog、Sidebar、Toolbar —— 在 Dashboard、Editor 与 Mesh 工作区之间沉淀为同一套规范。"
-            ),
-          },
-        ],
+        blocks: [{ type: "spec", board: kyrallSpec }],
       },
       {
         id: "loop",

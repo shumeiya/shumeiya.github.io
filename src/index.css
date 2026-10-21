@@ -190,16 +190,8 @@ html::-webkit-scrollbar {
   box-shadow: inset 0 0 0 1px var(--deck-rule);
 }
 
-/* Flat white line art with no ground of its own — the deck's custom numerals. Unlike
-   a 3D render, inverting flat art is simply the right answer: white strokes become
-   black ones. */
-.kyrall-deck .deck-ink {
-  filter: invert(1);
-}
-
 .dark .kyrall-deck .deck-render img,
-.dark .kyrall-deck .deck-tile,
-.dark .kyrall-deck .deck-ink {
+.dark .kyrall-deck .deck-tile {
   filter: none;
   box-shadow: none;
 }
