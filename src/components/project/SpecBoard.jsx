@@ -90,7 +90,13 @@ function Menu({ x, y }) {
 }
 
 // A gradient that sinks the row above it into the page.
-function Scrim({ top, from }) {
+//
+// The deck can afford a gradient that only gets most of the way there, because its
+// slide ground and the gradient's end are the same near-black. On the page the card
+// surface and the page colour are much further apart, so a fade that stops at 70%
+// leaves a bright lip along the bottom of every card: this one has to land on the
+// page colour exactly where the cards end.
+function Scrim({ top, height, from = "0%" }) {
   return (
     <div
       aria-hidden="true"
@@ -99,7 +105,7 @@ function Scrim({ top, from }) {
         left: -80,
         top,
         width: 1920,
-        height: 470,
+        height,
         background: `linear-gradient(to bottom, transparent ${from}, ${PAGE} 100%)`,
       }}
     />
@@ -195,13 +201,13 @@ export default function SpecBoard({ board }) {
                 .map((card) => (
                   <Card key={card.file} card={card} t={t} />
                 ))}
-              <Scrim top={-81} from="28.936%" />
+              <Scrim top={-2} height={470} from="28.936%" />
               {board.cards
                 .filter((card) => card.row === 1)
                 .map((card) => (
                   <Card key={card.file} card={card} t={t} />
                 ))}
-              <Scrim top={128} from="56.731%" />
+              <Scrim top={ROW[1].y + ROW[1].h - 220} height={220} />
             </div>
           </div>
         </div>
