@@ -11,6 +11,7 @@ import { kyrallCompetitors } from "./kyrallCompetitors"
 import { kyrallPersona } from "./kyrallPersona"
 import { kyrallStoryMap } from "./kyrallStoryMap"
 import { kyrallSpec } from "./kyrallSpec"
+import { kyrallCoreFlow } from "./kyrallCoreFlow"
 
 export const projectDetails = {
   kyrall: {
@@ -92,6 +93,7 @@ export const projectDetails = {
           "生成只是入口，不是整条工作流。"
         ),
         blocks: [
+          { type: "coreflow", board: kyrallCoreFlow },
           {
             text: tt(
               "I structured the product around a loop that could continue after the first AI result.",
