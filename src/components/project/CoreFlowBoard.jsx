@@ -218,12 +218,14 @@ export default function CoreFlowBoard({ board }) {
 
   // --- the vertical rhythm ----------------------------------------------------
   const LEAD_Y = 190
-  const STEPS_Y = 372
-  const RULE1_Y = 470
+  // The lead sets to three lines in English and two in Chinese, so the pills clear
+  // the longer of the two rather than the deck's own one-line measure.
+  const STEPS_Y = 430
+  const RULE1_Y = 530
 
   // Act 1 — the Dashboard. The deck lays its shell and three panes out as separate
   // nodes; `K` scales the whole group together so the panes keep their places.
-  const A1 = 530
+  const A1 = 590
   const DASH = { x: 340, y: A1 + 140, k: 1.165 }
   const dashW = 1064 * DASH.k
   const dashH = 577.58 * DASH.k
