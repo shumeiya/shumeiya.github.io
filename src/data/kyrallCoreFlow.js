@@ -4,10 +4,10 @@
 // Copy only; the drawing lives in CoreFlowBoard.jsx. The deck frame is Chinese, so
 // the English side is a translation.
 //
-// The deck hangs each note in a narrow gutter beside the product shot and points a
-// leader line at the part it describes. Those gutters are 250–400px wide, measured
-// for 20px Chinese; at the size the page needs they hold about two thirds of the
-// words. So the notes sit under their figure in columns instead — see the component.
+// The deck hangs each note in a narrow gutter beside the product shot and points an
+// arrow at the part it describes. Those gutters are 250–560px wide and were measured
+// for 20px Chinese, so a few of the English notes are written shorter to hold the
+// same number of lines — otherwise they grow down through the arrow below them.
 import { tt } from "../i18n/t"
 
 export const kyrallCoreFlow = {
@@ -33,7 +33,8 @@ export const kyrallCoreFlow = {
   acts: [
     {
       n: "1",
-      title: tt("Dashboard: three zones, laid out along the workflow", "Dashboard：按照工作流设计成三区结构"),
+      title: tt("Dashboard: ", "Dashboard："),
+      titleAccent: tt("three zones, laid out along the workflow", "按照工作流设计成三区结构"),
       steps: [0, 1, 2],
       notes: [
         {
@@ -53,7 +54,7 @@ export const kyrallCoreFlow = {
         {
           title: tt("What is generating now", "进行中的生成任务"),
           body: tt(
-            "Generation runs in the background; each task shows a thumbnail and its state — generating, or finished.",
+            "Generation runs in the background; each task shows its state.",
             "生成在后台进行，每个任务显示缩略图与生成状态（生成中 / 生成完成）"
           ),
         },
@@ -61,7 +62,8 @@ export const kyrallCoreFlow = {
     },
     {
       n: "2",
-      title: tt("Press Generate, and the task runs in the background", "点击 Generate，任务进入后台运行"),
+      title: tt("The task runs ", "点击 Generate，任务"),
+      titleAccent: tt("in the background", "进入后台运行"),
       steps: [0, 1, 2],
       notes: [
         {
@@ -82,13 +84,14 @@ export const kyrallCoreFlow = {
     },
     {
       n: "3",
-      title: tt("Execution Log: the generation is visible while it runs", "Execution Log：生成过程透明可见"),
+      title: tt("Execution Log: ", "Execution Log：生成过程"),
+      titleAccent: tt("the generation is visible while it runs", "透明可见"),
       steps: [3],
       notes: [
         {
           title: tt("Five standard stages, each one openable", "标准化五个阶段，展开看子步骤"),
           body: tt(
-            "Five standard generation stages, worked out with the ML team. Each opens to the step running inside it — so a user can see what the AI is doing, and the black box goes away.",
+            "Five standard generation stages, worked out with the ML team. Each opens to the step running inside it, so the user sees what the AI is doing.",
             "与 ML 组讨论构建标准化五个生成阶段，每个阶段可展开，看到正在执行的具体步骤。让用户理解 AI 在做什么，消除黑盒体验。"
           ),
         },
@@ -110,18 +113,20 @@ export const kyrallCoreFlow = {
     },
     {
       n: null,
-      title: tt("Generation finished — straight into the Editor", "生成完成，直接进入 Editor"),
+      title: tt("Generation finished — ", "生成完成，"),
+      titleAccent: tt("straight into the Editor", "直接进入 Editor"),
       steps: [4, 5, 6],
       notes: [
         {
-          title: tt("The AI editor", "AI 编辑器"),
+          // Short enough to stay clear of the arrow head the deck puts at x=420.
+          title: tt("AI editor", "AI 编辑器"),
           body: tt(
             "Pick the component it applies to, type what you need, and the change lands on that component.",
             "选择相对应的组件，输入需求，直接修改组件"
           ),
         },
         {
-          title: tt("The editor toolbar", "编辑器工具栏"),
+          title: tt("Editor toolbar", "编辑器工具栏"),
           body: tt(
             "Traditional CAD tooling, cut down to what AI-assisted modelling actually needs — so there is far less to learn.",
             "简化传统 CAD 软件工具，只保留在 AI 辅助建模下最必要的工具，降低用户的学习成本。"
