@@ -6,6 +6,7 @@ import PersonaBoard from "./PersonaBoard"
 import StoryMapBoard from "./StoryMapBoard"
 import SpecBoard from "./SpecBoard"
 import CoreFlowBoard from "./CoreFlowBoard"
+import WeatherPetsDeck from "./WeatherPetsDeck"
 
 // Typed content blocks for a case-study section. A deck-shaped case study needs
 // more than paragraphs — figures, definition rows, a process sequence and the
@@ -201,6 +202,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <SpecBoard key={i} board={block.board} />
       case "coreflow":
         return <CoreFlowBoard key={i} board={block.board} />
+      case "wpdeck":
+        return <WeatherPetsDeck key={i} slide={block.slide} />
       default:
         return <Text key={i} text={block.text} />
     }

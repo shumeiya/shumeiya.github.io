@@ -196,6 +196,30 @@ html::-webkit-scrollbar {
   box-shadow: none;
 }
 
+/* The WeatherPets deck boards. Like the Kyrall boards above, these are drawn on the
+   page's own surface rather than on a panel of the slide's blue — the deck's ground
+   was a slide background, and the page already has one. What does carry meaning is
+   kept: the three label fills, and the yellow that marks the one card per slide
+   holding that slide's point.
+
+   The three fills stay the same in both themes. They are small, saturated and always
+   set in the deck's navy, which reads on them whether the page behind is cream or
+   near-black. `--wp-blue` is the opposite case — it paints numbers and bars as type
+   on the card, so it lightens in dark mode to hold its contrast. Everything that is
+   simply body copy uses the site's own ink, fog and cream. */
+.wp-deck {
+  --wp-accent: #ffd43b;
+  --wp-blue: #2f5bff;
+  --wp-pink: #ff8a9b;
+  --wp-mint: #5ee6c0;
+  /* Type on any of the four fills above — they are light in both themes. */
+  --wp-on-fill: #0f1b4c;
+}
+
+.dark .wp-deck {
+  --wp-blue: #8aa6ff;
+}
+
 body {
   margin: 0;
   background-color: var(--color-page);

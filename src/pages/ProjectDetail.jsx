@@ -59,7 +59,13 @@ export default function ProjectDetail() {
   const next = nextProject[(idx + 1) % nextProject.length]
 
   return (
-    <main className="relative mx-auto max-w-9xl px-4 pb-28 pt-6 sm:px-6 lg:px-8">
+    // `w-full` is load-bearing. This <main> is an item of the app shell's column
+    // flex container, and `mx-auto` — an auto margin on the cross axis — cancels the
+    // stretch that would otherwise give it the container's width, leaving it to size
+    // to fit-content, whose floor is its own min-content. One wide figure then drags
+    // the whole page wider than the screen and the document scrolls sideways. A
+    // definite width stops that; `max-w-9xl` still caps it on a wide display.
+    <main className="relative mx-auto w-full min-w-0 max-w-9xl px-4 pb-28 pt-6 sm:px-6 lg:px-8">
       <DetailToc sections={detail.sections} active={active} />
       <ScrollRail />
 
