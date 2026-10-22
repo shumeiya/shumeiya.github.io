@@ -220,6 +220,30 @@ html::-webkit-scrollbar {
   --wp-blue: #8aa6ff;
 }
 
+/* The ABC Mouse (开心鼠) deck boards. Like the WeatherPets boards, drawn on the page's
+   own surface; what carries meaning is the deck's orange and its pale-yellow fills,
+   which stay the same in both themes — the pale cards always take the deck's own dark
+   ink, so a persona card reads the same on cream and on near-black. `accent-ink` is
+   the one value that flips: orange type on cream needs a step more weight than orange
+   type on near-black, so in light mode it darkens to the same hue at ink weight.
+   `grey` is the slanted English half of each board title. */
+.abc-deck {
+  --abc-accent: #fdaf23;
+  --abc-accent-ink: #e08f05;
+  --abc-pale: #fee7bd;
+  --abc-on-pale: #191717;
+  --abc-band: #fdbf4f;
+  --abc-on-band: #191717;
+  --abc-grey: #7e8498;
+  --abc-pink: #e09a94;
+}
+
+.dark .abc-deck {
+  --abc-accent-ink: #fdaf23;
+  --abc-grey: #9aa1b4;
+  --abc-pink: #eaa7a2;
+}
+
 body {
   margin: 0;
   background-color: var(--color-page);

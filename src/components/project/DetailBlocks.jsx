@@ -11,6 +11,7 @@ import CoreFlowBoard from "./CoreFlowBoard"
 import WeatherPetsDeck from "./WeatherPetsDeck"
 import CompareSlider from "./CompareSlider"
 import CodemaoFlow from "./CodemaoFlow"
+import AbcMouseDeck from "./AbcMouseDeck"
 
 // Typed content blocks for a case-study section. A deck-shaped case study needs
 // more than paragraphs — figures, definition rows, a process sequence and the
@@ -465,6 +466,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <CoreFlowBoard key={i} board={block.board} />
       case "wpdeck":
         return <WeatherPetsDeck key={i} slide={block.slide} />
+      case "abcdeck":
+        return <AbcMouseDeck key={i} slide={block.slide} />
       default:
         return <Text key={i} text={block.text} />
     }
