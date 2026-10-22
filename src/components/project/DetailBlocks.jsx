@@ -7,6 +7,8 @@ import StoryMapBoard from "./StoryMapBoard"
 import SpecBoard from "./SpecBoard"
 import CoreFlowBoard from "./CoreFlowBoard"
 import WeatherPetsDeck from "./WeatherPetsDeck"
+import CompareSlider from "./CompareSlider"
+import CodemaoFlow from "./CodemaoFlow"
 
 // Typed content blocks for a case-study section. A deck-shaped case study needs
 // more than paragraphs — figures, definition rows, a process sequence and the
@@ -118,6 +120,92 @@ function Figure({ src, caption, size }) {
   )
 }
 
+// Several shots of the same thing in its different states, read as a set rather than
+// as a column of unrelated figures. Two up on anything but a phone: these are wide
+// screens, and at full column width five of them turn the section into a scroll.
+function Shots({ items }) {
+  return (
+    <ul className="mt-6 grid gap-x-5 gap-y-6 sm:grid-cols-2">
+      {items.map((shot) => (
+        <li key={shot.src}>
+          <div className="overflow-hidden rounded-lg border border-line bg-box">
+            <img src={shot.src} alt={shot.caption ?? ""} loading="lazy" className="block h-auto w-full" />
+          </div>
+          {shot.caption && (
+            <p className="mt-2.5 text-note leading-relaxed text-fog">
+              {shot.label && <span className="font-medium text-ink">{shot.label} · </span>}
+              {shot.caption}
+            </p>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+// The numbered call-outs that sit under a screen in the source deck — ① ② ③ pinned
+// to places on the picture. The pins themselves don't survive the move to a page that
+// reflows, but the numbering does, and it is what ties a note to a screen.
+function Numbers({ title, items }) {
+  return (
+    <div className="mt-6">
+      {title && <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{title}</p>}
+      <ol className={`${title ? "mt-3" : ""} space-y-3`}>
+        {items.map((item, i) => (
+          <li key={item} className="flex gap-3">
+            <span
+              aria-hidden="true"
+              className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full border border-line font-mono-tight text-note text-ink"
+            >
+              {i + 1}
+            </span>
+            <span className="text-copy leading-relaxed text-fog">{item}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}
+
+// The deck states its brief as an equation — three things added up to one outcome.
+// It reads as a claim about causation, which a bullet list does not, so it keeps the
+// shape it was written in.
+function Formula({ terms, result }) {
+  return (
+    <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-3 border-t-2 border-line pt-5">
+      {terms.map((term, i) => (
+        <span key={term} className="flex items-center gap-3">
+          <span className="text-copy font-medium text-ink">{term}</span>
+          <span aria-hidden="true" className="text-copy text-fog">
+            {i < terms.length - 1 ? "+" : "="}
+          </span>
+        </span>
+      ))}
+      <span className="text-copy font-semibold text-cream">{result}</span>
+    </div>
+  )
+}
+
+// The palette, as the specification states it: a swatch, its hex, and the job it does.
+// The hex is the content here — this is a spec page, not decoration — so it is set in
+// the mono face and never abbreviated.
+function Swatches({ items }) {
+  return (
+    <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+      {items.map((s) => (
+        <li key={s.hex + s.label}>
+          <div
+            className="h-16 rounded-lg border border-line"
+            style={{ background: s.hex }}
+          />
+          <p className="mt-2 font-mono-tight text-note uppercase tracking-wide text-ink">{s.hex}</p>
+          <p className="text-note leading-relaxed text-fog">{s.label}</p>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 // Something the reader can go and open for themselves — a live prototype, a repo.
 // Worth its own affordance: a case study that links the real artifact is more
 // convincing than one that only shows pictures of it.
@@ -184,6 +272,28 @@ export default function DetailBlocks({ blocks, accent }) {
         return <Steps key={i} items={block.items} />
       case "image":
         return <Figure key={i} src={block.src} caption={block.caption} size={block.size} />
+      case "shots":
+        return <Shots key={i} items={block.items} />
+      case "numbers":
+        return <Numbers key={i} title={block.title} items={block.items} />
+      case "formula":
+        return <Formula key={i} terms={block.terms} result={block.result} />
+      case "swatches":
+        return <Swatches key={i} items={block.items} />
+      case "compare":
+        return (
+          <CompareSlider
+            key={i}
+            before={block.before}
+            after={block.after}
+            beforeLabel={block.beforeLabel}
+            afterLabel={block.afterLabel}
+            caption={block.caption}
+            ratio={block.ratio}
+          />
+        )
+      case "flow":
+        return <CodemaoFlow key={i} board={block.board} />
       case "links":
         return <Links key={i} items={block.items} />
       case "video":

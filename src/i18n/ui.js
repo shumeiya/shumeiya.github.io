@@ -53,6 +53,10 @@ export const ui = {
   specPage: tt("A page of the design specification", "设计规范的一页"),
   // Shown under a figure that is wider than the column it is read in.
   scrollSideways: tt("Scroll sideways to see the whole board", "左右滑动查看完整图板"),
+  // The before/after image slider: the control's accessible name, and the hint
+  // under it — a divider that has to be dragged is not obvious from a still frame.
+  compareHandle: tt("Drag to compare the two versions", "拖动分割线对比两个版本"),
+  compareHint: tt("Drag the divider — old on the left, new on the right.", "拖动中间的分割线 —— 左边旧版，右边新版。"),
 
   // About
   aboutExperience: tt("Work Experience", "工作经历"),
