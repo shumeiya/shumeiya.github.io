@@ -47,8 +47,8 @@ export const codemaoFlow = {
 export const codemaoRole = tt("UX/UI Designer", "UX/UI 设计师")
 
 export const codemaoSummary = tt(
-  "Codemao's ToB backend is the CMS schools and training centres run their programming courses from. It had gone years without an update while the company's attention sat on the consumer side. This is the 2.0.",
-  "编程猫 B 端业务后台，是学校和培训机构用来开设编程课的 CMS。公司的重心长期在 C 端，这个平台很久没有迭代过。这是它的 2.0。"
+  "Codemao's ToB backend is the CMS education platform schools and training centres run their programming courses from — course management, course analytics and the operations tooling around them. It had gone years without an update while the company's attention sat on the consumer side. This is the 2.0.",
+  "编程猫 B 端业务后台，是学校与培训机构开设编程课所用的 CMS 教育内容管理平台 —— 课程管理、课程数据分析，以及围绕它们的用户运营工具。公司重心长期在 C 端，这个平台很久没有迭代过。这是它的 2.0。"
 )
 
 export const codemaoHero = {
@@ -65,6 +65,7 @@ export const codemaoHero = {
 }
 
 export const codemaoTags = [
+  tt("CMS 2.0", "CMS 2.0"),
   tt("ToB platform", "ToB 平台"),
   tt("Information architecture", "信息架构"),
   tt("Interaction flow", "交互流程"),
@@ -125,18 +126,56 @@ export const codemaoSections = [
       "每周教师上课数据说明：平台被打开了，但没被用起来。"
     ),
     blocks: [
+      // The weekly teaching report, transcribed from the spreadsheet on slide #02.
+      // Three weeks and their average; every percentage quoted further down this page
+      // is read off these rows.
+      {
+        type: "table",
+        title: tt("Weekly teacher activity", "每周教师上课数据"),
+        head: [
+          tt("Week", "日期"),
+          tt("Active teachers", "活跃老师数 (人)"),
+          tt("Opened Future Classroom", "未来教室首页访问老师数 (人)"),
+          tt("Share who visited", "访问点猫平台老师占比"),
+          tt("Course centre", "课程中心页访问老师数 (人)"),
+          tt("Course-pack list", "课程包列表页访问老师数 (人)"),
+          tt("Course detail", "课程详情页访问老师数 (人)"),
+          tt("Share who taught %", "上课老师占比 %"),
+          tt("Teaching sessions", "上课的老师数 (人次)"),
+          tt("Weekly avg. (sessions)", "上课老师周均上课 (人次)"),
+          tt("Weekly avg. (lessons)", "上课老师周均上课 (次数)"),
+        ],
+        rows: [
+          ["04-25", "3925", "2803", "71.41%", "2067", "1755", "1479", "52.76%", "13431", "9.08", "8.9"],
+          ["04-18", "4079", "2948", "72.27%", "2267", "1911", "1649", "55.94%", "11460", "6.95", "7.07"],
+          ["04-11", "3555", "2384", "67.06%", "1782", "1572", "1436", "60.23%", "10365", "7.22", "6.48"],
+        ],
+        foot: [tt("Average", "平均值"), "", "", "70.25%", "", "", "", "56.31%", "", "7.75", ""],
+        note: tt(
+          "Three consecutive weeks, and the average across them.",
+          "连续三周，以及三周的平均值。"
+        ),
+      },
       {
         type: "stats",
         items: [
           {
             value: "75%",
             label: tt("Visited the platform", "访问平台"),
-            note: tt("Of active teachers, in an average week.", "活跃教师中，每周的平均访问占比。"),
+            // The deck's headline figure. The report it is read off runs 67.06%–72.27%
+            // across the three weeks — said plainly here rather than quietly rounded.
+            note: tt(
+              "Of active teachers. Across the three weeks above: 67.06% – 72.27%.",
+              "活跃教师中的访问占比。上表三周为 67.06% – 72.27%。"
+            ),
           },
           {
             value: "55%",
             label: tt("Actually used it", "使用率"),
-            note: tt("The share that went on to teach from it.", "访问之后，真正用它上课的比例。"),
+            note: tt(
+              "The share that went on to teach from it: 52.76% – 60.23%, averaging 56.31%.",
+              "访问之后真正用它上课的比例：52.76% – 60.23%，平均 56.31%。"
+            ),
           },
           {
             value: "80%",
@@ -272,7 +311,10 @@ export const codemaoSections = [
             ),
           },
           {
-            term: tt("During · no class time wasted", "课中：不浪费教学时间"),
+            term: tt(
+              "During · easy for teacher and students, no class time wasted",
+              "课中：老师和学生方便上课，不浪费课中教学时间"
+            ),
             text: tt(
               "Teacher and students get into the lesson quickly: one action starts teaching, with no leafing through course packs. The teacher follows the teaching order instead of switching between files to present.",
               "上课开始后，老师和学生能快速进入上课状态，老师一步操作即可开始教学，无需在众多课包中来回翻阅，学生也如此；老师可按照教学流程顺序讲课，无需在多个课程文件之间来回切换演示。"
@@ -363,24 +405,38 @@ export const codemaoSections = [
     blocks: [
       {
         type: "swatches",
-        items: [
-          { hex: "#3490FF", label: tt("Primary", "主色") },
-          { hex: "#041C40", label: tt("Secondary · T1 emphasis", "辅助色 · T1 强调") },
-          { hex: "#52C41A", label: tt("Success", "成功") },
-          { hex: "#FAAD14", label: tt("Warning", "警告") },
-          { hex: "#F5222D", label: tt("Error", "错误") },
-          { hex: "#56575B", label: tt("T2 emphasis", "T2 强调") },
-          { hex: "#777777", label: tt("T3 secondary", "T3 次级重要") },
-          { hex: "#9D9EA2", label: tt("T4 supporting text", "T4 辅助文字") },
-          { hex: "#EAEAEA", label: tt("Divider", "分割线") },
-          { hex: "#F0F3FB", label: tt("Background", "背景色") },
+        groups: [
+          {
+            title: tt("Primary", "主色"),
+            items: [{ hex: "#3490FF", label: tt("Every action in the product", "产品中的所有操作") }],
+          },
+          {
+            title: tt("Secondary — icons, buttons and so on", "辅助色（用于图标、按钮等）"),
+            items: [
+              { hex: "#041C40", label: tt("Deep", "深色") },
+              { hex: "#52C41A", label: tt("Success", "成功") },
+              { hex: "#FAAD14", label: tt("Warning", "警告") },
+              { hex: "#F5222D", label: tt("Error", "错误") },
+            ],
+          },
+          {
+            title: tt("Text, rules and ground", "文字、分割线与底色"),
+            items: [
+              { hex: "#041C40", label: tt("T1 emphasis", "T1 强调") },
+              { hex: "#56575B", label: tt("T2 emphasis", "T2 强调") },
+              { hex: "#777777", label: tt("T3 secondary", "T3 次级重要") },
+              { hex: "#9D9EA2", label: tt("T4 supporting text", "T4 辅助文字") },
+              { hex: "#EAEAEA", label: tt("Divider", "分割线") },
+              { hex: "#F0F3FB", label: tt("Background", "背景色") },
+            ],
+          },
         ],
       },
       {
         type: "defs",
         items: [
           {
-            term: tt("Grid", "删格布局"),
+            term: tt("Grid", "栅格布局"),
             text: tt(
               "Designed at 1440×900, with the content area split into 12 equal columns — drawing to the grid is what keeps the visuals consistent and still flexible.",
               "页面以 1440px 为设计尺寸，内容显示区域为 12 栏等分，有效地根据栅格做图，提升视觉的一致性和灵活性。页面分辨率 1440×900。"
@@ -394,6 +450,14 @@ export const codemaoSections = [
             ),
           },
         ],
+      },
+      {
+        type: "gridspec",
+        labels: {
+          header: tt("Header · 60px", "Header · 60px"),
+          sider: tt("Sider · 208px", "Sider · 208px"),
+          container: tt("Container · 1168px · 12 columns", "Container · 1168px · 12 栏"),
+        },
       },
     ],
   },

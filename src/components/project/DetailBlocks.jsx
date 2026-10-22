@@ -1,4 +1,6 @@
 import { ArrowUpRight } from "lucide-react"
+import { useT } from "../../i18n/lang"
+import { ui } from "../../i18n/ui"
 import WorkflowBoard from "./WorkflowBoard"
 import BackgroundBoard from "./BackgroundBoard"
 import CompetitorsBoard from "./CompetitorsBoard"
@@ -188,21 +190,157 @@ function Formula({ terms, result }) {
 
 // The palette, as the specification states it: a swatch, its hex, and the job it does.
 // The hex is the content here — this is a spec page, not decoration — so it is set in
-// the mono face and never abbreviated.
-function Swatches({ items }) {
+// the mono face and never abbreviated. The groups are the specification's own: the
+// action colour is one thing, the status colours another, the text ramp a third, and
+// flattening the three into one wall of chips loses the point it was making.
+function Swatches({ groups }) {
   return (
-    <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
-      {items.map((s) => (
-        <li key={s.hex + s.label}>
-          <div
-            className="h-16 rounded-lg border border-line"
-            style={{ background: s.hex }}
-          />
-          <p className="mt-2 font-mono-tight text-note uppercase tracking-wide text-ink">{s.hex}</p>
-          <p className="text-note leading-relaxed text-fog">{s.label}</p>
-        </li>
+    <div className="mt-6 space-y-7">
+      {groups.map((group) => (
+        <div key={group.title}>
+          <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{group.title}</p>
+          <ul className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3">
+            {group.items.map((s) => (
+              <li key={s.hex + s.label}>
+                <div className="h-16 rounded-lg border border-line" style={{ background: s.hex }} />
+                <p className="mt-2 font-mono-tight text-note uppercase tracking-wide text-ink">{s.hex}</p>
+                <p className="text-note leading-relaxed text-fog">{s.label}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-    </ul>
+    </div>
+  )
+}
+
+// A table that was a table in the source and stays one here.
+//
+// The weekly teaching report is the evidence the whole case study rests on — the four
+// headline percentages are read off it — so it is transcribed rather than screenshotted:
+// it survives a text search, a screen reader, and the site's own two themes, none of
+// which a picture of a spreadsheet does.
+//
+// Eleven columns do not fit a reading column at 18px, so the table scrolls sideways
+// with its first column pinned — a week with no label on it is a row of loose numbers.
+function DataTable({ title, head, rows, foot, note }) {
+  const t = useT()
+  // Pinned cells need an opaque ground of their own, or the scrolling columns show
+  // through them.
+  const stick = "sticky left-0 z-10 bg-box"
+  const cell = "whitespace-nowrap px-3 py-2.5 text-note tabular-nums"
+  return (
+    <figure className="mt-6">
+      {title && <figcaption className="mb-2.5 text-note font-medium text-ink">{title}</figcaption>}
+      <div className="no-scrollbar overflow-x-auto rounded-xl border border-line bg-box">
+        <table className="w-full border-collapse text-left">
+          <thead>
+            <tr className="border-b border-line">
+              {head.map((h, i) => (
+                <th
+                  key={h}
+                  scope="col"
+                  className={`${cell} font-medium text-ink ${i === 0 ? stick : "text-right"}`}
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row[0]} className="border-b border-line/60">
+                {row.map((v, i) =>
+                  i === 0 ? (
+                    <th key={i} scope="row" className={`${cell} ${stick} font-medium text-ink`}>
+                      {v}
+                    </th>
+                  ) : (
+                    <td key={i} className={`${cell} text-right text-fog`}>
+                      {v || "—"}
+                    </td>
+                  )
+                )}
+              </tr>
+            ))}
+          </tbody>
+          {foot && (
+            // The average row is a summary of the three above it, not a fourth week.
+            <tfoot>
+              <tr className="border-t-2 border-line">
+                {foot.map((v, i) =>
+                  i === 0 ? (
+                    <th key={i} scope="row" className={`${cell} ${stick} font-medium text-ink`}>
+                      {v}
+                    </th>
+                  ) : (
+                    <td key={i} className={`${cell} text-right font-medium text-ink`}>
+                      {v || "—"}
+                    </td>
+                  )
+                )}
+              </tr>
+            </tfoot>
+          )}
+        </table>
+      </div>
+      <p className="mt-2.5 text-note leading-relaxed text-fog">
+        {note ? `${note} ` : ""}
+        {t(ui.scrollTable)}
+      </p>
+    </figure>
+  )
+}
+
+// The specification's grid page, drawn rather than quoted: a 1440×900 frame with its
+// top bar, its side navigation and a 12-column container. Percentages all the way down,
+// so the proportions survive being shown at whatever width the column happens to be.
+function GridSpec({ labels }) {
+  return (
+    <figure className="mt-6">
+      <div
+        className="w-full overflow-hidden rounded-xl border border-line bg-box p-3"
+        style={{ aspectRatio: 1440 / 900 }}
+      >
+        <div className="flex h-full flex-col overflow-hidden rounded-lg border border-line">
+          {/* Header — 60 of the frame's 900. */}
+          <div
+            className="flex shrink-0 items-center justify-center border-b border-line bg-box-2"
+            style={{ height: `${(60 / 900) * 100}%` }}
+          >
+            <span className="font-mono-tight text-note uppercase tracking-wide text-ink">
+              {labels.header}
+            </span>
+          </div>
+          <div className="flex min-h-0 flex-1">
+            {/* Sider — 208 of the frame's 1440. */}
+            <div
+              className="flex shrink-0 items-center justify-center border-r border-line bg-box-2"
+              style={{ width: `${(208 / 1440) * 100}%` }}
+            >
+              <span className="font-mono-tight text-note uppercase tracking-wide text-ink">
+                {labels.sider}
+              </span>
+            </div>
+            {/* Container — the 12 columns. The gutter is the spec's own 24px against a
+                1168px container, as a proportion so it holds at any rendered width.
+                The padding is not: percentage padding resolves against the container's
+                *width* on all four sides, so a vertical one written that way would not
+                be the 24px it claims. A flat inset instead. */}
+            <div className="flex min-w-0 flex-1 flex-col p-3 sm:p-4">
+              <div className="flex min-h-0 flex-1 gap-[2.05%]">
+                {Array.from({ length: 12 }, (_, i) => (
+                  <div key={i} className="min-w-0 flex-1 rounded-sm bg-ink/10" />
+                ))}
+              </div>
+              <p className="mt-2 text-center font-mono-tight text-note uppercase tracking-wide text-ink">
+                {labels.container}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </figure>
   )
 }
 
@@ -279,7 +417,20 @@ export default function DetailBlocks({ blocks, accent }) {
       case "formula":
         return <Formula key={i} terms={block.terms} result={block.result} />
       case "swatches":
-        return <Swatches key={i} items={block.items} />
+        return <Swatches key={i} groups={block.groups} />
+      case "table":
+        return (
+          <DataTable
+            key={i}
+            title={block.title}
+            head={block.head}
+            rows={block.rows}
+            foot={block.foot}
+            note={block.note}
+          />
+        )
+      case "gridspec":
+        return <GridSpec key={i} labels={block.labels} />
       case "compare":
         return (
           <CompareSlider
