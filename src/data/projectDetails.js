@@ -12,6 +12,7 @@ import { kyrallPersona } from "./kyrallPersona"
 import { kyrallStoryMap } from "./kyrallStoryMap"
 import { kyrallSpec } from "./kyrallSpec"
 import { kyrallCoreFlow } from "./kyrallCoreFlow"
+import { kyrallExtensions } from "./kyrallExtensions"
 import { weatherPetsHero, weatherPetsTags, weatherPetsSummary, weatherPetsSections } from "./weatherPetsDeck"
 import { codemaoHero, codemaoRole, codemaoSummary, codemaoTags, codemaoSections } from "./codemao"
 import { abcMouseHero, abcMouseRole, abcMouseSummary, abcMouseTags, abcMouseSections } from "./abcMouse"
@@ -95,6 +96,15 @@ export const projectDetails = {
         label: tt("Core flow", "核心流程"),
         titleHidden: true,
         blocks: [{ type: "coreflow", board: kyrallCoreFlow }],
+      },
+      {
+        id: "extensions",
+        eyebrow: tt("07 · Extensions", "07 · 延展页面"),
+        // Same as the core-flow board: it opens with its own title, so the page's
+        // heading stays for the chapter index and the outline but is not drawn twice.
+        label: tt("Extensions", "延展页面"),
+        titleHidden: true,
+        blocks: [{ type: "extensions", board: kyrallExtensions }],
       },
       {
         id: "evidence",

@@ -8,6 +8,7 @@ import PersonaBoard from "./PersonaBoard"
 import StoryMapBoard from "./StoryMapBoard"
 import SpecBoard from "./SpecBoard"
 import CoreFlowBoard from "./CoreFlowBoard"
+import ExtensionsBoard from "./ExtensionsBoard"
 import WeatherPetsDeck from "./WeatherPetsDeck"
 import CompareSlider from "./CompareSlider"
 import CodemaoFlow from "./CodemaoFlow"
@@ -464,6 +465,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <SpecBoard key={i} board={block.board} />
       case "coreflow":
         return <CoreFlowBoard key={i} board={block.board} />
+      case "extensions":
+        return <ExtensionsBoard key={i} board={block.board} />
       case "wpdeck":
         return <WeatherPetsDeck key={i} slide={block.slide} />
       case "abcdeck":

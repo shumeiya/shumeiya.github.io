@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Chamfer } from "./deck"
+import { createDeckArt, ACCENT, ACCENT_INK, ON_ACCENT, ON_BAND, CREAM, SANS } from "./deckArt"
 import { useT } from "../../i18n/lang"
 import { ui } from "../../i18n/ui"
 
@@ -24,141 +25,11 @@ const BOARD_H = 4248
 // narrow screen. The reading column sits well above it at 0.58.
 const MIN_SCALE = 0.45
 
-const ACCENT = "var(--deck-accent)"
-// Type and line art rather than fills: the deck's yellow-green on the page itself,
-// which darkens to ink weight in light mode. Every arrow and bracket is drawn in it.
-const ACCENT_INK = "var(--deck-accent-ink)"
-const ON_ACCENT = "var(--deck-on-accent)"
-const RULE = "var(--deck-rule)"
-const ON_BAND = "var(--deck-on-band)"
-const CREAM = "var(--color-cream)"
-
-const SANS = "var(--font-display)"
-
-const ART = "/project/kyrall/coreflow"
-
-const at = (x, y, w, h) => ({
-  position: "absolute",
-  left: x - OX,
-  top: y - OY,
-  ...(w === undefined ? null : { width: w }),
-  ...(h === undefined ? null : { height: h }),
+const { at, Text, Shot, Arrow, Bracket, Note, Rule } = createDeckArt({
+  ox: OX,
+  oy: OY,
+  art: "/project/kyrall/coreflow",
 })
-
-function Text({ x, y, w, children, size = 20, weight = 400, color = "var(--color-ink)", lh = "normal" }) {
-  return (
-    <p
-      style={{
-        ...at(x, y, w),
-        fontFamily: SANS,
-        fontSize: size,
-        fontWeight: weight,
-        lineHeight: lh,
-        color,
-        whiteSpace: w === undefined ? "nowrap" : undefined,
-      }}
-    >
-      {children}
-    </p>
-  )
-}
-
-function Shot({ src, x, y, w, h }) {
-  return (
-    <img
-      src={`${ART}/${src}`}
-      alt=""
-      loading="lazy"
-      style={{ ...at(x, y, w, h), display: "block", maxWidth: "none" }}
-    />
-  )
-}
-
-// The deck's connector: a 2px rule with a filled diamond where it leaves the thing
-// it is about, and an open chevron where it arrives at the words. Every one of them
-// is axis-aligned, so the head is just the rule's direction turned into a rotation.
-const LEAD_W = 2
-const DIAMOND = 5 // half-width; the deck's is a touch taller than it is wide
-const HEAD_BACK = 10 // how far the chevron's arms reach back from the tip
-const HEAD_SPREAD = 7.5
-const PAD = 14 // room in the box for the head and the diamond
-
-function Arrow({ from, to }) {
-  const [x1, y1] = from
-  const [x2, y2] = to
-  const left = Math.min(x1, x2) - PAD
-  const top = Math.min(y1, y2) - PAD
-  const w = Math.abs(x2 - x1) + PAD * 2
-  const h = Math.abs(y2 - y1) + PAD * 2
-  const a = [x1 - left, y1 - top]
-  const b = [x2 - left, y2 - top]
-  const deg = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI
-  return (
-    <svg
-      aria-hidden="true"
-      width={w}
-      height={h}
-      viewBox={`0 0 ${w} ${h}`}
-      style={{ ...at(left, top, w, h), overflow: "visible" }}
-    >
-      <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]} stroke={ACCENT_INK} strokeWidth={LEAD_W} />
-      <polygon
-        points={`${a[0] - DIAMOND},${a[1]} ${a[0]},${a[1] - DIAMOND - 0.5} ${a[0] + DIAMOND},${a[1]} ${a[0]},${a[1] + DIAMOND + 0.5}`}
-        fill={ACCENT_INK}
-      />
-      <polyline
-        points={`${b[0] - HEAD_BACK},${b[1] - HEAD_SPREAD} ${b[0]},${b[1]} ${b[0] - HEAD_BACK},${b[1] + HEAD_SPREAD}`}
-        fill="none"
-        stroke={ACCENT_INK}
-        strokeWidth={LEAD_W}
-        transform={`rotate(${deg} ${b[0]} ${b[1]})`}
-      />
-    </svg>
-  )
-}
-
-// The deck's wide bracket, gathering a row under one span: a rule whose two ends
-// turn 45° down and away, the same cut the chamfered cards use.
-const BRACKET_H = 24
-
-function Bracket({ x, y, w }) {
-  return (
-    <svg
-      aria-hidden="true"
-      width={w}
-      height={BRACKET_H}
-      viewBox={`0 0 ${w} ${BRACKET_H}`}
-      style={at(x, y, w, BRACKET_H)}
-    >
-      <path
-        d={`M 0 ${BRACKET_H} L ${BRACKET_H} 0 L ${w - BRACKET_H} 0 L ${w} ${BRACKET_H}`}
-        fill="none"
-        stroke={ACCENT_INK}
-        strokeWidth={LEAD_W}
-      />
-    </svg>
-  )
-}
-
-// One note, at the deck's own position: the square that marks where it starts, its
-// heading, then the body under that. Heading and body flow rather than sitting at
-// separate coordinates — a heading that wraps to two lines in one language would
-// otherwise land on its own body in the other. The deck sets every one of these
-// squares 24px left of the words and 14px down, so the note carries its own.
-function Note({ x, y, w, title, body }) {
-  return (
-    <>
-      <span
-        aria-hidden="true"
-        style={{ ...at(x - 24, y + 14, 12, 12), background: ACCENT, borderRadius: 2 }}
-      />
-      <div style={at(x, y, w)}>
-        <p style={{ fontFamily: SANS, fontSize: 20, fontWeight: 500, lineHeight: 1.3, color: CREAM }}>{title}</p>
-        <p style={{ marginTop: 12, fontFamily: SANS, fontSize: 20, lineHeight: 1.6, color: ON_BAND }}>{body}</p>
-      </div>
-    </>
-  )
-}
 
 // The deck's step pill. Width follows the text, so a longer translation widens the
 // pill instead of overflowing a box the deck sized for Chinese. A step is outlined
@@ -277,7 +148,6 @@ export default function CoreFlowBoard({ board }) {
   }, [])
 
   const { acts, tools, outputs, steps } = board
-  const rule = (y) => <div aria-hidden="true" style={{ ...at(80, y, 1760, 1), background: RULE }} />
 
   return (
     <figure className="mt-8">
@@ -300,7 +170,7 @@ export default function CoreFlowBoard({ board }) {
               {board.lead}
             </Text>
             <PillRow x={80} y={296} items={steps} />
-            {rule(380)}
+            <Rule x={80} y={380} w={1760} />
 
             {/* ---- act 1 · Dashboard ---- */}
             <ActHead y={421} n="1" title={acts[0].title} accent={acts[0].titleAccent} />
@@ -312,14 +182,14 @@ export default function CoreFlowBoard({ board }) {
             ))}
 
             <Arrow from={[506.5, 795]} to={[353.5, 795]} />
-            <Note x={134} y={776} w={290} title={acts[0].notes[0].title} body={acts[0].notes[0].body} />
+            <Note x={134} y={776} w={290} title={acts[0].notes[0].title} body={acts[0].notes[0].body} dy={14} />
 
             <Arrow from={[982, 1121]} to={[982, 1214.5]} />
-            <Note x={747} y={1222} w={520} title={acts[0].notes[1].title} body={acts[0].notes[1].body} />
+            <Note x={747} y={1222} w={520} title={acts[0].notes[1].title} body={acts[0].notes[1].body} dy={14} />
 
             <Arrow from={[1464, 797]} to={[1543, 797]} />
-            <Note x={1587} y={776} w={253} title={acts[0].notes[2].title} body={acts[0].notes[2].body} />
-            {rule(1456)}
+            <Note x={1587} y={776} w={253} title={acts[0].notes[2].title} body={acts[0].notes[2].body} dy={14} />
+            <Rule x={80} y={1456} w={1760} />
 
             {/* ---- act 2 · the queue, and act 3 · Execution Log ---- */}
             <ActHead y={1523} n="3" title={acts[2].title} accent={acts[2].titleAccent} />
@@ -332,20 +202,20 @@ export default function CoreFlowBoard({ board }) {
               titleX={1266}
             />
 
-            <Note x={146} y={1589} w={490} title={acts[2].notes[0].title} body={acts[2].notes[0].body} />
-            <Note x={675} y={1589} w={560} title={acts[2].notes[1].title} body={acts[2].notes[1].body} />
+            <Note x={146} y={1589} w={490} title={acts[2].notes[0].title} body={acts[2].notes[0].body} dy={14} />
+            <Note x={675} y={1589} w={560} title={acts[2].notes[1].title} body={acts[2].notes[1].body} dy={14} />
             <Shot src="execlog.png" x={146} y={1752} w={987} h={535.76} />
             <Arrow from={[640, 2280]} to={[640, 2324]} />
-            <Note x={586} y={2332} w={460} title={acts[2].notes[2].title} body={acts[2].notes[2].body} />
+            <Note x={586} y={2332} w={460} title={acts[2].notes[2].title} body={acts[2].notes[2].body} dy={14} />
 
-            <Note x={1293} y={1612} w={545} title={acts[1].notes[0].title} body={acts[1].notes[0].body} />
-            <Note x={1293} y={1773} w={545} title={acts[1].notes[1].title} body={acts[1].notes[1].body} />
+            <Note x={1293} y={1612} w={545} title={acts[1].notes[0].title} body={acts[1].notes[0].body} dy={14} />
+            <Note x={1293} y={1773} w={545} title={acts[1].notes[1].title} body={acts[1].notes[1].body} dy={14} />
             <Shot src="task-a.png" x={1264} y={1956} w={421} h={144} />
             <Shot src="task-b.png" x={1264} y={2143} w={421} h={144} />
             <Arrow from={[1264, 2030]} to={[1137, 2030]} />
             <Arrow from={[1660, 928.5]} to={[1660, 1490]} />
             <Arrow from={[1474, 2288]} to={[1474, 2493]} />
-            {rule(2461)}
+            <Rule x={80} y={2461} w={1760} />
 
             {/* ---- act 4 · Editor ---- */}
             <ActHead y={2521} title={acts[3].title} accent={acts[3].titleAccent} x={80} titleX={144} />
@@ -353,10 +223,10 @@ export default function CoreFlowBoard({ board }) {
             <Shot src="editor.png" x={607} y={2606} w={1232.68} h={669.15} />
 
             <Arrow from={[941, 2785]} to={[420, 2785]} />
-            <Note x={308} y={2764} w={260} title={acts[3].notes[0].title} body={acts[3].notes[0].body} />
+            <Note x={308} y={2764} w={260} title={acts[3].notes[0].title} body={acts[3].notes[0].body} dy={14} />
             <Arrow from={[632.5, 3011]} to={[457, 3011]} />
             <Arrow from={[290, 3015]} to={[290, 3288]} />
-            <Note x={308} y={2995} w={260} title={acts[3].notes[1].title} body={acts[3].notes[1].body} />
+            <Note x={308} y={2995} w={260} title={acts[3].notes[1].title} body={acts[3].notes[1].body} dy={14} />
 
             {/* the editor's tool rail */}
             <Bracket x={105} y={3344} w={1705} />
@@ -369,6 +239,7 @@ export default function CoreFlowBoard({ board }) {
                   w={Math.min(TOOL_CAP_W, 1840 - TOOL_CAP_X[i])}
                   title={tool.title}
                   body={tool.body}
+                  dy={14}
                 />
               </div>
             ))}
@@ -389,6 +260,7 @@ export default function CoreFlowBoard({ board }) {
                 w={[400, 330, 248][i]}
                 title={out.title}
                 body={out.body}
+                dy={14}
               />
             ))}
           </div>
