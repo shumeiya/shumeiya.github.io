@@ -40,13 +40,13 @@ export default function NavBar() {
           <button
             onClick={() => setIsDark((v) => !v)}
             aria-label={t(ui.toggleTheme)}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line/60 bg-box/50 text-ink shadow-sm backdrop-blur-xl backdrop-saturate-150 transition-colors hover:text-ac-blue"
+            className="glass flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink transition-colors hover:text-ac-blue"
           >
             {isDark ? <Sun size={15} /> : <Moon size={15} />}
           </button>
         </div>
 
-        <ul className="order-3 flex w-full items-center gap-1 overflow-x-auto rounded-full border border-line/60 bg-box-2/55 p-1 shadow-sm backdrop-blur-xl backdrop-saturate-150 sm:order-0 sm:w-auto sm:absolute sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:overflow-visible">
+        <ul className="glass order-3 flex w-full items-center gap-1 overflow-x-auto rounded-full p-1 sm:order-0 sm:w-auto sm:absolute sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:overflow-visible">
           {links.map((link) => (
             <li key={link.to} className="shrink-0">
               <NavLink
@@ -55,7 +55,7 @@ export default function NavBar() {
                 className={({ isActive }) =>
                   `block whitespace-nowrap rounded-full px-3 py-1 text-xs font-regular transition-colors sm:px-4 sm:text-sm ${
                     isActive
-                      ? "bg-box/85 text-cream shadow-sm"
+                      ? "glass-well text-cream"
                       : "text-ink/50 hover:text-ink"
                   }`
                 }
