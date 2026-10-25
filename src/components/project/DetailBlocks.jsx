@@ -9,10 +9,13 @@ import StoryMapBoard from "./StoryMapBoard"
 import SpecBoard from "./SpecBoard"
 import CoreFlowBoard from "./CoreFlowBoard"
 import ExtensionsBoard from "./ExtensionsBoard"
+import LaunchDataBoard from "./LaunchDataBoard"
+import AiWorkflowBoard from "./AiWorkflowBoard"
 import WeatherPetsDeck from "./WeatherPetsDeck"
 import CompareSlider from "./CompareSlider"
 import CodemaoFlow from "./CodemaoFlow"
 import AbcMouseDeck from "./AbcMouseDeck"
+import HmiDeck from "./HmiDeck"
 
 // Typed content blocks for a case-study section. A deck-shaped case study needs
 // more than paragraphs — figures, definition rows, a process sequence and the
@@ -467,10 +470,16 @@ export default function DetailBlocks({ blocks, accent }) {
         return <CoreFlowBoard key={i} board={block.board} />
       case "extensions":
         return <ExtensionsBoard key={i} board={block.board} />
+      case "launchdata":
+        return <LaunchDataBoard key={i} board={block.board} />
+      case "aiworkflow":
+        return <AiWorkflowBoard key={i} board={block.board} />
       case "wpdeck":
         return <WeatherPetsDeck key={i} slide={block.slide} />
       case "abcdeck":
         return <AbcMouseDeck key={i} slide={block.slide} />
+      case "hmideck":
+        return <HmiDeck key={i} slide={block.slide} />
       default:
         return <Text key={i} text={block.text} />
     }

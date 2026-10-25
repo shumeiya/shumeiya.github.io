@@ -62,13 +62,10 @@ export const experience = [
 ]
 
 export const galleryProjects = [
-  { name: tt("Kyrall Web App", "Kyrall 网页应用"), slug: "kyrall", tag: tt("ai tool", "AI 工具"), image: "/project/kyrall/1.png", color: "var(--color-ac-blue)" },
-  { name: tt("Weather Pets", "天气宠物"), slug: "weather-pets", tag: tt("wetter.com · App Concept", "wetter.com · 应用概念"), image: "/gallery/weatherpets.jpg", color: "var(--color-ac-orange)" },
-  { name: tt("Slow Food", "慢食 Slow Food"), slug: "slow-food", tag: tt("Service / System Design", "服务 / 系统设计"), image: "/gallery/slowfood.jpg", color: "var(--color-ac-green)" },
-  { name: tt("HMI", "车机 HMI"), slug: "hmi", tag: tt("Automotive · HMI", "汽车 · 人机交互"), image: "/gallery/hmi.jpg", color: "var(--color-ac-red)" },
-  { name: tt("ABC Mouse", "ABC Mouse"), slug: "abc-mouse", tag: tt("Tencent · Learning UX", "腾讯 · 教育体验"), image: "/gallery/abcmouse.jpg", color: "var(--color-ac-orange)" },
-  { name: tt("CodeMao", "编程猫"), slug: "codemao", tag: tt("Platform Design", "平台设计"), image: "/gallery/codemao.jpg", color: "var(--color-ac-pink)" },
-  { name: tt("Puzzle Game", "拼图游戏"), slug: "puzzle-game", tag: tt("Gamification", "游戏化设计"), image: "/gallery/puzzle.jpg", color: "var(--color-ac-green)" },
+  { name: tt("Kyrall Web App", "Kyrall 网页应用"), slug: "kyrall", tag: tt("AI CAD Modeling", "AI 建模工具"), image: "/project/kyrall/1.png", color: "var(--color-ac-green)" },
+  { name: tt("Weather Pets", "天气宠物"), slug: "weather-pets", tag: tt("AI Weather APP", "AI 天气应用"), image: "/project/weatherpets/1.png", color: "var(--color-white)" },
+  { name: tt("CodeMao", "编程猫"), slug: "codemao", tag: tt("ToB Platform Design", "B端平台设计"), image: "/project/codemao/cover.jpg", color: "var(--color-ac-blue)" },
+  { name: tt("ABC Mouse", "ABC Mouse"), slug: "abc-mouse", tag: tt("Tencent ·Online Education", "腾讯 · 在线教育"), image: "/project/abc-mouse/cover.jpg", color: "var(--color-ac-white)" },
 ]
 
 export const projects = galleryProjects.map((p) => ({

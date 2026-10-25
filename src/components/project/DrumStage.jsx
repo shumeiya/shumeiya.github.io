@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 // The page is the inner wall of a drum, and the bottom LIP of the viewport is
 // where that wall curls away under you, like the end of a sheet going back onto
@@ -65,14 +65,32 @@ function arc() {
   return out
 }
 
+// The lip only exists from lg up — see `.drum-lip` in index.css. Below that the
+// copies are never built: a phone has no room for a 200px curl and no GPU budget
+// for seven clones of the page. Tracked as state so crossing the breakpoint
+// (a tablet turning, a window resizing) tears the lip down or builds it fresh.
+const WIDE = "(min-width: 1024px)"
+
+function useWide() {
+  const [wide, setWide] = useState(() => matchMedia(WIDE).matches)
+  useEffect(() => {
+    const mq = matchMedia(WIDE)
+    const onChange = () => setWide(mq.matches)
+    mq.addEventListener("change", onChange)
+    return () => mq.removeEventListener("change", onChange)
+  }, [])
+  return wide
+}
+
 export default function DrumStage({ children, className = "" }) {
   const rootRef = useRef(null)
   const stageRef = useRef(null)
+  const wide = useWide()
 
   useEffect(() => {
     const root = rootRef.current
     const stage = stageRef.current
-    if (!root || !stage) return
+    if (!root || !stage || !wide) return
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
 
     const strips = arc()
@@ -254,7 +272,7 @@ export default function DrumStage({ children, className = "" }) {
       if (raf) cancelAnimationFrame(raf)
       stage.textContent = ""
     }
-  }, [])
+  }, [wide])
 
   return (
     <>

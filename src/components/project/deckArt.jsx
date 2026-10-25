@@ -38,7 +38,7 @@ export function createDeckArt({ ox, oy, art }) {
     ...(h === undefined ? null : { height: h }),
   })
 
-  function Text({ x, y, w, children, size = 20, weight = 400, color = "var(--color-ink)", lh = "normal" }) {
+  function Text({ x, y, w, children, size = 20, weight = 400, color = "var(--color-ink)", lh = "normal", style }) {
     return (
       <p
         style={{
@@ -49,6 +49,7 @@ export function createDeckArt({ ox, oy, art }) {
           lineHeight: lh,
           color,
           whiteSpace: w === undefined ? "nowrap" : undefined,
+          ...style,
         }}
       >
         {children}

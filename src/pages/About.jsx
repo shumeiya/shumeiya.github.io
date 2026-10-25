@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion"
-import { Link } from "react-router-dom"
-import { ArrowDown, ArrowUpRight } from "lucide-react"
+import { ArrowDown } from "lucide-react"
+import CtaLink from "../components/CtaLink"
 import NameScatter from "../components/about/NameScatter"
 import { intro, education, experience, skills, scatter} from "../data/about"
 import { useLocale, useT } from "../i18n/lang"
@@ -515,28 +515,8 @@ export default function About() {
       <NameScatter text="shumeizhang" className=" h-[46vh] min-h-[300px] w-full" />
 
       {/* CTA */}
-      <motion.div {...rise} transition={{ duration: 0.5 }} className="mt-24 border-t border-line">
-        <Link to="/project" className="group flex items-center justify-between gap-6 py-8">
-          <p className="text-2xl font-medium text-cream sm:text-3xl lg:text-8xl">
-            {/* The underline is positioned rather than in flow, so sweeping it in
-                never changes this line's height or shifts the arrow beside it.
-                It wipes out to the right and back in from the left — the same
-                idiom the résumé links use — and the text leans after the arrow.
-                Both rule and offset grow with the type, or a hairline under
-                96px copy reads as a stray scratch. */}
-            <span className="relative inline-block transition-transform duration-300 group-hover:translate-x-1">
-              {t(ui.aboutCta)}
-              <span
-                aria-hidden="true"
-                className="absolute -bottom-1 left-0 h-0.5 w-full origin-right scale-x-0 bg-cream transition-transform duration-300 group-hover:origin-left group-hover:scale-x-100 lg:-bottom-3 lg:h-1"
-              />
-            </span>
-          </p>
-          <ArrowUpRight
-            strokeWidth={1.5}
-            className="size-20 shrink-0 text-fog transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-cream sm:size-32"
-          />
-        </Link>
+      <motion.div {...rise} transition={{ duration: 0.5 }} className="mt-24">
+        <CtaLink to="/project">{t(ui.aboutCta)}</CtaLink>
       </motion.div>
       </div>
 

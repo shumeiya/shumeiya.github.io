@@ -1,5 +1,6 @@
 // Left-hand chapter index — geometry, type and transitions matched to the reference layout:
-// fixed at left:16px, vertically centred, and an active item that steps up from
+// fixed at left:16px, vertically centred, shown from `xl` up — the page reserves a
+// matching gutter for it there (see ProjectDetail), so it never sits on the copy — and an active item that steps up from
 // 18px/400 at 0.4 opacity to 28px/500 at full opacity over 0.3s — 18px because the
 // project pages hold a hard floor there (see CLAUDE.md).
 // Row spacing breathes around the active item: the gaps next to it are the widest
@@ -35,7 +36,7 @@ export default function DetailToc({ sections, active }) {
   return (
     <nav
       aria-label={t(ui.sectionIndex)}
-      className="fixed left-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col lg:flex"
+      className="fixed left-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col xl:flex"
     >
       {sections.map((section, i) => {
         const isActive = active === section.id

@@ -1,6 +1,5 @@
 import { useEffect } from "react"
-import { Link } from "react-router-dom"
-import { ArrowRight } from "lucide-react"
+import CtaLink from "../components/CtaLink"
 import WorkSection from "../components/project/WorkSection"
 import DrumStage from "../components/project/DrumStage"
 import { featuredWorks } from "../data/works"
@@ -23,21 +22,14 @@ export default function Works() {
   }, [])
 
   return (
-    <main className="relative overflow-x-clip pb-[calc(6rem+200px)]">
+    <main className="relative overflow-x-clip pb-24 lg:pb-[calc(6rem+200px)]">
       <DrumStage>
       {works.map((work, i) => (
         <WorkSection key={work.slug} work={work} index={i} total={works.length} />
       ))}
 
-      <div id="see-others" className="mx-auto flex max-w-9xl flex-col items-center gap-4 px-4 py-24 text-center sm:px-6 lg:px-8">
-        <p className="max-w-md text-base text-fog">{t(ui.othersLead)}</p>
-        <Link
-          to="/project/all"
-          className="group inline-flex items-center gap-2 rounded-full border border-ink/25 px-8 py-4 text-lg text-ink transition-colors hover:border-ink hover:bg-ink hover:text-page"
-        >
-          {t(ui.seeOthers)}
-          <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-        </Link>
+      <div id="see-others" className="mx-auto max-w-9xl px-4 pt-24 sm:px-6 lg:px-8">
+        <CtaLink to="/project/all">{t(ui.othersCta)}</CtaLink>
       </div>
       </DrumStage>
     </main>

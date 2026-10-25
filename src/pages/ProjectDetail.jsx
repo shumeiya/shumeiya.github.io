@@ -65,7 +65,11 @@ export default function ProjectDetail() {
     // to fit-content, whose floor is its own min-content. One wide figure then drags
     // the whole page wider than the screen and the document scrolls sideways. A
     // definite width stops that; `max-w-9xl` still caps it on a wide display.
-    <main className="relative mx-auto w-full min-w-0 max-w-9xl px-4 pb-28 pt-6 sm:px-6 lg:px-8">
+    // `xl:px-72` is the gutter for the two fixed rails: the chapter index at the left
+    // edge, whose active label runs to just under 300px, and the ruler at the right.
+    // The same value on both sides keeps the column on the viewport's centre line —
+    // a gutter on the left alone pushed the whole page visibly to the right.
+    <main className="relative mx-auto w-full min-w-0 max-w-9xl px-4 pb-28 pt-6 sm:px-6 lg:px-8 xl:px-72">
       <DetailToc sections={detail.sections} active={active} />
       <ScrollRail />
 

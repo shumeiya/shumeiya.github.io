@@ -34,11 +34,7 @@ export const ui = {
   // Projects reel (/project)
   badgeNew: tt("New", "最新"),
   viewCaseStudy: tt("View Case Study", "查看案例"),
-  othersLead: tt(
-    "Four of the projects I keep coming back to. The rest of the shelf — early work, side projects and studies — lives in the archive.",
-    "这是我最常回看的四个项目。其余的——早期作品、个人项目与研究——都收在归档里。"
-  ),
-  seeOthers: tt("See others", "查看其他"),
+  othersCta: tt("See the other projects", "来看看其他项目"),
 
   // Archive (/project/all)
   allProjects: tt("All projects", "全部项目"),
@@ -76,14 +72,14 @@ export const ui = {
 
 // Calendar labels for the STATUS.LOG heat-map.
 export const months = [
-  tt("Jan", "1月"),
-  tt("Feb", "2月"),
   tt("Mar", "3月"),
   tt("Apr", "4月"),
   tt("May", "5月"),
   tt("Jun", "6月"),
   tt("Jul", "7月"),
   tt("Aug", "8月"),
+  tt("Sep", "9月"),
+  tt("Oct", "10月"),
 ]
 
 export const dayLabels = { 0: tt("Mon", "一"), 2: tt("Wed", "三"), 4: tt("Fri", "五") }

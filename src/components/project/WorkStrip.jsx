@@ -250,7 +250,7 @@ export default function WorkStrip({ panels, accent, name }) {
                 key={i}
                 ref={(el) => (panelRefs.current[i] = el)}
                 aria-hidden={i >= count ? "true" : undefined}
-                className="work-panel aspect-video h-[58vh] max-h-[720px] min-h-[300px] shrink-0 overflow-hidden rounded-[1rem] sm:h-[66vh]"
+                className="work-panel aspect-video h-(--work-panel-h) shrink-0 overflow-hidden rounded-[1rem]"
                 style={{
                   backgroundColor: panel.tone === "accent" ? accent : "var(--color-box)",
                   color: panel.tone === "accent" ? "var(--color-paper-ink)" : undefined,

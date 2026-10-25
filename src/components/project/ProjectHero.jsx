@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from "react"
 import { useT } from "../../i18n/lang"
 import { ui } from "../../i18n/ui"
 
@@ -14,6 +15,27 @@ import { ui } from "../../i18n/ui"
 // complete header: its name set large, its summary under it, role and category below.
 export default function ProjectHero({ project, detail }) {
   const t = useT()
+  const headerRef = useRef(null)
+  // Where the header sits in the viewport. The backdrop has to run from the screen's
+  // left edge to its right edge, and the header is not centred in the screen — from
+  // `xl` up the page keeps a gutter on the left for the chapter index — so "centre
+  // on the header and span 100vw" would start the picture 150px in and push the
+  // document sideways by as much. Measured instead, and re-measured on resize.
+  const [bleed, setBleed] = useState(null)
+  useLayoutEffect(() => {
+    const el = headerRef.current
+    if (!el) return
+    const measure = () =>
+      setBleed({ left: -el.getBoundingClientRect().left, width: document.documentElement.clientWidth })
+    measure()
+    window.addEventListener("resize", measure)
+    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure)
+    ro?.observe(el)
+    return () => {
+      window.removeEventListener("resize", measure)
+      ro?.disconnect()
+    }
+  }, [])
   const hero = detail.hero ?? {}
   const image = hero.image ?? project.image
   const lead = detail.summary ?? project.description
@@ -27,14 +49,17 @@ export default function ProjectHero({ project, detail }) {
   ]
 
   return (
-    <header className="relative isolate mb-16">
+    <header ref={headerRef} className="relative isolate mb-16">
       {/* Full-bleed backdrop. It starts above the page's own top padding so the
           image runs under the (transparent) nav bar, and stops at the header's own
           bottom edge — a stacking context paints over every later sibling that isn't
           positioned, so letting it hang lower would veil the case study itself. */}
       <div
         aria-hidden="true"
-        className="hero-veil pointer-events-none absolute bottom-0 left-1/2 -top-32 -z-10 w-screen -translate-x-1/2 overflow-hidden"
+        className={`hero-veil pointer-events-none absolute bottom-0 -top-32 -z-10 overflow-hidden ${
+          bleed ? "" : "left-1/2 w-screen -translate-x-1/2"
+        }`}
+        style={bleed ? { left: bleed.left, width: bleed.width } : undefined}
       >
         {image && <img src={image} alt="" className="h-full w-full object-cover" />}
         {/* An even veil over the whole image, in the page's colour — deep enough

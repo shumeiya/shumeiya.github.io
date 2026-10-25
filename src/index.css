@@ -83,7 +83,7 @@ html {
      from that unchanged number, so for the length of the bounce the lip shows the
      page at an offset from the page above it, and the gap between them is the
      lip's own background. It is worst at the two ends, which is where the bounce
-     lives: the top, and the bottom where "See others" sits. */
+     lives: the top, and the bottom where the "See the other projects" link sits. */
   overscroll-behavior-y: none;
 }
 
@@ -244,6 +244,45 @@ html::-webkit-scrollbar {
   --abc-pink: #eaa7a2;
 }
 
+/* The HMI (Granstudio) deck boards. The slides are white, set in a navy heading ink
+   with one purple accent that marks the path the project designs (manual →
+   autonomous); the diagrams use a ramp of three pale blues, the wireframes two greys,
+   and the mode pills and chat bubbles one blue-grey gradient with white type.
+   On the dark page the navy heading becomes the page's own cream and the purple
+   lightens to hold its contrast; the blues and greys step down to sit on near-black.
+   `figure` is the one value that never flips: it backs the breath-light photographs,
+   which were pasted into the deck with their own white ground. */
+.hmi-deck {
+  --hmi-accent: #5858a1;
+  --hmi-title: #44455c;
+  --hmi-line: #44455c;
+  --hmi-wire: #ececec;
+  --hmi-wire-2: #d3d3d3;
+  --hmi-on-wire: #333333;
+  --hmi-blind: #e4e4e4;
+  --hmi-zone-1: #dbe8f8;
+  --hmi-zone-2: #bad4f2;
+  --hmi-zone-3: #95baea;
+  --hmi-bubble: linear-gradient(135deg, #93a4cc 0%, #6f80ad 100%);
+  --hmi-on-bubble: #ffffff;
+  --hmi-chat: linear-gradient(180deg, #edf2fb 0%, #f6f8fd 100%);
+  --hmi-figure: #ffffff;
+}
+
+.dark .hmi-deck {
+  --hmi-accent: #a5a2ee;
+  --hmi-title: var(--color-cream);
+  --hmi-line: #9a9bb8;
+  --hmi-wire: #202636;
+  --hmi-wire-2: #303749;
+  --hmi-on-wire: #d8dbe6;
+  --hmi-blind: #272b36;
+  --hmi-zone-1: #2b3d5c;
+  --hmi-zone-2: #35507c;
+  --hmi-zone-3: #42669f;
+  --hmi-chat: linear-gradient(180deg, #1b2233 0%, #171c29 100%);
+}
+
 body {
   margin: 0;
   background-color: var(--color-page);
@@ -395,6 +434,21 @@ html[data-lang="zh"] body {
   padding-left: var(--work-indent);
 }
 
+/* Panel height. Below lg a panel is sized from the viewport's WIDTH: it opens at
+   the indent and stops 3rem short of the right edge, so the whole frame is on
+   screen with a sliver of the next one peeking in — a 16:9 frame set from the
+   viewport's height would run to twice the width of a phone and show one corner.
+   From lg up the reel is taller than the fold on purpose, so there it goes back
+   to a height, and the right neighbour bleeds in off the edge. */
+:root {
+  --work-panel-h: calc((100vw - var(--work-indent) - 3rem) * 9 / 16);
+}
+@media (min-width: 1024px) {
+  :root {
+    --work-panel-h: clamp(300px, 66vh, 720px);
+  }
+}
+
 .work-clip {
   touch-action: pan-y; /* horizontal gestures are ours, vertical stays the page's */
 }
@@ -468,6 +522,15 @@ html[data-lang="zh"] body {
   .work-panel {
     transform: none !important;
   }
+  .drum-lip {
+    display: none;
+  }
+}
+
+/* The lip is a desktop flourish. On a phone it would eat 200px of a short
+   viewport and cost seven copies of the page on a GPU with less to spare, so
+   below lg it is not drawn — and DrumStage.jsx does not build it either. */
+@media (max-width: 1023.98px) {
   .drum-lip {
     display: none;
   }

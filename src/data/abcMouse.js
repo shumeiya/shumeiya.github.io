@@ -22,11 +22,11 @@ export const abcMouseRole = tt("UX · Interaction & Game Design", "UX · 交互�
 
 export const abcMouseSummary = tt(
   "ABC Mouse (开心鼠) is Tencent's online learning app for children aged 3–8, built on the American ABCmouse with a cross-border team. The work covered research, interaction and game design — one design language for both teams, so the app and its content stopped pulling apart.",
-  "开心鼠（ABC Mouse）是腾讯面向 3–8 岁儿童的在线教育应用，由美国 ABCmouse 引进、跨国团队共同打造。这段工作覆盖研究、交互与游戏化设计 —— 用一套两个团队共用的设计语言，让应用和内容不再彼此割裂。"
+  "开心鼠（ABC Mouse）是腾讯面向 3–8 岁儿童的在线教育应用，主要有思维、英语、编程、语文等模块。"
 )
 
 export const abcMouseHero = {
-  image: "/project/abc-mouse/new_banner.webp",
+  image: "/project/abc-mouse/1.png",
   headline: tt("An online learning app for children aged 3–8.", "针对 3–8 岁儿童的在线教育应用"),
   meta: [
     { label: tt("Role", "角色"), value: abcMouseRole },
