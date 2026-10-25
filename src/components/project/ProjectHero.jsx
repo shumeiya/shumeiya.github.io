@@ -49,11 +49,7 @@ export default function ProjectHero({ project, detail }) {
   ]
 
   return (
-    <header ref={headerRef} className="relative isolate mb-16">
-      {/* Full-bleed backdrop. It starts above the page's own top padding so the
-          image runs under the (transparent) nav bar, and stops at the header's own
-          bottom edge — a stacking context paints over every later sibling that isn't
-          positioned, so letting it hang lower would veil the case study itself. */}
+    <header ref={headerRef} className="relative isolate mb-10">
       <div
         aria-hidden="true"
         className={`hero-veil pointer-events-none absolute bottom-0 -top-32 -z-10 overflow-hidden ${
@@ -76,11 +72,11 @@ export default function ProjectHero({ project, detail }) {
         />
       </div>
 
-      <div className="relative pb-8 pt-10 sm:pt-16">
-        <div className="flex items-center gap-2.5">
+      <div className="relative pt-10">
+        <div className="flex items-center gap-3">
           <span
             aria-hidden="true"
-            className="size-3 shrink-0 rounded-[3px]"
+            className="size-3 shrink-0 "
             style={{ background: project.color }}
           />
           <h1
@@ -95,13 +91,13 @@ export default function ProjectHero({ project, detail }) {
         </div>
 
         {headline && (
-          <p className="mt-7 max-w-2xl text-3xl font-semibold leading-tight text-cream sm:text-4xl">
+          <p className="mt-7 max-w-4xl text-3xl font-semibold leading-tight text-cream sm:text-5xl">
             {headline}
           </p>
         )}
 
         {lead && (
-          <p className="mt-4 max-w-xl text-copy leading-relaxed text-fog">{lead}</p>
+          <p className="mt-3 max-w-4xl text-xl xl:text-2xl leading-relaxed text-fog">{lead}</p>
         )}
 
         {detail.tags && (
@@ -118,12 +114,10 @@ export default function ProjectHero({ project, detail }) {
         )}
       </div>
 
-    {/* `relative` is load-bearing: the backdrop sits in its own stacking context,
-        which paints over any later sibling that isn't positioned. */}
       <dl className="relative mt-10 grid gap-x-8 gap-y-5 sm:grid-cols-3">
         {meta.map((item) => (
           <div key={item.label}>
-            <dt className="font-mono-tight text-note uppercase tracking-wide text-fog">
+            <dt className="font-mono-tight text-base text-note uppercase tracking-wide text-fog">
               {item.label}
             </dt>
             <dd className="mt-1.5 text-copy text-ink">{item.value}</dd>

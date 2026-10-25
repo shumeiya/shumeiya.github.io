@@ -1,15 +1,4 @@
-// CodeMao — 编程猫 B 端业务后台 2.0.
-//
-// The source is the Figma file's 「导出」 page: a fourteen-slide deck that argues the
-// case from the business reason through the data, the interviews, the problem, the
-// brief, the flow, the frame, the specification, and finally five screens of what
-// shipped. The page below follows that argument in that order — the deck's thinking is
-// the structure, not just its source of pictures.
-//
-// The pictures themselves come from the file's 「页面重做」 page, where the redesigned
-// 1440×982 screens live, exported at 1600px wide. The one old-versus-new pair is the
-// two raw screenshots behind slide 2-6, cropped to a common aspect ratio so the
-// comparison slider's divider doesn't travel across a step. See CompareSlider.jsx.
+
 import { tt } from "../i18n/t"
 
 const ART = "/project/codemao"
@@ -47,12 +36,12 @@ export const codemaoFlow = {
 export const codemaoRole = tt("UX/UI Designer", "UX/UI 设计师")
 
 export const codemaoSummary = tt(
-  "Codemao's ToB backend is the CMS education platform schools and training centres run their programming courses from — course management, course analytics and the operations tooling around them. It had gone years without an update while the company's attention sat on the consumer side. This is the 2.0.",
-  "编程猫 B 端业务后台，是学校与培训机构开设编程课所用的 CMS 教育内容管理平台 —— 课程管理、课程数据分析，以及围绕它们的用户运营工具。公司重心长期在 C 端，这个平台很久没有迭代过。这是它的 2.0。"
+  "This is the 2.0 version iteration for Codemao course platform, which reorganizes the functional entry and interaction process around course management and super courseware editing.",
+  "编程猫 B 端教育专用数字化管理后台系统与用户运营工具，用于课程数据分析、课程管理等。本次为 2.0 版本迭代，围绕课程管理与超级课件编辑重新梳理功能入口与交互流程。"
 )
 
 export const codemaoHero = {
-  image: `${ART}/new-list.jpg`,
+  image: `${ART}/10.png`,
   headline: tt(
     "Three quarters of teachers opened the platform. Barely half taught from it.",
     "四分之三的老师打开了平台，只有一半真的用它上课。"
@@ -68,15 +57,14 @@ export const codemaoTags = [
   tt("CMS 2.0", "CMS 2.0"),
   tt("ToB platform", "ToB 平台"),
   tt("Information architecture", "信息架构"),
-  tt("Interaction flow", "交互流程"),
-  tt("Design system", "设计规范"),
+
 ]
 
 export const codemaoSections = [
   {
     id: "reason",
     eyebrow: tt("01 · Reason", "01 · 迭代原因"),
-    label: tt("Why iterate", "迭代原因"),
+    label: tt("Background", "项目背景"),
     lead: tt(
       "A B-end platform that had been left behind, and a deadline that ruled out starting over.",
       "一个被落在后面的 B 端平台，以及一个不允许推倒重来的截止日期。"
@@ -120,7 +108,7 @@ export const codemaoSections = [
   {
     id: "data",
     eyebrow: tt("02 · Data", "02 · 数据表现"),
-    label: tt("What the numbers said", "数据表现"),
+    label: tt("Data Analysis", "数据表现"),
     lead: tt(
       "The weekly teaching report said the platform was being opened, not used.",
       "每周教师上课数据说明：平台被打开了，但没被用起来。"
@@ -208,7 +196,7 @@ export const codemaoSections = [
   {
     id: "interview",
     eyebrow: tt("03 · Interview", "03 · 用户访谈"),
-    label: tt("What teachers said", "用户访谈"),
+    label: tt("Interview", "用户访谈"),
     lead: tt(
       "From the teacher-training team's interviews, about how a lesson actually runs.",
       "根据师训运营同事近来对教师用户的访谈，了解到老师实际上课场景有如下情况。"
@@ -254,7 +242,7 @@ export const codemaoSections = [
   {
     id: "problem",
     eyebrow: tt("04 · Situation", "04 · 问题定位"),
-    label: tt("The problem, located", "问题定位"),
+    label: tt("Problem", "问题定位"),
     blocks: [
       {
         type: "defs",
@@ -294,7 +282,7 @@ export const codemaoSections = [
   {
     id: "goal",
     eyebrow: tt("05 · Brief", "05 · 需求分析"),
-    label: tt("What it had to do", "需求分析"),
+    label: tt("How", "需求分析"),
     lead: tt(
       "Written as the lesson runs — before it, during it, after it.",
       "按一堂课的时间顺序来写：课前、课中、课后。"
@@ -353,7 +341,7 @@ export const codemaoSections = [
   {
     id: "layout",
     eyebrow: tt("07 · Frame layout", "07 · 框架布局"),
-    label: tt("Frame layout", "框架布局"),
+    label: tt("Frame", "框架布局"),
     lead: tt(
       "The functions were broken apart and regrouped into three levels — background, content and global control. The control level is the important one: it carries the top bar and the side navigation.",
       "根据产品特性，将功能点分解后重新分组，分为背景、内容、全局控制三个层级。全局控制层是重要的功能层，具有顶部导航、侧边导航模块。"
@@ -396,8 +384,8 @@ export const codemaoSections = [
   },
   {
     id: "system",
-    eyebrow: tt("08 · Design code", "08 · 设计规范"),
-    label: tt("Design code", "设计规范"),
+    eyebrow: tt("08 · Design system", "08 · 设计规范"),
+    label: tt("Design system", "设计规范"),
     lead: tt(
       "One blue carries every action; everything else is a role, named and fixed.",
       "一个蓝色承担所有操作，其余每个颜色都对应一个被命名、被固定下来的角色。"
@@ -463,8 +451,8 @@ export const codemaoSections = [
   },
   {
     id: "hierarchy",
-    eyebrow: tt("09 · KR1 · Product experience", "09 · KR1 · 提升产品体验"),
-    label: tt("Clearer levels, sorted entrances", "优化层级、梳理功能入口"),
+    eyebrow: tt("09 · Product experience", "09 · KR1 · 提升产品体验"),
+    label: tt("Main Pages", "主页重构"),
     lead: tt(
       "Same page, two versions. Drag the divider across to see where the navigation, the tabs and the table moved.",
       "同一个页面的两个版本。拖动分割线，看导航、标签页和表格分别挪到了哪里。"
@@ -507,7 +495,7 @@ export const codemaoSections = [
   {
     id: "editing",
     eyebrow: tt("10 · KR1 · Interaction flow", "10 · KR1 · 优化交互流程"),
-    label: tt("Editing a course, editing a lesson", "课程编辑与超级课件编辑"),
+    label: tt("Detail Design", "设计细节"),
     lead: tt(
       "Editing is the thing teachers said they could not do, so it is the flow that got rebuilt first: from the course list into the course, and from the course into the lesson itself.",
       "「不能编辑」是老师反馈最集中的一点，所以这条流程先重做：从课程列表进到课程，再从课程进到这一节课本身。"
@@ -601,7 +589,7 @@ export const codemaoSections = [
   {
     id: "types",
     eyebrow: tt("11 · KR1 · Preparing and teaching", "11 · KR1 · 优化备课及上课流程"),
-    label: tt("One lesson, five kinds of material", "兼容多类型课件"),
+    label: tt("Detail Design", "超级课件"),
     lead: tt(
       "This is the answer to the switching. A teaching segment can be an image, a carousel, a video, a creative tool or a file to download — all of them inside the lesson, in teaching order, so the lesson runs from one place instead of four.",
       "这是对「来回切换」的回答。一个教学环节可以是图片、轮播图、视频、创作工具或可下载的附件 —— 它们都在这一节课里，按教学顺序排列，一堂课从一个地方讲完，而不是四个。"

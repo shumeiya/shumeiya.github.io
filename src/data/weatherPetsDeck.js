@@ -1,15 +1,4 @@
-// WeatherPets — the 15-slide case-study deck, rebuilt as page content.
-//
-// The source is a Figma deck (1920×1080 artboards, blue ground, white cards, one
-// yellow card per slide carrying the point). Nothing here is a flattened export of
-// those slides: every word is real text in both languages, and every card is a real
-// box that reflows, so the deck reads on a phone as well as it does on a laptop.
-// The artwork — phone screens, pet renders, stickers — is exported from the same
-// Figma file into /public/project/weatherpets/deck/.
-//
-// Each entry is one slide. `kind` picks the layout in WeatherPetsDeck.jsx; the rest
-// is that layout's content. The `sections` array at the bottom is what the detail
-// page actually walks — one section per slide, each carrying its board.
+
 import { tt } from "../i18n/t"
 
 const ART = "/project/weatherpets/deck"
@@ -21,22 +10,19 @@ const ART = "/project/weatherpets/deck"
 // become the hero's meta row.
 
 export const weatherPetsSummary = tt(
-  "An AI weather app built for wetter.com, Germany's largest weather platform: upload a photo of your own pet and AI turns it into a weather mascot that dresses for the forecast — so checking the weather becomes a small daily pleasure.",
-  "为德国天气平台 wetter.com 打造的 AI 天气应用：上传自家宠物照片，AI 生成会随天气换装的专属天气宠物，把每天看天气变成一件开心的小事。"
+  "Upload a photo of your own pet and AI turns it into a weather mascot that dresses for the forecast, so checking the weather becomes a small daily pleasure.",
+  "上传自家宠物照片，AI 生成会随天气换装的专属天气宠物，把每天看天气变成一件开心的小事。"
 )
 
 export const weatherPetsHero = {
-  image: "/project/weatherpets/1.png",
-  headline: tt("Let your pet become your weather reporter.", "让你的宠物，成为你的天气播报员"),
+  image: "/project/weatherpets/6.png",
+  headline: tt("WeatherPets:Enjoy doses of joy daily!", "天气宠物：每天一剂快乐！"),
   meta: [
-    { label: tt("My role", "我的角色"), value: tt("UX/UI designer · part-time front-end", "UX/UI 设计师 · 兼部分前端") },
+    { label: tt("My role", "我的角色"), value: tt("UX/UI designer · Front-end", "UX/UI 设计师 · 兼部分前端") },
     { label: tt("Timeline", "项目周期"), value: "2024.09 – 2025.07" },
-    { label: tt("Partner", "合作方"), value: "wetter.com × DPS" },
+    { label: tt("Partner", "公司"), value: "wetter.com × DPS" },
   ],
   stats: [
-    { value: tt("5,600+", "5,600+"), label: tt("installs on Google Play", "Google Play 累计安装") },
-    { value: "26M+", label: tt("monthly users on the partner's platform", "合作方平台月活用户") },
-    { value: "1", label: tt("designer on a five-person team", "五人团队里的唯一设计师") },
   ],
 }
 
@@ -45,8 +31,6 @@ export const weatherPetsTags = [
   tt("UX/UI design", "UX/UI 设计"),
   tt("0→1 launch", "0→1 上线"),
   tt("User research", "用户研究"),
-  tt("Design system", "设计系统"),
-  tt("React Native", "React Native"),
 ]
 
 // --- 02 · Overview ----------------------------------------------------------
