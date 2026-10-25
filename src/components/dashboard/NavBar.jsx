@@ -23,7 +23,7 @@ export default function NavBar() {
   // nothing of the page left to sample.
   return (
     <header className="sticky top-0 z-50">
-      <nav className="relative mx-auto flex max-w-9xl flex-wrap items-center justify-between gap-2 px-4 py-3 sm:flex-nowrap sm:px-8 lg:px-8">
+      <nav className="relative mx-auto flex flex-wrap items-center justify-between gap-2 px-4 py-3 sm:flex-nowrap sm:px-8 lg:px-8">
         <Link
           to="/"
           aria-label={t(ui.navHome)}

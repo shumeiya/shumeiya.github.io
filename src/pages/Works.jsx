@@ -28,7 +28,7 @@ export default function Works() {
         <WorkSection key={work.slug} work={work} index={i} total={works.length} />
       ))}
 
-      <div id="see-others" className="mx-auto max-w-9xl px-4 pt-24 sm:px-6 lg:px-8">
+      <div id="see-others" className="mx-auto px-4 pt-24 sm:px-6 lg:px-8">
         <CtaLink to="/project/all">{t(ui.othersCta)}</CtaLink>
       </div>
       </DrumStage>

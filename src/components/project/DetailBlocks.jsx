@@ -400,6 +400,25 @@ function Video({ src, title, caption }) {
   )
 }
 
+function Clip({ src, caption }) {
+  return (
+    <figure className="mt-6">
+      <div className="aspect-video w-full overflow-hidden rounded-xl border border-line bg-box">
+        <video
+          src={src}
+          className="block h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
+      </div>
+      {caption && <figcaption className="mt-2.5 text-note leading-relaxed text-fog">{caption}</figcaption>}
+    </figure>
+  )
+}
+
 export default function DetailBlocks({ blocks, accent }) {
   return blocks.map((block, i) => {
     switch (block.type) {
@@ -454,6 +473,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <Links key={i} items={block.items} />
       case "video":
         return <Video key={i} src={block.src} title={block.title} caption={block.caption} />
+      case "clip":
+        return <Clip key={i} src={block.src} caption={block.caption} />
       case "workflow":
         return <WorkflowBoard key={i} board={block.board} accent={accent} />
       case "background":

@@ -32,8 +32,10 @@ export const ui = {
   previewComingSoon: tt("preview coming soon", "预览即将上线"),
 
   // Projects reel (/project)
-  badgeNew: tt("New", "最新"),
+  badgeAi: tt("AI", "AI"),
   viewCaseStudy: tt("View Case Study", "查看案例"),
+  prevPanel: tt("Previous panel", "上一张"),
+  nextPanel: tt("Next panel", "下一张"),
   othersCta: tt("See the other projects", "来看看其他项目"),
 
   // Archive (/project/all)

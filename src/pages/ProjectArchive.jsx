@@ -28,7 +28,7 @@ export default function ProjectArchive() {
 
   return (
     <main className="relative min-h-screen px-4 pb-28 pt-4 sm:px-6 lg:px-8">
-      <div className="relative mx-auto max-w-9xl">
+      <div className="relative mx-auto">
         {/* Sticky header — giant faded title (left) sits above the grid so cards
             scroll behind it; filter pills (right) stay pinned and clickable. */}
         <header className="sticky top-14 z-30 mb-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">

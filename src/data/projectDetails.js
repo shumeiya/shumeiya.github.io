@@ -24,22 +24,25 @@ export const projectDetails = {
   kyrall: {
     role: tt("Sole Product Designer", "唯一产品设计师"),
     summary: tt(
-      "Designing Kyrall from zero as its sole product designer.",
-      "作为唯一的产品设计师，从零开始设计 Kyrall。"
+      "Design and manufacture hardware at the speed of thought.From concept to manufacturable model in minutes.",
+      "以思考的速度，设计并制造硬件。从概念到可制造的模型只需几分钟。"
     ),
     hero: {
       image: "/project/kyrall/4.png",
       headline: tt(
-        "Design and manufacture hardware at the speed of thought.",
-        "以思考的速度，设计并制造硬件。"
+        "New Design Paradigm for the AI Era",
+        "AI时代的新设计范式"
       ),
     },
     tags: [
-      tt("0→1 product design", "0→1 产品设计"),
-      tt("AI + CAD", "AI + CAD"),
-      tt("Design system", "设计系统"),
+      tt("0 to 1", "0到1"),
+      tt("AI TOOL", "AI工具"),
+      tt("Paramertic modeling", "参数化建模"),
       tt("Product analytics", "产品数据分析"),
     ],
+    // The product clip opens the case study, between the hero and the first chapter,
+    // with no words of its own — the hero has already said what Kyrall is.
+    intro: [{ type: "clip", src: "/dashboard/status.log/kyrall/kyrall.mp4" }],
     sections: [
       {
         id: "workflow",

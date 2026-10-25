@@ -131,7 +131,7 @@ function PlaceDetail({ place, onClose }) {
       transition={{ duration: 0.25 }}
       className="fixed inset-0 z-50 overflow-y-auto bg-page"
     >
-      <div className="mx-auto max-w-9xl px-4 pb-28 pt-16 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 pb-28 pt-16 sm:px-6 lg:px-8">
         <motion.header
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}

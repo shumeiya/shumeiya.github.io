@@ -91,47 +91,33 @@ const panels = {
 // this layout — the archive grid uses the shorter `description` from projectList.
 const meta = {
   "kyrall": {
-    year: tt("now", "进行中"),
-    isNew: true,
+    year: tt("2026", "2026"),
+    isAi: true,
     lead: tt(
-      "Start building now from concept to manufacturable model in minutes.",
-      "现在就开始动手：从概念到可直接制造的模型，只要几分钟。"
+      "Design and manufacture hardware at the speed of thought.",
+      "AI时代的设计方式，用思维的速度建模"
     ),
   },
   "weather-pets": {
     year: "2025",
-    isNew: true,
+    isAi: true,
     lead: tt(
-      "A weather app concept built around an animated companion pet, whose mood and behaviour react to the forecast — so checking the weather becomes something you want to do.",
-      "一个围绕会动的陪伴宠物展开的天气应用概念：它的心情与举动随预报变化 —— 于是查天气变成一件你愿意主动去做的事。"
+      "Transform your daily forecast into a fun, personalized experience with your own AI-powered weather buddy.",
+      "今天的天气如何？让你的天气萌宠为你播报吧。"
     ),
   },
   codemao: {
     year: "2021",
     lead: tt(
-      "A ToB platform upgrade at Codemao — the CMS schools and training institutions use to run programming courses, rebuilt around what teachers actually do with it.",
-      "编程猫的 ToB 平台升级 —— 学校与培训机构用来开设编程课的后台系统，围绕老师真实的使用方式重做了一遍。"
+      "ToB platform design for CodeMao,a digital management system and user operation tool for course data analysis, course management, and more.",
+      "编程猫 B 端教育专用数字化管理后台系统与用户运营工具，用于课程数据分析、课程管理等"
     ),
   },
   "abc-mouse": {
     year: "2020",
     lead: tt(
-      "Educational app design for Tencent's ToC learning platform, built with a cross-border team — gamified activities for 3-8 year olds, grounded in how children that age actually learn.",
-      "为腾讯 ToC 教育平台做的学习 App 设计，与跨国团队共同完成 —— 面向 3-8 岁孩子的游戏化活动，建立在这个年龄真实的学习方式之上。"
-    ),
-  },
-  "slow-food": {
-    year: "2023",
-    lead: tt(
-      "Brand and web design for Slow Food, built around a playful, ingredient-led visual identity that runs from the mark through to the live site.",
-      "为 Slow Food 做的品牌与网页设计：一套以食材为主角、带点俏皮的视觉识别，从标志一路延伸到上线的站点。"
-    ),
-  },
-  hmi: {
-    year: "2022",
-    lead: tt(
-      "Automotive HMI interaction design at Granstudio — navigation, vehicle status and media control laid out across the instrument cluster and the centre display.",
-      "在 Granstudio 做的汽车 HMI 交互设计 —— 把导航、车辆状态与媒体控制，分布在仪表盘与中控屏之间。"
+      "Tencent's ABC Mouse is an online education platform for children aged 3-8, designed to help them learn and grow through short videos and mini-games in a fun way.",
+      "腾讯开心鼠为3-8岁的儿童打造的在线教育平台，以短视频和小游戏的形式让小朋友在有趣的过程中学习成长。"
     ),
   },
 }

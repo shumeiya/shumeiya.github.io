@@ -21,9 +21,9 @@ export default function WorkSection({ work }) {
         className="work-indent pr-5 sm:pr-8"
       >
         <div className="mb-4 flex items-center gap-3">
-          {work.isNew && (
+          {work.isAi && (
             <span className="rounded-full border border-ink/40 px-3.5 py-1 font-mono-tight text-xs uppercase tracking-wide text-ink">
-              {t(ui.badgeNew)}
+              {t(ui.badgeAi)}
             </span>
           )}
           <span className="font-mono-tight text-sm tracking-wide text-ink/70">{work.year}</span>

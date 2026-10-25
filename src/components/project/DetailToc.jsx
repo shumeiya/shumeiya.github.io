@@ -57,7 +57,7 @@ export default function DetailToc({ sections, active }) {
               className="text-ink no-underline transition-all duration-300"
               style={{
                 fontFamily: "var(--font-chapter)",
-                fontSize: isActive ? "28px" : "18px",
+                fontSize: isActive ? "24px" : "16px",
                 fontWeight: isActive ? 500 : 400,
                 lineHeight: 1.2,
                 opacity: isActive ? 1 : isHovered ? 0.75 : 0.4,
