@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useT } from "../../i18n/lang"
+import { ui } from "../../i18n/ui"
 
 // The row of panels sits on a single 3D stage: one perspective, one vanishing
 // point. Leaning the stage back on rotateX is what bows the panels — the further
@@ -19,6 +22,25 @@ const COPIES = 3
 
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max)
 
+// Cut from the same `.glass` as the nav pills (see index.css), so it stays a
+// lens over whatever panel is bleeding in behind it rather than a solid button.
+function StepButton({ side, label, onClick }) {
+  const Icon = side === "left" ? ChevronLeft : ChevronRight
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className={`absolute top-1/2 z-10 hidden size-14 -translate-y-1/2 items-center justify-center glass rounded-full text-ink transition-colors duration-300 hover:text-cream lg:flex ${
+        side === "left" ? "-translate-x-1/2" : "translate-x-1/2"
+      }`}
+      style={{ [side]: "calc(var(--work-indent) / 2)" }}
+    >
+      <Icon size={24} strokeWidth={1.5} />
+    </button>
+  )
+}
+
 export default function WorkStrip({ panels, accent, name }) {
   const clipRef = useRef(null)
   const stageRef = useRef(null)
@@ -34,6 +56,7 @@ export default function WorkStrip({ panels, accent, name }) {
   const activeRef = useRef(0)
   const [active, setActive] = useState(0)
 
+  const t = useT()
   const count = panels.length
   const loop = count > 1 ? Array.from({ length: COPIES * count }, (_, i) => panels[i % count]) : panels
 
@@ -288,6 +311,19 @@ export default function WorkStrip({ panels, accent, name }) {
             ))}
           </div>
         </div>
+
+        {/* Step arrows, one in each gutter beside the panel in view — centred on
+            the sliver of neighbour that bleeds in there, which is the thing they
+            move. They live outside the stage so the tilt never skews them, and
+            only from lg up: below that the indent is a thumb wide and the strip
+            is swiped anyway. A click is a pointerdown that never travels, so the
+            drag handler on the clip lets it through untouched. */}
+        {count > 1 && (
+          <>
+            <StepButton side="left" label={t(ui.prevPanel)} onClick={() => goTo((active - 1 + count) % count)} />
+            <StepButton side="right" label={t(ui.nextPanel)} onClick={() => goTo((active + 1) % count)} />
+          </>
+        )}
       </div>
 
       {/* Position dots — also the only affordance that says the row pans. */}

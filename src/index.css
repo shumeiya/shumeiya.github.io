@@ -71,6 +71,38 @@
   --color-ac-yellow: #E9DE92;
 }
 
+/* Frosted glass — the one material every floating control is cut from: the nav
+   pills, the language and theme switches, the strip's step arrows. A pale frost
+   over a heavy blur, lit along its inside edge by a thin white highlight instead
+   of a drawn border, and lifted off the page by a soft shadow. `.glass-well` is
+   the darker, sunken pill that marks the active item inside it. The frost is
+   white in both themes: over the dark page it reads as the grey of smoked glass,
+   which is the look it is after, so only the strengths change with the theme. */
+.glass {
+  background-color: rgba(249, 249, 249, 0.3);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+  box-shadow:
+    inset 0 0 0 1px rgba(50, 50, 50, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 10px 28px -10px rgba(0, 0, 0, 0.22);
+}
+.dark .glass {
+  background-color: rgba(38, 38, 38, 0.5);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.01),
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    0 10px 28px -10px rgba(0, 0, 0, 0.6);
+}
+.glass-well {
+  background-color: rgba(0, 0, 0, 0.07);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+.dark .glass-well {
+  background-color: rgba(0, 0, 0, 0.32);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
 html {
   scroll-behavior: smooth;
   /* Hide the scrollbar while keeping scroll functionality (Firefox / IE). */
