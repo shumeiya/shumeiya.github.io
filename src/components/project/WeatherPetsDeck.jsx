@@ -1,15 +1,20 @@
 import { useT } from "../../i18n/lang"
 import { tt } from "../../i18n/t"
 
-// The WeatherPets case-study deck, rebuilt in the page — one board per slide, laid
-// out the way the Kyrall boards are: on the page's own surface, under the section's
-// eyebrow, with the page's hero carrying the opening.
+// The WeatherPets case-study deck, rebuilt in the page — one board per slide, drawn
+// on the page's own surface under the section's eyebrow, with the page's hero
+// carrying the opening.
 //
-// The source slides are 1920×1080 artboards. Scaling one of those down to a reading
-// column would put the body copy at about 10px, so nothing here is scaled: each slide
-// is rebuilt out of real boxes and real text, which is also what lets every grid
-// collapse to a single column on a phone. What survives from the deck is its
-// composition — the card grid per slide, and one accent card carrying the point.
+// The source slides are 1920×1080 artboards tiled with cards. Scaling one of those
+// down to a reading column would put the body copy at about 10px, so nothing here is
+// scaled, and the cards are gone too: what the site does everywhere else is lay copy
+// straight on the page with hairlines between rows, so every board here is a column
+// of rows — a label on the left, the content on the right, the way the page's own
+// definition lists and meta rows are set — and the grid collapses to one column on a
+// phone. What survives from the deck is its palette, used as marks rather than as
+// surfaces: the three label fills, the app's blue for numbers and rules, and a yellow
+// highlighter run under the one line per board that holds its point. One boxed
+// call-out per board at most, for the paragraph that is the board's conclusion.
 // Content lives in src/data/weatherPetsDeck.js; colour in `.wp-deck` in index.css.
 //
 // Type follows the project-page rule in CLAUDE.md: body is `text-copy` (20px), nothing
@@ -21,81 +26,66 @@ import { tt } from "../../i18n/t"
 const HAS = tt("Yes", "有")
 const HAS_NOT = tt("No", "无")
 
-// --- primitives --------------------------------------------------------------
+// --- colour --------------------------------------------------------------------
 
-// Card surfaces. A card sets the four variables its contents read, so the same
-// primitives work on the page's own box and on the one yellow card per slide that
-// carries the slide's point — on yellow the quiet grey and the accent blue would
-// both disappear, so each tone names its own.
-const SURFACE = {
-  // The ordinary card: the page's own box, with the page's own hairline.
-  box: {
-    background: "var(--color-box)",
-    color: "var(--color-ink)",
-    boxShadow: "inset 0 0 0 1px var(--color-line)",
-    "--wp-quiet": "var(--color-fog)",
-    "--wp-strong": "var(--wp-blue)",
-    "--wp-soft": "var(--color-box-2)",
-    "--wp-inset": "var(--color-box-2)",
-  },
-  // The slide's accent card. Its fill is the same in both themes, so everything on
-  // it is set in the deck's navy rather than the page's ink.
-  accent: {
-    background: "var(--wp-accent)",
-    color: "var(--wp-on-fill)",
-    "--wp-quiet": "rgba(15, 27, 76, 0.66)",
-    "--wp-strong": "#1a3bd6",
-    "--wp-soft": "rgba(255, 255, 255, 0.5)",
-    "--wp-inset": "rgba(255, 255, 255, 0.78)",
-  },
-}
+const ACCENT = "var(--wp-accent)"
+const BLUE = "var(--wp-blue)" // fills: discs, bars, rules
+const BLUE_INK = "var(--wp-blue-ink)" // type
+const ON_BLUE = "var(--wp-on-blue)"
+const ON_FILL = "var(--wp-on-fill)"
+const QUIET = "var(--wp-quiet)"
+const TRAY = "var(--wp-tray)"
 
 // The three label fills. They do not flip with the theme — they are small, saturated
 // and always set in the deck's navy, which reads on them on cream and on near-black.
-const LABEL = {
+const FILL = {
   pink: "var(--wp-pink)",
   mint: "var(--wp-mint)",
-  accent: "var(--wp-accent)",
-  blue: "var(--wp-blue)",
-  quiet: "var(--color-box-2)",
+  accent: ACCENT,
+  blue: BLUE,
 }
 
-function Card({ tone = "box", className = "", children, style }) {
+// --- primitives ------------------------------------------------------------------
+
+// A coloured dot — the smallest way to carry a tone next to a label.
+function Dot({ tone, className = "" }) {
   return (
-    <div className={`rounded-2xl p-5 sm:p-6 ${className}`} style={{ ...SURFACE[tone], ...style }}>
-      {children}
-    </div>
+    <span
+      aria-hidden="true"
+      className={`wp-edge inline-block size-2.5 shrink-0 rounded-full ${className}`}
+      style={{ background: FILL[tone] ?? FILL.blue }}
+    />
   )
 }
 
-function CardTitle({ children, className = "" }) {
-  return <h3 className={`text-2xl font-semibold leading-tight ${className}`}>{children}</h3>
-}
-
-function Sub({ children, className = "" }) {
+// A short rule in the app's blue, or in yellow for the one item a board turns on.
+// See `.wp-edge` in index.css for why the yellow one is outlined on paper.
+function Rule({ tone }) {
   return (
-    <p className={`text-note leading-relaxed ${className}`} style={{ color: "var(--wp-quiet)" }}>
-      {children}
-    </p>
+    <span
+      aria-hidden="true"
+      className="wp-edge block h-1.5 rounded-full"
+      style={{ background: tone === "accent" ? ACCENT : BLUE }}
+    />
   )
 }
 
-function Body({ children, className = "" }) {
-  return <p className={`text-copy leading-relaxed ${className}`}>{children}</p>
-}
-
-// A label chip. `tone` paints the fill; the ink is always the deck's navy, which is
-// what the slides do — none of these fills is dark enough to need reversing out.
+// A label chip. A toned chip takes one of the deck's fills and its navy; a quiet chip
+// is the page's own box with the page's hairline and ink.
 function Chip({ tone = "quiet", children, className = "" }) {
+  const quiet = tone === "quiet"
   return (
     <span
       className={`inline-block shrink-0 rounded-full px-3 py-1 text-note font-medium leading-snug ${className}`}
-      style={{
-        background: LABEL[tone],
-        // The three saturated fills are light in both themes and keep the deck's navy;
-        // a quiet chip is the page's own box, so it takes the page's ink.
-        color: tone === "quiet" ? "var(--color-ink)" : "var(--wp-on-fill)",
-      }}
+      style={
+        quiet
+          ? {
+              background: "var(--color-box)",
+              color: "var(--color-ink)",
+              boxShadow: "inset 0 0 0 1px var(--color-line)",
+            }
+          : { background: FILL[tone], color: ON_FILL }
+      }
     >
       {children}
     </span>
@@ -105,6 +95,7 @@ function Chip({ tone = "quiet", children, className = "" }) {
 // A small numbered disc — the slides use these for ordered lists and annotations.
 function Disc({ children, tone = "blue", size = "md" }) {
   const px = size === "sm" ? 28 : 36
+  const blue = tone === "blue"
   return (
     <span
       aria-hidden="true"
@@ -112,8 +103,8 @@ function Disc({ children, tone = "blue", size = "md" }) {
       style={{
         width: px,
         height: px,
-        background: tone === "blue" ? "var(--wp-blue)" : LABEL[tone],
-        color: tone === "blue" ? "var(--color-page)" : "var(--wp-on-fill)",
+        background: blue ? BLUE : FILL[tone],
+        color: blue ? ON_BLUE : ON_FILL,
       }}
     >
       {children}
@@ -121,37 +112,106 @@ function Disc({ children, tone = "blue", size = "md" }) {
   )
 }
 
-function Divider() {
-  return <hr className="my-5 border-0 border-t" style={{ borderColor: "rgba(15,27,76,0.12)" }} />
+// The highlighter — see `.wp-hi` in index.css.
+function Hi({ children }) {
+  return <span className="wp-hi">{children}</span>
 }
 
-// An artwork tile. The renders are transparent PNGs, so they sit on whatever the card
+// A big figure, set in the site's display face and the app's blue.
+function Num({ children, className = "" }) {
+  return (
+    <span
+      className={`font-condensed leading-none tracking-normal ${className}`}
+      style={{ color: BLUE_INK }}
+    >
+      {children}
+    </span>
+  )
+}
+
+function Body({ children, className = "", style }) {
+  return (
+    <p className={`text-copy leading-relaxed text-ink ${className}`} style={style}>
+      {children}
+    </p>
+  )
+}
+
+function Note({ children, className = "" }) {
+  return (
+    <p className={`text-note leading-relaxed ${className}`} style={{ color: QUIET }}>
+      {children}
+    </p>
+  )
+}
+
+// A bulleted list with the app's blue for the bullet.
+function Bullets({ items, className = "" }) {
+  return (
+    <ul className={`space-y-2 ${className}`}>
+      {items.map((item) => (
+        <li key={item} className="flex gap-3 text-copy leading-relaxed text-ink">
+          <Dot tone="blue" className="mt-[0.6em]" />
+          <span className="min-w-0">{item}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+// The deck's arrow. It points right while the things it joins sit in a row and turns
+// to point down once they stack; `turn` names the breakpoint where the row forms.
+const TURN = {
+  sm: "rotate-90 sm:rotate-0",
+  lg: "rotate-90 lg:rotate-0",
+  down: "rotate-90",
+}
+
+function Arrow({ turn = "sm", className = "" }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`flex shrink-0 items-center justify-center ${className}`}
+      style={{ color: BLUE_INK }}
+    >
+      <svg viewBox="0 0 32 32" width="28" height="28" className={TURN[turn]}>
+        <path
+          d="M4 16h22M18 8l8 8-8 8"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  )
+}
+
+// An artwork tile. The renders are transparent PNGs, so they sit on whatever the tray
 // gives them; `contain` keeps every pet whole rather than cropping to a square.
-function Art({ src, alt, className = "", style }) {
+function Art({ src, alt, className = "" }) {
   return (
     <img
       src={src}
       alt={alt ?? ""}
       loading="lazy"
       className={`block h-full w-full object-contain ${className}`}
-      style={style}
     />
   )
 }
 
-// A phone screen with its caption. The shots are 220×490 artboard frames exported at
-// 2×, so they are given their own aspect ratio and allowed to shrink with the column.
+// A phone screen with its caption, on the deck's pale tray. The shots are 220×490
+// artboard frames exported at 2×, so they keep their own ratio and shrink with the
+// column.
 function Shot({ src, caption, className = "" }) {
   return (
     <figure className={`min-w-0 ${className}`}>
-      <div className="overflow-hidden rounded-xl" style={{ background: "var(--wp-soft)" }}>
-        <img src={src} alt={caption ?? ""} loading="lazy" className="block h-auto w-full" />
+      <div className="overflow-hidden rounded-2xl p-2" style={{ background: TRAY }}>
+        <img src={src} alt={caption ?? ""} loading="lazy" className="block h-auto w-full rounded-xl" />
       </div>
       {caption && (
-        <figcaption
-          className="mt-2.5 text-note leading-snug"
-          style={{ color: "var(--wp-quiet)" }}
-        >
+        <figcaption className="mt-2.5 text-note leading-snug" style={{ color: QUIET }}>
           {caption}
         </figcaption>
       )}
@@ -159,178 +219,224 @@ function Shot({ src, caption, className = "" }) {
   )
 }
 
-// An arrow between steps. It points right while the steps sit in a row and turns to
-// point down once they stack, which is the only way the sequence still reads on a phone.
-function Arrow({ className = "" }) {
+// One of the deck's 3D stickers, kept out of the way of the copy.
+function Sticker({ src, className = "" }) {
   return (
-    <span
+    <img
+      src={src}
+      alt=""
       aria-hidden="true"
-      className={`flex shrink-0 items-center justify-center text-2xl leading-none ${className}`}
-      style={{ color: "var(--wp-blue)" }}
+      loading="lazy"
+      className={`pointer-events-none block w-auto ${className}`}
+    />
+  )
+}
+
+// A row of the board: a label column on the left, the content on the right, a
+// hairline above. Below `lg` the label stacks over the content. `chip` replaces the
+// label with one of the deck's toned chips; `aside` is a sticker or a note that lives
+// in the label column's spare height on the wide layout.
+function Row({ title, sub, chip, tone, aside, children, className = "" }) {
+  return (
+    <section
+      className={`grid gap-y-4 border-t border-line py-7 lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-x-10 xl:grid-cols-[14rem_minmax(0,1fr)] ${className}`}
     >
-      <span className="sm:hidden">↓</span>
-      <span className="hidden sm:inline">→</span>
-    </span>
-  )
-}
-
-// --- the board shell ---------------------------------------------------------
-
-// A slide, on the page rather than on a panel. The page has already set the section's
-// eyebrow ("02 · Overview") and keeps its heading for the chapter index; the board
-// opens with the slide's own headline and standfirst, the way the Kyrall boards do.
-function Board({ slide, children }) {
-  return (
-    <div className="wp-deck mt-4">
-      <h3 className="text-2xl font-semibold leading-tight text-cream sm:text-3xl">
-        {slide.title}
-      </h3>
-      {slide.lead && <p className="mt-3 max-w-3xl text-copy leading-relaxed text-fog">{slide.lead}</p>}
-      <div className="mt-7">{children}</div>
-    </div>
-  )
-}
-
-// --- 02 · Overview -----------------------------------------------------------
-
-function Overview({ slide }) {
-  return (
-    <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
-      <Card>
-        {slide.rows.map((row, i) => (
-          <div key={row.label}>
-            {i > 0 && <Divider />}
-            <div className="flex flex-col gap-3 sm:flex-row sm:gap-5">
-              <Chip tone={row.tone} className="self-start">
-                {row.label}
-              </Chip>
-              <Body className="min-w-0 flex-1">{row.text}</Body>
-            </div>
-          </div>
-        ))}
-      </Card>
-
-      <div className="grid gap-4 content-start">
-        <Card>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <CardTitle>{slide.role.title}</CardTitle>
-            <Chip>{slide.role.pill}</Chip>
-          </div>
-          <ul className="mt-4 space-y-2">
-            {slide.role.items.map((item) => (
-              <li key={item} className="flex gap-2.5 text-copy leading-relaxed">
-                <span aria-hidden="true" style={{ color: "var(--wp-blue)" }}>
-                  ·
-                </span>
-                <span className="min-w-0">{item}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-
-        <Card>
-          <CardTitle>{slide.team.title}</CardTitle>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {slide.team.pills.map((pill, i) => (
-              <Chip key={pill} tone={i === 2 ? "accent" : "quiet"}>
-                {pill}
-              </Chip>
-            ))}
-          </div>
-        </Card>
+      <div className="min-w-0">
+        {chip ? (
+          <div>{chip}</div>
+        ) : (
+          <h4 className="flex items-start gap-2.5 text-copy font-semibold leading-snug text-cream">
+            {tone && <Dot tone={tone} className="mt-[0.5em]" />}
+            <span className="min-w-0">{title}</span>
+          </h4>
+        )}
+        {sub && (
+          <p className="mt-1.5 text-note leading-relaxed" style={{ color: QUIET }}>
+            {sub}
+          </p>
+        )}
+        {aside && <div className="mt-5 hidden lg:block">{aside}</div>}
       </div>
+      <div className="min-w-0">{children}</div>
+    </section>
+  )
+}
 
-      {/* The process, start to finish. It wraps rather than scrolls — a seven-step
-          sequence reads fine on two or three lines, and nothing is hidden off-screen. */}
-      <ol className="flex flex-wrap items-center gap-x-2 gap-y-2.5 lg:col-span-2">
-        {slide.steps.map((step, i) => (
-          <li key={step} className="flex items-center gap-2">
-            <span
-              className="rounded-full px-4 py-2 text-note font-medium"
-              style={{
-                background: i === slide.steps.length - 1 ? "var(--wp-accent)" : "var(--wp-inset)",
-                color: "var(--wp-on-fill)",
-              }}
-            >
-              {step}
-            </span>
-            {i < slide.steps.length - 1 && (
-              <span aria-hidden="true" style={{ color: "var(--color-fog)" }}>
-                →
-              </span>
-            )}
-          </li>
-        ))}
-      </ol>
+// A big figure with its label under it, ruled off at the top in the app's blue — or
+// in yellow for the one figure a board turns on.
+function Stat({ value, label, note, tone }) {
+  return (
+    <div>
+      <Rule tone={tone} />
+      <Num className="mt-4 block text-5xl">{value}</Num>
+      <p className="mt-3 text-copy font-medium leading-snug text-ink">{label}</p>
+      {note && <Note className="mt-1">{note}</Note>}
     </div>
   )
 }
 
-// --- 03 · Background ---------------------------------------------------------
+// The board's point, said large and run under the highlighter.
+function Point({ label, children, sticker, className = "" }) {
+  return (
+    <div className={`flex items-center gap-6 border-t border-line py-8 ${className}`}>
+      <div className="min-w-0 flex-1">
+        {label && (
+          <p className="font-mono-tight text-note uppercase tracking-wide" style={{ color: BLUE_INK }}>
+            {label}
+          </p>
+        )}
+        <p className="mt-3 max-w-3xl text-2xl font-semibold leading-[1.45] text-cream sm:text-3xl">
+          <Hi>{children}</Hi>
+        </p>
+      </div>
+      {sticker && <Sticker src={sticker} className="hidden h-28 shrink-0 sm:block" />}
+    </div>
+  )
+}
+
+// The one boxed thing a board may have: the paragraph that is its conclusion. The
+// box is the page's own (the hero's stat tiles are cut from the same cloth); the
+// yellow lives in the label.
+function Callout({ label, children, sticker, className = "" }) {
+  return (
+    <div
+      className={`relative rounded-2xl bg-box p-5 sm:p-6 ${className}`}
+      style={{ boxShadow: "inset 0 0 0 1px var(--color-line)" }}
+    >
+      <Chip tone="accent">{label}</Chip>
+      <div className="mt-4 text-copy leading-relaxed text-ink">{children}</div>
+      {sticker && (
+        <Sticker src={sticker} className="absolute -top-12 right-4 hidden h-28 sm:block" />
+      )}
+    </div>
+  )
+}
 
 // A stacked proportion bar. The segments are percentages of the same row, so they are
 // given flex-grow weights rather than widths and the row stays exact at any size.
-function StackedBar({ segments, className = "" }) {
+function StackedBar({ segments, className = "", labelled = true, height = "h-10" }) {
   return (
-    <div className={`flex h-11 overflow-hidden rounded-lg ${className}`}>
+    <div className={`flex gap-0.5 ${height} ${className}`}>
       {segments.map((seg, i) => (
         <div
           key={i}
-          className="flex min-w-0 items-center px-3 text-note font-medium"
+          className="wp-edge flex min-w-0 items-center rounded-md px-3 text-note font-medium"
           style={{
             flex: `${seg.pct} 1 0%`,
-            background: LABEL[seg.tone],
-            color: seg.tone === "blue" ? "var(--color-page)" : "var(--wp-on-fill)",
+            background: FILL[seg.tone],
+            color: seg.tone === "blue" ? ON_BLUE : ON_FILL,
           }}
         >
           {/* Only the dominant segment is labelled in place. A 5% slice has no room
               for a word, so the slide names the small ones in the legend instead. */}
-          {i === 0 && <span className="truncate">{seg.label}</span>}
+          {labelled && i === 0 && seg.label && <span className="truncate">{seg.label}</span>}
         </div>
       ))}
     </div>
   )
 }
 
+// --- the board shell -------------------------------------------------------------
+
+// A slide, on the page rather than on a panel. The page has already set the section's
+// eyebrow ("02 · Overview") and keeps its heading for the chapter index; the board
+// opens with the slide's own headline and standfirst.
+function Board({ slide, children }) {
+  return (
+    <div className="wp-deck mt-4">
+      <h3 className="max-w-4xl text-3xl font-semibold leading-tight tracking-tight text-cream sm:text-4xl">
+        {slide.title}
+      </h3>
+      {slide.lead && (
+        <p className="mt-4 max-w-3xl text-copy leading-relaxed" style={{ color: QUIET }}>
+          {slide.lead}
+        </p>
+      )}
+      <div className="mt-8">{children}</div>
+    </div>
+  )
+}
+
+// --- 02 · Overview ---------------------------------------------------------------
+
+function Overview({ slide }) {
+  return (
+    <div>
+      {slide.rows.map((row) => (
+        <Row key={row.label} chip={<Chip tone={row.tone}>{row.label}</Chip>}>
+          <Body className={row.tone === "accent" ? "font-medium" : ""}>{row.text}</Body>
+        </Row>
+      ))}
+
+      <Row title={slide.role.title}>
+        <div className="mb-4">
+          <Chip tone="accent">{slide.role.pill}</Chip>
+        </div>
+        <ul className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+          {slide.role.items.map((item) => (
+            <li key={item} className="flex gap-3 text-copy leading-relaxed text-ink">
+              <Dot tone="blue" className="mt-[0.6em]" />
+              <span className="min-w-0">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </Row>
+
+      <Row title={slide.team.title}>
+        <ul className="flex flex-wrap gap-2">
+          {slide.team.pills.map((pill, i) => (
+            <li key={pill}>
+              <Chip tone={i === 2 ? "accent" : "quiet"}>{pill}</Chip>
+            </li>
+          ))}
+        </ul>
+      </Row>
+
+      {/* The process, start to finish. It wraps rather than scrolls — a seven-step
+          sequence reads fine on two or three lines, and nothing is hidden off-screen. */}
+      <ol className="flex flex-wrap items-center gap-x-3 gap-y-3 border-t border-line pt-7">
+        {slide.steps.map((step, i) => {
+          const last = i === slide.steps.length - 1
+          return (
+            <li key={step} className="flex items-center gap-3">
+              <span className="flex items-center gap-2.5">
+                <Disc size="sm" tone={last ? "accent" : "blue"}>
+                  {i + 1}
+                </Disc>
+                <span className="text-note font-medium text-ink">{step}</span>
+              </span>
+              {!last && <span aria-hidden="true" className="h-px w-5 bg-line" />}
+            </li>
+          )
+        })}
+      </ol>
+    </div>
+  )
+}
+
+// --- 03 · Background -------------------------------------------------------------
+
 function Background({ slide }) {
   return (
-    <div className="grid gap-4 lg:grid-cols-[1.7fr_1fr]">
-      <div className="grid gap-4 content-start">
-        <div className="grid gap-4 sm:grid-cols-3">
-          {slide.stats.map((stat) => (
-            <Card key={stat.label} tone={stat.tone ?? "box"}>
-              <p
-                className="text-4xl font-bold tracking-tight"
-                style={{ color: stat.tone === "accent" ? "var(--wp-on-fill)" : "var(--wp-strong)" }}
-              >
-                {stat.value}
-              </p>
-              <p className="mt-3 text-note font-medium">{stat.label}</p>
-            </Card>
-          ))}
-        </div>
-
-        <Card>
-          <CardTitle>{slide.revenue.title}</CardTitle>
-          <StackedBar segments={slide.revenue.segments} className="mt-4" />
-          <Sub className="mt-2 text-right">{slide.revenue.legend}</Sub>
-          <Body className="mt-3">{slide.revenue.note}</Body>
-        </Card>
+    <div>
+      <div className="grid gap-6 sm:grid-cols-3">
+        {slide.stats.map((stat) => (
+          <Stat key={stat.label} value={stat.value} label={stat.label} tone={stat.tone} />
+        ))}
       </div>
 
-      <Card className="relative">
-        {/* The cloud sticker, peeking over the card's shoulder the way it does in the
-            deck. Hidden below `sm`, where there is no shoulder to peek over. */}
-        <img
-          src={slide.expectations.sticker}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className="pointer-events-none absolute -right-3 -top-10 hidden h-24 w-auto sm:block"
-        />
-        <CardTitle>{slide.expectations.title}</CardTitle>
-        <Sub className="mt-1.5">{slide.expectations.sub}</Sub>
-        <ol className="mt-5 space-y-4">
+      <Row title={slide.revenue.title} className="mt-8">
+        <StackedBar segments={slide.revenue.segments} />
+        <Note className="mt-2 text-right">{slide.revenue.legend}</Note>
+        <Body className="mt-4">{slide.revenue.note}</Body>
+      </Row>
+
+      <Row
+        title={slide.expectations.title}
+        sub={slide.expectations.sub}
+        aside={<Sticker src={slide.expectations.sticker} className="h-24" />}
+      >
+        <ol className="space-y-4">
           {slide.expectations.items.map((item, i) => (
             <li key={item} className="flex items-start gap-3">
               <Disc tone="accent">{i + 1}</Disc>
@@ -338,442 +444,377 @@ function Background({ slide }) {
             </li>
           ))}
         </ol>
-        <Divider />
-        <Sub>{slide.expectations.note}</Sub>
-      </Card>
+        <Note className="mt-5">{slide.expectations.note}</Note>
+      </Row>
 
-      <Card tone="accent" className="relative flex items-center gap-4 lg:col-span-2">
-        <div className="min-w-0 flex-1">
-          <p className="text-note font-bold" style={{ color: "var(--wp-strong)" }}>
-            {slide.hmw.label}
-          </p>
-          <p className="mt-2 max-w-3xl text-2xl font-bold leading-snug sm:text-3xl">{slide.hmw.text}</p>
-        </div>
-        <img
-          src={slide.hmw.sticker}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className="pointer-events-none hidden h-28 w-auto shrink-0 sm:block"
-        />
-      </Card>
+      <Point label={slide.hmw.label} sticker={slide.hmw.sticker}>
+        {slide.hmw.text}
+      </Point>
 
-      <p className="text-note lg:col-span-2" style={{ color: "var(--color-fog)" }}>
-        {slide.source}
-      </p>
+      <Note className="border-t border-line pt-5">{slide.source}</Note>
     </div>
   )
 }
 
-// --- 04 · Research -----------------------------------------------------------
+// --- 04 · Research ---------------------------------------------------------------
 
 function Research({ slide }) {
   return (
-    <div className="grid gap-4">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div>
+      <div className="grid gap-x-6 gap-y-8 grid-cols-2 lg:grid-cols-4">
         {slide.methods.map((m) => (
-          <Card key={m.label}>
-            <div className="flex flex-wrap items-baseline gap-x-3">
-              <span
-                className="text-4xl font-bold tracking-tight"
-                style={{ color: "var(--wp-strong)" }}
-              >
-                {m.value}
-              </span>
-              <span className="text-copy font-semibold">{m.label}</span>
-            </div>
-            <Sub className="mt-3">{m.note}</Sub>
-          </Card>
+          <Stat key={m.label} value={m.value} label={m.label} note={m.note} />
         ))}
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr_1fr]">
-        <Card className="flex flex-col">
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <CardTitle>{slide.why.title}</CardTitle>
-            <Sub>{slide.why.sub}</Sub>
-          </div>
-          {/* The label column is capped so the track keeps most of the width — the
-              bars are the chart, and an `auto` label column eats them alive. */}
-          <ul className="mt-5 space-y-4">
-            {slide.why.bars.map((bar) => (
-              <li
-                key={bar.label}
-                className="grid grid-cols-[minmax(0,8rem)_1fr_auto] items-center gap-3"
-              >
-                <span className="text-note font-medium">{bar.label}</span>
+      <Row title={slide.why.title} sub={slide.why.sub} className="mt-8">
+        {/* The label column is capped so the track keeps most of the width — the bars
+            are the chart, and an `auto` label column eats them alive. */}
+        <ul className="space-y-3.5">
+          {slide.why.bars.map((bar) => (
+            <li key={bar.label} className="grid grid-cols-[minmax(0,9rem)_1fr_auto] items-center gap-3">
+              <span className="text-note font-medium leading-snug text-ink">{bar.label}</span>
+              <span className="h-8 overflow-hidden rounded-md" style={{ background: TRAY }}>
                 <span
-                  className="h-8 overflow-hidden rounded-md"
-                  style={{ background: "var(--wp-soft)" }}
-                >
-                  <span
-                    className="block h-full rounded-md"
-                    style={{
-                      width: `${bar.pct}%`,
-                      background: bar.tone === "accent" ? "var(--wp-accent)" : "var(--wp-blue)",
-                    }}
-                  />
-                </span>
-                <span className="text-copy font-bold" style={{ color: "var(--wp-strong)" }}>
-                  {bar.pct}%
-                </span>
-              </li>
-            ))}
-          </ul>
-          <Body className="mt-auto pt-5 font-medium" style={{ color: "var(--wp-strong)" }}>
-            {slide.why.note}
-          </Body>
-        </Card>
+                  className="wp-edge block h-full rounded-md"
+                  style={{ width: `${bar.pct}%`, background: bar.tone === "accent" ? ACCENT : BLUE }}
+                />
+              </span>
+              <Num className="text-2xl">{bar.pct}%</Num>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-6 max-w-2xl text-copy font-semibold leading-[1.6] text-cream">
+          <Hi>{slide.why.note}</Hi>
+        </p>
+      </Row>
 
-        <Card className="flex flex-col">
-          <CardTitle>{slide.what.title}</CardTitle>
-          <p
-            className="mt-3 text-5xl font-bold tracking-tight"
-            style={{ color: "var(--wp-strong)" }}
-          >
-            {slide.what.big}
-          </p>
-          <p className="mt-2 text-copy font-medium">{slide.what.bigLabel}</p>
-          <div className="mt-4 flex h-7 overflow-hidden rounded-md">
-            {slide.what.segments.map((seg, i) => (
-              <span key={i} style={{ flex: `${seg.pct} 1 0%`, background: LABEL[seg.tone] }} />
-            ))}
-          </div>
-          <Sub className="mt-2">{slide.what.legend}</Sub>
-          <Body className="mt-4">{slide.what.note}</Body>
-          <Sub className="mt-auto pt-4">{slide.what.source}</Sub>
-        </Card>
+      <Row title={slide.what.title} sub={slide.what.source}>
+        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <Num className="text-5xl">{slide.what.big}</Num>
+          <span className="text-copy font-medium text-ink">{slide.what.bigLabel}</span>
+        </div>
+        <StackedBar segments={slide.what.segments} className="mt-4" height="h-5" labelled={false} />
+        <Note className="mt-2">{slide.what.legend}</Note>
+        <Body className="mt-4">{slide.what.note}</Body>
+      </Row>
 
-        <Card className="flex flex-col">
-          <CardTitle>{slide.how.title}</CardTitle>
-          <ul className="mt-5 space-y-5">
-            {slide.how.items.map((item) => (
-              <li key={item.problem}>
-                <Chip tone="pink">{item.tag}</Chip>
-                <p className="mt-2.5 text-copy font-medium">{item.problem}</p>
-                <p className="mt-1 text-note" style={{ color: "var(--wp-strong)" }}>
-                  → {item.fix}
-                </p>
-              </li>
-            ))}
-          </ul>
-          <Sub className="mt-auto pt-5">{slide.how.note}</Sub>
-        </Card>
-      </div>
+      <Row title={slide.how.title} sub={slide.how.note}>
+        <ul className="grid gap-x-6 gap-y-6 sm:grid-cols-3">
+          {slide.how.items.map((item) => (
+            <li key={item.problem}>
+              <Chip tone="pink">{item.tag}</Chip>
+              <p className="mt-3 text-copy font-medium leading-snug text-ink">{item.problem}</p>
+              <p className="mt-1.5 text-note leading-relaxed" style={{ color: BLUE_INK }}>
+                → {item.fix}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </Row>
     </div>
   )
 }
 
-// --- 05 · Competitors --------------------------------------------------------
+// --- 05 · Competitors ------------------------------------------------------------
 
 function Competitors({ slide }) {
   const t = useT()
+  const hot = { background: "var(--wp-hot)" }
   // Seven products across is wider than a reading column at 18px, so the matrix keeps
-  // its own width and scrolls inside the card. The page itself never scrolls sideways.
-  // The matrix is the slide, so it takes the full column and the three takeaways run
-  // underneath it. Side by side they would squeeze the table into a permanent
-  // horizontal scroll; at full width it fits outright on a laptop.
+  // its own width and scrolls inside its row. The page itself never scrolls sideways.
   return (
-    <div className="grid gap-4">
-      <Card className="min-w-0">
-        <div className="-mx-1 overflow-x-auto px-1">
-          {/* Fixed layout: with `auto`, a long row label steals width from the product
-              columns until the ticks collide. Eleven rem for the labels and six and a
-              half for each of the seven products is what the content actually needs. */}
-          <table className="w-full min-w-[57rem] table-fixed border-collapse text-left">
-            <colgroup>
-              <col style={{ width: "11rem" }} />
+    <div>
+      <div className="no-scrollbar -mx-1 overflow-x-auto px-1">
+        {/* Fixed layout: with `auto`, a long row label steals width from the product
+            columns until the ticks collide. Eleven rem for the labels and six and a
+            half for each of the seven products is what the content actually needs. */}
+        <table className="w-full min-w-[57rem] table-fixed border-collapse text-left">
+          <colgroup>
+            <col style={{ width: "11rem" }} />
+            {slide.columns.map((col) => (
+              <col key={col.name} style={{ width: "6.5rem" }} />
+            ))}
+          </colgroup>
+          <thead>
+            <tr>
+              <th className="pb-3 pr-3" />
               {slide.columns.map((col) => (
-                <col key={col.name} style={{ width: "6.5rem" }} />
-              ))}
-            </colgroup>
-            <thead>
-              <tr>
-                <th className="pb-3 pr-3" />
-                {slide.columns.map((col) => (
-                  <th
-                    key={col.name}
-                    scope="col"
-                    className="px-3 pb-3 align-bottom font-semibold"
-                    style={col.highlight ? { background: "rgba(255,212,59,0.22)" } : undefined}
+                <th
+                  key={col.name}
+                  scope="col"
+                  className="px-3 pb-3 pt-3 align-bottom font-semibold"
+                  style={col.highlight ? hot : undefined}
+                >
+                  <span
+                    className="block text-note leading-snug"
+                    style={{ color: col.highlight ? BLUE_INK : "var(--color-ink)" }}
                   >
-                    <span
-                      className="block text-note leading-snug"
-                      style={{ color: col.highlight ? "var(--wp-strong)" : "var(--wp-on-fill)" }}
-                    >
-                      {col.name}
-                    </span>
-                    <span className="block text-note font-normal" style={{ color: "var(--wp-quiet)" }}>
-                      {col.region}
-                    </span>
-                  </th>
+                    {col.name}
+                  </span>
+                  <span className="block text-note font-normal" style={{ color: QUIET }}>
+                    {col.region}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {slide.rows.map((row) => (
+              <tr key={row.label} className="border-t border-line">
+                <th scope="row" className="py-3 pr-3 text-note font-semibold text-ink">
+                  {row.label}
+                </th>
+                {row.cells.map((cell, i) => (
+                  <td
+                    key={i}
+                    className="px-3 py-3 text-note"
+                    style={slide.columns[i].highlight ? hot : undefined}
+                  >
+                    {cell === true ? (
+                      <span
+                        aria-label={t(HAS)}
+                        className="inline-flex size-7 items-center justify-center rounded-full font-semibold"
+                        style={{ background: FILL.mint, color: ON_FILL }}
+                      >
+                        ✓
+                      </span>
+                    ) : cell === false ? (
+                      <span aria-label={t(HAS_NOT)} style={{ color: QUIET }}>
+                        —
+                      </span>
+                    ) : (
+                      <span className="font-medium" style={{ color: BLUE_INK }}>
+                        {cell}
+                      </span>
+                    )}
+                  </td>
                 ))}
               </tr>
-            </thead>
-            <tbody>
-              {slide.rows.map((row) => (
-                <tr key={row.label} className="border-t" style={{ borderColor: "rgba(15,27,76,0.1)" }}>
-                  <th scope="row" className="py-3 pr-3 text-note font-semibold">
-                    {row.label}
-                  </th>
-                  {row.cells.map((cell, i) => (
-                    <td
-                      key={i}
-                      className="px-3 py-3 text-note"
-                      style={
-                        slide.columns[i].highlight ? { background: "rgba(255,212,59,0.22)" } : undefined
-                      }
-                    >
-                      {cell === true ? (
-                        <span
-                          aria-label={t(HAS)}
-                          className="inline-flex size-7 items-center justify-center rounded-full font-semibold"
-                          style={{ background: "var(--wp-mint)", color: "var(--wp-on-fill)" }}
-                        >
-                          ✓
-                        </span>
-                      ) : cell === false ? (
-                        <span aria-label={t(HAS_NOT)} style={{ color: "var(--wp-quiet)" }}>
-                          —
-                        </span>
-                      ) : (
-                        <span style={{ color: "var(--wp-strong)" }}>{cell}</span>
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <Sub className="mt-4">{slide.legend}</Sub>
-      </Card>
-
-      <div className="grid gap-4 content-start sm:grid-cols-3">
-        {slide.takeaways.map((item) => (
-          <Card key={item.no} tone={item.tone ?? "box"}>
-            <div className="flex items-baseline gap-3">
-              <span
-                className="text-2xl font-bold"
-                style={{ color: item.tone === "accent" ? "var(--wp-on-fill)" : "var(--wp-strong)" }}
-              >
-                {item.no}
-              </span>
-              <CardTitle>{item.title}</CardTitle>
-            </div>
-            <Body className="mt-3">{item.text}</Body>
-          </Card>
-        ))}
+            ))}
+          </tbody>
+        </table>
       </div>
+      <Note className="mt-3">{slide.legend}</Note>
+
+      <ol className="mt-8 grid gap-x-8 gap-y-8 border-t border-line pt-7 sm:grid-cols-3">
+        {slide.takeaways.map((item) => (
+          <li key={item.no}>
+            <Num className="block text-4xl">{item.no}</Num>
+            <p className="mt-3 text-copy font-semibold leading-snug text-cream">
+              {item.tone === "accent" ? <Hi>{item.title}</Hi> : item.title}
+            </p>
+            <Body className="mt-2.5" style={{ color: QUIET }}>
+              {item.text}
+            </Body>
+          </li>
+        ))}
+      </ol>
     </div>
   )
 }
 
-// --- 06 · Insights -----------------------------------------------------------
+// --- 06 · Insights ---------------------------------------------------------------
 
 function Insights({ slide }) {
   return (
-    <div className="grid gap-4">
-      <div className="grid gap-4 lg:grid-cols-3">
+    <div>
+      <ul className="grid gap-x-8 gap-y-10 lg:grid-cols-3">
         {slide.cards.map((card) => (
-          <Card key={card.title} className="flex flex-col">
-            <Chip tone={card.tone} className="self-start">
-              {card.tag}
-            </Chip>
-            <CardTitle className="mt-4">{card.title}</CardTitle>
+          <li key={card.title} className="flex flex-col">
+            <div>
+              <Chip tone={card.tone}>{card.tag}</Chip>
+            </div>
+            <h4 className="mt-4 text-2xl font-semibold leading-tight text-cream">{card.title}</h4>
             <Body className="mt-3">{card.text}</Body>
-            <figure className="mt-auto rounded-xl p-4" style={{ background: "var(--wp-soft)" }}>
-              <blockquote className="text-copy font-medium leading-relaxed" style={{ color: "var(--wp-strong)" }}>
-                {card.quote}
-              </blockquote>
-              <figcaption className="mt-3 text-note" style={{ color: "var(--wp-quiet)" }}>
+            <figure className="mt-auto border-l-4 pl-4 pt-5" style={{ borderColor: FILL[card.tone] }}>
+              <blockquote className="text-copy italic leading-relaxed text-ink">{card.quote}</blockquote>
+              <figcaption className="mt-2 text-note" style={{ color: QUIET }}>
                 {card.by}
               </figcaption>
             </figure>
-          </Card>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      <Card>
-        <div className="grid gap-5 lg:grid-cols-[1.3fr_auto_1fr] lg:items-center">
+      <Row title={slide.pains.title} className="mt-10">
+        <ul className="flex flex-wrap gap-2">
+          {slide.pains.items.map((item) => (
+            <li key={item}>
+              <Chip>{item}</Chip>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-6 flex items-start gap-3">
+          <Arrow turn="down" className="mt-0.5" />
           <div className="min-w-0">
-            <CardTitle>{slide.pains.title}</CardTitle>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {slide.pains.items.map((item) => (
-                <li key={item}>
-                  <Chip>{item}</Chip>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <Arrow />
-          <div className="min-w-0 rounded-xl p-4" style={{ background: "var(--wp-accent)" }}>
-            <p className="text-note font-bold" style={{ color: "var(--wp-strong)" }}>
+            <p className="font-mono-tight text-note uppercase tracking-wide" style={{ color: BLUE_INK }}>
               {slide.pains.opportunity.label}
             </p>
-            <p className="mt-1.5 text-copy font-semibold leading-relaxed">
-              {slide.pains.opportunity.text}
+            <p className="mt-2 text-2xl font-semibold leading-[1.45] text-cream">
+              <Hi>{slide.pains.opportunity.text}</Hi>
             </p>
           </div>
         </div>
-      </Card>
+      </Row>
     </div>
   )
 }
 
-// --- 07 · Co-creation --------------------------------------------------------
+// --- 07 · Co-creation ------------------------------------------------------------
 
 function CoCreation({ slide }) {
   return (
-    <div className="grid gap-4 lg:grid-cols-2">
-      <div className="grid gap-4 content-start">
-        {slide.rounds.map((round) => (
-          <Card key={round.tag}>
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-              <Chip tone={round.tone}>{round.tag}</Chip>
-              <CardTitle className="min-w-0 flex-1">{round.hmw}</CardTitle>
-            </div>
+    <div>
+      {slide.rounds.map((round) => (
+        <Row key={round.tag} chip={<Chip tone={round.tone}>{round.tag}</Chip>}>
+          <h4 className="text-2xl font-semibold leading-tight text-cream">{round.hmw}</h4>
 
-            <Sub className="mt-5">{round.clusterLabel}</Sub>
-            <ul className="mt-2.5 flex flex-wrap gap-2">
-              {round.clusters.map((c) => (
-                <li key={c}>
-                  <Chip>{c}</Chip>
-                </li>
-              ))}
-            </ul>
+          <Note className="mt-5">{round.clusterLabel}</Note>
+          <ul className="mt-2.5 flex flex-wrap gap-2">
+            {round.clusters.map((c) => (
+              <li key={c}>
+                <Chip>{c}</Chip>
+              </li>
+            ))}
+          </ul>
 
-            {round.voted && (
-              <>
-                <Sub className="mt-5">{round.votedLabel}</Sub>
-                <ol className="mt-2.5 space-y-2.5">
-                  {round.voted.map((v, i) => (
-                    <li key={v} className="flex items-start gap-3">
-                      <Disc size="sm">{i + 1}</Disc>
-                      <span className="min-w-0 text-copy leading-relaxed">{v}</span>
-                    </li>
-                  ))}
-                </ol>
-              </>
-            )}
+          {round.voted && (
+            <>
+              <Note className="mt-5">{round.votedLabel}</Note>
+              <ol className="mt-2.5 space-y-2.5">
+                {round.voted.map((v, i) => (
+                  <li key={v} className="flex items-start gap-3">
+                    <Disc size="sm">{i + 1}</Disc>
+                    <span className="min-w-0 text-copy leading-relaxed text-ink">{v}</span>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
 
-            {round.closing && (
-              <Body className="mt-5 font-medium" style={{ color: "var(--wp-strong)" }}>
-                {round.closing}
-              </Body>
-            )}
-          </Card>
-        ))}
-      </div>
+          {round.closing && (
+            <p className="mt-5 text-copy font-semibold leading-[1.6] text-cream">
+              <Hi>{round.closing}</Hi>
+            </p>
+          )}
+        </Row>
+      ))}
 
-      <div className="grid gap-4 content-start">
-        <h4 className="text-2xl font-semibold" style={{ color: "var(--color-cream)" }}>
-          {slide.featuresTitle}
-        </h4>
-        {slide.features.map((f) => (
-          <Card key={f.no} tone={f.tone ?? "box"}>
-            <div className="flex items-start gap-4">
-              <div
-                className="size-24 shrink-0 overflow-hidden rounded-xl p-1.5"
-                style={{ background: f.tone === "accent" ? "var(--wp-accent)" : "var(--wp-soft)" }}
-              >
-                <Art src={f.art} alt="" />
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-2xl font-bold" style={{ color: "var(--wp-strong)" }}>
-                    {f.no}
-                  </span>
-                  <CardTitle>{f.title}</CardTitle>
+      <div className="border-t border-line pt-7">
+        <h4 className="text-2xl font-semibold leading-tight text-cream">{slide.featuresTitle}</h4>
+        <ol className="mt-6 grid gap-x-6 gap-y-8 sm:grid-cols-3">
+          {slide.features.map((f) => {
+            const hot = f.tone === "accent"
+            return (
+              <li key={f.no}>
+                <div
+                  className="aspect-square overflow-hidden rounded-2xl p-5"
+                  style={{ background: hot ? ACCENT : TRAY }}
+                >
+                  <Art src={f.art} alt="" />
                 </div>
-                <Body className="mt-2">{f.text}</Body>
-              </div>
-            </div>
-          </Card>
-        ))}
+                <div className="mt-4 flex items-baseline gap-3">
+                  <Num className="text-2xl">{f.no}</Num>
+                  <p className="text-copy font-semibold leading-snug text-cream">
+                    {hot ? <Hi>{f.title}</Hi> : f.title}
+                  </p>
+                </div>
+                <Body className="mt-2" style={{ color: QUIET }}>
+                  {f.text}
+                </Body>
+              </li>
+            )
+          })}
+        </ol>
       </div>
     </div>
   )
 }
 
-// --- 08 · Pivot --------------------------------------------------------------
+// --- 08 · Pivot ------------------------------------------------------------------
 
 function Pivot({ slide }) {
+  const last = slide.timeline.length - 1
   return (
-    <div className="grid gap-4 lg:grid-cols-[1fr_1.15fr]">
-      <Card>
-        <ol className="relative">
-          {/* The spine. It stops short of the last disc so it reads as a path with an
-              end rather than a rule that runs off the bottom of the card. */}
-          <span
-            aria-hidden="true"
-            className="absolute bottom-8 left-[17px] top-8 w-0.5"
-            style={{ background: "var(--wp-soft)" }}
-          />
-          {slide.timeline.map((item, i) => (
-            <li key={item.step} className="relative flex items-start gap-4 pb-7 last:pb-0">
-              <Disc tone={i === slide.timeline.length - 1 ? "accent" : "blue"}>{i + 1}</Disc>
-              <div className="min-w-0 flex-1">
-                <CardTitle>{item.step}</CardTitle>
-                <Body className="mt-2">{item.text}</Body>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </Card>
+    <div>
+      {/* The path. Four steps in a row, each ruled off at the top in blue and the last
+          in yellow — the rules join into one line across the board, and on a phone the
+          steps stack with their rules still marking the order. */}
+      <ol className="grid gap-x-6 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
+        {slide.timeline.map((item, i) => (
+          <li key={item.step}>
+            <Rule tone={i === last ? "accent" : "blue"} />
+            <div className="mt-4">
+              <Disc tone={i === last ? "accent" : "blue"}>{i + 1}</Disc>
+            </div>
+            <p className="mt-3 text-copy font-semibold leading-snug text-cream">{item.step}</p>
+            <Body className="mt-2" style={{ color: QUIET }}>
+              {item.text}
+            </Body>
+          </li>
+        ))}
+      </ol>
 
-      <Card>
-        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
-          <div className="min-w-0">
-            <CardTitle>{slide.pairs.title}</CardTitle>
-            <Sub className="mt-1.5">{slide.pairs.sub}</Sub>
-          </div>
-          <ul className="flex shrink-0 flex-wrap gap-2">
+      <Row
+        title={slide.pairs.title}
+        sub={slide.pairs.sub}
+        className="mt-8"
+        aside={
+          <ul className="flex flex-wrap gap-2">
             {slide.pairs.legend.map((l) => (
               <li key={l.label}>
                 <Chip tone={l.tone}>{l.label}</Chip>
               </li>
             ))}
           </ul>
-        </div>
-        <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+        }
+      >
+        <ul className="mb-4 flex flex-wrap gap-2 lg:hidden">
+          {slide.pairs.legend.map((l) => (
+            <li key={l.label}>
+              <Chip tone={l.tone}>{l.label}</Chip>
+            </li>
+          ))}
+        </ul>
+        <ul className="grid gap-3 sm:grid-cols-2">
           {slide.pairs.images.map((img) => (
             <li key={img.src} className="overflow-hidden rounded-xl">
               <img src={img.src} alt={img.alt} loading="lazy" className="block h-auto w-full" />
             </li>
           ))}
         </ul>
-      </Card>
+      </Row>
     </div>
   )
 }
 
-// --- 09 · Iteration ----------------------------------------------------------
+// --- 09 · Iteration --------------------------------------------------------------
 
 function Iteration({ slide }) {
   return (
-    <div className="grid gap-4">
-      <div className="grid gap-4 lg:grid-cols-2">
-        {slide.panels.map((panel) => (
-          <Card key={panel.tag}>
-            <Chip tone={panel.tone ?? "quiet"}>{panel.tag}</Chip>
-            <div className="mt-5 grid grid-cols-3 gap-3">
-              {panel.shots.map((shot) => (
-                <Shot key={shot.src} src={shot.src} caption={shot.caption} />
-              ))}
+    <div>
+      <div className="grid items-start gap-6 lg:grid-cols-[1fr_auto_1fr] lg:gap-8">
+        {slide.panels.map((panel, i) => (
+          <div key={panel.tag} className="contents">
+            {i > 0 && <Arrow turn="lg" className="justify-self-center lg:mt-24" />}
+            <div className="min-w-0">
+              <Chip tone={panel.tone ?? "quiet"}>{panel.tag}</Chip>
+              <div className="mt-4 grid grid-cols-3 gap-2.5 sm:gap-3">
+                {panel.shots.map((shot) => (
+                  <Shot key={shot.src} src={shot.src} caption={shot.caption} />
+                ))}
+              </div>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
-      <ul className="flex flex-wrap gap-2">
+
+      <ul className="mt-8 grid gap-x-8 gap-y-3 border-t border-line pt-6 sm:grid-cols-2 lg:grid-cols-3">
         {slide.changes.map((c) => (
-          <li key={c}>
-            <span
-              className="inline-block rounded-full px-4 py-2 text-note font-medium text-ink"
-              style={{ background: "var(--color-box)", boxShadow: "inset 0 0 0 1px var(--color-line)" }}
-            >
-              {c}
-            </span>
+          <li key={c} className="flex gap-3 text-copy leading-relaxed text-ink">
+            <Dot tone="accent" className="mt-[0.6em]" />
+            <span className="min-w-0">{c}</span>
           </li>
         ))}
       </ul>
@@ -781,237 +822,231 @@ function Iteration({ slide }) {
   )
 }
 
-// --- 10 · AI generation ------------------------------------------------------
+// --- 10 · AI generation ----------------------------------------------------------
 
 function AiFlow({ slide }) {
-  // The slide stacks the happy path over the pipeline over the three decisions. Kept
-  // as the deck's two columns, the four pipeline nodes and the three decision cards
-  // would each land in about 150px and break into a column of single words, so the
-  // two strips of phone screens share the top row and the rest runs full width.
+  const last = slide.pipeline.nodes.length - 1
   return (
-    <div className="grid gap-4">
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
-          {/* Three screens with the flow arrows between them. The arrows are their own
-              grid cells, so the row can break to one column without them floating. */}
-          <div className="grid items-center gap-3 sm:grid-cols-[1fr_auto_1fr_auto_1fr]">
-            <Shot src={slide.shots[0].src} caption={slide.shots[0].caption} />
-            <Arrow />
-            <Shot src={slide.shots[1].src} caption={slide.shots[1].caption} />
-            <Arrow />
-            <Shot src={slide.shots[2].src} caption={slide.shots[2].caption} />
-          </div>
-        </Card>
+    <div>
+      <div className="grid gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-12">
+        {/* Three screens with the flow arrows between them. The arrows are their own
+            grid cells; on a phone they go and the three screens sit side by side,
+            which is the same sequence read left to right. */}
+        <div className="grid grid-cols-3 items-center gap-2.5 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:gap-3">
+          <Shot src={slide.shots[0].src} caption={slide.shots[0].caption} />
+          <Arrow className="hidden sm:flex" />
+          <Shot src={slide.shots[1].src} caption={slide.shots[1].caption} />
+          <Arrow className="hidden sm:flex" />
+          <Shot src={slide.shots[2].src} caption={slide.shots[2].caption} />
+        </div>
 
-        <Card>
-          <CardTitle>{slide.edges.title}</CardTitle>
-          <div className="mt-5 grid grid-cols-3 gap-3">
-            {slide.edges.shots.map((shot) => (
-              <Shot key={shot.src} src={shot.src} caption={shot.caption} />
-            ))}
-          </div>
-        </Card>
+        <ol>
+          {slide.decisions.map((d) => (
+            <li key={d.title} className="border-t border-line py-5 first:pt-0 first:border-t-0 lg:first:border-t lg:first:pt-5">
+              <p className="text-copy font-semibold leading-snug text-cream">
+                {d.tone === "accent" ? <Hi>{d.title}</Hi> : d.title}
+              </p>
+              <Body className="mt-2" style={{ color: QUIET }}>
+                {d.text}
+              </Body>
+            </li>
+          ))}
+        </ol>
       </div>
 
-      <Card>
-        <CardTitle>{slide.pipeline.title}</CardTitle>
-        <ol className="mt-5 grid items-stretch gap-2.5 sm:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr]">
+      <Row title={slide.pipeline.title} sub={slide.pipeline.note} className="mt-8">
+        <ol className="grid items-stretch gap-2.5 sm:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr]">
           {slide.pipeline.nodes.map((node, i) => (
             <li key={node} className="contents">
               <div
                 className="flex items-center justify-center rounded-xl px-3 py-4 text-center text-note font-medium leading-snug"
                 style={{
-                  background:
-                    i === slide.pipeline.nodes.length - 1 ? "var(--wp-accent)" : "var(--wp-soft)",
-                  color: i === slide.pipeline.nodes.length - 1 ? "var(--wp-on-fill)" : "inherit",
+                  background: i === last ? ACCENT : TRAY,
+                  color: i === last ? ON_FILL : "var(--color-ink)",
                 }}
               >
                 {node}
               </div>
-              {i < slide.pipeline.nodes.length - 1 && <Arrow className="justify-self-center" />}
+              {i < last && <Arrow className="justify-self-center" />}
             </li>
           ))}
         </ol>
-        <Sub className="mt-4">{slide.pipeline.note}</Sub>
-      </Card>
+      </Row>
 
-      <div className="grid items-start gap-4 sm:grid-cols-3">
-        {slide.decisions.map((d) => (
-          <Card key={d.title} tone={d.tone ?? "box"}>
-            <CardTitle>{d.title}</CardTitle>
-            <Body className="mt-2.5">{d.text}</Body>
-          </Card>
-        ))}
-      </div>
+      <Row title={slide.edges.title}>
+        <div className="grid max-w-2xl grid-cols-3 gap-2.5 sm:gap-3">
+          {slide.edges.shots.map((shot) => (
+            <Shot key={shot.src} src={shot.src} caption={shot.caption} />
+          ))}
+        </div>
+      </Row>
     </div>
   )
 }
 
-// --- 11 · Home screen --------------------------------------------------------
+// --- 11 · Home screen ------------------------------------------------------------
 
 function Annotation({ item }) {
   return (
-    <Card>
-      <div className="flex items-start gap-3">
-        <Disc>{item.no}</Disc>
-        <div className="min-w-0">
-          <CardTitle>{item.title}</CardTitle>
-          <Body className="mt-2">{item.text}</Body>
-        </div>
+    <li className="flex items-start gap-3 border-t border-line pt-4">
+      <Disc>{item.no}</Disc>
+      <div className="min-w-0">
+        <p className="text-copy font-semibold leading-snug text-cream">{item.title}</p>
+        <Body className="mt-1.5" style={{ color: QUIET }}>
+          {item.text}
+        </Body>
       </div>
-    </Card>
+    </li>
   )
 }
 
 function HomeScreen({ slide }) {
   return (
-    <div className="grid gap-4 xl:grid-cols-[1fr_auto_1fr] xl:items-start">
-      <div className="grid gap-4 content-start">
-        {slide.left.map((item) => (
-          <Annotation key={item.no} item={item} />
-        ))}
+    <div>
+      <div className="grid gap-8 lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-10">
+        {/* The key visual first on a phone, between the two columns of notes on the
+            wide layout. It keeps its own width there — a phone stretched to a third
+            of the board would read as a tablet. */}
+        <figure className="relative order-first mx-auto w-full max-w-[17rem] lg:order-none lg:w-64">
+          <span
+            aria-hidden="true"
+            className="absolute left-1/2 top-[30%] size-56 -translate-x-1/2 rounded-full"
+            style={{ background: ACCENT, opacity: 0.85 }}
+          />
+          <img
+            src={slide.shot}
+            alt=""
+            loading="lazy"
+            className="relative block h-auto w-full rounded-[1.75rem] shadow-xl"
+          />
+        </figure>
+
+        <ol className="grid gap-5 content-start lg:order-first">
+          {slide.left.map((item) => (
+            <Annotation key={item.no} item={item} />
+          ))}
+        </ol>
+
+        <ol className="grid gap-5 content-start">
+          {slide.right.map((item) => (
+            <Annotation key={item.no} item={item} />
+          ))}
+        </ol>
       </div>
 
-      {/* The key visual. It keeps its own width on the wide layout — a phone stretched
-          to a third of the board would read as a tablet — and centres when stacked. */}
-      <figure className="relative mx-auto w-full max-w-[18rem] xl:w-72">
-        <div
-          aria-hidden="true"
-          className="absolute left-1/2 top-1/3 size-64 -translate-x-1/2 rounded-full"
-          style={{ background: "var(--wp-accent)", opacity: 0.85 }}
-        />
-        <img
-          src={slide.shot}
-          alt=""
-          loading="lazy"
-          className="relative block h-auto w-full rounded-[1.75rem] shadow-xl"
-        />
-      </figure>
-
-      <div className="grid gap-4 content-start">
-        {slide.right.map((item) => (
-          <Annotation key={item.no} item={item} />
-        ))}
-        <Card tone="accent">
-          <CardTitle>{slide.outfits.title}</CardTitle>
-          <ul className="mt-4 grid grid-cols-4 gap-2">
-            {slide.outfits.images.map((img) => (
-              <li key={img.src} className="aspect-[3/7]">
-                <Art src={img.src} alt={img.alt} />
-              </li>
-            ))}
-          </ul>
-        </Card>
-      </div>
+      <Row title={slide.outfits.title} className="mt-10">
+        <ul className="grid max-w-2xl grid-cols-4 gap-2 rounded-2xl p-3 sm:p-4" style={{ background: ACCENT }}>
+          {slide.outfits.images.map((img) => (
+            <li key={img.src} className="aspect-[3/7]">
+              <Art src={img.src} alt={img.alt} />
+            </li>
+          ))}
+        </ul>
+      </Row>
     </div>
   )
 }
 
-// --- 12 · Testing ------------------------------------------------------------
+// --- 12 · Testing ----------------------------------------------------------------
 
 function Testing({ slide }) {
+  const m = slide.method
+  const v = slide.validate
   return (
-    <div className="grid gap-4 lg:grid-cols-3">
-      <Card>
-        <CardTitle>{slide.method.title}</CardTitle>
+    <div>
+      <Row title={m.title}>
+        <div className="space-y-6">
+          <div className="grid gap-3 sm:grid-cols-[14rem_minmax(0,1fr)] sm:gap-5">
+            <div>
+              <Chip tone="pink">{m.scriptTag}</Chip>
+            </div>
+            <blockquote
+              className="rounded-xl p-4 text-copy italic leading-relaxed text-ink"
+              style={{ background: TRAY }}
+            >
+              {m.script}
+            </blockquote>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-[14rem_minmax(0,1fr)] sm:gap-5">
+            <div>
+              <Chip tone="mint">{m.bilingualTag}</Chip>
+            </div>
+            <Body>{m.bilingual}</Body>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-[14rem_minmax(0,1fr)] sm:gap-5">
+            <div>
+              <Chip tone="accent">{m.recruitTag}</Chip>
+            </div>
+            <Bullets items={m.recruit} />
+          </div>
+        </div>
+      </Row>
 
-        <Chip tone="pink" className="mt-5">
-          {slide.method.scriptTag}
-        </Chip>
-        <p
-          className="mt-3 rounded-xl p-4 text-copy italic leading-relaxed"
-          style={{ background: "var(--wp-soft)", color: "var(--wp-strong)" }}
-        >
-          {slide.method.script}
-        </p>
+      <Row title={v.title}>
+        <div className="grid gap-x-8 gap-y-7 sm:grid-cols-2">
+          <div>
+            <p className="font-mono-tight text-note uppercase tracking-wide" style={{ color: QUIET }}>
+              {v.hypothesesLabel}
+            </p>
+            <ul className="mt-3 space-y-3">
+              {v.hypotheses.map((h) => (
+                <li key={h} className="flex items-start gap-3">
+                  <Disc tone="mint" size="sm">
+                    ?
+                  </Disc>
+                  <span className="min-w-0 text-copy leading-relaxed text-ink">{h}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="font-mono-tight text-note uppercase tracking-wide" style={{ color: QUIET }}>
+              {v.detailsLabel}
+            </p>
+            <ol className="mt-3 space-y-3">
+              {v.details.map((d, i) => (
+                <li key={d} className="flex items-start gap-3">
+                  <Disc size="sm">{i + 1}</Disc>
+                  <span className="min-w-0 text-copy leading-relaxed text-ink">{d}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </Row>
 
-        <Chip tone="mint" className="mt-6">
-          {slide.method.bilingualTag}
-        </Chip>
-        <Body className="mt-3">{slide.method.bilingual}</Body>
-
-        <Chip tone="accent" className="mt-6">
-          {slide.method.recruitTag}
-        </Chip>
-        <ul className="mt-3 space-y-2">
-          {slide.method.recruit.map((r) => (
-            <li key={r} className="flex gap-2.5 text-copy leading-relaxed">
-              <span aria-hidden="true" style={{ color: "var(--wp-blue)" }}>
-                ·
-              </span>
-              <span className="min-w-0">{r}</span>
-            </li>
-          ))}
-        </ul>
-      </Card>
-
-      <Card>
-        <CardTitle>{slide.validate.title}</CardTitle>
-
-        <Sub className="mt-5 font-semibold">{slide.validate.hypothesesLabel}</Sub>
-        <ul className="mt-3 space-y-3">
-          {slide.validate.hypotheses.map((h) => (
-            <li key={h} className="flex items-start gap-3">
-              <Disc tone="mint" size="sm">
-                ?
-              </Disc>
-              <span className="min-w-0 text-copy leading-relaxed">{h}</span>
-            </li>
-          ))}
-        </ul>
-
-        <Divider />
-
-        <Sub className="font-semibold">{slide.validate.detailsLabel}</Sub>
-        <ol className="mt-3 space-y-3">
-          {slide.validate.details.map((d, i) => (
-            <li key={d} className="flex items-start gap-3">
-              <Disc size="sm">{i + 1}</Disc>
-              <span className="min-w-0 text-copy leading-relaxed">{d}</span>
-            </li>
-          ))}
-        </ol>
-      </Card>
-
-      <Card tone="accent" className="relative">
-        <CardTitle>{slide.changes.title}</CardTitle>
-        <ul className="mt-5 space-y-4">
+      <Row title={slide.changes.title} aside={<Sticker src={slide.changes.sticker} className="h-32" />}>
+        <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
           {slide.changes.items.map((item) => (
-            <li key={item.result} className="rounded-xl p-4" style={{ background: "var(--wp-inset)" }}>
-              <Sub className="font-semibold">{item.label}</Sub>
-              <p className="mt-2 text-copy leading-relaxed">{item.text}</p>
-              <p className="mt-3 text-copy font-bold" style={{ color: "var(--wp-strong)" }}>
+            <li key={item.result}>
+              <Rule tone="accent" />
+              <p className="mt-4 font-mono-tight text-note uppercase tracking-wide" style={{ color: QUIET }}>
+                {item.label}
+              </p>
+              <Body className="mt-2">{item.text}</Body>
+              <p className="mt-3 text-copy font-semibold leading-relaxed" style={{ color: BLUE_INK }}>
                 {item.result}
               </p>
             </li>
           ))}
         </ul>
-        <img
-          src={slide.changes.sticker}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className="pointer-events-none mt-4 ml-auto block h-28 w-auto"
-        />
-      </Card>
+      </Row>
     </div>
   )
 }
 
-// --- 13 · Design to build ----------------------------------------------------
+// --- 13 · Design to build --------------------------------------------------------
 
-function Node({ title, sub, tone = "quiet" }) {
+function NodeBox({ title, sub, tone }) {
+  const hot = tone === "accent"
   return (
     <div
       className="rounded-xl px-4 py-3 text-center"
-      style={{
-        background: LABEL[tone] ?? "var(--wp-soft)",
-        color: tone === "quiet" ? "var(--color-ink)" : "var(--wp-on-fill)",
-      }}
+      style={{ background: hot ? ACCENT : TRAY, color: hot ? ON_FILL : "var(--color-ink)" }}
     >
       <p className="text-copy font-semibold leading-snug">{title}</p>
       {sub && (
-        <p className="mt-1 text-note leading-snug" style={{ color: "var(--wp-quiet)" }}>
+        <p className="mt-1 text-note leading-snug" style={{ color: hot ? ON_FILL : QUIET }}>
           {sub}
         </p>
       )}
@@ -1019,67 +1054,60 @@ function Node({ title, sub, tone = "quiet" }) {
   )
 }
 
+function Link2({ className = "" }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`flex items-center justify-center ${className}`}
+      style={{ color: BLUE_INK }}
+    >
+      <svg viewBox="0 0 32 32" width="28" height="28">
+        <path
+          d="M16 4v24M9 11l7-7 7 7M9 21l7 7 7-7"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  )
+}
+
 function Build({ slide }) {
   const a = slide.architecture
-  // The architecture takes the full column. Boxed into half of one, its nodes shrink
-  // to about 140px and every label breaks into a column of single words.
   return (
-    <div className="grid gap-4">
-      <Card>
-        <CardTitle>{a.title}</CardTitle>
+    <div>
+      <Row title={a.title} sub={a.note}>
         {/* The app sits above the backend, with the two services either side of it.
             On a narrow column the whole thing becomes one top-to-bottom chain, which
             is the same story told in one dimension instead of two. */}
-        <div className="mt-5 grid gap-2.5 sm:grid-cols-[1fr_auto_1fr_auto_1fr]">
-            <div className="sm:col-start-3">
-              <Node title={a.app.title} sub={a.app.sub} tone="accent" />
-            </div>
-            <div
-              aria-hidden="true"
-              className="flex justify-center text-2xl leading-none sm:col-start-3"
-              style={{ color: "var(--wp-blue)" }}
-            >
-              ↕
-            </div>
-            <div className="sm:col-start-1 sm:row-start-3">
-              <Node title={a.sides[0].title} sub={a.sides[0].sub} />
-            </div>
-            <div
-              aria-hidden="true"
-              className="flex items-center justify-center text-2xl leading-none sm:col-start-2 sm:row-start-3"
-              style={{ color: "var(--wp-blue)" }}
-            >
-              <span className="sm:hidden">↕</span>
-              <span className="hidden sm:inline">⇄</span>
-            </div>
-            <div className="sm:col-start-3 sm:row-start-3">
-              <Node title={a.backend.title} sub={a.backend.sub} />
-            </div>
-            <div
-              aria-hidden="true"
-              className="flex items-center justify-center text-2xl leading-none sm:col-start-4 sm:row-start-3"
-              style={{ color: "var(--wp-blue)" }}
-            >
-              <span className="sm:hidden">↕</span>
-              <span className="hidden sm:inline">⇄</span>
-            </div>
-            <div className="sm:col-start-5 sm:row-start-3">
-              <Node title={a.sides[1].title} sub={a.sides[1].sub} />
-            </div>
+        <div className="grid gap-2.5 sm:grid-cols-[1fr_auto_1fr_auto_1fr]">
+          <div className="sm:col-start-3">
+            <NodeBox title={a.app.title} sub={a.app.sub} tone="accent" />
           </div>
-        <Sub className="mt-5">{a.note}</Sub>
-      </Card>
+          <Link2 className="sm:col-start-3" />
+          <div className="sm:col-start-1 sm:row-start-3">
+            <NodeBox title={a.sides[0].title} sub={a.sides[0].sub} />
+          </div>
+          <Link2 className="sm:col-start-2 sm:row-start-3 sm:rotate-90" />
+          <div className="sm:col-start-3 sm:row-start-3">
+            <NodeBox title={a.backend.title} sub={a.backend.sub} />
+          </div>
+          <Link2 className="sm:col-start-4 sm:row-start-3 sm:rotate-90" />
+          <div className="sm:col-start-5 sm:row-start-3">
+            <NodeBox title={a.sides[1].title} sub={a.sides[1].sub} />
+          </div>
+        </div>
+      </Row>
 
-      <div className="grid items-start gap-4 lg:grid-cols-2">
-      <Card tone="accent">
-        <CardTitle>{slide.mvp.title}</CardTitle>
-        <Body className="mt-3">{slide.mvp.text}</Body>
-      </Card>
+      <Callout label={slide.mvp.title} className="mt-2">
+        {slide.mvp.text}
+      </Callout>
 
-      <Card>
-        <CardTitle>{slide.system.title}</CardTitle>
-        <Sub className="mt-2">{slide.system.sub}</Sub>
-        <ul className="mt-4 flex flex-wrap gap-2">
+      <Row title={slide.system.title} sub={slide.system.sub} className="mt-8">
+        <ul className="flex flex-wrap gap-2">
           {slide.system.pills.map((p) => (
             <li key={p}>
               <Chip>{p}</Chip>
@@ -1088,35 +1116,28 @@ function Build({ slide }) {
         </ul>
         {/* The renders were exported with their Figma surface baked in, so the tile
             behind them is that exact value rather than a near miss. */}
-        <ul className="mt-5 grid grid-cols-4 gap-2 rounded-xl p-3" style={{ background: "#DCEBFF" }}>
+        <ul
+          className="mt-5 grid max-w-2xl grid-cols-4 gap-2 rounded-2xl p-3"
+          style={{ background: "var(--wp-render)" }}
+        >
           {slide.system.images.map((img) => (
             <li key={img.src} className="aspect-[3/4]">
               <Art src={img.src} alt={img.alt} />
             </li>
           ))}
         </ul>
-        <h4 className="mt-6 text-copy font-bold">{slide.system.engTitle}</h4>
-        <ul className="mt-3 space-y-2">
-          {slide.system.eng.map((e) => (
-            <li key={e} className="flex gap-2.5 text-copy leading-relaxed">
-              <span aria-hidden="true" style={{ color: "var(--wp-blue)" }}>
-                ·
-              </span>
-              <span className="min-w-0">{e}</span>
-            </li>
-          ))}
-        </ul>
-      </Card>
-      </div>
+        <h5 className="mt-7 text-copy font-semibold text-cream">{slide.system.engTitle}</h5>
+        <Bullets items={slide.system.eng} className="mt-3" />
+      </Row>
     </div>
   )
 }
 
-// --- 14 · After launch -------------------------------------------------------
+// --- 14 · After launch -----------------------------------------------------------
 
 // The install curve. Drawn in the data's own coordinates and stretched by the SVG's
 // viewBox, with the axis labels and the callout pills kept as real HTML outside it —
-// so the line scales with the card while nothing made of words ever does.
+// so the line scales with the row while nothing made of words ever does.
 function InstallChart({ chart }) {
   const { points, max } = chart
   const last = points.length - 1
@@ -1125,277 +1146,247 @@ function InstallChart({ chart }) {
 
   const line = points.map((v, i) => `${x(i)},${y(v)}`).join(" ")
   const area = `0,100 ${line} 100,100`
+  const axis = chart.ticks[chart.ticks.length - 1].toLocaleString()
 
   // Eleven months of labels and a y axis need about 26rem before the months start
   // colliding, which is wider than a phone. Rather than shrink the type below the
-  // page's floor, the plot keeps that width and scrolls inside the card.
+  // page's floor, the plot keeps that width and scrolls inside the row.
   // `overflow-x: auto` clips vertically too, so the callouts need headroom inside the
   // scroll box — and one that sits near the ceiling is hung under its point instead
   // of over it, where there is no room left.
   return (
-    <div className="-mx-1 mt-5 overflow-x-auto px-1 pt-9">
+    <div className="no-scrollbar -mx-1 overflow-x-auto px-1 pt-9">
       <div className="min-w-[26rem]">
-      <div className="flex gap-3">
-        {/* Y axis. Laid out as a column of evenly spaced labels read bottom-up, which
-            puts each one on its own gridline without any absolute positioning. */}
-        <ul
-          className="flex shrink-0 flex-col-reverse justify-between text-note"
-          style={{ color: "var(--wp-quiet)", height: "16rem" }}
-        >
-          {chart.ticks.map((tick) => (
-            <li key={tick} className="-translate-y-1/2 first:translate-y-0 last:translate-y-0">
-              {tick.toLocaleString()}
-            </li>
-          ))}
-        </ul>
-
-        <div className="relative min-w-0 flex-1" style={{ height: "16rem" }}>
-          <svg
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-            className="absolute inset-0 h-full w-full"
+        <div className="flex gap-3">
+          {/* Y axis. Laid out as a column of evenly spaced labels read bottom-up, which
+              puts each one on its own gridline without any absolute positioning. */}
+          <ul
+            className="flex shrink-0 flex-col-reverse justify-between text-note"
+            style={{ color: QUIET, height: "16rem" }}
           >
             {chart.ticks.map((tick) => (
-              <line
-                key={tick}
-                x1="0"
-                x2="100"
-                y1={y(tick)}
-                y2={y(tick)}
-                stroke="rgba(15,27,76,0.1)"
-                strokeWidth="0.3"
+              <li key={tick} className="-translate-y-1/2 first:translate-y-0 last:translate-y-0">
+                {tick.toLocaleString()}
+              </li>
+            ))}
+          </ul>
+
+          <div className="relative min-w-0 flex-1" style={{ height: "16rem" }}>
+            <svg
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full"
+            >
+              {chart.ticks.map((tick) => (
+                <line
+                  key={tick}
+                  x1="0"
+                  x2="100"
+                  y1={y(tick)}
+                  y2={y(tick)}
+                  stroke="var(--color-line)"
+                  strokeWidth="1"
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+              <polygon points={area} fill={BLUE} opacity="0.14" />
+              <polyline
+                points={line}
+                fill="none"
+                stroke={BLUE}
+                strokeWidth="2"
+                strokeLinejoin="round"
+                strokeLinecap="round"
                 vectorEffect="non-scaling-stroke"
               />
-            ))}
-            <polygon points={area} fill="var(--wp-blue)" opacity="0.12" />
-            <polyline
-              points={line}
-              fill="none"
-              stroke="var(--wp-blue)"
-              strokeWidth="2"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
+            </svg>
 
-          {/* Dots and callouts, placed in percentages of the same box as the line. */}
-          {points.map((v, i) => (
-            <span
-              key={i}
-              aria-hidden="true"
-              className="absolute size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
-              style={{
-                left: `${x(i)}%`,
-                top: `${y(v)}%`,
-                background: "var(--wp-inset)",
-                borderColor: "var(--wp-blue)",
-              }}
-            />
-          ))}
-          {chart.markers.map((m) => {
-            const top = y(points[m.at])
-            // A callout near either end is aligned to its own edge rather than
-            // centred on its point, so it cannot hang off the side of the plot.
-            const dx = m.at >= last - 1 ? "-100%" : m.at <= 1 ? "0" : "-50%"
-            const dy = m.place === "below" ? "60%" : "-150%"
-            return (
+            {/* Dots and callouts, placed in percentages of the same box as the line. */}
+            {points.map((v, i) => (
               <span
-                key={m.at}
-                className="absolute whitespace-nowrap rounded-full px-2.5 py-1 text-note font-medium"
-                style={{
-                  left: `${x(m.at)}%`,
-                  top: `${top}%`,
-                  transform: `translate(${dx}, ${dy})`,
-                  background: LABEL[m.tone],
-                  color: "var(--wp-on-fill)",
-                }}
-              >
-                {m.label}
-              </span>
-            )
-          })}
+                key={i}
+                aria-hidden="true"
+                className="absolute size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 bg-page"
+                style={{ left: `${x(i)}%`, top: `${y(v)}%`, borderColor: BLUE }}
+              />
+            ))}
+            {chart.markers.map((m) => {
+              const top = y(points[m.at])
+              // A callout near either end is aligned to its own edge rather than
+              // centred on its point, so it cannot hang off the side of the plot.
+              const dx = m.at >= last - 1 ? "-100%" : m.at <= 1 ? "0" : "-50%"
+              const dy = m.place === "below" ? "60%" : "-150%"
+              return (
+                <span
+                  key={m.at}
+                  className="absolute whitespace-nowrap rounded-full px-2.5 py-1 text-note font-medium"
+                  style={{
+                    left: `${x(m.at)}%`,
+                    top: `${top}%`,
+                    transform: `translate(${dx}, ${dy})`,
+                    background: FILL[m.tone],
+                    color: ON_FILL,
+                  }}
+                >
+                  {m.label}
+                </span>
+              )
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* X axis. Mirrors the plot's own left offset so the months line up under it. */}
-      <div className="mt-2 flex gap-3">
-        <span
-          className="shrink-0 text-note opacity-0"
-          aria-hidden="true"
-          style={{ color: "var(--wp-quiet)" }}
-        >
-          {chart.ticks[chart.ticks.length - 1].toLocaleString()}
-        </span>
-        <ul
-          className="flex min-w-0 flex-1 justify-between text-note"
-          style={{ color: "var(--wp-quiet)" }}
-        >
-          {chart.months.map((m) => (
-            <li key={m}>{m}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="mt-1 flex gap-3">
-        <span
-          className="shrink-0 text-note opacity-0"
-          aria-hidden="true"
-          style={{ color: "var(--wp-quiet)" }}
-        >
-          {chart.ticks[chart.ticks.length - 1].toLocaleString()}
-        </span>
-        <div className="flex min-w-0 flex-1 justify-between text-note" style={{ color: "var(--wp-quiet)" }}>
-          <span>{chart.years[0]}</span>
-          <span>{chart.years[1]}</span>
+        {/* X axis. Mirrors the plot's own left offset so the months line up under it. */}
+        <div className="mt-2 flex gap-3">
+          <span className="shrink-0 text-note opacity-0" aria-hidden="true">
+            {axis}
+          </span>
+          <ul className="flex min-w-0 flex-1 justify-between text-note" style={{ color: QUIET }}>
+            {chart.months.map((m) => (
+              <li key={m}>{m}</li>
+            ))}
+          </ul>
         </div>
-      </div>
+        <div className="mt-1 flex gap-3">
+          <span className="shrink-0 text-note opacity-0" aria-hidden="true">
+            {axis}
+          </span>
+          <div className="flex min-w-0 flex-1 justify-between text-note" style={{ color: QUIET }}>
+            <span>{chart.years[0]}</span>
+            <span>{chart.years[1]}</span>
+          </div>
+        </div>
       </div>
     </div>
+  )
+}
+
+// Five stars, filled in the deck's yellow and outlined in the page's ink so the empty
+// ones still read on either theme. The count is in the label, so a screen reader is
+// not told about five glyphs.
+function Stars({ n }) {
+  return (
+    <span role="img" aria-label={`${n} / 5`} className="flex gap-1">
+      {Array.from({ length: 5 }, (_, i) => (
+        <svg key={i} viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path
+            d="M12 2.8l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.6l-5.8 3.1 1.1-6.5L2.6 9.6l6.5-.9z"
+            fill={i < n ? ACCENT : "none"}
+            stroke="var(--color-ink)"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ))}
+    </span>
   )
 }
 
 function Aftermath({ slide }) {
   return (
-    <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr]">
-      <Card className="min-w-0">
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <CardTitle>{slide.chart.title}</CardTitle>
-          <Sub>{slide.chart.sub}</Sub>
-        </div>
+    <div>
+      <Row title={slide.chart.title} sub={slide.chart.sub}>
         <InstallChart chart={slide.chart} />
-        <p
-          className="mt-5 rounded-xl p-4 text-copy font-medium leading-relaxed"
-          style={{ background: "var(--wp-soft)", color: "var(--wp-strong)" }}
-        >
-          {slide.chart.read}
+        <p className="mt-6 max-w-2xl text-copy font-semibold leading-[1.6] text-cream">
+          <Hi>{slide.chart.read}</Hi>
         </p>
-      </Card>
+      </Row>
 
-      <div className="grid gap-4 content-start">
-        <Card>
-          <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <CardTitle>{slide.reviews.title}</CardTitle>
-            <Sub>{slide.reviews.sub}</Sub>
+      <Row title={slide.reviews.title} sub={slide.reviews.sub}>
+        <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+          {slide.reviews.items.map((r, i) => (
+            <li key={i}>
+              <Stars n={r.stars} />
+              <Body className="mt-3 italic">{r.text}</Body>
+            </li>
+          ))}
+        </ul>
+      </Row>
+
+      <Callout label={slide.retro.title} className="mt-2">
+        {slide.retro.text}
+      </Callout>
+    </div>
+  )
+}
+
+// --- 15 · Outcome ----------------------------------------------------------------
+
+function Outcome({ slide }) {
+  const s = slide.store
+  const mk = slide.marketing
+  return (
+    <div>
+      <Row title={s.title} sub={s.source}>
+        <div className="flex items-start gap-5">
+          <img
+            src={s.icon}
+            alt=""
+            loading="lazy"
+            className="size-20 shrink-0 rounded-2xl"
+            style={{ background: BLUE }}
+          />
+          <div className="min-w-0">
+            <p className="text-2xl font-semibold leading-tight text-cream">{s.name}</p>
+            <p className="mt-1.5 text-copy font-medium" style={{ color: BLUE_INK }}>
+              {s.publisher}
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {s.pills.map((p) => (
+                <li key={p}>
+                  <Chip>{p}</Chip>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className="mt-5 space-y-3">
-            {slide.reviews.items.map((r, i) => (
-              <li key={i} className="rounded-xl p-4" style={{ background: "var(--wp-soft)" }}>
-                <p className="text-copy" style={{ color: "var(--wp-accent)" }}>
-                  <span style={{ color: "#E8A800" }}>{"★".repeat(r.stars)}</span>
-                  <span style={{ color: "var(--wp-quiet)" }}>{"☆".repeat(5 - r.stars)}</span>
-                </p>
-                <p className="mt-2 text-copy leading-relaxed">{r.text}</p>
-              </li>
-            ))}
-          </ul>
-        </Card>
+        </div>
+        <Body className="mt-5 italic" style={{ color: QUIET }}>
+          {s.tagline}
+        </Body>
+        <Bullets items={s.facts} className="mt-4" />
+      </Row>
 
-        <Card tone="accent">
-          <CardTitle>{slide.retro.title}</CardTitle>
-          <Body className="mt-3">{slide.retro.text}</Body>
-        </Card>
+      <Row title={mk.title} sub={mk.sub}>
+        <div className="grid gap-6 sm:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] sm:gap-8">
+          <img src={mk.banner} alt={mk.bannerAlt} loading="lazy" className="block h-auto w-full rounded-xl" />
+          <div className="min-w-0">
+            <p className="font-mono-tight text-note uppercase tracking-wide" style={{ color: QUIET }}>
+              {mk.audienceLabel}
+            </p>
+            <ul className="mt-3 space-y-4">
+              {mk.audiences.map((a) => (
+                <li key={a.tag}>
+                  <Chip tone={a.tone}>{a.tag}</Chip>
+                  <Body className="mt-2">{a.text}</Body>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 text-copy font-semibold leading-[1.6] text-cream">
+              <Hi>{mk.slogan}</Hi>
+            </p>
+          </div>
+        </div>
+      </Row>
+
+      <div className="border-t border-line pt-7">
+        <h4 className="text-2xl font-semibold leading-tight text-cream">{slide.reflectionsTitle}</h4>
+        <ol className="mt-6 grid gap-x-8 gap-y-8 sm:grid-cols-3">
+          {slide.reflections.map((r) => (
+            <li key={r.no}>
+              <Num className="block text-4xl">{r.no}</Num>
+              <p className="mt-3 text-copy font-semibold leading-snug text-cream">{r.title}</p>
+              <Body className="mt-2.5" style={{ color: QUIET }}>
+                {r.text}
+              </Body>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   )
 }
 
-// --- 15 · Outcome ------------------------------------------------------------
-
-function Outcome({ slide }) {
-  return (
-    <div className="grid gap-4 lg:grid-cols-3">
-      <Card>
-        <CardTitle>{slide.store.title}</CardTitle>
-        <div className="mt-5 flex items-center gap-4">
-          <img
-            src={slide.store.icon}
-            alt=""
-            loading="lazy"
-            className="size-20 shrink-0 rounded-2xl"
-            style={{ background: "var(--wp-blue)" }}
-          />
-          <div className="min-w-0">
-            <p className="text-2xl font-bold leading-tight">{slide.store.name}</p>
-            <p className="mt-1.5 text-copy font-medium" style={{ color: "var(--wp-strong)" }}>
-              {slide.store.publisher}
-            </p>
-          </div>
-        </div>
-        <ul className="mt-5 flex flex-wrap gap-2">
-          {slide.store.pills.map((p) => (
-            <li key={p}>
-              <Chip>{p}</Chip>
-            </li>
-          ))}
-        </ul>
-        <p
-          className="mt-5 rounded-xl p-4 text-copy leading-relaxed"
-          style={{ background: "var(--wp-soft)", color: "var(--wp-strong)" }}
-        >
-          {slide.store.tagline}
-        </p>
-        <ul className="mt-5 space-y-2">
-          {slide.store.facts.map((f) => (
-            <li key={f} className="flex gap-2.5 text-copy leading-relaxed">
-              <span aria-hidden="true" style={{ color: "var(--wp-blue)" }}>
-                ·
-              </span>
-              <span className="min-w-0">{f}</span>
-            </li>
-          ))}
-        </ul>
-        <Sub className="mt-5">{slide.store.source}</Sub>
-      </Card>
-
-      <Card>
-        <CardTitle>{slide.marketing.title}</CardTitle>
-        <Sub className="mt-2">{slide.marketing.sub}</Sub>
-        <img
-          src={slide.marketing.banner}
-          alt={slide.marketing.bannerAlt}
-          loading="lazy"
-          className="mt-4 block h-auto w-full rounded-xl"
-        />
-        <Sub className="mt-5 font-semibold">{slide.marketing.audienceLabel}</Sub>
-        <ul className="mt-3 space-y-3">
-          {slide.marketing.audiences.map((a) => (
-            <li
-              key={a.tag}
-              className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl p-4"
-              style={{ background: "var(--wp-soft)" }}
-            >
-              <Chip tone={a.tone}>{a.tag}</Chip>
-              <span className="min-w-0 flex-1 text-copy leading-relaxed">{a.text}</span>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-5 text-note font-bold" style={{ color: "var(--wp-strong)" }}>
-          {slide.marketing.slogan}
-        </p>
-      </Card>
-
-      <Card tone="accent">
-        <CardTitle>{slide.reflectionsTitle}</CardTitle>
-        <ul className="mt-5 space-y-3">
-          {slide.reflections.map((r) => (
-            <li key={r.no} className="rounded-xl p-4" style={{ background: "var(--wp-inset)" }}>
-              <div className="flex items-baseline gap-3">
-                <span className="text-2xl font-bold" style={{ color: "var(--wp-strong)" }}>
-                  {r.no}
-                </span>
-                <CardTitle>{r.title}</CardTitle>
-              </div>
-              <Body className="mt-2.5">{r.text}</Body>
-            </li>
-          ))}
-        </ul>
-      </Card>
-    </div>
-  )
-}
-
-// --- the switchboard ---------------------------------------------------------
+// --- the switchboard -------------------------------------------------------------
 
 const BOARDS = {
   overview: Overview,
