@@ -301,59 +301,105 @@ html::-webkit-scrollbar {
   border-radius: 0.3em;
 }
 
-/* The ABC Mouse (开心鼠) deck boards. Laid out the way the WeatherPets boards are —
-   on the page's own surface, a label column and a content column, hairlines between
-   rows, the page's own `bg-box` for anything that is a card — so what carries the
-   deck's identity is its palette, used as marks rather than as surfaces: the orange
-   for discs, chips, rules and the fat arrow; the pale yellow as a highlighter under
-   the one line per board that holds its point.
+/* The ABC Mouse (开心鼠) deck boards — the 2026 Figma relayout (page 7).
+   The deck is built on one bright yellow, a near-black slab, and two card tints: a
+   plain card and a yellow-tinted one that marks the chosen option. The site's own
+   surface carries the boards, so the deck's full-bleed yellow board backgrounds do
+   not come across; what does is the palette used as marks — yellow fills, pills and
+   title highlights, dark bands for the two conclusions, tinted cards for the thing
+   each board is pointing at.
 
-   The fills never flip: orange, pale and pink are always set in the deck's dark ink,
-   which reads on them whether the page behind is cream or near-black. Two values do
-   flip. `accent-ink` is orange used as type on the page — the deck's own orange sits
-   at 2.2:1 on cream, so in light mode it darkens to the same hue at ink weight (4.6:1
-   on the page, 5.2:1 on a box) and in dark mode the app's orange itself holds at 9:1.
-   `quiet` is the secondary grey for captions and the slanted half of each board
-   title — a step darker than the site's fog in light mode, because fog sits right at
-   the AA line and captions should not. `hi-line` underlines the phrases a highlighted
-   sentence turns on; it sits on the pale highlighter in both themes, so it is the
-   light-mode ink in both. */
+   The yellow never flips: it is always set against the deck's own dark ink, which
+   reads on it whether the page behind is cream or near-black. Five values do flip.
+   `accent-ink` is yellow used as TYPE on the page — #FFD333 sits at 1.5:1 on cream,
+   so in light mode it darkens to the same hue at ink weight (5.1:1 on the page) and
+   in dark mode the deck's own yellow holds at 13.8:1. `pale` is the tinted card: a
+   pale cream-yellow on paper, a deep amber on near-black, so the card reads as
+   "marked" in both. `band` is the conclusion slab: near-black on paper, and on the
+   near-black page a raised slate that needs its hairline (`band-edge`) to separate.
+   `no` / `yes` are the deck's red and green verdict pills, darkened on paper and
+   lightened on near-black so both hold AA against their own type. `quiet` is the
+   secondary grey — a step darker than the site's fog in light mode, because fog sits
+   right at the AA line and captions should not. */
 .abc-deck {
-  --abc-accent: #fdaf23;
-  --abc-accent-ink: #9a5b00;
-  --abc-on-accent: #191717;
-  --abc-pale: #fee7bd;
-  --abc-on-pale: #191717;
-  --abc-band: #fdbf4f;
-  --abc-on-band: #191717;
-  --abc-pink: #e09a94;
+  --abc-accent: #ffd333;
+  --abc-on-accent: #1a1a1a;
+  --abc-accent-ink: #8a5a00;
+
+  --abc-pale: #fff3c9;
+  --abc-on-pale: #1a1a1a;
+  --abc-pale-quiet: #6a6350;
+  --abc-pale-edge: rgba(26, 26, 26, 0.1);
+
+  --abc-band: #1a1a1a;
+  --abc-on-band: #f1f1f1;
+  --abc-band-edge: transparent;
+  --abc-band-quiet: #a9a9a9;
+
+  --abc-no: #c62f2f;
+  --abc-on-no: #ffffff;
+  --abc-yes: #16794e;
+  --abc-on-yes: #ffffff;
+
   --abc-quiet: #5f5f66;
-  --abc-hi-line: #8f5400;
 }
 
 .dark .abc-deck {
-  --abc-accent-ink: #fdaf23;
-  --abc-pink: #eaa7a2;
+  --abc-accent-ink: #ffd333;
+
+  --abc-pale: #2a2615;
+  --abc-on-pale: #f3ecd8;
+  --abc-pale-quiet: #a89f88;
+  --abc-pale-edge: rgba(255, 211, 51, 0.22);
+
+  --abc-band: #262e3e;
+  --abc-on-band: #f0eeea;
+  --abc-band-edge: rgba(255, 255, 255, 0.12);
+  --abc-band-quiet: #a7adbb;
+
+  --abc-no: #ff8a8a;
+  --abc-on-no: #1a1a1a;
+  --abc-yes: #52d79e;
+  --abc-on-yes: #0d2b1e;
+
   --abc-quiet: #9a9aa3;
 }
 
-/* The highlighter: the deck's pale yellow run under a line of copy, carried across
-   line breaks so a wrapped sentence stays one stroke. */
-.abc-deck .abc-hi {
-  background: var(--abc-pale);
-  color: var(--abc-on-pale);
+/* The board title's highlighter — the deck runs its yellow behind the bottom half of
+   each board name. It is painted as a background rather than drawn as a box so it
+   follows the text across a line break, which is what happens to a long Chinese title
+   on a phone.
+
+   The title takes the page's own heading ink, which is near-black on paper and
+   near-white on the dark page — so the solid yellow only works under the first of
+   those. In dark mode the field behind the glyphs drops to a wash (near-white holds
+   8:1 on it) and the deck's full-strength yellow stays as the stroke along the
+   bottom, which is what carries the highlighter's punch anyway. */
+.abc-deck .abc-mark {
+  background-image: linear-gradient(transparent 54%, var(--abc-accent) 54%, var(--abc-accent) 94%, transparent 94%);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-  padding: 0.06em 0.32em;
-  margin: 0 -0.08em;
-  border-radius: 0.3em;
+  padding-inline: 0.12em;
+  margin-inline: -0.12em;
 }
 
-.abc-deck .abc-hi u {
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 5px;
-  text-decoration-color: var(--abc-hi-line);
+.dark .abc-deck .abc-mark {
+  background-image: linear-gradient(
+    transparent 54%,
+    rgba(255, 211, 51, 0.3) 54%,
+    rgba(255, 211, 51, 0.3) 86%,
+    var(--abc-accent) 86%,
+    var(--abc-accent) 96%,
+    transparent 96%
+  );
+}
+
+/* The conclusion slab. On paper it is the deck's near-black; on the near-black page it
+   is a raised slate, which needs a hairline to separate from the page behind it. */
+.abc-deck .abc-band {
+  background: var(--abc-band);
+  color: var(--abc-on-band);
+  box-shadow: inset 0 0 0 1px var(--abc-band-edge);
 }
 
 /* The HMI (Granstudio) deck boards. The slides are white, set in a navy heading ink
