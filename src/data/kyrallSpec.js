@@ -18,6 +18,33 @@ export const kyrallSpec = {
     "面对 Dashboard、Editor、Mesh 工作区等多个产品面，保证体验形态的一致性与团队协作效率，持续沉淀颜色 Token、字体、图标与组件规范，让新功能可以直接复用同一套交互语法，减少用户学习成本。"
   ),
 
+  // The design system as the page lays it out (SpecGrid.jsx): two sub-sections.
+  groups: [
+    {
+      kicker: tt("Foundations", "基础规范"),
+      title: tt("Colour, type, spacing, icons and the logo", "颜色、字体、间距、图标与标志"),
+      items: [
+        { name: tt("Color", "颜色"), file: "s01-color.jpg" },
+        { name: tt("Typography", "字体"), file: "s02-type.jpg" },
+        { name: tt("Spacing", "间距"), file: "s06-spacing.jpg" },
+        { name: tt("Icon", "图标"), file: "s07-icon.jpg" },
+        { name: tt("Logo", "标志"), file: "s05-logo.jpg" },
+      ],
+    },
+    {
+      kicker: tt("Components", "组件"),
+      title: tt("Buttons, dialogs, sidebar and toolbar", "按钮、对话框、侧边栏与工具栏"),
+      cols: 2,
+      items: [
+        { name: tt("Button", "按钮"), file: "s03-button.jpg", fit: "contain" },
+        { name: tt("Dialog", "对话框"), file: "s04-dialog.jpg", fit: "contain" },
+        { name: tt("Sidebar", "侧边栏"), file: "s08-sidebar.jpg" },
+        { name: tt("Toolbar", "工具栏"), file: "s09-toolbar.jpg" },
+      ],
+    },
+  ],
+
+  // The original board's card stack (SpecBoard.jsx, no longer on the page).
   // `row` 0 is the receding back row, 1 the front one. `x` is the deck's own
   // position in the frame, bleed and all — the cards that run off both edges are
   // part of the picture.

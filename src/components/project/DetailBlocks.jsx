@@ -5,6 +5,7 @@ import WorkflowBoard from "./WorkflowBoard"
 import BackgroundBoard from "./BackgroundBoard"
 import BackgroundWho from "./BackgroundWho"
 import BackgroundCompare from "./BackgroundCompare"
+import SpecGrid from "./SpecGrid"
 import CompetitorsBoard from "./CompetitorsBoard"
 import PersonaBoard from "./PersonaBoard"
 import StoryMapBoard from "./StoryMapBoard"
@@ -510,6 +511,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <WorkflowBoard key={i} board={block.board} accent={accent} />
       case "backgroundWho":
         return <BackgroundWho key={i} act={block.act} />
+      case "specGrid":
+        return <SpecGrid key={i} spec={block.spec} />
       case "backgroundCompare":
         return <BackgroundCompare key={i} act={block.act} />
       case "background":
