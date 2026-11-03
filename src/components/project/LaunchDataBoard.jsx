@@ -15,7 +15,9 @@ import { ui } from "../../i18n/ui"
 const OX = 80
 const OY = 112
 const BOARD_W = 1760
-const BOARD_H = 1180
+// The page sets the title and lead; the stat row (y 250) starts at the top edge.
+const CUT = 122 // 16px short of the stat row: its large numerals rise above their box
+const BOARD_H = 1180 - CUT
 const MIN_SCALE = 0.45
 
 const { at, Text, Rule } = createDeckArt({ ox: OX, oy: OY, art: "" })
@@ -388,13 +390,9 @@ export default function LaunchDataBoard({ board }) {
             className="kyrall-deck relative"
             style={{ width: BOARD_W, height: BOARD_H, transform: `scale(${scale})`, transformOrigin: "top left" }}
           >
-            <Text x={80} y={112} w={1700} size={48} weight={600} lh={1.2} color={CREAM}>
-              {board.title}
-            </Text>
-            <Text x={80} y={182} w={1700} size={20} lh={1.25}>
-              {board.lead}
-            </Text>
-            {stats.map((stat, i) => (
+            {/* The chapter title (and lead) are set by the page now; the board starts
+                at its first content, lifted by CUT. */}
+            <div style={{ position: "absolute", left: 0, top: -CUT, width: BOARD_W }}>            {stats.map((stat, i) => (
               <Stat key={i} x={[80, 520, 960, 1400][i]} {...stat} />
             ))}
             <Rule x={80} y={410} w={1760} />
@@ -412,6 +410,7 @@ export default function LaunchDataBoard({ board }) {
             {next.items.map((item, i) => (
               <NextCard key={i} item={item} x={NEXT_X[i]} />
             ))}
+            </div>
           </div>
         </div>
       </div>

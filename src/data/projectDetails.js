@@ -76,7 +76,8 @@ export const projectDetails = {
         // title, so the page's heading stays for the chapter index and the outline
         // but is not drawn twice.
         label: tt("Competitors", "竞品分析"),
-        titleHidden: true,
+        // The board no longer draws its own title; the page sets it.
+        heading: kyrallCompetitors.title,
         blocks: [{ type: "competitors", board: kyrallCompetitors }],
       },
       {
@@ -85,7 +86,8 @@ export const projectDetails = {
         // The board opens with its own title, so the page's heading stays for the
         // chapter index and the outline but is not drawn twice.
         label: tt("Persona", "用户画像"),
-        titleHidden: true,
+        // The board no longer draws its own title; the page sets it.
+        heading: kyrallPersona.title,
         blocks: [
           { type: "persona", board: kyrallPersona },
           { type: "storymap", board: kyrallStoryMap },
@@ -107,7 +109,9 @@ export const projectDetails = {
         // The board opens with its own title, so the page's heading stays for the
         // chapter index and the outline but is not drawn twice.
         label: tt("Core flow", "核心流程"),
-        titleHidden: true,
+        // The board no longer draws its own title; the page sets it.
+        heading: kyrallCoreFlow.title,
+        lead: kyrallCoreFlow.lead,
         blocks: [{ type: "coreflow", board: kyrallCoreFlow }],
       },
       {
@@ -116,7 +120,9 @@ export const projectDetails = {
         // Same as the core-flow board: it opens with its own title, so the page's
         // heading stays for the chapter index and the outline but is not drawn twice.
         label: tt("Extensions", "延展页面"),
-        titleHidden: true,
+        // The board no longer draws its own title; the page sets it.
+        heading: kyrallExtensions.title,
+        lead: kyrallExtensions.lead,
         blocks: [{ type: "extensions", board: kyrallExtensions }],
       },
       {
@@ -125,7 +131,9 @@ export const projectDetails = {
         // The board opens with its own title, so the page's heading stays for the
         // chapter index and the outline but is not drawn twice.
         label: tt("Launch data", "上线数据"),
-        titleHidden: true,
+        // The board no longer draws its own title; the page sets it.
+        heading: kyrallLaunchData.title,
+        lead: kyrallLaunchData.lead,
         blocks: [{ type: "launchdata", board: kyrallLaunchData }],
       },
       // AI workflow chapter hidden for now — the board (kyrallAiWorkflow.js,

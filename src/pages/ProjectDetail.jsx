@@ -85,7 +85,7 @@ export default function ProjectDetail() {
                   : "mt-tight text-3xl font-semibold tracking-tight text-cream"
               }
             >
-              {section.label}
+              {section.heading ?? section.label}
             </h2>
 
             {section.lead && (

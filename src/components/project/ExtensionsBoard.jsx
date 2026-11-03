@@ -14,7 +14,9 @@ import { ui } from "../../i18n/ui"
 const OX = 80
 const OY = 112
 const BOARD_W = 1760
-const BOARD_H = 5390
+// The page sets the title and lead; the first act (y 320) starts at the top edge.
+const CUT = 208
+const BOARD_H = 5390 - CUT
 // The floor the board stops shrinking at and starts scrolling sideways instead, the
 // same one the other long boards use. The reading column sits well above it at 0.58.
 const MIN_SCALE = 0.45
@@ -87,15 +89,9 @@ export default function ExtensionsBoard({ board }) {
               transformOrigin: "top left",
             }}
           >
-            {/* ---- header ---- */}
-            <Text x={80} y={112} w={1700} size={48} weight={600} lh={1.2} color={CREAM}>
-              {board.title}
-            </Text>
-            <Text x={80} y={190} w={1250} size={20} lh={1.6}>
-              {board.lead}
-            </Text>
-            <Rule x={80} y={280} w={1760} />
-
+            {/* The chapter title (and lead) are set by the page now; the board starts
+                at its first content, lifted by CUT. */}
+            <div style={{ position: "absolute", left: 0, top: -CUT, width: BOARD_W }}>
             {/* ---- 01 · projects ---- */}
             <Head y={320} n={acts[0].n} title={acts[0].title} accent={acts[0].accent} titleY={322} />
             <Shot src="proj-main.png" x={80} y={394} w={1007.66} h={547} />
@@ -176,6 +172,7 @@ export default function ExtensionsBoard({ board }) {
             {note("input", 1335, 5200, 205)}
             <Arrow from={[1192, 5382]} to={[1299.5, 5382]} />
             {note("nextStep", 1335, 5371, 302)}
+            </div>
           </div>
         </div>
       </div>

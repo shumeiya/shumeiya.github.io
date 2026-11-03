@@ -37,6 +37,8 @@
 
 新 token 不要用 Tailwind 已有的关键词命名（比如 `block`、`flex`、`grid`、`full`、`screen`）：Tailwind 会顺带生成 `inline-block` 这类同名 class，把原来的样式覆盖掉。
 
+Kyrall 的图板不再自己画章节标题：标题和引导句写在 `projectDetails.js` 的 `heading` / `lead` 里，由页面按 28px 半粗统一渲染（`heading` 是页面上显示的标题，`label` 是左侧目录的短名字）。图板只从第一块内容开始画，用 `CUT` 把画板内容往上收。新做的图板也照这个来。
+
 章节标题被图板或 deck 自己画（`titleHidden` 且没有 `lead`）时，图板顶边就是标题，ProjectDetail 会把它拉到 eyebrow 下方 `tight` 的位置。
 
 图板、deck 内部的细节间距可以用普通 Tailwind 数字，但只能取网格上的值：4/8/12/16/24/32/40/48/56/64…（`mt-1/2/3/4/6/8/10/12/14/16`）。不要用 `0.5`、`1.5`、`2.5`、`3.5`、`5`、`7`、`9`、`11` 这些落在网格外的档位。

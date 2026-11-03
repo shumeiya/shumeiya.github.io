@@ -18,7 +18,9 @@ import { ui } from "../../i18n/ui"
 const OX = 80
 const OY = 136
 const BOARD_W = 1760
-const BOARD_H = 729
+// The page sets the chapter title; the cards (CARD_Y 252) start at the top edge.
+const CUT = 116
+const BOARD_H = 729 - CUT
 const MIN_SCALE = 0.45
 
 const CARD_W = 560
@@ -210,13 +212,13 @@ export default function PersonaBoard({ board }) {
               transformOrigin: "top left",
             }}
           >
-            <Text x={80} y={136} w={1400} size={56} weight={500} lh={1.2} color="var(--color-cream)">
-              {board.title}
-            </Text>
-
+            {/* The chapter title (and lead) are set by the page now; the board starts
+                at its first content, lifted by CUT. */}
+            <div style={{ position: "absolute", left: 0, top: -CUT, width: BOARD_W }}>
             {board.cards.map((card, i) => (
               <Card key={card.name} x={CARD_X[i]} card={card} labels={labels} />
             ))}
+            </div>
           </div>
         </div>
       </div>

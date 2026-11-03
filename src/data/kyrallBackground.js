@@ -82,10 +82,10 @@ export const kyrallBackground = {
   // The second act, also in flow layout (BackgroundCompare.jsx). Each column
   // takes an optional `video: { src }` and `time` once the recordings exist.
   compareAct: {
-    kicker: tt("Today, and with Kyrall", "现状与做法"),
+    kicker: tt("With Kyrall", "现状与做法"),
     title: tt(
-      "We set out to build a new design paradigm for the AI era",
-      "我们想要构建 AI 时代的设计新范式"
+      "Design and manufacture hardware at the speed of thought.",
+      "以思维的速度设计与制造硬件。"
     ),
     body: tt(
       "In the traditional workflow, modeling is the step that costs the most time and effort and comes back for rework most often. Change a requirement and the model has to be edited or rebuilt by hand. Kyrall needs one input to model and edit.",
@@ -132,10 +132,6 @@ export const kyrallBackground = {
         ],
       },
     ],
-    closing: tt(
-      "Design and manufacture hardware at the speed of thought.",
-      "以思维的速度设计与制造硬件。"
-    ),
   },
 
   before: {

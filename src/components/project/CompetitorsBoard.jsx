@@ -21,7 +21,9 @@ const BOARD_W = 1760
 // The deck put the map 160 under the title; the other boards of this family
 // start their content at y=252, so everything below the title is lifted by
 // HEAD_LIFT and the board shrinks by the same amount.
-const HEAD_LIFT = 44
+// The page sets the chapter title now, so the map (deck y=296) is lifted to the
+// board's top edge: 160 = 296 - OY.
+const HEAD_LIFT = 160
 const BOARD_H = 864 - HEAD_LIFT
 const MIN_SCALE = 0.45
 
@@ -235,12 +237,7 @@ export default function CompetitorsBoard({ board }) {
               transformOrigin: "top left",
             }}
           >
-            {/* ---- header ---- */}
-            <Text x={80} y={136} size={56} weight={500} color="var(--color-cream)">
-              {board.title}
-            </Text>
-
-            <div style={{ position: "absolute", left: 0, top: -HEAD_LIFT, width: BOARD_W }}>
+             <div style={{ position: "absolute", left: 0, top: -HEAD_LIFT, width: BOARD_W }}>
             {/* ---- positioning map ---- */}
             <div style={at(MAP.x, MAP.y, MAP.w, MAP.h)}>
               <Chamfer fill={BAND} stroke={RULE} cut={12} />
