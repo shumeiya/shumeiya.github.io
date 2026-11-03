@@ -96,11 +96,11 @@ export const projectDetails = {
       {
         id: "system",
         eyebrow: tt("Design System", "设计系统"),
+        // No heading of its own: the eyebrow names the chapter and the spec's
+        // intro paragraph is the lead, the same shape as the HMI chapters.
         label: tt("Design System", "设计系统"),
-        lead: tt(
-          "Keep it consistent: document the system and its components.",
-          "保持统一原则，沉淀设计系统与组件规范。"
-        ),
+        titleHidden: true,
+        lead: kyrallSpec.body,
         blocks: [{ type: "spec", board: kyrallSpec }],
       },
       {

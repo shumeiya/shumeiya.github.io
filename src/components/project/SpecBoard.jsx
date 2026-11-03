@@ -14,7 +14,7 @@ import { ui } from "../../i18n/ui"
 const OX = 80
 const OY = 0
 const BOARD_W = 1760
-const BOARD_H = 820
+const BOARD_H = 620
 const MIN_SCALE = 0.45
 
 // See BackgroundBoard: a size written here lands on screen at size × (column /
@@ -40,7 +40,9 @@ const ROW = [
   { y: 200, h: 420, imgH: 356, opacity: 1 },
 ]
 const CARD_W = 440
-const STACK_Y = 200
+// The intro paragraph is the chapter's lead on the page now, so the stack
+// starts at the board's top edge.
+const STACK_Y = 0
 const STACK_H = 620
 
 const at = (x, y, w, h) => ({
@@ -186,10 +188,6 @@ export default function SpecBoard({ board }) {
               transformOrigin: "top left",
             }}
           >
-            <Text x={80} y={0} w={1200} size={SIZE_BODY} lh={1.6}>
-              {board.body}
-            </Text>
-
             {/* ---- the stack ---- */}
             {/* Order matters here, and it is the deck's: the back row, the scrim that
                 sinks it, then the front row on top of that scrim, then the scrim that
