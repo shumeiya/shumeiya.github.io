@@ -33,12 +33,12 @@ export const kyrallCoreFlow = {
     },
     {
       n: "04",
-      title: tt("Switch the generation model", "生成模型切换"),
+      title: tt("Model switching", "生成模型切换"),
       clips: [{ src: "/project/kyrall/play/model-switch.mp4", poster: "/project/kyrall/play/model-switch.jpg" }],
     },
     {
       n: "05",
-      title: tt("Add references from the Context Manager", "从 Context Manager 添加参考"),
+      title: tt("Context Manager", "Context Manager"),
       clips: [{ src: "/project/kyrall/play/context-manager.mp4", poster: "/project/kyrall/play/context-manager.jpg" }],
     },
   ],

@@ -46,8 +46,6 @@ export const ui = {
   labelCategory: tt("Category", "类别"),
   nextProject: tt("Next project", "下一个项目"),
   videoComingSoon: tt("Video coming soon", "视频即将补充"),
-  play: tt("Play", "播放"),
-  pause: tt("Pause", "暂停"),
   sectionIndex: tt("Section index", "章节目录"),
   // Alt text for the Spec board's thumbnails: each one is a picture of a page of
   // the written specification, which is not apparent from the image itself.

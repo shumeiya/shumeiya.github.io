@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react"
-import { Pause, Play } from "lucide-react"
 import { useT } from "../../i18n/lang"
 import { ui } from "../../i18n/ui"
 
@@ -11,8 +10,9 @@ import { ui } from "../../i18n/ui"
 // active item fills across all of its clips. An item with no clip yet holds a
 // placeholder for HOLD_MS so the sequence keeps moving.
 //
-// It only runs while it is on screen, starts paused for readers who ask for
-// reduced motion, and the button in the frame pauses and resumes it.
+// It only runs while it is on screen. For readers who ask for reduced motion it
+// starts still, and plays once they pick an item. The recording is shown whole,
+// at its own proportions, with no frame around it.
 const HOLD_MS = 4000
 
 export default function PlayView({ items }) {
@@ -33,6 +33,7 @@ export default function PlayView({ items }) {
 
   const go = (i) => {
     setActive(i)
+    setPlaying(true)
     setClip(0)
     setProgress(0)
   }
@@ -82,19 +83,21 @@ export default function PlayView({ items }) {
   }
 
   return (
-    <div ref={rootRef} className="mt-visual pb-8 grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)] lg:items-center">
-      <ol className="border-b border-line">
+    <div ref={rootRef} className="mt-visual grid gap-8 pb-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-center">
+      <ol className="border-t border-line">
         {items.map((it, i) => {
           const on = i === active
           return (
-            <li key={i} className="border-t border-line">
+            <li key={i}>
               <button
                 type="button"
                 onClick={() => go(i)}
                 aria-pressed={on}
                 className="group flex w-full items-baseline gap-6 py-4 text-left"
               >
-                <span className={`font-mono-tight text-note ${on ? "text-cream" : "text-fog"}`}>{it.n}</span>
+                <span className={`w-6 shrink-0 font-mono-tight text-note tabular-nums ${on ? "text-cream" : "text-fog"}`}>
+                  {it.n}
+                </span>
                 <span className="min-w-0 flex-1">
                   <span
                     className={`block text-2xl font-semibold tracking-tight transition-colors ${
@@ -115,24 +118,31 @@ export default function PlayView({ items }) {
                   )}
                 </span>
               </button>
-              {on && (
-                <div aria-hidden="true" className="-mt-1 mb-4 h-0.5 bg-line">
-                  <div className="h-full bg-kyrall" style={{ width: `${progress * 100}%` }} />
-                </div>
-              )}
+              {/* The row's divider. Under the active item the progress runs along it,
+                  a touch thicker than the hairline, so the two read as one line. */}
+              <div aria-hidden="true" className="relative h-px bg-line">
+                {on && (
+                  <div
+                    className="absolute -top-px left-0 h-[3px] bg-kyrall"
+                    style={{ width: `${progress * 100}%` }}
+                  />
+                )}
+              </div>
             </li>
           )
         })}
       </ol>
 
-      <div className="relative aspect-[1600/852] overflow-hidden rounded-xl border border-line bg-[#191717]">
+      <div>
         {clips.length ? (
           <video
             key={clips[clip].src}
             ref={videoRef}
             src={clips[clip].src}
             poster={clips[clip].poster}
-            className="block h-full w-full object-cover"
+            width={1600}
+            height={852}
+            className="block h-auto w-full"
             muted
             playsInline
             preload="auto"
@@ -141,18 +151,10 @@ export default function PlayView({ items }) {
             aria-label={`${t(item.title)}${clips.length > 1 ? ` · ${t(clips[clip].label)}` : ""}`}
           />
         ) : (
-          <div className="flex h-full items-center justify-center">
-            <p className="text-callout text-white/60">{t(ui.videoComingSoon)}</p>
+          <div className="flex aspect-[1600/852] items-center justify-center bg-[#efede8] dark:bg-[#2f2f2f]">
+            <p className="text-callout text-fog">{t(ui.videoComingSoon)}</p>
           </div>
         )}
-        <button
-          type="button"
-          onClick={() => setPlaying((p) => !p)}
-          aria-label={t(playing ? ui.pause : ui.play)}
-          className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-md border border-white/20 bg-black/50 text-white backdrop-blur transition-colors hover:bg-black/70"
-        >
-          {playing ? <Pause size={14} /> : <Play size={14} />}
-        </button>
       </div>
     </div>
   )
