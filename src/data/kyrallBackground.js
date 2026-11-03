@@ -9,6 +9,37 @@ import { tt } from "../i18n/t"
 export const kyrallBackground = {
   title: tt("A New Paradigm for Mechanical Design", "机械设计的新范式"),
 
+  // The first act, told on the page in flow layout (BackgroundWho.jsx).
+  whoAct: {
+    kicker: tt("Who it's for", "目标用户"),
+    title: tt("Mechanical engineers and their teams", "机械工程师及其团队"),
+    body: tt(
+      "They own the whole process from concept to manufacturable part, and every dimension has to be explainable, editable and traceable.",
+      "他们负责从概念到可制造零件的全过程，每一个尺寸都要可解释、可编辑、可追溯。"
+    ),
+    needsLabel: tt("What they need", "用户的需求"),
+    needs: [
+      {
+        title: tt("Time", "时间"),
+        body: tt(
+          "Get a usable model sooner, with less time spent modeling and remodeling.",
+          "更快拿到可用模型，减少建模和反复修改模型的时间。"
+        ),
+      },
+      {
+        title: tt("Precision", "精度"),
+        body: tt(
+          "Results they can inspect and edit, with explicit dimensions and constraints.",
+          "结果可查、可修改，尺寸和约束都是明确的。"
+        ),
+      },
+      {
+        title: tt("DFM", "DFM"),
+        body: tt("A model that stands up to DFM review.", "模型经得起 DFM 审查。"),
+      },
+    ],
+  },
+
   who: {
     eyebrow: tt("01 · WHO", "01 · WHO / 用户是谁"),
     title: tt("Mechanical engineers and R&D teams", "机械设计工程师与研发团队"),

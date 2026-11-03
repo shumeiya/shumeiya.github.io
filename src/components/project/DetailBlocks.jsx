@@ -3,6 +3,7 @@ import { useT } from "../../i18n/lang"
 import { ui } from "../../i18n/ui"
 import WorkflowBoard from "./WorkflowBoard"
 import BackgroundBoard from "./BackgroundBoard"
+import BackgroundWho from "./BackgroundWho"
 import CompetitorsBoard from "./CompetitorsBoard"
 import PersonaBoard from "./PersonaBoard"
 import StoryMapBoard from "./StoryMapBoard"
@@ -506,8 +507,10 @@ export default function DetailBlocks({ blocks, accent }) {
         return <Clip key={i} src={block.src} caption={block.caption} href={block.href} cta={block.cta} />
       case "workflow":
         return <WorkflowBoard key={i} board={block.board} accent={accent} />
+      case "backgroundWho":
+        return <BackgroundWho key={i} act={block.act} />
       case "background":
-        return <BackgroundBoard key={i} board={block.board} />
+        return <BackgroundBoard key={i} board={block.board} fromBefore={block.fromBefore} />
       case "competitors":
         return <CompetitorsBoard key={i} board={block.board} />
       case "persona":

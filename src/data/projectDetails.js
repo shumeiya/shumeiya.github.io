@@ -63,12 +63,17 @@ export const projectDetails = {
       },
       {
         id: "background",
-        eyebrow: tt("Background", "需求背景"),
-        // The board opens with its own title, so the page's heading stays for the
-        // chapter index and the outline but is not drawn twice.
         label: tt("Background", "需求背景"),
-        titleHidden: true,
-        blocks: [{ type: "background", board: kyrallBackground }],
+        lead: tt(
+          "Kyrall is built for mechanical design, around one very concrete problem: every change in requirements means rebuilding the model.",
+          "Kyrall 面向机械设计，解决一个很具体的问题：改一次需求，就要重做一次模型。"
+        ),
+        blocks: [
+          { type: "backgroundWho", act: kyrallBackground.whoAct },
+          // The BEFORE / AFTER acts still come from the deck board until the
+          // side-by-side modeling videos are ready to replace them.
+          { type: "background", board: kyrallBackground, fromBefore: true },
+        ],
       },
       {
         id: "competitors",

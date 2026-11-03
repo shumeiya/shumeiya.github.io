@@ -172,7 +172,12 @@ function Sprite({ sheet, x, y, w, h, img, className }) {
 
 // --- the board ---------------------------------------------------------------
 
-export default function BackgroundBoard({ board }) {
+// `fromBefore` drops the board's own title and the WHO act: the page now tells
+// that part in its own flow layout (BackgroundWho.jsx), so the board starts at
+// the BEFORE act, lifted so its eyebrow sits at the top edge.
+const BEFORE_TOP = 644 - OY
+
+export default function BackgroundBoard({ board, fromBefore = false }) {
   const t = useT()
   const hostRef = useRef(null)
   const [scale, setScale] = useState(MIN_SCALE)
@@ -201,19 +206,24 @@ export default function BackgroundBoard({ board }) {
     { x: 1400, w: 439, pitch: 13.3015 },
   ]
 
+  const boardH = fromBefore ? BOARD_H - WHO_SHIFT + HEAD_LIFT - BEFORE_TOP : BOARD_H
+  const restTop = fromBefore ? -BEFORE_TOP : WHO_SHIFT - HEAD_LIFT
+
   return (
     <figure className="mt-6">
       <div ref={hostRef} className="no-scrollbar overflow-x-auto">
-        <div style={{ width: BOARD_W * scale, height: BOARD_H * scale }}>
+        <div style={{ width: BOARD_W * scale, height: boardH * scale }}>
           <div
             className="kyrall-deck relative"
             style={{
               width: BOARD_W,
-              height: BOARD_H,
+              height: boardH,
               transform: `scale(${scale})`,
               transformOrigin: "top left",
             }}
           >
+            {!fromBefore && (
+            <>
             {/* ---- header ---- */}
             <Text x={80} y={136} size={56} weight={500} color="var(--color-cream)">
               {board.title}
@@ -279,9 +289,13 @@ export default function BackgroundBoard({ board }) {
               )
             })}
 
+            </div>
+            </>
+            )}
+
             {/* Everything below the WHO block keeps the deck's own coordinates and
                 is simply offset, so the acts below did not have to be renumbered. */}
-            <div style={{ position: "absolute", left: 0, top: WHO_SHIFT, width: BOARD_W }}>
+            <div style={{ position: "absolute", left: 0, top: restTop, width: BOARD_W }}>
             {/* ---- 02 · BEFORE ---- */}
             <Text x={80} y={644} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
               {before.eyebrow}
@@ -526,7 +540,6 @@ export default function BackgroundBoard({ board }) {
             <Text x={128} y={2804} size={20} weight={500} mono tracking="0.8px">
               {oneLine.sub}
             </Text>
-            </div>
             </div>
           </div>
         </div>
