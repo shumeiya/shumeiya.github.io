@@ -16,7 +16,12 @@ export const kyrallCoreFlow = {
   // The play view under the chapter heading (PlayView.jsx): five features, each
   // with its screen recording. Clips live in /public/project/kyrall/play.
   play: [
-    { n: "01", title: tt("Workflow", "工作流"), clips: [] },
+    {
+      n: "01",
+      title: tt("Workflow", "工作流"),
+      line: tt("Recent work → Prompt input → Generate list", "最近作品 → 输入 Prompt → 生成列表"),
+      clips: [],
+    },
     {
       n: "02",
       title: tt("Multimodal input", "多模态输入"),
@@ -29,16 +34,19 @@ export const kyrallCoreFlow = {
     {
       n: "03",
       title: tt("Preset prompts", "预设 Prompt"),
+      line: tt("Prompts change with the onboarding role", "根据 Onboarding 角色选择而改变"),
       clips: [{ src: "/project/kyrall/play/preset-prompt.mp4", poster: "/project/kyrall/play/preset-prompt.jpg" }],
     },
     {
       n: "04",
       title: tt("Model switching", "生成模型切换"),
+      line: tt("Generation models: Base / Reasoning", "生成模型：Base / Reasoning"),
       clips: [{ src: "/project/kyrall/play/model-switch.mp4", poster: "/project/kyrall/play/model-switch.jpg" }],
     },
     {
       n: "05",
       title: tt("Context Manager", "Context Manager"),
+      line: tt("Add references from the Context Manager", "从 Context Manager 添加参考"),
       clips: [{ src: "/project/kyrall/play/context-manager.mp4", poster: "/project/kyrall/play/context-manager.jpg" }],
     },
   ],

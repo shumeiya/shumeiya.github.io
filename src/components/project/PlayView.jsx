@@ -83,18 +83,19 @@ export default function PlayView({ items }) {
   }
 
   return (
-    <div ref={rootRef} className="mt-visual grid gap-8 pb-8 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-center">
-      <ol className="border-t border-line">
+    <div ref={rootRef} className="mt-visual grid gap-8 pb-8 lg:grid-cols-[21rem_minmax(0,1fr)]">
+      <ol className="flex flex-col border-t border-line lg:h-full">
         {items.map((it, i) => {
           const on = i === active
           return (
-            <li key={i}>
+            <li key={i} className="flex flex-col lg:flex-1">
               <button
                 type="button"
                 onClick={() => go(i)}
                 aria-pressed={on}
-                className="group flex w-full items-baseline gap-6 py-4 text-left"
+                className="group flex w-full items-center py-4 text-left lg:flex-1 lg:py-0"
               >
+                <span className="flex w-full items-baseline gap-4">
                 <span className={`w-6 shrink-0 font-mono-tight text-note tabular-nums ${on ? "text-cream" : "text-fog"}`}>
                   {it.n}
                 </span>
@@ -106,8 +107,11 @@ export default function PlayView({ items }) {
                   >
                     {t(it.title)}
                   </span>
-                  {on && it.clips?.length > 1 && (
-                    <span className="mt-2 flex flex-wrap gap-x-2 font-mono-tight text-note uppercase tracking-wide">
+                  {/* One line under the active title. An item with several clips
+                      lists them and lights the one playing; the rest carry a line
+                      of their own, so every item opens to the same height. */}
+                  {on && it.clips?.length > 1 ? (
+                    <span className="mt-1 flex flex-wrap gap-x-2 text-callout">
                       {it.clips.map((c, k) => (
                         <span key={k} className={k === clip ? "text-cream" : "text-fog"}>
                           {k > 0 && <span aria-hidden="true" className="mr-2 text-fog">·</span>}
@@ -115,7 +119,10 @@ export default function PlayView({ items }) {
                         </span>
                       ))}
                     </span>
+                  ) : (
+                    on && it.line && <span className="mt-1 block text-callout text-fog">{t(it.line)}</span>
                   )}
+                </span>
                 </span>
               </button>
               {/* The row's divider. Under the active item the progress runs along it,
