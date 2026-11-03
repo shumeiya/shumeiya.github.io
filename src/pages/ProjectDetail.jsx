@@ -59,7 +59,7 @@ export default function ProjectDetail() {
     nextProject[(idx + 1) % nextProject.length]
 
   return (
-    <main className="relative mx-auto w-full min-w-0 px-4 pb-28 pt-6 sm:px-6 lg:px-8 xl:px-52">
+    <main className="case-type relative mx-auto w-full min-w-0 px-4 pb-28 pt-6 sm:px-6 lg:px-8 xl:px-52">
       <DetailToc sections={detail.sections} active={active} />
       <ScrollRail />
 
@@ -82,7 +82,7 @@ export default function ProjectDetail() {
               className={
                 section.titleHidden
                   ? "sr-only"
-                  : "mt-2 text-xl font-semibold text-cream sm:text-2xl"
+                  : "mt-2 text-3xl font-semibold tracking-tight text-cream"
               }
             >
               {section.label}

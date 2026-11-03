@@ -91,13 +91,13 @@ export default function ProjectHero({ project, detail }) {
         </div>
 
         {headline && (
-          <p className="mt-7 max-w-4xl text-3xl font-semibold leading-tight text-cream sm:text-5xl">
+          <p className="mt-7 max-w-4xl text-3xl font-semibold tracking-tight text-cream sm:text-5xl">
             {headline}
           </p>
         )}
 
         {lead && (
-          <p className="mt-3 max-w-4xl text-xl xl:text-2xl leading-relaxed text-fog">{lead}</p>
+          <p className="mt-3 max-w-4xl text-xl leading-snug text-fog xl:text-2xl">{lead}</p>
         )}
 
         {detail.tags && (

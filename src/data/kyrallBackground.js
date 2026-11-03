@@ -114,6 +114,7 @@ export const kyrallBackground = {
       {
         kicker: tt("Generative modeling", "生成式建模"),
         title: "Kyrall",
+        accent: true,
         timeLabel: tt("Time taken", "用时"),
         points: [
           tt(

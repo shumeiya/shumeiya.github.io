@@ -116,7 +116,7 @@ export const projectList = [
       "一个 AI 工具：把一个想法在几分钟内，从概念推进到可直接制造的模型。"
     ),
     image: "/project/kyrall/1.png",
-    color: "var(--color-ac-blue)",
+    color: "var(--color-kyrall)",
     href: "/project/kyrall",
     shape: "lg",
     place: "lg:col-start-1 lg:row-start-1",
