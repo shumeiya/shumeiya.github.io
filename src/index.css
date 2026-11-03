@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Anton&family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Baloo+2:wght@700;800&family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -128,18 +128,18 @@ html::-webkit-scrollbar {
    its column. The page hides its own scrollbar, so one appearing mid-article reads
    as a mistake; the panel still scrolls by trackpad, wheel and touch. */
 /* 字号死规定 / Type-size rule for the project pages.
-   Body copy is 20px and nothing drops below 18px, in either language and at every
+   Body copy is 18px and nothing drops below 18px, in either language and at every
    breakpoint — see CLAUDE.md. These two utilities are the only sizes a project page
    should reach for, so the rule is greppable instead of scattered across `text-sm`,
    `text-base` and a pile of `sm:` overrides. Headings may of course be larger.
    The two Figma board replicas are exempt: their sizes are artboard units, not
    screen pixels. */
 @utility text-copy {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 @utility text-note {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .no-scrollbar {
@@ -228,77 +228,63 @@ html::-webkit-scrollbar {
   box-shadow: none;
 }
 
-/* The WeatherPets deck boards. Like the Kyrall boards above, these are drawn on the
-   page's own surface rather than on a panel of the slide's blue — the deck's ground
-   was a slide background, and the page already has one. The layout is the site's own
-   editorial grammar (a label column, a content column, hairlines between rows), and
-   what carries the deck's identity is its palette, used as marks rather than as
-   surfaces: the three label fills, the blue the app sets its numbers in, and the
-   yellow highlighter that picks out the one line per board holding its point.
+/* The WeatherPets deck boards — the V3 deck in Figma (2026作品集 · weatherpets).
+   The deck's own look is kept: a saturated app blue, a warm yellow and a near-black
+   as card fills, a pale blue as the quiet ground, folder tabs, tilted pills, and the
+   rounded Baloo 2 face for numbers and English labels.
 
-   The three fills stay the same in both themes. They are small, saturated and always
-   set in the deck's navy, which reads on them whether the page behind is cream or
-   near-black. The blue is split in two: `--wp-blue` paints fills (discs, bars, rules)
-   and `--wp-blue-ink` paints type — on paper the app's own blue is a shade too light
-   to carry 18px copy at AA, so it darkens to the same hue at ink weight, and in dark
-   mode both lighten to hold their contrast on near-black. `--wp-quiet` is the deck's
-   secondary grey: a step darker than the site's fog in light mode, because fog on the
-   pale trays sits right at the AA line and captions should not. `--wp-tray` is the
-   soft ground the phone screens sit on; `--wp-render` never flips — the design-system
-   renders were exported with that exact blue baked in. */
+   The three strong fills never flip with the theme — blue always carries white
+   type, yellow and the pale-on-yellow cards always carry the deck's near-black, and
+   the dark card always carries white. The blue is a step deeper than the deck's
+   #006ffd: white 20px copy on #006ffd sits at 4.48:1, just under AA; #0066ee is
+   4.96:1 and reads as the same colour. What does flip is the quiet ground: the pale
+   blue, the white card and the grey "before" panel become dark tints of the same
+   hue, and the inks that sit on them flip with them. `--wp-link` is the blue the
+   deck uses as type on white and pale (#006ffd fails AA there too, so it is set at
+   ink weight); `--wp-link-on-yellow` is that blue on the yellow fill. In dark mode
+   the dark card and the white card are close to the page, so both get a hairline
+   ring (`--wp-ring`). Contrast for every text pair is checked in both themes. */
 .wp-deck {
-  --wp-accent: #ffd43b;
-  --wp-blue: #2f5bff;
-  --wp-blue-ink: #1d41d6;
-  --wp-on-blue: #ffffff;
-  --wp-pink: #ff8a9b;
-  --wp-mint: #5ee6c0;
-  --wp-quiet: #5f5f66;
-  --wp-tray: #e7eefb;
-  --wp-render: #dcebff;
-  /* The tint behind the one column of the competitor matrix that is wetter.com's.
-     Yellow on paper; on near-black a yellow wash turns olive, so there it is the
-     deck's blue at the same strength instead. */
-  --wp-hot: rgba(255, 212, 59, 0.22);
-  /* Type on any of the three light fills above, and on the highlighter. */
-  --wp-on-fill: #0f1b4c;
+  --wp-blue: #0066ee;
+  --wp-yellow: #ffc531;
+  --wp-night: #151821;
+  --wp-night-2: #22273a;
+  --wp-on-fill: #151821;
+  --wp-pale: #eaf3ff;
+  --wp-pale-2: #d3e6ff;
+  --wp-card: #ffffff;
+  --wp-grey: #f2f4f7;
+  --wp-ink: #151821;
+  --wp-quiet: #5f6b7e;
+  --wp-link: #0058d6;
+  --wp-link-on-yellow: #004bbd;
+  --wp-dash: #c9d6ea;
+  --wp-ring: rgba(21, 24, 33, 0.08);
 }
 
 .dark .wp-deck {
-  --wp-blue: #8aa6ff;
-  --wp-blue-ink: #9db3ff;
-  --wp-on-blue: #0f1b4c;
-  --wp-quiet: #9a9aa3;
-  --wp-tray: #182131;
-  --wp-hot: rgba(138, 166, 255, 0.14);
+  --wp-pale: #16213a;
+  --wp-pale-2: #22325a;
+  --wp-card: #171c29;
+  --wp-grey: #1b2130;
+  --wp-ink: #f0eeea;
+  --wp-quiet: #a3acbb;
+  --wp-link: #8db8ff;
+  --wp-dash: #3a4560;
+  --wp-ring: rgba(255, 255, 255, 0.12);
 }
 
-/* The outline on the deck's yellow when it is used as a graphic — a bar, a rule, a
-   dot — rather than as the ground under navy type. On paper the yellow sits at 1.2:1
-   against the pale page and trays, which is not enough for a mark to be read by its
-   own edge, so a navy hairline is drawn inside it; on near-black the yellow carries
-   itself and the line is not drawn. The blue marks take the same class so the
-   outlined look is consistent across a chart, not applied to one bar. */
-.wp-deck {
-  --wp-edge: rgba(15, 27, 76, 0.5);
-}
-.dark .wp-deck {
-  --wp-edge: transparent;
-}
-.wp-deck .wp-edge {
-  box-shadow: inset 0 0 0 1.5px var(--wp-edge);
+/* Numbers and English labels in the deck's rounded face. CJK falls through to the
+   platform's own heavy cut. */
+.wp-deck .wp-round {
+  font-family: "Baloo 2", var(--font-display);
 }
 
-/* The highlighter: the deck's yellow run under a line of copy, the way a marker pen
-   would, and carried across line breaks so a wrapped sentence stays one stroke. */
-.wp-deck .wp-hi {
-  background: var(--wp-accent);
-  color: var(--wp-on-fill);
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  padding: 0.06em 0.32em;
-  margin: 0 -0.08em;
-  border-radius: 0.3em;
+/* The slides' backdrop: a checkerboard of soft rounded squares, white at low
+   opacity so it works on the blue, the yellow and the near-black alike. */
+.wp-deck .wp-checker {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Crect x='4' y='4' width='72' height='72' rx='16' fill='white' fill-opacity='0.07'/%3E%3Crect x='84' y='84' width='72' height='72' rx='16' fill='white' fill-opacity='0.07'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
 }
 
 /* The ABC Mouse (开心鼠) deck boards — the 2026 Figma relayout (page 7).
@@ -342,6 +328,11 @@ html::-webkit-scrollbar {
   --abc-on-yes: #ffffff;
 
   --abc-quiet: #5f5f66;
+
+  /* The flow chart's strokes — box outlines, arrows and return rails. The board
+     draws them in black; on the near-black page they lift to a slate that holds
+     its own against the card without glaring. */
+  --abc-flow-line: #2e2e2e;
 }
 
 .dark .abc-deck {
@@ -363,6 +354,8 @@ html::-webkit-scrollbar {
   --abc-on-yes: #0d2b1e;
 
   --abc-quiet: #9a9aa3;
+
+  --abc-flow-line: #8f96a6;
 }
 
 /* The board title's highlighter — the deck runs its yellow behind the bottom half of

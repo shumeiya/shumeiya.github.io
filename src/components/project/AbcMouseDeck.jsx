@@ -16,6 +16,8 @@
 // Type follows the project-page rule in CLAUDE.md: body is `text-copy` (20px), nothing
 // below `text-note` (18px). That is why these boards run taller than their 16:9 source.
 
+import { useLanguage } from "../../i18n/lang"
+
 // --- colour ------------------------------------------------------------------
 
 const ACCENT = "var(--abc-accent)"
@@ -39,19 +41,29 @@ const CARD_LIT = { background: PALE, color: ON_PALE, boxShadow: `inset 0 0 0 1px
 
 // --- primitives ----------------------------------------------------------------
 
+// Each board carries a second, romanised name — 「项目背景 / PROJECT BACKGROUND」. It
+// is the deck's own eyebrow, set under the Chinese title, and it is drawn only in the
+// Chinese version: over an English title the same words would simply repeat it.
+function useSub() {
+  return useLanguage().lang === "zh"
+}
+
 // The board's own header: the name with the deck's yellow run behind its lower half,
 // the other language's name under it, and the chapter number held off to the right.
 // The number wraps under the title on a phone rather than squeezing it.
 function Head({ no, title, sub }) {
+  const showSub = useSub()
   return (
     <header className="mb-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line pb-5">
       <div className="min-w-0">
         <h3 className="text-3xl font-bold leading-[1.3] tracking-tight text-cream sm:text-4xl">
           <span className="abc-mark">{title}</span>
         </h3>
-        <p className="mt-2.5 font-mono-tight text-note uppercase tracking-[0.18em]" style={{ color: QUIET }}>
-          {sub}
-        </p>
+        {showSub && sub && (
+          <p className="mt-2.5 font-mono-tight text-note uppercase tracking-[0.18em]" style={{ color: QUIET }}>
+            {sub}
+          </p>
+        )}
       </div>
       <div aria-hidden="true" className="flex items-center gap-3">
         <span className="h-[2px] w-8" style={{ background: "var(--color-ink)" }} />
@@ -64,10 +76,11 @@ function Head({ no, title, sub }) {
 // A sub-heading inside a board — 「用户分析 / USER ANALYSIS」, 「交互逻辑 / INTERACTION
 // LOGIC」. Smaller than the board's own name, same two-language shape.
 function SubHead({ title, sub, className = "" }) {
+  const showSub = useSub()
   return (
     <div className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 ${className}`}>
       <h4 className="text-2xl font-bold leading-tight tracking-tight text-cream">{title}</h4>
-      {sub && (
+      {showSub && sub && (
         <span className="font-mono-tight text-note uppercase tracking-[0.18em]" style={{ color: QUIET }}>
           {sub}
         </span>
@@ -823,6 +836,201 @@ function Painpoints({ slide }) {
   )
 }
 
+// --- the case study's interaction flow chart ------------------------------------
+//
+// The board's own chart is a 1920-wide artboard of Chinese labels — readable in one
+// language, at one size, on one background. This draws it from the data in
+// src/data/abcMouse.js instead: real text in both languages, the page's two themes,
+// and a run that reflows rather than one that has to be scrolled sideways.
+//
+// It reads left to right and wraps like a line of text, which is what keeps the
+// board's own horizontal composition at every width — four or five steps to a row on
+// a desktop, one on a phone — without a second arrangement to maintain. Each step is
+// a cell: the arrow that leads into it, the step itself, and underneath, whatever
+// leaves it that is not the main path. A decision's side branch hangs below it, and a
+// "no" that sends the child back through earlier steps is named where it happens
+// rather than drawn as a line, because a line that has to cross a wrap is a line that
+// cannot be read.
+
+const FLOW_LINE = "var(--abc-flow-line)"
+
+// The deck's decision shape: the board's diamond, stretched into a box so the label
+// can sit inside it at reading size instead of being squeezed into a point.
+const HEX = "polygon(13px 0, calc(100% - 13px) 0, 100% 50%, calc(100% - 13px) 100%, 13px 100%, 0 50%)"
+
+const BOX_STYLE = {
+  start: {
+    background: "var(--abc-band)",
+    color: "var(--abc-on-band)",
+    boxShadow: "inset 0 0 0 1px var(--abc-band-edge)",
+    borderRadius: 999,
+    padding: "9px 16px",
+  },
+  step: { boxShadow: `inset 0 0 0 2px ${FLOW_LINE}`, borderRadius: 12, padding: "9px 14px" },
+  decision: { background: ACCENT, color: ON_ACCENT, clipPath: HEX, padding: "9px 20px" },
+  result: { background: ACCENT, color: ON_ACCENT, borderRadius: 12, padding: "9px 14px" },
+}
+
+// Every box in a row is the same height, so the arrows between them land on one line.
+const BOX_H = 56
+
+function FlowBox({ kind, children }) {
+  return (
+    <div
+      className="flex items-center justify-center text-center text-note font-medium leading-snug"
+      style={{ ...BOX_STYLE[kind], minHeight: BOX_H }}
+    >
+      {children}
+    </div>
+  )
+}
+
+// The arrow into a step, with whatever the board writes on it set above the line. The
+// column is a fixed width so the run keeps an even rhythm as it wraps.
+function FlowArrow({ label }) {
+  return (
+    <div className="relative w-12 shrink-0 sm:w-16" style={{ height: BOX_H }}>
+      <svg
+        aria-hidden="true"
+        className="absolute inset-x-0 top-1/2 -translate-y-1/2"
+        width="100%"
+        height="12"
+        viewBox="0 0 40 12"
+        preserveAspectRatio="none"
+      >
+        <line x1="0" y1="6" x2="33" y2="6" stroke={FLOW_LINE} strokeWidth="2" vectorEffect="non-scaling-stroke" />
+        <path
+          d="M30 1.5 L38 6 L30 10.5"
+          fill="none"
+          stroke={FLOW_LINE}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+      {label && (
+        <span
+          className="absolute inset-x-[-6px] bottom-1/2 mb-1.5 text-center text-note leading-tight"
+          style={{ color: QUIET }}
+        >
+          {label}
+        </span>
+      )}
+    </div>
+  )
+}
+
+// A decision's other outcome, hanging under it. A branch is always a dead end, which
+// is why it never rejoins the run.
+function FlowBranch({ label, node }) {
+  return (
+    <div className="mt-1.5">
+      <div className="relative flex justify-center" style={{ height: 26 }}>
+        <svg aria-hidden="true" width="12" height="26" viewBox="0 0 12 26">
+          <line x1="6" y1="0" x2="6" y2="17" stroke={FLOW_LINE} strokeWidth="2" />
+          <path
+            d="M2 16 L6 24 L10 16"
+            fill="none"
+            stroke={FLOW_LINE}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <span className="absolute left-1/2 top-0 ml-2.5 text-note leading-none" style={{ color: QUIET }}>
+          {label}
+        </span>
+      </div>
+      <FlowBox kind={node.kind}>{node.text}</FlowBox>
+    </div>
+  )
+}
+
+// A "no" that sends the child back through earlier steps, named where it happens.
+function FlowReturn({ label, note }) {
+  return (
+    <p className="mt-2 flex items-start gap-1.5 text-note leading-snug" style={{ color: QUIET }}>
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" className="mt-[3px] shrink-0">
+        <path
+          d="M13 2.5v3.5a3 3 0 0 1-3 3H3"
+          fill="none"
+          stroke={FLOW_LINE}
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M6 6 L3 9 L6 12"
+          fill="none"
+          stroke={FLOW_LINE}
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      <span className="min-w-0">
+        {label} · {note}
+      </span>
+    </p>
+  )
+}
+
+// The data nests the loops so each one wraps exactly the run its "no" sends the child
+// back through. The run itself is a line, so it is flattened here and every loop
+// leaves its return on the step it leaves from.
+function flattenFlow(nodes, out = []) {
+  for (const node of nodes) {
+    if (node.kind === "loop") {
+      flattenFlow(node.children, out)
+      const from = out[out.length - 1]
+      from.returns = [...(from.returns ?? []), { label: node.label, note: node.note }]
+    } else {
+      out.push({ ...node })
+    }
+  }
+  return out
+}
+
+const LEGEND_MARK = {
+  start: { background: "var(--abc-band)", boxShadow: "inset 0 0 0 1px var(--abc-band-edge)", borderRadius: 999 },
+  step: { boxShadow: `inset 0 0 0 2px ${FLOW_LINE}`, borderRadius: 5 },
+  decision: { background: ACCENT, clipPath: "polygon(5px 0, 21px 0, 26px 50%, 21px 100%, 5px 100%, 0 50%)" },
+  result: { background: ACCENT, borderRadius: 5 },
+}
+
+function FlowChart({ flow, caption }) {
+  const steps = flattenFlow(flow.nodes)
+  return (
+    <figure className="abc-flow mt-4 rounded-2xl bg-box px-4 py-6 ring-1 ring-line sm:px-6 sm:py-7">
+      <ol className="flex flex-wrap items-start gap-y-7">
+        {steps.map((step, i) => (
+          <li key={i} className="flex min-w-0 flex-1 items-start sm:flex-none">
+            {i > 0 && <FlowArrow label={step.via} />}
+            <div className="min-w-0 flex-1 sm:w-[8.5rem] sm:flex-none lg:w-[9.5rem]">
+              <FlowBox kind={step.kind}>{step.text}</FlowBox>
+              {step.out && <FlowBranch label={step.out.label} node={step.out.node} />}
+              {step.returns?.map((r, n) => (
+                <FlowReturn key={n} label={r.label} note={r.note} />
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <ul className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2.5 border-t border-line pt-4">
+        {flow.legend.map((item) => (
+          <li key={item.kind} className="flex items-center gap-2 text-note leading-snug" style={{ color: QUIET }}>
+            <span aria-hidden="true" className="block h-[15px] w-[26px] shrink-0" style={LEGEND_MARK[item.kind]} />
+            {item.text}
+          </li>
+        ))}
+      </ul>
+      <figcaption className="sr-only">{caption}</figcaption>
+    </figure>
+  )
+}
+
 // --- 10 · Case study ------------------------------------------------------------
 
 // One interaction step: its note and its screens. The deck alternates which side the
@@ -887,17 +1095,8 @@ function Case({ slide }) {
         </div>
       </dl>
 
-      {/* The flow chart is a wide artboard. It keeps a readable width and scrolls
-          sideways on a narrow screen rather than shrinking its labels to nothing. */}
       <SubHead title={logic.label} sub={logic.sub} className="mt-10" />
-      <figure className="mt-4">
-        <div className="no-scrollbar overflow-x-auto rounded-xl bg-box ring-1 ring-line">
-          <img src={logic.image} alt={logic.alt} loading="lazy" className="block h-auto w-[1100px] max-w-none lg:w-full" />
-        </div>
-        <figcaption className="mt-2 text-note leading-snug lg:hidden" style={{ color: QUIET }}>
-          {logic.alt}
-        </figcaption>
-      </figure>
+      <FlowChart flow={logic.flow} caption={logic.alt} />
 
       <SubHead title={layout.label} sub={layout.sub} className="mt-10" />
       <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:items-center">

@@ -53,7 +53,7 @@ const background = {
   no: "01",
   kind: "background",
   title: tt("Project background", "项目背景"),
-  sub: tt("项目背景", "PROJECT BACKGROUND"),
+  sub: "PROJECT BACKGROUND",
   before: {
     label: tt("Before", "前身 · Before"),
     image: `${ART}/logo.jpg`,
@@ -82,7 +82,7 @@ const issues = {
   no: "02",
   kind: "issues",
   title: tt("Existing issues", "原有问题"),
-  sub: tt("原有问题", "EXISTING ISSUES"),
+  sub: "EXISTING ISSUES",
   design: {
     shots: [`${ART}/tencent-1.jpg`, `${ART}/us-1.jpg`, `${ART}/tencent-2.jpg`, `${ART}/us-2.jpg`],
     labels: [tt("Tencent team", "腾讯团队"), tt("US team", "美国团队")],
@@ -123,7 +123,7 @@ const workflow = {
   no: "03",
   kind: "workflow",
   title: tt("Work flow", "工作流程"),
-  sub: tt("工作流程", "WORK FLOW"),
+  sub: "WORK FLOW",
   loop: tt("Release · collect data · iterate", "更新版本　数据回收　迭代优化"),
   steps: [
     {
@@ -165,7 +165,7 @@ const stakeholder = {
   no: "04",
   kind: "stakeholder",
   title: tt("Stakeholder analysis", "利益相关者分析"),
-  sub: tt("利益相关者分析", "STAKEHOLDER"),
+  sub: "STAKEHOLDER",
   goal: tt("Goal: balance user experience and cost", "目标：平衡 用户体验和成本"),
   parties: [
     { name: tt("Children", "孩子"), want: tt("Have fun, learn something", "玩的开心 学到知识"), image: `${ART}/child.png` },
@@ -204,7 +204,7 @@ const framework = {
   no: "05",
   kind: "framework",
   title: tt("Research framework", "研究框架"),
-  sub: tt("研究框架", "RESEARCH FRAMEWORK"),
+  sub: "RESEARCH FRAMEWORK",
   user: { name: "User", lines: [tt("Child psychology", "儿童心理"), tt("Bartle's player types", "Bartle 游戏化玩家类型")] },
   object: {
     name: "Object",
@@ -216,7 +216,7 @@ const framework = {
   // The second half of the board: 用户分析 / USER ANALYSIS.
   users: {
     heading: tt("User analysis", "用户分析"),
-    sub: tt("用户分析", "USER ANALYSIS"),
+    sub: "USER ANALYSIS",
     piaget: {
       caption: "Cognitive Development: The Theory of Jean Piaget",
       badge: tt("Target users: ages 3–8", "目标用户 3-8 岁"),
@@ -296,7 +296,7 @@ const actions = {
   no: "06",
   kind: "actions",
   title: tt("Action analysis", "行为分析"),
-  sub: tt("行为分析", "ACTION ANALYSIS"),
+  sub: "ACTION ANALYSIS",
   why: tt("MOTIVATION · WHY", "动机 · WHY"),
   motives: [
     {
@@ -357,7 +357,7 @@ const feedback = {
   no: "07",
   kind: "feedback",
   title: tt("Feedback", "反馈"),
-  sub: tt("反馈", "FEEDBACK"),
+  sub: "FEEDBACK",
   positive: {
     name: tt("Positive feedback", "正反馈"),
     rows: [
@@ -398,7 +398,7 @@ const persona = {
   no: "08",
   kind: "persona",
   title: tt("Persona", "用户画像"),
-  sub: tt("用户画像", "PERSONA"),
+  sub: "PERSONA",
   labels: { goal: tt("Goal", "目标"), traits: tt("Traits", "特征"), frustrations: tt("Frustrations", "挫折") },
   people: [
     {
@@ -479,7 +479,7 @@ const painpoints = {
   no: "09",
   kind: "painpoints",
   title: tt("Pain points & solutions", "痛点和解决方案"),
-  sub: tt("痛点和解决方案", "PAINPOINTS & SOLUTIONS"),
+  sub: "PAINPOINTS & SOLUTIONS",
   labels: { pain: tt("Pain point", "痛点"), solution: tt("Solution", "解决方案") },
   groups: [
     {
@@ -529,7 +529,7 @@ const showcase = {
   no: "10",
   kind: "case",
   title: tt("Case study", "案例演示"),
-  sub: tt("案例演示", "CASE STUDY"),
+  sub: "CASE STUDY",
   brief: [
     { label: tt("Goal", "目标需求"), text: tt("Learn addition with a ten-frame: making ten.", "用十格阵学习加法，学会凑十") },
     {
@@ -554,13 +554,74 @@ const showcase = {
   ],
   logic: {
     label: tt("Interaction logic", "交互逻辑"),
-    sub: tt("交互逻辑", "INTERACTION LOGIC"),
-    image: `${ART}/case-flow-2026.png`,
+    sub: "INTERACTION LOGIC",
     alt: tt("The activity's interaction flow chart", "活动的交互逻辑流程图"),
+    // The flow chart as data rather than as a picture of one. The board's own chart
+    // is a 1920-wide artboard of Chinese labels, so it could only ever be read in one
+    // language, at one size, on one background. Drawn from this it is real text in
+    // both languages, it takes the page's two themes, and it reflows down a column
+    // instead of scrolling sideways on a phone.
+    //
+    // The chart runs top to bottom. `kind` picks a node's shape, `via` labels the
+    // arrow leading INTO it, and `out` is the branch a decision sends off the spine.
+    // A `loop` wraps exactly the run of nodes that a "no" sends the child back
+    // through, so its return rail is drawn by the group's own height — nothing is
+    // measured, and a loop nested inside another simply takes the next gutter in.
+    flow: {
+      caption: tt("Flow chart", "流程图"),
+      legend: [
+        { kind: "start", text: tt("Start", "开始") },
+        { kind: "step", text: tt("Step / animation", "流程 / 动效") },
+        { kind: "decision", text: tt("Decision", "判断") },
+        { kind: "result", text: tt("Feedback", "反馈结果") },
+      ],
+      nodes: [
+        { kind: "start", text: tt("Activity path page", "活动路径页") },
+        { kind: "step", via: tt("Pick an activity", "选择活动"), text: tt("Content intro animation", "内容入场动效") },
+        { kind: "step", via: tt("Automatic", "自动"), text: tt("Question read aloud", "语音播报题目") },
+        {
+          kind: "loop",
+          label: tt("No", "否"),
+          note: tt("back to the item options", "回到物品选项"),
+          children: [
+            { kind: "step", via: tt("Drag / tap", "拖动 / 点击"), text: tt("Item options", "物品选项") },
+            { kind: "decision", text: tt("Ten-frame full?", "是否填满十格阵") },
+          ],
+        },
+        {
+          kind: "loop",
+          label: tt("No", "否"),
+          note: tt("back to the count check", "回到数量考察环节"),
+          children: [
+            {
+              kind: "loop",
+              label: tt("No", "否"),
+              note: tt("back to the count check", "回到数量考察环节"),
+              children: [
+                { kind: "step", via: tt("Yes", "是"), text: tt("Count check", "数量考察环节") },
+                { kind: "decision", via: tt("Answer submitted", "答题提交"), text: tt("Finished answering?", "是否答完题目") },
+              ],
+            },
+            {
+              kind: "decision",
+              via: tt("Yes", "是"),
+              text: tt("Answer correct?", "是否答题正确"),
+              out: { label: tt("Yes", "是"), node: { kind: "result", text: tt("Positive feedback", "正反馈") } },
+            },
+            { kind: "step", via: tt("No", "否"), text: tt("Negative feedback", "负反馈") },
+            {
+              kind: "decision",
+              text: tt("Wrong three times?", "是否错误 3 次"),
+              out: { label: tt("Yes", "是"), node: { kind: "result", text: tt("Right answer read aloud", "自动播报正确答案") } },
+            },
+          ],
+        },
+      ],
+    },
   },
   layout: {
     label: tt("Interface layout", "界面布局"),
-    sub: tt("界面布局", "LAYOUT"),
+    sub: "LAYOUT",
     shots: [
       { src: `${ART}/case-layout-a.png`, alt: tt("Option area and ten-frame, annotated", "选项区与十格阵，标注版") },
       { src: `${ART}/case-layout-b.png`, alt: tt("Count-check screen, annotated", "数量考察界面，标注版") },
@@ -573,7 +634,7 @@ const showcase = {
   },
   ixd: {
     label: tt("Interaction flow (not final visuals)", "交互流程展示（非最终视觉稿）"),
-    sub: tt("交互流程展示", "INTERACTION FLOW"),
+    sub: "INTERACTION FLOW",
     steps: [
       {
         no: tt("STEP 1", "STEP 1"),
@@ -655,7 +716,7 @@ const gallery = {
   no: "11",
   kind: "gallery",
   title: tt("Visual output for other activities", "活动的视觉输出"),
-  sub: tt("其他活动的视觉输出", "OTHER CASES"),
+  sub: "OTHER CASES",
   shots: [
     { src: `${ART}/other-paint.jpg`, alt: tt("Tap to colour", "点击操作 涂色") },
     { src: `${ART}/other-tshirt.jpg`, alt: tt("Three options with a guide picture", "带示意图三个选项") },

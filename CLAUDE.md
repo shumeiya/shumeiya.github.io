@@ -4,15 +4,15 @@
 
 项目详情页（`/project/:slug`，即 `src/pages/ProjectDetail.jsx` 及 `src/components/project/` 下为它服务的组件）里：
 
-- **正文一律 20px**，中文版和英文版完全一致，不因语言、不因断点而变。
-- **任何文字不得小于 18px**。标签、eyebrow、图注、次级说明的下限就是 18px。
+- **正文一律 18px**，中文版和英文版完全一致，不因语言、不因断点而变。
+- **任何文字不得小于 16px**。标签、eyebrow、图注、次级说明的下限就是 16px。
 
 落地方式：index.css 里定义了两个语义 utility，项目页不要再直接写 Tailwind 的 `text-xs` / `text-sm` / `text-base` / `text-lg` 之类的字号类：
 
 | class | 字号 | 用途 |
 | --- | --- | --- |
-| `text-copy` | 20px | 正文、列表项、lead、链接标题 |
-| `text-note` | 18px | 标签、eyebrow、图注、次级说明 —— 这是地板，不是常用值 |
+| `text-copy` | 18px | 正文、列表项、lead、链接标题 |
+| `text-note` | 16px | 标签、eyebrow、图注、次级说明 —— 这是地板，不是常用值 |
 
 标题可以比 20px 大（`text-xl` = 20px 起步，`text-2xl`、`text-3xl` 等都可以）。响应式缩小字号（`sm:text-base` 这类）在项目页一律不要用 —— 小屏也得守住这两个数。
 
