@@ -11,7 +11,7 @@ const links = [
   { to: "/about", label: ui.navAbout },
   { to: "/project", label: ui.navProjects },
   // { to: "/case-study", label: ui.navStudies },
-  { to: "/my-world", label: ui.navMyWorld },
+  // { to: "/my-world", label: ui.navMyWorld },
 ]
 
 export default function NavBar() {
