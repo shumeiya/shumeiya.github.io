@@ -66,9 +66,7 @@ export const projectDetails = {
         label: tt("Background", "需求背景"),
         blocks: [
           { type: "backgroundWho", act: kyrallBackground.whoAct },
-          // The BEFORE / AFTER acts still come from the deck board until the
-          // side-by-side modeling videos are ready to replace them.
-          { type: "background", board: kyrallBackground, fromBefore: true },
+          { type: "backgroundCompare", act: kyrallBackground.compareAct },
         ],
       },
       {

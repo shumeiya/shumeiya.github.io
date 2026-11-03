@@ -79,6 +79,64 @@ export const kyrallBackground = {
     ],
   },
 
+  // The second act, also in flow layout (BackgroundCompare.jsx). Each column
+  // takes an optional `video: { src }` and `time` once the recordings exist.
+  compareAct: {
+    kicker: tt("Today, and with Kyrall", "现状与做法"),
+    title: tt(
+      "We set out to build a new design paradigm for the AI era",
+      "我们想要构建 AI 时代的设计新范式"
+    ),
+    body: tt(
+      "In the traditional workflow, modeling is the step that costs the most time and effort and comes back for rework most often. Change a requirement and the model has to be edited or rebuilt by hand. Kyrall needs one input to model and edit.",
+      "传统工作流中，建模是费时间费人力且易返工的一步。需求一变，模型就得手动修改重建。而 Kyrall 只需要一个输入就可以进行建模和编辑。"
+    ),
+    columns: [
+      {
+        kicker: tt("Manual modeling", "手动建模"),
+        title: "Onshape",
+        timeLabel: tt("Time taken", "用时"),
+        points: [
+          tt(
+            "Start from the requirements document and draw it step by step: sketch, extrude, constrain.",
+            "从需求文档开始，草图、拉伸、约束一步步画"
+          ),
+          tt(
+            "Change a requirement and the model goes back to the sketch to be edited.",
+            "需求改一次，模型就返回到草图进行修改"
+          ),
+          tt(
+            "One part is measured in hours; a few rounds of changes add up to days.",
+            "一个零件以小时计，改几轮就是几天"
+          ),
+        ],
+      },
+      {
+        kicker: tt("Generative modeling", "生成式建模"),
+        title: "Kyrall",
+        timeLabel: tt("Time taken", "用时"),
+        points: [
+          tt(
+            "Input a requirement description, a reference image, or a legacy design or mesh.",
+            "输入需求描述、参考图，或旧设计和 Mesh"
+          ),
+          tt(
+            "An editable parametric model is generated in minutes.",
+            "几分钟生成可编辑的参数化模型"
+          ),
+          tt(
+            "Refine it in the Editor with parameters, suggestions, measurement and other tools, then export STEP / STL directly.",
+            "在编辑器里用参数、建议、测量等工具精修，直接导出 STEP / STL"
+          ),
+        ],
+      },
+    ],
+    closing: tt(
+      "Design and manufacture hardware at the speed of thought.",
+      "以思维的速度设计与制造硬件。"
+    ),
+  },
+
   before: {
     eyebrow: tt("02 · BEFORE  /  The traditional workflow", "02 · BEFORE / 传统工作流"),
     title: tt(
