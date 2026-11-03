@@ -102,8 +102,9 @@ export const projectDetails = {
           "保持统一原则，沉淀设计系统与组件规范。"
         ),
         lead: kyrallSpec.body,
-        // Flow layout, no longer the Figma board (SpecBoard.jsx).
-        blocks: [{ type: "specGrid", spec: kyrallSpec }],
+        // The card stack stays as the Figma board, used as a single illustration;
+        // eyebrow, heading and lead are set by the page.
+        blocks: [{ type: "spec", board: kyrallSpec }],
       },
       {
         id: "loop",
