@@ -199,7 +199,12 @@ html::-webkit-scrollbar {
   --deck-on-surface: #191717;
   --deck-rule: #191717;
   --deck-bar: #5c5b59;
-  --deck-band: #e9e4d9;
+  --deck-band: #efede8;
+  /* Headline chips (table column heads, "where we aim", the takeaway rail):
+     plain outlined boxes in light mode, accent-filled in dark. */
+  --deck-head: var(--color-page);
+  --deck-head-stroke: #191717;
+  --deck-on-head: #191717;
   --deck-on-band: #4a4844;
   /* The outlined rail: its copy sits on the page's own value. */
   --deck-on-rail: #191717;
@@ -218,6 +223,9 @@ html::-webkit-scrollbar {
   --deck-rule: #5c5b59;
   --deck-bar: #5c5b59;
   --deck-band: #2f2f2f;
+  --deck-head: #c4ff35;
+  --deck-head-stroke: #c4ff35;
+  --deck-on-head: #191717;
   --deck-on-band: #efede8;
   --deck-on-rail: #c4ff35;
   --deck-figure: #191717;

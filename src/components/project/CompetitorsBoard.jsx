@@ -27,6 +27,9 @@ const MIN_SCALE = 0.45
 
 const ACCENT = "var(--deck-accent)"
 const STROKE = "var(--deck-stroke)"
+const HEAD = "var(--deck-head)"
+const HEAD_STROKE = "var(--deck-head-stroke)"
+const ON_HEAD = "var(--deck-on-head)"
 const ACCENT_INK = "var(--deck-accent-ink)"
 const ON_ACCENT = "var(--deck-on-accent)"
 const RULE = "var(--deck-rule)"
@@ -281,7 +284,7 @@ export default function CompetitorsBoard({ board }) {
             ))}
 
             <div style={{ ...at(472, 336), display: "flex" }}>
-              <Pill fill={ACCENT} stroke={ACCENT} color={ON_ACCENT}>
+              <Pill fill={HEAD} stroke={HEAD_STROKE} color={ON_HEAD}>
                 {matrix.chip}
               </Pill>
             </div>
@@ -307,10 +310,10 @@ export default function CompetitorsBoard({ board }) {
                 y={296}
                 w={COL_W}
                 h={56}
-                fill={ACCENT}
-                stroke={ACCENT}
+                fill={HEAD}
+                stroke={HEAD_STROKE}
                 size={22}
-                color={ON_ACCENT}
+                color={ON_HEAD}
               >
                 <span style={{ fontWeight: 500 }}>{name}</span>
               </Cell>
@@ -369,12 +372,12 @@ export default function CompetitorsBoard({ board }) {
 
             {/* ---- the takeaway rail ---- */}
             <div style={at(80, 854, 1760, 146)}>
-              <Chamfer fill={ACCENT} stroke={ACCENT} cut={12} />
+              <Chamfer fill={HEAD} stroke={HEAD_STROKE} cut={12} />
             </div>
-            <Text x={112} y={910} size={28} weight={500} color={ON_ACCENT}>
+            <Text x={112} y={910} size={28} weight={500} color={ON_HEAD}>
               {summary.label}
             </Text>
-            <Text x={280} y={882} w={1528} size={20} lh={1.5} color={ON_ACCENT}>
+            <Text x={280} y={882} w={1528} size={20} lh={1.5} color={ON_HEAD}>
               {summary.body}
             </Text>
             </div>
