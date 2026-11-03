@@ -18,10 +18,15 @@ import { ui } from "../../i18n/ui"
 const OX = 80
 const OY = 136
 const BOARD_W = 1760
-const BOARD_H = 864
+// The deck put the map 160 under the title; the other boards of this family
+// start their content at y=252, so everything below the title is lifted by
+// HEAD_LIFT and the board shrinks by the same amount.
+const HEAD_LIFT = 44
+const BOARD_H = 864 - HEAD_LIFT
 const MIN_SCALE = 0.45
 
 const ACCENT = "var(--deck-accent)"
+const STROKE = "var(--deck-stroke)"
 const ACCENT_INK = "var(--deck-accent-ink)"
 const ON_ACCENT = "var(--deck-on-accent)"
 const RULE = "var(--deck-rule)"
@@ -232,6 +237,7 @@ export default function CompetitorsBoard({ board }) {
               {board.title}
             </Text>
 
+            <div style={{ position: "absolute", left: 0, top: -HEAD_LIFT, width: BOARD_W }}>
             {/* ---- positioning map ---- */}
             <div style={at(MAP.x, MAP.y, MAP.w, MAP.h)}>
               <Chamfer fill={BAND} stroke={RULE} cut={12} />
@@ -343,7 +349,7 @@ export default function CompetitorsBoard({ board }) {
                         {cell.map((pill, i) => (
                           <Pill
                             key={i}
-                            stroke={accent ? ACCENT : RULE}
+                            stroke={accent ? STROKE : RULE}
                             fill={BAND}
                             color={accent ? ACCENT_INK : ON_BAND}
                           >
@@ -371,6 +377,7 @@ export default function CompetitorsBoard({ board }) {
             <Text x={280} y={882} w={1528} size={20} lh={1.5} color={ON_ACCENT}>
               {summary.body}
             </Text>
+            </div>
           </div>
         </div>
       </div>

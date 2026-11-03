@@ -30,6 +30,7 @@ const CARD_Y = 252
 const CARD_X = [80, 680, 1280]
 
 const ACCENT = "var(--deck-accent)"
+const STROKE = "var(--deck-stroke)"
 const ACCENT_INK = "var(--deck-accent-ink)"
 const ON_ACCENT = "var(--deck-on-accent)"
 const RULE = "var(--deck-rule)"
@@ -86,7 +87,7 @@ function Pill({ children, filled }) {
         color: filled ? ON_ACCENT : ACCENT_INK,
       }}
     >
-      <Chamfer fill={filled ? ACCENT : BAND} stroke={ACCENT} cut={6} />
+      <Chamfer fill={filled ? ACCENT : BAND} stroke={filled ? ACCENT : STROKE} cut={6} />
       <span style={{ position: "relative" }}>{children}</span>
     </span>
   )
@@ -127,7 +128,7 @@ function Card({ x, card, labels }) {
         <Chamfer fill={BAND} stroke={RULE} cut={12} />
       </div>
 
-      <div style={{ ...at(x + 28, CARD_Y + 28, 140, 140), border: `1px solid ${ACCENT}` }}>
+      <div style={{ ...at(x + 28, CARD_Y + 28, 140, 140), border: `1px solid ${STROKE}` }}>
         <img
           src={`${ART}/${card.photo}`}
           alt=""

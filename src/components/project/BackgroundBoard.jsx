@@ -31,7 +31,10 @@ const WHO_SHIFT = 564
 // as crowding. One break between acts is 128, a title sits 46 under its eyebrow, and
 // the first thing under a title sits 76 below it.
 const SPACING_GROW = 311
-const BOARD_H = 2411 + SPACING_GROW + WHO_SHIFT
+// The title-to-content gap is brought in line with the other boards (content at
+// y=252, same as Persona and Story map): everything under the title is lifted.
+const HEAD_LIFT = 82
+const BOARD_H = 2411 + SPACING_GROW + WHO_SHIFT - HEAD_LIFT
 const MIN_SCALE = 0.45
 
 // The board is drawn at artboard scale and then scaled into the reading column, so a
@@ -63,6 +66,8 @@ const CHIP_Y = (bracketY, which) => bracketY + RULE_IN[which] - CHIP_H / 2
 
 const ACCENT = "var(--deck-accent)"
 const ACCENT_INK = "var(--deck-accent-ink)"
+const STROKE = "var(--deck-stroke)"
+const BAR = "var(--deck-bar)"
 const SURFACE = "var(--deck-surface)"
 const ON_SURFACE = "var(--deck-on-surface)"
 const RULE = "var(--deck-rule)"
@@ -214,6 +219,7 @@ export default function BackgroundBoard({ board }) {
               {board.title}
             </Text>
 
+            <div style={{ position: "absolute", left: 0, top: -HEAD_LIFT, width: BOARD_W }}>
             {/* ---- 01 · WHO ---- */}
             <Text x={80} y={334} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
               {who.eyebrow}
@@ -221,12 +227,17 @@ export default function BackgroundBoard({ board }) {
             <Text x={80} y={380} size={SIZE_TITLE} weight={500} color="var(--color-cream)">
               {who.title}
             </Text>
-            <Text x={80} y={462} w={1100} size={SIZE_BODY} lh={1.5}>
-              {who.body}
-            </Text>
-            {/* Auto-width rather than the deck's fixed boxes: at this size the two
-                languages no longer set to the same widths. */}
-            <div style={{ ...at(80, 576), display: "flex", gap: 20 }}>
+            {/* Body and chips flow together: the English body wraps to two lines and
+                the chips sat at the deck's fixed y below that, which left a blank band
+                under the one-line Chinese body. The 42px gap is what the deck had
+                under two English lines, so that version does not move. */}
+            <div style={{ ...at(80, 462, 1100) }}>
+              <p style={{ fontFamily: SANS, fontSize: SIZE_BODY, lineHeight: 1.5, color: "var(--color-ink)" }}>
+                {who.body}
+              </p>
+              {/* Auto-width rather than the deck's fixed boxes: at this size the two
+                  languages no longer set to the same widths. */}
+              <div style={{ display: "flex", gap: 20, marginTop: 42 }}>
               {who.chips.map((chip, i) => (
                 <span
                   key={i}
@@ -246,6 +257,7 @@ export default function BackgroundBoard({ board }) {
                   <span style={{ position: "relative" }}>{chip}</span>
                 </span>
               ))}
+              </div>
             </div>
             {/* The deck points this chevron sideways, from the copy to the cards. The
                 cards are underneath now, so it turns to point at them. */}
@@ -255,7 +267,7 @@ export default function BackgroundBoard({ board }) {
               return (
                 <div key={i}>
                   <div style={at(x, 790, 560, 290)}>
-                    <Chamfer stroke={need.lit ? ACCENT : RULE} cut={12} />
+                    <Chamfer stroke={need.lit ? STROKE : RULE} cut={12} />
                   </div>
                   <Text x={x + 32} y={820} size={55} weight={500} color="var(--color-cream)">
                     {need.title}
@@ -284,7 +296,7 @@ export default function BackgroundBoard({ board }) {
                   style={{
                     ...at(STAGE_X[i], 818, STAGE_W, 226),
                     background: FIGURE,
-                    border: `${stage.lit ? 2 : 1}px solid ${stage.lit ? ACCENT : RULE}`,
+                    border: `${stage.lit ? 2 : 1}px solid ${stage.lit ? STROKE : RULE}`,
                   }}
                 />
                 <div
@@ -317,7 +329,7 @@ export default function BackgroundBoard({ board }) {
             {/* the weeks bracket */}
             <Art src="bracket-weeks.svg" x={80} y={1068} w={1760} h={48} />
             <div style={at(876, CHIP_Y(1068, "weeks"), 169, CHIP_H)}>
-              <Chamfer stroke={ACCENT} fill={SURFACE} cut={10} width={1.5} />
+              <Chamfer stroke={STROKE} fill={SURFACE} cut={10} width={1.5} />
             </div>
             <Text x={876} y={CHIP_TEXT_Y(CHIP_Y(1068, "weeks"))} w={169} size={SIZE_META} weight={500} mono tracking="0.24px" lh={1.4} align="center" color={ACCENT_INK}>
               {before.bracket}
@@ -330,7 +342,7 @@ export default function BackgroundBoard({ board }) {
                   style={{
                     ...at(panel.x, 1138, panel.w, 243),
                     background: FIGURE,
-                    border: `2px solid ${ACCENT}`,
+                    border: `2px solid ${STROKE}`,
                   }}
                 />
                 <Text
@@ -345,7 +357,7 @@ export default function BackgroundBoard({ board }) {
                   {before.panels[i].title}
                 </Text>
                 <Ticks x={panel.x + 25} y={1251} w={panel.w - 50} pitch={panel.pitch} />
-                <div style={{ ...at(panel.x + 25, 1313, panel.w - 50, 43), background: RULE }} />
+                <div style={{ ...at(panel.x + 25, 1313, panel.w - 50, 43), background: BAR }} />
                 <Text
                   x={panel.x + 25}
                   y={1319}
@@ -380,7 +392,8 @@ export default function BackgroundBoard({ board }) {
               {before.weeksWord}
             </Text>
             <Art src="num-4.svg" x={619} y={1461} w={63.73} h={63.92} />
-            <Art src="num-0.svg" x={690.73} y={1466.82} w={64} h={64.26} />
+            {/* Same top as the 4 — the deck had the 0 sitting 6px lower. */}
+            <Art src="num-0.svg" x={690.73} y={1461} w={64} h={64.26} />
             <Art src="num-pct.svg" x={762.73} y={1496.23} w={27.09} h={28.69} />
             <Art src="num-x.svg" x={1410} y={1461} w={56.09} h={64} />
             <Art src="word-times.svg" x={1482} y={1496} w={107.3} h={28.41} />
@@ -443,7 +456,7 @@ export default function BackgroundBoard({ board }) {
               return (
                 <div key={i}>
                   <div style={at(x, 2026, 303, 420)}>
-                    <Chamfer stroke={ACCENT} fill={SURFACE} cut={{ tr: 16 }} />
+                    <Chamfer stroke={STROKE} fill={SURFACE} cut={{ tr: 16 }} />
                   </div>
                   <Text x={x + 24} y={2050} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
                     {step.n}
@@ -462,7 +475,7 @@ export default function BackgroundBoard({ board }) {
             })}
 
             <div style={at(1509, 2026, 329, 420)}>
-              <Chamfer stroke={ACCENT} fill={SURFACE} cut={{ tr: 16 }} />
+              <Chamfer stroke={STROKE} fill={SURFACE} cut={{ tr: 16 }} />
             </div>
             <Text x={1533} y={2050} size={SIZE_COST} weight={500} color={ACCENT_INK}>
               {after.outputTitle}
@@ -494,7 +507,7 @@ export default function BackgroundBoard({ board }) {
 
             <Art src="bracket-hours.svg" x={464} y={2462} w={989} h={48} />
             <div style={at(874, CHIP_Y(2462, "hours"), 169, CHIP_H)}>
-              <Chamfer stroke={ACCENT} fill={SURFACE} cut={10} width={1.5} />
+              <Chamfer stroke={STROKE} fill={SURFACE} cut={10} width={1.5} />
             </div>
             <Text x={874} y={CHIP_TEXT_Y(CHIP_Y(2462, "hours"))} w={169} size={SIZE_META} weight={500} mono tracking="0.24px" lh={1.4} align="center" color={ACCENT_INK}>
               {after.bracket}
@@ -502,7 +515,7 @@ export default function BackgroundBoard({ board }) {
 
             {/* ---- the one line ---- */}
             <div style={at(80, 2638, 1760, 220)}>
-              <Chamfer stroke={ACCENT} cut={12} />
+              <Chamfer stroke={STROKE} cut={12} />
             </div>
             <Text x={128} y={2678} size={SIZE_META} weight={500} mono tracking="1.08px" color={ACCENT_INK}>
               {oneLine.eyebrow}
@@ -513,6 +526,7 @@ export default function BackgroundBoard({ board }) {
             <Text x={128} y={2804} size={20} weight={500} mono tracking="0.8px">
               {oneLine.sub}
             </Text>
+            </div>
             </div>
           </div>
         </div>

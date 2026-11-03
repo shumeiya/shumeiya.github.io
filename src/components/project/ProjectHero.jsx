@@ -117,7 +117,7 @@ export default function ProjectHero({ project, detail }) {
       <dl className={`relative mt-10 grid gap-x-8 gap-y-5 ${meta.length === 4 ? "sm:grid-cols-2 xl:grid-cols-4" : "sm:grid-cols-3"}`}>
         {meta.map((item) => (
           <div key={item.label}>
-            <dt className="font-mono-tight text-base text-note uppercase tracking-wide text-fog">
+            <dt className="font-mono-tight text-note uppercase tracking-wide text-fog">
               {item.label}
             </dt>
             <dd className="mt-1.5 text-copy text-ink">{item.value}</dd>

@@ -19,7 +19,7 @@ import { ui } from "../../i18n/ui"
 const OX = 80
 const OY = 112
 const BOARD_W = 1760
-const BOARD_H = 4248
+const BOARD_H = 4210 // trimmed: the deck left ~50px of empty air under the last line
 // The floor the board stops shrinking at and starts scrolling sideways instead —
 // the same one the design-system board above it uses, so the two behave alike on a
 // narrow screen. The reading column sits well above it at 0.58.
@@ -150,7 +150,7 @@ export default function CoreFlowBoard({ board }) {
   const { acts, tools, outputs, steps } = board
 
   return (
-    <figure className="mt-8">
+    <figure className="mt-6">
       <div ref={hostRef} className="no-scrollbar overflow-x-auto">
         <div style={{ width: BOARD_W * scale, height: BOARD_H * scale }}>
           <div

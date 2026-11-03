@@ -186,12 +186,19 @@ html::-webkit-scrollbar {
    `on-rule` is the one value that never flips: it labels the grey progress bar,
    which is dark in both themes. */
 .kyrall-deck {
-  --deck-accent: #c2f000;
+  /* Light mode runs one green only: the deep #5c7200 carries text, fills and
+     chips alike, with white type on a filled chip. Outlines are not green at all
+     but the ink black, so `stroke` is the value for any accent-coloured border
+     and `rule` for the quiet ones — both black here, both their own colour in
+     dark mode. `bar` is the grey progress band, which stays grey in both. */
+  --deck-accent: #5c7200;
   --deck-accent-ink: #5c7200;
-  --deck-on-accent: #191717;
+  --deck-on-accent: #fdfdfd;
+  --deck-stroke: #191717;
   --deck-surface: #fdfdfd;
   --deck-on-surface: #191717;
-  --deck-rule: #5c5b59;
+  --deck-rule: #191717;
+  --deck-bar: #5c5b59;
   --deck-band: #e9e4d9;
   --deck-on-band: #4a4844;
   /* The outlined rail: its copy sits on the page's own value. */
@@ -205,9 +212,11 @@ html::-webkit-scrollbar {
   --deck-accent: #c4ff35;
   --deck-accent-ink: #c4ff35;
   --deck-on-accent: #191717;
+  --deck-stroke: #c4ff35;
   --deck-surface: #191717;
   --deck-on-surface: #fdfdfd;
   --deck-rule: #5c5b59;
+  --deck-bar: #5c5b59;
   --deck-band: #2f2f2f;
   --deck-on-band: #efede8;
   --deck-on-rail: #c4ff35;

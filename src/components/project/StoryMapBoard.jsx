@@ -29,6 +29,7 @@ const ROW_Y = [326, 706, 1086]
 const ROW_H = 350
 
 const ACCENT = "var(--deck-accent)"
+const STROKE = "var(--deck-stroke)"
 const ACCENT_INK = "var(--deck-accent-ink)"
 const ON_ACCENT = "var(--deck-on-accent)"
 const RULE = "var(--deck-rule)"
@@ -86,7 +87,7 @@ function Pill({ children }) {
         color: ACCENT_INK,
       }}
     >
-      <Chamfer fill={BAND} stroke={ACCENT} cut={5} width={1.5} />
+      <Chamfer fill={BAND} stroke={STROKE} cut={5} width={1.5} />
       <span style={{ position: "relative" }}>{children}</span>
     </span>
   )
@@ -135,7 +136,7 @@ function Stage({ stage, x }) {
 function Cell({ cell, x, y, lit }) {
   return (
     <div style={at(x, y, COL_W, ROW_H)}>
-      <Chamfer fill={BAND} stroke={lit ? ACCENT : RULE} cut={10} />
+      <Chamfer fill={BAND} stroke={lit ? STROKE : RULE} cut={10} />
       <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 12, padding: 16 }}>
         <p style={{ fontFamily: SANS, fontSize: SIZE_META, lineHeight: 1.5, color: ON_BAND }}>{cell.text}</p>
         {cell.chips && (
@@ -191,7 +192,7 @@ export default function StoryMapBoard({ board }) {
               return (
                 <div key={row.name}>
                   {/* the person this row belongs to */}
-                  <div style={{ ...at(80, y + 6, 120, 120), border: `1px solid ${ACCENT}` }}>
+                  <div style={{ ...at(80, y + 6, 120, 120), border: `1px solid ${STROKE}` }}>
                     <img
                       src={`${ART}/${row.photo}`}
                       alt=""

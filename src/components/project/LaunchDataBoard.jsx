@@ -381,7 +381,7 @@ export default function LaunchDataBoard({ board }) {
   const { stats, next } = board
 
   return (
-    <figure className="mt-8">
+    <figure className="mt-6">
       <div ref={hostRef} className="no-scrollbar overflow-x-auto">
         <div style={{ width: BOARD_W * scale, height: BOARD_H * scale }}>
           <div

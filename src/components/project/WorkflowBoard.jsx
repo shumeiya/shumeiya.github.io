@@ -26,6 +26,7 @@ const MIN_SCALE = 0.45
 // the chip surface both have a light-mode counterpart, so the figure reads the same
 // way on paper as it does on the slide.
 const ACCENT = "var(--deck-accent)"
+const STROKE = "var(--deck-stroke)"
 const ON_ACCENT = "var(--deck-on-accent)"
 const SURFACE = "var(--deck-surface)"
 const ON_SURFACE = "var(--deck-on-surface)"
@@ -42,7 +43,7 @@ function Card({ card }) {
   const lines = Array.isArray(card.text) ? card.text : [card.text]
   return (
     <div className="absolute" style={{ left: card.x, top: card.y, padding: "12px 18px" }}>
-      <Chamfer fill={filled ? ACCENT : SURFACE} stroke={card.stroke === "lime" ? ACCENT : RULE} />
+      <Chamfer fill={filled ? ACCENT : SURFACE} stroke={filled ? ACCENT : card.stroke === "lime" ? STROKE : RULE} />
       <p
         className="relative whitespace-nowrap"
         style={{
@@ -71,7 +72,7 @@ function Bar({ bar }) {
     >
       <Chamfer
         fill={bar.tone === "lime" ? SURFACE : "var(--deck-band)"}
-        stroke={bar.tone === "lime" ? ACCENT : RULE}
+        stroke={bar.tone === "lime" ? STROKE : RULE}
       />
       <p
         className="relative whitespace-nowrap"
