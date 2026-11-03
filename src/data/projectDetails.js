@@ -14,7 +14,7 @@ import { kyrallSpec } from "./kyrallSpec"
 import { kyrallCoreFlow } from "./kyrallCoreFlow"
 import { kyrallExtensions } from "./kyrallExtensions"
 import { kyrallLaunchData } from "./kyrallLaunchData"
-import { kyrallAiWorkflow } from "./kyrallAiWorkflow"
+// import { kyrallAiWorkflow } from "./kyrallAiWorkflow"
 import { weatherPetsHero, weatherPetsTags, weatherPetsSummary, weatherPetsSections } from "./weatherPetsDeck"
 import { codemaoHero, codemaoRole, codemaoSummary, codemaoTags, codemaoSections } from "./codemao"
 import { abcMouseHero, abcMouseRole, abcMouseSummary, abcMouseTags, abcMouseSections } from "./abcMouse"
@@ -121,15 +121,17 @@ export const projectDetails = {
         titleHidden: true,
         blocks: [{ type: "launchdata", board: kyrallLaunchData }],
       },
-      {
-        id: "aiworkflow",
-        eyebrow: tt("09 · AI workflow", "09 · AI 工作流"),
-        // The board opens with its own title, so the page's heading stays for the
-        // chapter index and the outline but is not drawn twice.
-        label: tt("AI workflow", "AI 工作流"),
-        titleHidden: true,
-        blocks: [{ type: "aiworkflow", board: kyrallAiWorkflow }],
-      },
+      // AI workflow chapter hidden for now — the board (kyrallAiWorkflow.js,
+      // AiWorkflowBoard.jsx) is kept; re-enable by restoring this entry and the import.
+      // {
+      //   id: "aiworkflow",
+      //   eyebrow: tt("09 · AI workflow", "09 · AI 工作流"),
+      //   // The board opens with its own title, so the page's heading stays for the
+      //   // chapter index and the outline but is not drawn twice.
+      //   label: tt("AI workflow", "AI 工作流"),
+      //   titleHidden: true,
+      //   blocks: [{ type: "aiworkflow", board: kyrallAiWorkflow }],
+      // },
     ],
   },
   // ABC Mouse (开心鼠) — the twelve boards of the Figma 「开心鼠」 page, rebuilt as page

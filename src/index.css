@@ -71,6 +71,13 @@
   --color-ac-yellow: #E9DE92;
 }
 
+/* Light mode, every page but the Dashboard: a plain white canvas instead of the
+   warm cream. PageTone.jsx sets the attribute per route; dark mode keeps its own
+   page colour, so the override is scoped to light only. */
+:root[data-page-white]:not(.dark) {
+  --color-page: #ffffff;
+}
+
 /* Frosted glass — the one material every floating control is cut from: the nav
    pills, the language and theme switches, the strip's step arrows. A pale frost
    over a heavy blur, lit along its inside edge by a thin white highlight instead
