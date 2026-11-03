@@ -5,6 +5,7 @@ import WorkflowBoard from "./WorkflowBoard"
 import BackgroundBoard from "./BackgroundBoard"
 import BackgroundWho from "./BackgroundWho"
 import BackgroundCompare from "./BackgroundCompare"
+import PlayView from "./PlayView"
 import CompetitorsBoard from "./CompetitorsBoard"
 import PersonaBoard from "./PersonaBoard"
 import StoryMapBoard from "./StoryMapBoard"
@@ -488,6 +489,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <Defs key={i} items={block.items} />
       case "stats":
         return <Stats key={i} items={block.items} accent={accent} />
+      case "playView":
+        return <PlayView key={i} items={block.items} />
       case "flowSteps":
         return <FlowSteps key={i} items={block.items} />
       case "steps":

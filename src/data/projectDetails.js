@@ -117,6 +117,7 @@ export const projectDetails = {
         lead: kyrallCoreFlow.lead,
         blocks: [
           { type: "flowSteps", items: kyrallCoreFlow.steps },
+          { type: "playView", items: kyrallCoreFlow.play },
           { type: "coreflow", board: kyrallCoreFlow },
         ],
       },

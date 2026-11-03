@@ -11,10 +11,37 @@
 import { tt } from "../i18n/t"
 
 export const kyrallCoreFlow = {
-  title: tt(
-    "One main line: from a single requirement to a model you can export",
-    "一条主线：从一个需求输入，到可以导出的模型"
-  ),
+  title: tt("From an input to a model", "从需求到模型"),
+
+  // The play view under the chapter heading (PlayView.jsx): five features, each
+  // with its screen recording. Clips live in /public/project/kyrall/play.
+  play: [
+    { n: "01", title: tt("Workflow", "工作流"), clips: [] },
+    {
+      n: "02",
+      title: tt("Multimodal input", "多模态输入"),
+      clips: [
+        { src: "/project/kyrall/play/input-image.mp4", poster: "/project/kyrall/play/input-image.jpg", label: tt("Image", "图片") },
+        { src: "/project/kyrall/play/input-mesh.mp4", poster: "/project/kyrall/play/input-mesh.jpg", label: tt("Mesh", "Mesh") },
+        { src: "/project/kyrall/play/input-file.mp4", poster: "/project/kyrall/play/input-file.jpg", label: tt("File", "文件") },
+      ],
+    },
+    {
+      n: "03",
+      title: tt("Preset prompts", "预设 Prompt"),
+      clips: [{ src: "/project/kyrall/play/preset-prompt.mp4", poster: "/project/kyrall/play/preset-prompt.jpg" }],
+    },
+    {
+      n: "04",
+      title: tt("Switch the generation model", "生成模型切换"),
+      clips: [{ src: "/project/kyrall/play/model-switch.mp4", poster: "/project/kyrall/play/model-switch.jpg" }],
+    },
+    {
+      n: "05",
+      title: tt("Add references from the Context Manager", "从 Context Manager 添加参考"),
+      clips: [{ src: "/project/kyrall/play/context-manager.mp4", poster: "/project/kyrall/play/context-manager.jpg" }],
+    },
+  ],
   lead: tt(
     "The Dashboard is laid out left to right along the workflow: recent models → the generation window → what is generating now. Describe it, press Generate, and the task runs in the background; the Execution Log shows every step, and when it finishes you land in the Editor to adjust and export.",
     "Dashboard 按工作流程从左到右排布：最近的模型 → 生成窗口 → 正在生成列表。输入描述、点击 Generate，任务在后台运行，进入 Execution Log 看到每一步，完成后直接进入 Editor 修改并导出。"

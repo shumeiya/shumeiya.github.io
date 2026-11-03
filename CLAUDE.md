@@ -37,7 +37,7 @@
 
 新 token 不要用 Tailwind 已有的关键词命名（比如 `block`、`flex`、`grid`、`full`、`screen`）：Tailwind 会顺带生成 `inline-block` 这类同名 class，把原来的样式覆盖掉。
 
-Kyrall 的图板不再自己画章节标题：标题和引导句写在 `projectDetails.js` 的 `heading` / `lead` 里，由页面按 28px 半粗统一渲染（`heading` 是页面上显示的标题，`label` 是左侧目录的短名字）。图板只从第一块内容开始画，用 `CUT` 把画板内容往上收。新做的图板也照这个来。
+Kyrall 的图板不再自己画章节标题：标题和引导句写在 `projectDetails.js` 的 `heading` / `lead` 里，由页面按章节标题样式（34px 半粗）统一渲染（`heading` 是页面上显示的标题，`label` 是左侧目录的短名字）。图板只从第一块内容开始画，用 `CUT` 把画板内容往上收。新做的图板也照这个来。
 
 章节标题被图板或 deck 自己画（`titleHidden` 且没有 `lead`）时，图板顶边就是标题，ProjectDetail 会把它拉到 eyebrow 下方 `tight` 的位置。
 
@@ -52,7 +52,7 @@ Kyrall 项目浅色模式只用两个主色加一个点缀：墨黑 `#191717` �
 ```sh
 grep -n "text-\(xs\|sm\|base\|lg\|\[1[0-9]px\]\)" \
   src/pages/ProjectDetail.jsx \
-  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,WeatherPetsDeck,AbcMouseDeck,HmiDeck}.jsx
+  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,WeatherPetsDeck,AbcMouseDeck,HmiDeck}.jsx
 ```
 
 应该零命中。间距自查（同样这几个文件，应该零命中）：
@@ -60,7 +60,7 @@ grep -n "text-\(xs\|sm\|base\|lg\|\[1[0-9]px\]\)" \
 ```sh
 grep -nE "(^|[ \"'\`:])-?(mt|mb|my|pt|pb|py|p|gap|gap-x|gap-y|space-y|space-x)-(0\.5|1\.5|2\.5|3\.5|5|7|9|11)\b" \
   src/pages/ProjectDetail.jsx \
-  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,WeatherPetsDeck,AbcMouseDeck,HmiDeck}.jsx
+  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,WeatherPetsDeck,AbcMouseDeck,HmiDeck}.jsx
 ```
 
 注意只查这几个文件：`src/components/project/` 下还有 `ProjectCard.jsx`、`CategoryFilter.jsx`、`WorkSection.jsx`、`WorkStrip.jsx`，那些是 `/project` 列表页的卡片，不在这条规定的范围里。
