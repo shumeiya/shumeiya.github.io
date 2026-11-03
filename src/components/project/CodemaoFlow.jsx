@@ -31,7 +31,7 @@ function Arrow() {
 // their left edge so the stack reads as "either of these" and not as "then this".
 function Fork({ items }) {
   return (
-    <span className="inline-flex flex-col gap-1.5 border-l-2 border-line pl-2.5">
+    <span className="inline-flex flex-col gap-2 border-l-2 border-line pl-2.5">
       {items.map((item) => (
         <Chip key={item}>{item}</Chip>
       ))}
@@ -47,7 +47,7 @@ function Row({ children, as: As = "div" }) {
 
 export default function CodemaoFlow({ board }) {
   return (
-    <figure className="mt-6 rounded-xl border border-line bg-box p-5 sm:p-6">
+    <figure className="mt-6 rounded-xl border border-line bg-box p-6 sm:p-6">
       <Row>
         {board.trunk.map((step, i) => (
           <span key={i} className="flex items-center gap-2">
@@ -59,11 +59,11 @@ export default function CodemaoFlow({ board }) {
 
       {/* The two lanes. Indented under the trunk and keyed by a tag, the way the deck
           labels its two branches on the connector itself. */}
-      <div className="mt-5 space-y-5 border-l-2 border-line pl-4 sm:pl-5">
+      <div className="mt-6 space-y-6 border-l-2 border-line pl-4 sm:pl-5">
         {board.branches.map((branch) => (
           <div key={branch.tag}>
             <p className="font-mono-tight text-note uppercase tracking-wide text-ink">{branch.tag}</p>
-            <div className="mt-2.5">
+            <div className="mt-3">
               <Row>
                 {branch.steps.map((step, i) => (
                   <span key={step} className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export default function CodemaoFlow({ board }) {
                   </span>
                 ))}
                 {branch.fork && (
-                  <span className="inline-flex flex-col gap-1.5 border-l-2 border-line pl-2.5">
+                  <span className="inline-flex flex-col gap-2 border-l-2 border-line pl-2.5">
                     {branch.fork.map((lane, i) => (
                       <Row key={i} as="span">
                         {lane.map((step, j) => (
@@ -93,7 +93,7 @@ export default function CodemaoFlow({ board }) {
 
       {/* Both lanes end in the same place, so the join sits under them both rather
           than at the end of either one. */}
-      <div className="mt-5 flex items-center gap-2">
+      <div className="mt-6 flex items-center gap-2">
         <span aria-hidden="true" className="select-none text-note text-fog/70">
           ↓
         </span>

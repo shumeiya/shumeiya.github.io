@@ -91,7 +91,7 @@ export default function ProjectHero({ project, detail }) {
         </div>
 
         {headline && (
-          <p className="mt-7 max-w-4xl text-3xl font-semibold tracking-tight text-cream sm:text-5xl">
+          <p className="mt-8 max-w-4xl text-3xl font-semibold tracking-tight text-cream sm:text-5xl">
             {headline}
           </p>
         )}
@@ -114,25 +114,25 @@ export default function ProjectHero({ project, detail }) {
         )}
       </div>
 
-      <dl className={`relative mt-10 grid gap-x-8 gap-y-5 ${meta.length === 4 ? "sm:grid-cols-2 xl:grid-cols-4" : "sm:grid-cols-3"}`}>
+      <dl className={`relative mt-10 grid gap-x-8 gap-y-6 ${meta.length === 4 ? "sm:grid-cols-2 xl:grid-cols-4" : "sm:grid-cols-3"}`}>
         {meta.map((item) => (
           <div key={item.label}>
             <dt className="font-mono-tight text-note uppercase tracking-wide text-fog">
               {item.label}
             </dt>
-            <dd className="mt-1.5 text-copy text-ink">{item.value}</dd>
+            <dd className="mt-2 text-copy text-ink">{item.value}</dd>
           </div>
         ))}
       </dl>
 
       {hero.stats?.length > 0 && (
-        <ul className="relative mt-7 grid gap-3 sm:grid-cols-3">
+        <ul className="relative mt-8 grid gap-3 sm:grid-cols-3">
           {hero.stats.map((stat) => (
             <li key={stat.label} className="rounded-xl border border-line bg-box px-5 py-4">
               <p className="text-2xl font-semibold tracking-tight text-cream sm:text-3xl">
                 {stat.value}
               </p>
-              <p className="mt-1.5 text-note leading-relaxed text-fog">{stat.label}</p>
+              <p className="mt-2 text-note leading-relaxed text-fog">{stat.label}</p>
             </li>
           ))}
         </ul>

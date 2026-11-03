@@ -78,7 +78,7 @@ export default function CompareSlider({
   }
 
   return (
-    <figure className="mt-6">
+    <figure className="mt-block">
       <div
         ref={hostRef}
         onPointerDown={onPointerDown}
@@ -156,7 +156,7 @@ export default function CompareSlider({
         </div>
       </div>
 
-      <figcaption className="mt-2.5 text-note leading-relaxed text-fog">
+      <figcaption className="mt-body text-note leading-relaxed text-fog">
         {caption ? `${caption} ` : ""}
         {t(ui.compareHint)}
       </figcaption>

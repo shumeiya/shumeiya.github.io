@@ -92,7 +92,7 @@ function Squiggle({ className = "" }) {
 // A rounded card in one of the deck's tones.
 function Card({ tone = "card", className = "", style, children }) {
   return (
-    <div className={`relative rounded-[1.75rem] p-5 sm:p-6 ${className}`} style={{ ...surface(tone), ...style }}>
+    <div className={`relative rounded-[1.75rem] p-6 sm:p-6 ${className}`} style={{ ...surface(tone), ...style }}>
       {children}
     </div>
   )
@@ -106,14 +106,14 @@ function TabCard({ tone = "card", tab, align = "left", className = "", bodyClass
     <div className={`relative flex flex-col ${className}`}>
       <div className={`flex ${align ==="right"?"justify-end":""}`}>
         <div
-          className="wp-round rounded-t-[1.25rem] px-6 pb-6 pt-2.5 text-copy font-extrabold"
+          className="wp-round rounded-t-[1.25rem] px-6 pb-6 pt-3 text-copy font-extrabold"
           style={{ background: s.background, color: TONE[tone].hl === YELLOW ? "#ffffff" : TONE[tone].hl }}
         >
           ▶ {tab}
         </div>
       </div>
       <div
-        className={`relative -mt-4 flex-1 rounded-[1.75rem] p-5 sm:p-6 ${align ==="right"?"rounded-tr-none":"rounded-tl-none"} ${bodyClass}`}
+        className={`relative -mt-4 flex-1 rounded-[1.75rem] p-6 sm:p-6 ${align ==="right"?"rounded-tr-none":"rounded-tl-none"} ${bodyClass}`}
         style={{ background: s.background, color: s.color }}
       >
         {children}
@@ -127,7 +127,7 @@ function Pill({ tone = "white", tilt = "", outline = false, className = "", chil
   const t = TONE[tone]
   return (
     <span
-      className={`inline-block rounded-full px-4 py-1.5 text-note font-bold ${tilt} ${className}`}
+      className={`inline-block rounded-full px-4 py-2 text-note font-bold ${tilt} ${className}`}
       style={{
         background: t.bg,
         color: t.fg,
@@ -178,7 +178,7 @@ function Dot({ color = BLUE, className = "" }) {
 
 function Bullets({ items, color = BLUE, className = "" }) {
   return (
-    <ul className={`space-y-2.5 ${className}`}>
+    <ul className={`space-y-3 ${className}`}>
       {items.map((item) => (
         <li key={item} className="flex gap-3 text-copy">
           <Dot color={color} className="mt-[0.47em]" />
@@ -241,7 +241,7 @@ function Board({ slide, stage, children }) {
       </h3>
       <Squiggle className="mt-2" />
       {slide.lead && (
-        <p className="mt-4 max-w-4xl text-copy" style={{ color: st ? st.q : QUIET }}>
+        <p className="mt-lead max-w-3xl text-copy" style={{ color: st ? st.q : QUIET }}>
           {slide.lead}
         </p>
       )}
@@ -249,20 +249,20 @@ function Board({ slide, stage, children }) {
   )
   if (!stage) {
     return (
-      <div className="wp-deck mt-4">
+      <div className="wp-deck mt-tight">
         {head}
-        <div className="mt-6">{children}</div>
+        <div className="mt-block">{children}</div>
       </div>
     )
   }
   return (
-    <div className="wp-deck mt-4">
+    <div className="wp-deck mt-tight">
       <div
-        className="wp-checker relative overflow-hidden rounded-[2rem] px-4 py-6 sm:rounded-[2.5rem] sm:p-7 lg:p-8"
+        className="wp-checker relative overflow-hidden rounded-[2rem] px-4 py-6 sm:rounded-[2.5rem] sm:p-8 lg:p-8"
         style={{ ...surface(stage), backgroundColor: st.bg }}
       >
         {head}
-        <div className="mt-6">{children}</div>
+        <div className="mt-block">{children}</div>
       </div>
     </div>
   )
@@ -282,14 +282,14 @@ function Overview({ slide }) {
   const a = slide.about
   return (
     <div>
-      <div className="grid gap-5 lg:grid-cols-[1.75fr_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[1.75fr_1fr]">
         <TabCard tone="dark" tab={a.tab} align="right" bodyClass="flex flex-col lg:p-8">
           <p className="wp-round text-[22px] font-extrabold">✦ {a.brand}</p>
           <h4 className="mt-1 text-2xl font-black">{a.title}</h4>
           <p className="mt-4 max-w-3xl text-copy" style={{ color: TONE.dark.q }}>
             <Rich text={a.text} color={YELLOW} />
           </p>
-          <ul className="mt-auto grid gap-4 pt-7 sm:grid-cols-3">
+          <ul className="mt-auto grid gap-4 pt-8 sm:grid-cols-3">
             {a.shapes.map((sh) => {
               const t = TONE[sh.tone === "card" ? "white" : sh.tone]
               return (
@@ -305,7 +305,7 @@ function Overview({ slide }) {
           </ul>
         </TabCard>
 
-        <div className="grid content-start gap-5">
+        <div className="grid content-start gap-6">
           <Card tone="pale">
             <div className="flex flex-wrap items-center gap-3">
               <h4 className="text-[22px] font-black">{slide.role.title}</h4>
@@ -313,7 +313,7 @@ function Overview({ slide }) {
                 {slide.role.pill}
               </Pill>
             </div>
-            <Bullets items={slide.role.items} className="mt-5" />
+            <Bullets items={slide.role.items} className="mt-6" />
           </Card>
           <Card tone="blue" className="lg:pr-24">
             <h4 className="text-[22px] font-black">{slide.team.title}</h4>
@@ -321,7 +321,7 @@ function Overview({ slide }) {
               {slide.team.pills.map((p, i) => (
                 <li key={p}>
                   <span
-                    className="inline-block rounded-full px-4 py-1.5 text-note font-bold"
+                    className="inline-block rounded-full px-4 py-2 text-note font-bold"
                     style={i === 2 ? { background: YELLOW, color: ON_FILL } : { background: "#fff", color: "#0058d6" }}
                   >
                     {p}
@@ -359,24 +359,24 @@ function Overview({ slide }) {
 function Background({ slide }) {
   const [big, ...small] = slide.stats
   return (
-    <div className="grid gap-5">
-      <div className="grid gap-5 lg:grid-cols-[1.7fr_1fr]">
-        <div className="grid content-start gap-5">
+    <div className="grid gap-6">
+      <div className="grid gap-6 lg:grid-cols-[1.7fr_1fr]">
+        <div className="grid content-start gap-6">
           <Card>
             <p className="text-copy font-black">{slide.intro.line}</p>
-            <p className="mt-1.5 text-copy font-medium" style={{ color: LINK }}>
+            <p className="mt-2 text-copy font-medium" style={{ color: LINK }}>
               {slide.intro.question}
             </p>
           </Card>
 
-          <div className="grid gap-5 sm:grid-cols-[1.15fr_1fr]">
+          <div className="grid gap-6 sm:grid-cols-[1.15fr_1fr]">
             <Card tone="blue" className="wp-checker flex flex-col justify-end overflow-visible sm:min-h-[16rem]">
               <Sticker src={slide.expectations.sticker} className="absolute -top-8 right-2 w-24 sm:w-32" />
               <Num className="text-5xl sm:text-6xl">{big.value}</Num>
               <p className="mt-4 text-[22px] font-black">{big.label}</p>
               <p className="mt-1 text-note">{big.note}</p>
             </Card>
-            <div className="grid gap-5">
+            <div className="grid gap-6">
               {small.map((s) => (
                 <Card key={s.value} tone={s.tone} className="flex flex-col justify-center">
                   <Num className="text-4xl" style={{ color: s.tone === "dark" ? YELLOW : undefined }}>
@@ -391,7 +391,7 @@ function Background({ slide }) {
           <Card>
             <div className="grid gap-3 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-6">
               <h4 className="text-copy font-black">{slide.revenue.title}</h4>
-              <div className="flex h-9 gap-1.5">
+              <div className="flex h-9 gap-2">
                 {slide.revenue.segments.map((seg, i) => (
                   <span
                     key={i}
@@ -461,8 +461,8 @@ function Research({ slide }) {
     })
     .join(", ")
   return (
-    <div className="grid gap-5">
-      <div className="grid gap-5 md:grid-cols-3">
+    <div className="grid gap-6">
+      <div className="grid gap-6 md:grid-cols-3">
         {slide.metrics.map((m) => (
           <Card key={m.value} tone={m.tone}>
             <div className="flex flex-wrap items-baseline gap-x-3">
@@ -478,7 +478,7 @@ function Research({ slide }) {
         ))}
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-[1.55fr_1fr_1.1fr]">
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-[1.55fr_1fr_1.1fr]">
         <Card className="flex flex-col md:col-span-2 xl:col-span-1" style={{ boxShadow: "inset 0 0 0 2px var(--wp-pale-2)" }}>
           <Tag className="self-start">{slide.why.tag}</Tag>
           <div className="mt-3 flex flex-wrap items-baseline gap-x-4">
@@ -487,7 +487,7 @@ function Research({ slide }) {
               {slide.why.sub}
             </span>
           </div>
-          <ul className="mt-6 space-y-5">
+          <ul className="mt-6 space-y-6">
             {slide.why.bars.map((b) => (
               <li key={b.label} className="grid grid-cols-[minmax(0,8rem)_1fr_auto] items-center gap-3 sm:grid-cols-[minmax(0,9rem)_1fr_auto]">
                 <span className="text-note font-medium">{b.label}</span>
@@ -501,7 +501,7 @@ function Research({ slide }) {
             ))}
           </ul>
           <div className="mt-auto pt-6">
-            <p className="inline-block rounded-2xl px-4 py-2.5 text-copy font-bold sm:rounded-full" style={{ background: NIGHT, color: "#fff", boxShadow: RING }}>
+            <p className="inline-block rounded-2xl px-4 py-3 text-copy font-bold sm:rounded-full" style={{ background: NIGHT, color: "#fff", boxShadow: RING }}>
               {slide.why.note}
             </p>
           </div>
@@ -517,7 +517,7 @@ function Research({ slide }) {
               </Num>
             </div>
           </div>
-          <ul className="space-y-1.5">
+          <ul className="space-y-2">
             {w.segments.map((s) => (
               <li key={s.pct} className="flex items-center gap-3 text-note font-medium">
                 <Dot color={s.tone === "blue" ? BLUE : s.tone === "yellow" ? YELLOW : "#5f6b7e"} />
@@ -525,7 +525,7 @@ function Research({ slide }) {
               </li>
             ))}
           </ul>
-          <p className="mt-1.5 pl-[22px] text-note" style={{ color: QUIET }}>
+          <p className="mt-2 pl-[22px] text-note" style={{ color: QUIET }}>
             {w.sub}
           </p>
           <p className="mt-4 text-copy font-bold" style={{ color: LINK }}>
@@ -535,7 +535,7 @@ function Research({ slide }) {
 
         <TabCard tone="dark" tab={slide.how.tab}>
           <h4 className="text-[22px] font-black">{slide.how.title}</h4>
-          <ol className="mt-5 space-y-5">
+          <ol className="mt-6 space-y-6">
             {slide.how.items.map((it, i) => (
               <li key={it.problem} className="flex gap-4">
                 <Num className="text-2xl" style={{ color: YELLOW }}>
@@ -550,7 +550,7 @@ function Research({ slide }) {
               </li>
             ))}
           </ol>
-          <span className="mt-6 inline-block rounded-full px-4 py-1.5 text-note font-bold" style={{ background: BLUE, color: "#fff" }}>
+          <span className="mt-6 inline-block rounded-full px-4 py-2 text-note font-bold" style={{ background: BLUE, color: "#fff" }}>
             {slide.how.note}
           </span>
         </TabCard>
@@ -566,7 +566,7 @@ const PAIN_TILT = ["rotate-3", "-rotate-3", "-rotate-2", "rotate-2", "rotate-1"]
 function Insights({ slide }) {
   return (
     <div className="grid gap-6">
-      <ul className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">
+      <ul className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
         {slide.cards.map((c) => (
           <li key={c.tab} className="relative flex">
             <TabCard tone="card" tab={c.tab} className="w-full" bodyClass="flex flex-col">
@@ -574,8 +574,8 @@ function Insights({ slide }) {
               <p className="mt-3 text-copy" style={{ color: QUIET }}>
                 {c.text}
               </p>
-              <figure className="mt-auto pt-5">
-                <div className="rounded-[1.25rem] p-5" style={c.tone === "yellow" ? { background: YELLOW, color: ON_FILL } : { background: PALE, color: LINK }}>
+              <figure className="mt-auto pt-6">
+                <div className="rounded-[1.25rem] p-6" style={c.tone === "yellow" ? { background: YELLOW, color: ON_FILL } : { background: PALE, color: LINK }}>
                   <blockquote className="text-copy font-bold">{c.quote}</blockquote>
                   <figcaption className="mt-3 text-note" style={{ color: c.tone === "yellow" ? "rgba(21,24,33,0.78)" : QUIET }}>
                     {c.by}
@@ -591,7 +591,7 @@ function Insights({ slide }) {
       <div className="grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
         <div>
           <h4 className="text-[22px] font-black text-white">{slide.pains.title}</h4>
-          <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-5">
+          <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-6">
             {slide.pains.items.map((p, i) => (
               <li key={p.text}>
                 <Pill tone={p.tone === "card" ? "white" : p.tone} tilt={PAIN_TILT[i]} className="px-5 py-2 text-copy font-black">
@@ -624,7 +624,7 @@ function Competitors({ slide }) {
       {/* Seven products across is wider than a reading column at 18px, so the
           matrix keeps its own width and scrolls sideways inside its box. Each
           product is one rounded column, wetter.com's in the deck's blue. */}
-      <div className="no-scrollbar -mx-1 overflow-x-auto px-1 pb-2 pt-9">
+      <div className="no-scrollbar -mx-1 overflow-x-auto px-1 pb-2 pt-10">
         <div className="flex min-w-[61rem] gap-2">
           <div className="flex w-[9.5rem] shrink-0 flex-col">
             <div className="h-[7.5rem]" />
@@ -704,12 +704,12 @@ function Ideation({ slide }) {
             <Pill tone={i ? "blue" : "yellow"} tilt={i ? "-rotate-3" : "rotate-3"} className="wp-round absolute -top-4 left-6 z-10 text-copy font-extrabold">
               {r.tag}
             </Pill>
-            <Card tone={r.tone} className="pt-9 sm:pt-10">
+            <Card tone={r.tone} className="pt-10 sm:pt-10">
               <h4 className="text-[22px] font-black">{r.hmw}</h4>
               <p className="mt-4 text-note" style={{ color: TONE[r.tone].q }}>
                 {r.clusterLabel}
               </p>
-              <ul className="mt-2.5 flex flex-wrap gap-2">
+              <ul className="mt-3 flex flex-wrap gap-2">
                 {r.clusters.map((c) => (
                   <li key={c}>
                     <span
@@ -723,10 +723,10 @@ function Ideation({ slide }) {
               </ul>
               {r.voted && (
                 <>
-                  <p className="mt-5 text-note" style={{ color: QUIET }}>
+                  <p className="mt-6 text-note" style={{ color: QUIET }}>
                     {r.votedLabel}
                   </p>
-                  <ol className="mt-2.5 space-y-2">
+                  <ol className="mt-3 space-y-2">
                     {r.voted.map((v, vi) => (
                       <li key={v} className="flex items-start gap-3">
                         <Disc size={30}>
@@ -759,10 +759,10 @@ function Ideation({ slide }) {
           {slide.featuresTitle}
         </h4>
         <Squiggle className="mt-1" />
-        <ol className="mt-5 grid gap-5">
+        <ol className="mt-6 grid gap-6">
           {slide.features.map((f) => (
             <li key={f.no}>
-              <Card tone={f.tone} className="flex items-center gap-5 p-4 sm:p-5">
+              <Card tone={f.tone} className="flex items-center gap-6 p-4 sm:p-6">
                 <div className="size-24 shrink-0 overflow-hidden rounded-full bg-white p-2 sm:size-28">
                   <img src={f.art} alt="" loading="lazy" className="h-full w-full object-contain" />
                 </div>
@@ -789,8 +789,8 @@ function Ideation({ slide }) {
 function Business({ slide }) {
   const w = slide.why
   return (
-    <div className="grid gap-5">
-      <Card tone="dark" className="grid gap-5 lg:grid-cols-[15rem_1fr] lg:gap-x-10 2xl:grid-cols-[15rem_1fr_auto] 2xl:items-center">
+    <div className="grid gap-6">
+      <Card tone="dark" className="grid gap-6 lg:grid-cols-[15rem_1fr] lg:gap-x-10 2xl:grid-cols-[15rem_1fr_auto] 2xl:items-center">
         <div>
           <Pill tone="yellow">{w.pill}</Pill>
           <h4 className="mt-3 text-[22px] font-black">{w.title}</h4>
@@ -808,7 +808,7 @@ function Business({ slide }) {
         </div>
       </Card>
 
-      <div className="grid gap-5 2xl:grid-cols-2">
+      <div className="grid gap-6 2xl:grid-cols-2">
         {slide.plans.map((p) => {
           const blue = p.tone === "blue"
           return (
@@ -821,17 +821,17 @@ function Business({ slide }) {
                 <p className="mt-3 text-copy" style={{ color: TONE[p.tone].q }}>
                   {p.text}
                 </p>
-                <dl className="mt-5 grid gap-3">
+                <dl className="mt-6 grid gap-3">
                   {p.kv.map((kv) => (
                     <div key={kv.k} className="rounded-[1.25rem] px-5 py-3" style={blue ? { background: "#fff", color: ON_FILL } : { background: PALE }}>
                       <dt className="text-note font-bold" style={{ color: blue ? "#0058d6" : LINK }}>
                         {kv.k}
                       </dt>
-                      <dd className="mt-0.5 text-copy font-medium">{kv.v}</dd>
+                      <dd className="mt-1 text-copy font-medium">{kv.v}</dd>
                     </div>
                   ))}
                 </dl>
-                <p className="mt-5 rounded-[1.25rem] px-5 py-3.5 text-copy font-bold" style={{ background: NIGHT, color: YELLOW, boxShadow: RING }}>
+                <p className="mt-6 rounded-[1.25rem] px-5 py-4 text-copy font-bold" style={{ background: NIGHT, color: YELLOW, boxShadow: RING }}>
                   {p.status}
                 </p>
               </div>
@@ -862,12 +862,12 @@ function Business({ slide }) {
 function Iteration({ slide }) {
   const [before, after] = slide.panels
   const Panel = ({ panel, tilt }) => (
-    <div className="relative pt-5">
+    <div className="relative pt-6">
       <Pill tone={panel.tone === "blue" ? "yellow" : "white"} outline={panel.tone !== "blue"} tilt={tilt} className="absolute left-5 top-0 z-10">
         {panel.tag}
       </Pill>
       <Card tone={panel.tone} className={`pt-10 ${panel.tone ==="blue"?"wp-checker":""}`} style={panel.tone === "blue" ? { backgroundColor: BLUE } : undefined}>
-        <ul className="grid grid-cols-3 gap-2.5 sm:gap-4">
+        <ul className="grid grid-cols-3 gap-3 sm:gap-4">
           {panel.shots.map((s) => (
             <li key={s.src} className="min-w-0">
               <Phone src={s.src} alt={s.caption} frame={panel.tone === "grey" ? "grey" : s.hot ? "yellow" : "dark"} className="shadow-none" />
@@ -882,7 +882,7 @@ function Iteration({ slide }) {
   )
   return (
     <div>
-      <div className="relative grid items-center gap-5 lg:grid-cols-[1fr_auto_1fr]">
+      <div className="relative grid items-center gap-6 lg:grid-cols-[1fr_auto_1fr]">
         <Panel panel={before} tilt="rotate-2" />
         <ArrowDisc tone="yellow" turn="lg" size={64} className="mx-auto" />
         <div className="relative">
@@ -890,7 +890,7 @@ function Iteration({ slide }) {
           <Sticker src={slide.sticker} className="absolute -top-6 right-2 w-20" />
         </div>
       </div>
-      <ul className="mt-6 flex flex-wrap gap-2.5">
+      <ul className="mt-6 flex flex-wrap gap-3">
         {slide.changes.map((c) => (
           <li key={c.text}>
             <span className="inline-block rounded-[1.25rem] px-4 py-2 text-note font-bold sm:rounded-full" style={{ background: TONE[c.tone].bg, color: c.tone === "pale" ? LINK : TONE[c.tone].fg, boxShadow: c.tone === "dark" ? RING : undefined }}>
@@ -909,11 +909,11 @@ function Turn({ slide, t }) {
   const p = slide.pairs
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-      <Card tone="dark" className="sm:p-7">
+      <Card tone="dark" className="sm:p-8">
         <ol className="relative">
           <span aria-hidden="true" className="absolute bottom-10 left-[25px] top-10 border-l-[3px] border-dotted" style={{ borderColor: "rgba(255,255,255,0.35)" }} />
           {slide.timeline.map((s, i) => (
-            <li key={s.step} className="relative flex gap-5 pb-8 last:pb-0">
+            <li key={s.step} className="relative flex gap-6 pb-8 last:pb-0">
               <Disc tone={s.hot ? "yellow" : "blue"} size={52}>
                 {i + 1}
               </Disc>
@@ -938,12 +938,12 @@ function Turn({ slide, t }) {
           <h4 className="text-[22px] font-black">{p.title}</h4>
           <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-4 2xl:grid-cols-3">
             {p.items.map((it, i) => (
-              <li key={i} className="flex items-center gap-1.5">
-                <div className="aspect-[3/4] flex-1 rounded-xl p-1.5" style={{ background: PALE }}>
+              <li key={i} className="flex items-center gap-2">
+                <div className="aspect-[3/4] flex-1 rounded-xl p-2" style={{ background: PALE }}>
                   <img src={it.real} alt={t(p.altReal)} loading="lazy" className="h-full w-full object-contain" />
                 </div>
                 <ArrowDisc tone="yellow" turn="none" size={26} />
-                <div className="aspect-[3/4] flex-1 rounded-xl p-1.5" style={{ background: BLUE }}>
+                <div className="aspect-[3/4] flex-1 rounded-xl p-2" style={{ background: BLUE }}>
                   <img src={it.ai} alt={t(p.altAi)} loading="lazy" className="h-full w-full object-contain" />
                 </div>
               </li>
@@ -959,19 +959,19 @@ function Turn({ slide, t }) {
 
 function AiMascot({ slide }) {
   return (
-    <div className="relative grid gap-5 2xl:grid-cols-[1.45fr_1fr]">
+    <div className="relative grid gap-6 2xl:grid-cols-[1.45fr_1fr]">
       <Sticker src={slide.sticker} className="absolute -top-28 right-0 hidden w-28 sm:block" />
-      <div className="grid content-start gap-5">
-        <Card className="sm:p-7">
+      <div className="grid content-start gap-6">
+        <Card className="sm:p-8">
           {/* Three screens with the flow between them. On a phone the arrows go
               and the screens sit side by side — the same sequence, left to right. */}
-          <ol className="grid grid-cols-3 items-start gap-2.5 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:gap-4">
+          <ol className="grid grid-cols-3 items-start gap-3 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:gap-4">
             {slide.shots.map((s, i) => (
               <li key={s.src} className="contents">
                 <div className="min-w-0">
                   <Phone src={s.src} alt={s.caption} frame={s.hot ? "yellow" : "dark"} />
                   <p
-                    className="mt-3 rounded-2xl px-3 py-1.5 text-center text-note font-bold"
+                    className="mt-3 rounded-2xl px-3 py-2 text-center text-note font-bold"
                     style={s.hot ? { background: YELLOW, color: ON_FILL } : { background: PALE, color: LINK }}
                   >
                     {s.caption}
@@ -989,7 +989,7 @@ function AiMascot({ slide }) {
         <ul className="grid gap-4 sm:grid-cols-3">
           {slide.decisions.map((d) => (
             <li key={d.title}>
-              <Card tone={d.tone} className="h-full p-5 sm:p-6">
+              <Card tone={d.tone} className="h-full p-6 sm:p-6">
                 <p className="text-copy font-black">{d.title}</p>
                 <p className="mt-2 text-copy" style={{ color: TONE[d.tone].q }}>
                   {d.text}
@@ -1000,10 +1000,10 @@ function AiMascot({ slide }) {
         </ul>
       </div>
 
-      <div className="grid content-start gap-5 lg:grid-cols-2 2xl:grid-cols-1">
+      <div className="grid content-start gap-6 lg:grid-cols-2 2xl:grid-cols-1">
         <Card tone="dark">
           <h4 className="text-[22px] font-black">{slide.pipeline.title} <span style={{ color: YELLOW }}>✦</span></h4>
-          <ol className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2 2xl:grid-cols-4">
+          <ol className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2 2xl:grid-cols-4">
             {slide.pipeline.nodes.map((n, i) => {
               const last = i === slide.pipeline.nodes.length - 1
               return (
@@ -1019,7 +1019,7 @@ function AiMascot({ slide }) {
         </Card>
         <Card tone="blue" className="wp-checker" style={{ backgroundColor: BLUE }}>
           <h4 className="text-[22px] font-black">{slide.edges.title}</h4>
-          <ul className="mt-5 grid grid-cols-3 gap-3 sm:gap-5">
+          <ul className="mt-6 grid grid-cols-3 gap-3 sm:gap-6">
             {slide.edges.shots.map((s) => (
               <li key={s.src} className="flex min-w-0 flex-col items-center">
                 <Phone src={s.src} alt={s.caption} className="w-full" />
@@ -1040,14 +1040,14 @@ function AiMascot({ slide }) {
 function Annotation({ item }) {
   return (
     <li>
-      <Card tone="white" className="flex h-full gap-4 p-5 sm:p-6">
+      <Card tone="white" className="flex h-full gap-4 p-6 sm:p-6">
         <Disc tone="yellow" size={48}>
           <span className="text-copy">{item.no}</span>
         </Disc>
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-3">
             <p className="text-[22px] font-black">{item.title}</p>
-            {item.tag && <Pill tone="yellow" className="px-3 py-0.5">{item.tag}</Pill>}
+            {item.tag && <Pill tone="yellow" className="px-3 py-1">{item.tag}</Pill>}
           </div>
           <p className="mt-2 text-copy" style={{ color: TONE.white.q }}>
             {item.text}
@@ -1067,13 +1067,13 @@ function Home({ slide }) {
         <Phone src={slide.shot} className="relative rounded-[2.25rem] border-[7px]" />
         <Sticker src={slide.sticker} className="absolute -right-8 top-0 w-20" />
       </figure>
-      <ol className="grid content-start gap-5 lg:order-1">
+      <ol className="grid content-start gap-6 lg:order-1">
         {slide.left.map((it) => (
           <Annotation key={it.no} item={it} />
         ))}
       </ol>
-      <div className="grid content-start gap-5 lg:order-3">
-        <ol className="grid gap-5">
+      <div className="grid content-start gap-6 lg:order-3">
+        <ol className="grid gap-6">
           {slide.right.map((it) => (
             <Annotation key={it.no} item={it} />
           ))}
@@ -1101,7 +1101,7 @@ function Testing({ slide }) {
   const s = slide.summary
   return (
     <div className="grid gap-8">
-      <Card tone="pale" className="grid gap-5 lg:grid-cols-[auto_1fr] lg:items-center lg:gap-10">
+      <Card tone="pale" className="grid gap-6 lg:grid-cols-[auto_1fr] lg:items-center lg:gap-10">
         <div className="flex items-center gap-4 lg:border-r-2 lg:pr-10" style={{ borderColor: PALE_2 }}>
           <Num className="text-5xl" style={{ color: LINK }}>
             {s.value}
@@ -1115,7 +1115,7 @@ function Testing({ slide }) {
         </div>
         <div>
           <p className="text-copy font-black">{s.goalsLabel}</p>
-          <ul className="mt-2.5 flex flex-wrap gap-2">
+          <ul className="mt-3 flex flex-wrap gap-2">
             {s.goals.map((g) => (
               <li key={g}>
                 <span className="inline-block rounded-full px-3.5 py-1 text-note font-bold" style={{ background: CARD, color: LINK, boxShadow: "inset 0 0 0 1px var(--wp-pale-2)" }}>
@@ -1127,20 +1127,20 @@ function Testing({ slide }) {
         </div>
       </Card>
 
-      <ol className="grid gap-8 lg:grid-cols-3 lg:gap-5">
+      <ol className="grid gap-8 lg:grid-cols-3 lg:gap-6">
         {slide.rounds.map((r) => {
           const tone = TONE[r.tone]
           return (
             <li key={r.tab} className="flex">
               <TabCard tone={r.tone} tab={r.tab} className="w-full" bodyClass="flex flex-col">
                 <h4 className="text-[22px] font-black">{r.title}</h4>
-                <p className="mt-1.5 text-note" style={{ color: tone.q }}>
+                <p className="mt-2 text-note" style={{ color: tone.q }}>
                   {r.sub}
                 </p>
 
                 {r.findings && (
                   <>
-                    <p className="mt-5 text-copy font-black" style={{ color: r.tone === "pale" ? LINK : tone.fg }}>
+                    <p className="mt-6 text-copy font-black" style={{ color: r.tone === "pale" ? LINK : tone.fg }}>
                       {r.findingsLabel}
                     </p>
                     <Bullets items={r.findings} color={r.tone === "yellow" ? NIGHT : BLUE} className="mt-2" />
@@ -1148,7 +1148,7 @@ function Testing({ slide }) {
                 )}
 
                 {r.versions && (
-                  <ul className="mt-5 space-y-2">
+                  <ul className="mt-6 space-y-2">
                     {r.versions.map((v) => (
                       <li key={v.v} className="flex items-center gap-4 rounded-xl px-4 py-2" style={{ background: "rgba(255,255,255,0.08)" }}>
                         <Num className="text-copy" style={{ color: YELLOW }}>
@@ -1161,7 +1161,7 @@ function Testing({ slide }) {
                 )}
 
                 {r.quote && (
-                  <div className={`mt-5 rounded-[1.25rem] p-5 ${r.tone ==="yellow"?"sm:mr-24 lg:mr-0 xl:mr-20":""}`} style={r.tone === "dark" ? { background: YELLOW, color: ON_FILL } : { background: "#fff", color: ON_FILL }}>
+                  <div className={`mt-6 rounded-[1.25rem] p-6 ${r.tone ==="yellow"?"sm:mr-24 lg:mr-0 xl:mr-20":""}`} style={r.tone === "dark" ? { background: YELLOW, color: ON_FILL } : { background: "#fff", color: ON_FILL }}>
                     <p className="text-copy font-black" style={{ color: r.tone === "dark" ? ON_FILL : "#0058d6" }}>
                       {r.quote.title}
                     </p>
@@ -1172,10 +1172,10 @@ function Testing({ slide }) {
                   </div>
                 )}
 
-                {r.finding && <Bullets items={[r.finding]} color={YELLOW} className="mt-5" />}
+                {r.finding && <Bullets items={[r.finding]} color={YELLOW} className="mt-6" />}
 
                 {r.changes && (
-                  <div className={`mt-5 rounded-[1.25rem] p-5 ${r.tone ==="yellow"?"sm:mr-24 lg:mr-0 xl:mr-20":""}`} style={{ background: r.tone === "pale" ? CARD : "#fff", color: r.tone === "pale" ? INK : ON_FILL }}>
+                  <div className={`mt-6 rounded-[1.25rem] p-6 ${r.tone ==="yellow"?"sm:mr-24 lg:mr-0 xl:mr-20":""}`} style={{ background: r.tone === "pale" ? CARD : "#fff", color: r.tone === "pale" ? INK : ON_FILL }}>
                     <p className="text-copy font-black" style={{ color: r.tone === "pale" ? LINK : "#0058d6" }}>
                       {r.changeLabel}
                     </p>
@@ -1230,9 +1230,9 @@ function Handoff({ slide }) {
   const m = slide.mvp
   const d = slide.system
   return (
-    <div className="grid gap-5 2xl:grid-cols-[1.1fr_1fr]">
-      <div className="grid content-start gap-5">
-        <Card tone="dark" className="sm:p-7">
+    <div className="grid gap-6 2xl:grid-cols-[1.1fr_1fr]">
+      <div className="grid content-start gap-6">
+        <Card tone="dark" className="sm:p-8">
           <h4 className="text-[22px] font-black">
             {a.title} <span style={{ color: YELLOW }}>✦</span>
           </h4>
@@ -1262,7 +1262,7 @@ function Handoff({ slide }) {
           </p>
         </Card>
 
-        <Card className="grid gap-5 sm:grid-cols-[auto_1fr] sm:gap-8">
+        <Card className="grid gap-6 sm:grid-cols-[auto_1fr] sm:gap-8">
           <div>
             <Pill tone="yellow" tilt="rotate-3">
               {m.pill}
@@ -1295,14 +1295,14 @@ function Handoff({ slide }) {
             </li>
           ))}
         </ul>
-        <ul className="wp-checker mt-6 grid max-w-3xl grid-cols-4 gap-2 rounded-[1.5rem] p-3 sm:gap-4 sm:p-5" style={{ backgroundColor: BLUE }}>
+        <ul className="wp-checker mt-6 grid max-w-3xl grid-cols-4 gap-2 rounded-[1.5rem] p-3 sm:gap-4 sm:p-6" style={{ backgroundColor: BLUE }}>
           {d.images.map((img) => (
             <li key={img.src} className="flex aspect-[3/4] items-end justify-center">
               <img src={img.src} alt={img.alt} loading="lazy" className="max-h-full w-full object-contain" />
             </li>
           ))}
         </ul>
-        <h5 className="mt-7 text-[22px] font-black">{d.engTitle}</h5>
+        <h5 className="mt-8 text-[22px] font-black">{d.engTitle}</h5>
         <Bullets items={d.eng} color={YELLOW} className="mt-3" />
       </TabCard>
     </div>
@@ -1405,8 +1405,8 @@ function Stars({ n }) {
 function Launch({ slide }) {
   const c = slide.chart
   return (
-    <div className="grid gap-5 2xl:grid-cols-[1.6fr_1fr]">
-      <Card tone="night2" className="sm:p-7">
+    <div className="grid gap-6 2xl:grid-cols-[1.6fr_1fr]">
+      <Card tone="night2" className="sm:p-8">
         <h4 className="text-copy font-black">{c.title}</h4>
         <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-1">
           <Num className="text-4xl" style={{ color: YELLOW }}>
@@ -1417,12 +1417,12 @@ function Launch({ slide }) {
           </span>
         </div>
         <InstallChart chart={c} />
-        <p className="mt-5 rounded-[1.25rem] px-5 py-3 text-copy" style={{ background: BLUE, color: "#fff" }}>
+        <p className="mt-6 rounded-[1.25rem] px-5 py-3 text-copy" style={{ background: BLUE, color: "#fff" }}>
           {c.read}
         </p>
       </Card>
 
-      <div className="grid content-start gap-5 lg:grid-cols-2 2xl:grid-cols-1">
+      <div className="grid content-start gap-6 lg:grid-cols-2 2xl:grid-cols-1">
         <Card>
           <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
             <h4 className="text-[22px] font-black">{slide.reviews.title}</h4>
@@ -1430,9 +1430,9 @@ function Launch({ slide }) {
               {slide.reviews.sub}
             </span>
           </div>
-          <ul className="mt-5 grid gap-4">
+          <ul className="mt-6 grid gap-4">
             {slide.reviews.items.map((r, i) => (
-              <li key={i} className="rounded-[1.5rem] p-5" style={{ background: PALE }}>
+              <li key={i} className="rounded-[1.5rem] p-6" style={{ background: PALE }}>
                 <Stars n={r.stars} />
                 <p className="mt-2 text-copy">{r.text}</p>
               </li>
@@ -1457,13 +1457,13 @@ function Reflection({ slide }) {
   const s = slide.store
   const m = slide.marketing
   return (
-    <div className="grid gap-5">
-      <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
+    <div className="grid gap-6">
+      <div className="grid gap-6 md:grid-cols-2 2xl:grid-cols-3">
         <Card tone="blue" className="wp-checker" style={{ backgroundColor: BLUE }}>
-          <span className="inline-block rounded-full bg-white px-4 py-1.5 text-note font-black" style={{ color: "#0058d6" }}>
+          <span className="inline-block rounded-full bg-white px-4 py-2 text-note font-black" style={{ color: "#0058d6" }}>
             {s.pill}
           </span>
-          <div className="mt-5 flex items-center gap-4">
+          <div className="mt-6 flex items-center gap-4">
             <img src={s.icon} alt="" loading="lazy" className="size-24 shrink-0 rounded-[1.75rem] border-4 border-white" style={{ background: "#2f6bff" }} />
             <div className="min-w-0">
               <p className="wp-round text-2xl font-extrabold">{s.name}</p>
@@ -1472,9 +1472,9 @@ function Reflection({ slide }) {
               </p>
             </div>
           </div>
-          <ul className="mt-6 grid grid-cols-3 gap-2.5">
+          <ul className="mt-6 grid grid-cols-3 gap-3">
             {s.stats.map((st) => (
-              <li key={st.label} className="rounded-[1.25rem] bg-white p-3.5" style={{ color: ON_FILL }}>
+              <li key={st.label} className="rounded-[1.25rem] bg-white p-4" style={{ color: ON_FILL }}>
                 <Num className="block text-2xl" style={{ color: "#0058d6" }}>
                   {st.value}
                 </Num>
@@ -1482,7 +1482,7 @@ function Reflection({ slide }) {
               </li>
             ))}
           </ul>
-          <ul className="mt-5 flex flex-wrap gap-2">
+          <ul className="mt-6 flex flex-wrap gap-2">
             {s.pills.map((p) => (
               <li key={p}>
                 <Pill tone="yellow" className="px-3.5 py-1">
@@ -1491,8 +1491,8 @@ function Reflection({ slide }) {
               </li>
             ))}
           </ul>
-          <p className="mt-5 text-copy font-medium">{s.tagline}</p>
-          <p className="mt-5 text-note">{s.source}</p>
+          <p className="mt-6 text-copy font-medium">{s.tagline}</p>
+          <p className="mt-6 text-note">{s.source}</p>
         </Card>
 
         <Card tone="pale">
@@ -1502,7 +1502,7 @@ function Reflection({ slide }) {
               {m.sub}
             </span>
           </div>
-          <img src={m.banner} alt={m.bannerAlt} loading="lazy" className="mt-5 block h-auto w-full rounded-[1.25rem]" />
+          <img src={m.banner} alt={m.bannerAlt} loading="lazy" className="mt-6 block h-auto w-full rounded-[1.25rem]" />
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-[1fr_1fr_1.1fr]">
             {m.squares.map((sq) => (
               <img key={sq.src} src={sq.src} alt={sq.alt} loading="lazy" className="block aspect-square w-full rounded-[1.1rem] object-cover" />
@@ -1510,10 +1510,10 @@ function Reflection({ slide }) {
             <ul className="col-span-2 grid grid-cols-2 gap-3 sm:col-span-1 sm:grid-cols-1">
               {m.audiences.map((au) => (
                 <li key={au.tag}>
-                  <Pill tone={au.tone} className="px-3 py-0.5">
+                  <Pill tone={au.tone} className="px-3 py-1">
                     {au.tag}
                   </Pill>
-                  <p className="mt-1.5 text-copy">{au.text}</p>
+                  <p className="mt-2 text-copy">{au.text}</p>
                 </li>
               ))}
             </ul>
@@ -1523,7 +1523,7 @@ function Reflection({ slide }) {
         <TabCard tone="yellow" tab={slide.takeaways.tab} className="md:col-span-2 2xl:col-span-1">
           <ol className="grid gap-3 md:grid-cols-2 2xl:grid-cols-1">
             {slide.takeaways.items.map((it) => (
-              <li key={it.no} className="rounded-[1.5rem] bg-white p-5" style={{ color: ON_FILL }}>
+              <li key={it.no} className="rounded-[1.5rem] bg-white p-6" style={{ color: ON_FILL }}>
                 <div className="flex items-center gap-3">
                   <Disc size={36}>
                     <span className="text-note">{it.no}</span>
@@ -1540,7 +1540,7 @@ function Reflection({ slide }) {
       </div>
 
       {/* The deck's closing band. */}
-      <div className="wp-checker relative overflow-hidden rounded-[2rem] px-6 py-7 sm:px-9 sm:py-8" style={{ backgroundColor: BLUE, color: "#fff" }}>
+      <div className="wp-checker relative overflow-hidden rounded-[2rem] px-6 py-8 sm:px-9 sm:py-8" style={{ backgroundColor: BLUE, color: "#fff" }}>
         <div className="relative z-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-3 sm:pr-40">
           <div>
             <p className="wp-round text-4xl font-extrabold sm:text-5xl">Thanks for watching!</p>

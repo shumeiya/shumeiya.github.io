@@ -185,7 +185,7 @@ function Levels({ slide }) {
           <li key={level.img} className="flex flex-col items-center text-center">
             <img src={level.img} alt="" loading="lazy" className="block h-34 w-auto max-w-full object-contain sm:h-30" />
             <p className="mt-4 text-copy font-medium text-ink">{level.n}</p>
-            <p className="mt-0.5 max-w-[14rem] text-note leading-snug text-fog">{level.label}</p>
+            <p className="mt-1 max-w-[14rem] text-note leading-snug text-fog">{level.label}</p>
           </li>
         ))}
       </ul>
@@ -251,20 +251,20 @@ function Trends({ slide }) {
 function Person({ person }) {
   return (
     <article>
-      <div className="flex items-center gap-5">
+      <div className="flex items-center gap-6">
         <img src={person.avatar} alt="" loading="lazy" className="block size-24 shrink-0 rounded-full object-cover sm:size-28" />
         <div>
           <h3 className="text-2xl font-semibold" style={{ color: TITLE }}>
             {person.name}
           </h3>
           {person.meta.map((line) => (
-            <p key={line} className="mt-0.5 text-note leading-snug text-fog">
+            <p key={line} className="mt-1 text-note leading-snug text-fog">
               {line}
             </p>
           ))}
         </div>
       </div>
-      <ul className="mt-5 space-y-2">
+      <ul className="mt-6 space-y-2">
         {person.quotes.map((quote) => (
           <li key={quote} className="flex gap-3 text-copy leading-relaxed text-fog">
             <span aria-hidden="true" className="mt-[0.7em] size-1 shrink-0 rounded-full bg-ink/40" />
@@ -299,7 +299,7 @@ function Interview({ slide }) {
 
 function Journey({ slide }) {
   return (
-    <ol className="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
+    <ol className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
       {slide.stages.map((stage) => (
         <li key={stage.label} className="flex flex-col items-center">
           <div
@@ -383,7 +383,7 @@ function DesignPoint({ slide }) {
 
 function Chat({ slide }) {
   return (
-    <div className="rounded-3xl p-5 sm:p-7" style={{ background: "var(--hmi-chat)" }}>
+    <div className="rounded-3xl p-6 sm:p-8" style={{ background: "var(--hmi-chat)" }}>
       <ol className="flex flex-col gap-4">
         {slide.messages.map((m, i) => {
           const mine = m.from === "user"
@@ -391,7 +391,7 @@ function Chat({ slide }) {
             <li key={i} className={`flex items-end gap-3 ${mine ? "justify-end" : "justify-start"}`}>
               {!mine && <img src={slide.robot} alt="G-Va" loading="lazy" className="block h-20 w-auto shrink-0" />}
               <p
-                className={`max-w-[75%] px-4 py-2.5 text-note leading-snug sm:max-w-[70%] ${
+                className={`max-w-[75%] px-4 py-3 text-note leading-snug sm:max-w-[70%] ${
                   mine ? "rounded-2xl rounded-br-sm" : "rounded-2xl rounded-bl-sm"
                 }`}
                 style={{ background: "var(--hmi-bubble)", color: "var(--hmi-on-bubble)" }}
@@ -441,7 +441,7 @@ function Mechanical({ slide }) {
       <div>
         <Flow title="FLOW" items={slide.flow} />
         <Heading className="mt-10">{slide.lightTitle}</Heading>
-        <ul className="mt-5 space-y-4">
+        <ul className="mt-6 space-y-4">
           {slide.lightPoints.map((p) => (
             <li key={p.term} className="flex gap-3">
               <span aria-hidden="true" className="mt-[0.7em] size-1 shrink-0 rounded-full bg-ink/40" />
@@ -508,12 +508,12 @@ function Interface({ slide }) {
   return (
     <div className="grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:items-end lg:gap-10">
       <div className="flex flex-col items-center">
-        <Heading className="mb-5">{d.title}</Heading>
+        <Heading className="mb-6">{d.title}</Heading>
         <DashboardDiagram d={d} />
         <img src={d.photo} alt="" loading="lazy" className="mt-6 block w-full max-w-[18rem] rounded-md" />
       </div>
       <div className="flex flex-col items-center">
-        <Heading className="mb-5">{c.title}</Heading>
+        <Heading className="mb-6">{c.title}</Heading>
         <ConsoleDiagram c={c} />
         <img src={c.photo} alt="" loading="lazy" className="mt-6 block w-full max-w-[28rem] rounded-md" />
       </div>
@@ -527,7 +527,7 @@ function DashboardWire({ w }) {
   return (
     <figure className="mx-auto w-full max-w-2xl">
       <div className="rounded-md p-0" style={{ background: "var(--hmi-wire)" }}>
-        <Wire className="rounded-b-none py-2.5">{w.gear}</Wire>
+        <Wire className="rounded-b-none py-3">{w.gear}</Wire>
         <div className="grid grid-cols-[1fr_2fr_1fr] gap-3 p-3 sm:gap-4 sm:p-4">
           <Wire className="min-h-[7rem] self-center">{w.driving}</Wire>
           <div className="flex flex-col items-center gap-3">
@@ -595,14 +595,14 @@ function ConsoleWireManual({ slide, b }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-md" style={{ background: "var(--hmi-wire)" }}>
       <Wire className="rounded-none py-2">{slide.header}</Wire>
-      <div className="grid grid-cols-[1fr_auto_1fr] grid-rows-[auto_1fr_auto] gap-3 p-3 sm:gap-4 sm:p-5" style={{ minHeight: "11rem" }}>
+      <div className="grid grid-cols-[1fr_auto_1fr] grid-rows-[auto_1fr_auto] gap-3 p-3 sm:gap-4 sm:p-6" style={{ minHeight: "11rem" }}>
         <Wire className="self-start py-3 sm:py-4">{b.nav}</Wire>
         <span />
         <Wire className="justify-self-end self-start w-[70%] py-2">{b.zoom}</Wire>
         <span className="col-span-3 self-center text-center text-note text-ink">{b.map}</span>
-        <Wire className="self-end py-1.5">{b.search}</Wire>
+        <Wire className="self-end py-2">{b.search}</Wire>
         <span />
-        <Wire className="self-end py-2.5">{b.dest}</Wire>
+        <Wire className="self-end py-3">{b.dest}</Wire>
       </div>
       <Wire className="rounded-none py-2">{slide.footer}</Wire>
     </div>
@@ -613,7 +613,7 @@ function ConsoleWireAuto({ slide, b }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-md" style={{ background: "var(--hmi-wire)" }}>
       <Wire className="rounded-none py-2">{slide.header}</Wire>
-      <div className="grid grid-cols-[1fr_1fr] gap-3 p-3 sm:gap-4 sm:p-5" style={{ minHeight: "11rem" }}>
+      <div className="grid grid-cols-[1fr_1fr] gap-3 p-3 sm:gap-4 sm:p-6" style={{ minHeight: "11rem" }}>
         <Wire>{b.map}</Wire>
         <div className="relative grid grid-cols-[1.4fr_1fr] grid-rows-2 gap-2">
           <Wire />
@@ -748,7 +748,7 @@ export default function HmiDeck({ slide }) {
   const Board = BOARDS[slide.kind]
   if (!Board) return null
   return (
-    <div className="hmi-deck mt-8">
+    <div className="hmi-deck mt-block">
       <Board slide={slide} />
     </div>
   )

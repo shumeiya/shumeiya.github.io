@@ -223,7 +223,7 @@ export default function CompetitorsBoard({ board }) {
   ]
 
   return (
-    <figure className="mt-6">
+    <figure className="mt-block">
       <div ref={hostRef} className="no-scrollbar overflow-x-auto">
         <div style={{ width: BOARD_W * scale, height: BOARD_H * scale }}>
           <div
@@ -386,7 +386,7 @@ export default function CompetitorsBoard({ board }) {
       </div>
 
       {scale <= MIN_SCALE && (
-        <figcaption className="mt-3 text-note leading-relaxed text-fog">{t(ui.scrollSideways)}</figcaption>
+        <figcaption className="mt-body text-note leading-relaxed text-fog">{t(ui.scrollSideways)}</figcaption>
       )}
     </figure>
   )

@@ -29,8 +29,8 @@ function Column({ col }) {
         {col.accent && <span aria-hidden="true" className="size-2 rounded-full bg-kyrall" />}
         {t(col.kicker)}
       </p>
-      <p className="mt-1 text-2xl font-semibold tracking-tight text-cream">{t(col.title)}</p>
-      <ul className="mt-5 space-y-3">
+      <p className="mt-tight text-2xl font-semibold tracking-tight text-cream">{t(col.title)}</p>
+      <ul className="mt-lead space-y-body">
         {col.points.map((point, i) => (
           <li key={i} className="flex gap-3 text-copy text-ink">
             <span aria-hidden="true" className="mt-[0.7em] size-1 shrink-0 rounded-full bg-ink/40" />
@@ -50,19 +50,19 @@ function Column({ col }) {
 export default function BackgroundCompare({ act }) {
   const t = useT()
   return (
-    <div className="mt-16">
+    <div className="mt-section">
       <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{t(act.kicker)}</p>
-      <h3 className="mt-2 text-2xl font-semibold tracking-tight text-cream">{t(act.title)}</h3>
-      <p className="mt-3 max-w-2xl text-copy text-ink">{t(act.body)}</p>
+      <h3 className="mt-tight text-2xl font-semibold tracking-tight text-cream">{t(act.title)}</h3>
+      <p className="mt-body max-w-2xl text-copy text-ink">{t(act.body)}</p>
 
-      <div className="mt-8 grid gap-3 md:grid-cols-2">
+      <div className="mt-block grid gap-card md:grid-cols-2">
         {act.columns.map((col) => (
           <Column key={t(col.title)} col={col} />
         ))}
       </div>
 
       {act.closing && (
-        <p className="mt-12 text-3xl font-semibold tracking-tight text-cream">{t(act.closing)}</p>
+        <p className="mt-section text-3xl font-semibold tracking-tight text-cream">{t(act.closing)}</p>
       )}
     </div>
   )

@@ -66,13 +66,13 @@ export default function ProjectDetail() {
       <article>
         <ProjectHero project={project} detail={detail} />
         {detail.intro && (
-          <div className="-mt-6 mb-20">
+          <div className="mb-chapter">
             <DetailBlocks blocks={detail.intro} accent={project.color} />
           </div>
         )}
 
         {detail.sections.map((section) => (
-          <section key={section.id} id={section.id} className="mb-20 scroll-mt-24">
+          <section key={section.id} id={section.id} className="mb-chapter scroll-mt-24">
             {section.eyebrow && (
               <p className="font-mono-tight text-note uppercase tracking-wide text-fog">
                 {section.eyebrow}
@@ -82,26 +82,32 @@ export default function ProjectDetail() {
               className={
                 section.titleHidden
                   ? "sr-only"
-                  : "mt-2 text-3xl font-semibold tracking-tight text-cream"
+                  : "mt-tight text-3xl font-semibold tracking-tight text-cream"
               }
             >
               {section.label}
             </h2>
 
             {section.lead && (
-              <p className="mt-3 text-copy leading-relaxed text-ink">{section.lead}</p>
+              <p className="mt-lead max-w-3xl text-copy text-ink">{section.lead}</p>
             )}
 
-            {section.blocks && <DetailBlocks blocks={section.blocks} accent={project.color} />}
+            {/* When the board or deck draws the chapter title itself, its top edge is
+                the title, so it sits one eyebrow-gap under the eyebrow, not a block-gap. */}
+            {section.blocks && (
+              <div className={section.titleHidden && !section.lead ? "[&>*:first-child]:mt-tight" : undefined}>
+                <DetailBlocks blocks={section.blocks} accent={project.color} />
+              </div>
+            )}
 
             {section.body?.map((paragraph, i) => (
-              <p key={i} className="mt-4 text-copy leading-relaxed text-fog">
+              <p key={i} className="mt-lead text-copy text-fog">
                 {paragraph}
               </p>
             ))}
 
             {section.images?.length > 0 && (
-              <div className="mt-6 grid gap-4">
+              <div className="mt-block grid gap-card">
                 {section.images.map((src) => (
                   <div key={src} className="bg-box">
                     <img src={src} alt="" loading="lazy" className="block h-auto w-full" />

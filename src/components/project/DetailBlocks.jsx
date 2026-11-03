@@ -25,14 +25,14 @@ import HmiDeck from "./HmiDeck"
 // written as prose. Each block keeps its own shape and its own visual weight.
 
 function Text({ text }) {
-  return <p className="mt-4 text-copy leading-relaxed text-fog">{text}</p>
+  return <p className="mt-lead text-copy text-fog">{text}</p>
 }
 
 // The author talking about their own work — an open question, a caveat, a risk
 // they are still watching. Set apart so it never reads as product copy.
 function Note({ text }) {
   return (
-    <p className="mt-6 border-l-2 border-line bg-box-2/60 py-3 pl-4 pr-3 text-copy italic leading-relaxed text-fog">
+    <p className="mt-block border-l-2 border-line bg-box-2/60 py-3 pl-4 pr-3 text-copy italic text-fog">
       {text}
     </p>
   )
@@ -40,13 +40,13 @@ function Note({ text }) {
 
 function Bullets({ title, items }) {
   return (
-    <div className="mt-6">
+    <div className="mt-block">
       {title && (
         <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{title}</p>
       )}
-      <ul className={`${title ? "mt-3" : ""} space-y-2.5`}>
+      <ul className={`${title ? "mt-body" : ""} space-y-body`}>
         {items.map((item) => (
-          <li key={item} className="flex gap-3 text-copy leading-relaxed text-fog">
+          <li key={item} className="flex gap-3 text-copy text-fog">
             <span aria-hidden="true" className="mt-[0.6em] size-1 shrink-0 rounded-full bg-ink/40" />
             <span>{item}</span>
           </li>
@@ -60,11 +60,11 @@ function Bullets({ title, items }) {
 // that turns into unreadable slivers, so they stack two at a time instead.
 function Defs({ items }) {
   return (
-    <dl className="mt-6 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+    <dl className="mt-block grid gap-x-8 gap-y-6 sm:grid-cols-2">
       {items.map((d) => (
         <div key={d.term} className="border-t border-line pt-3">
           <dt className="font-mono-tight text-note uppercase tracking-wide text-ink">{d.term}</dt>
-          <dd className="mt-1.5 text-copy leading-relaxed text-fog">{d.text}</dd>
+          <dd className="mt-2 text-copy text-fog">{d.text}</dd>
         </div>
       ))}
     </dl>
@@ -74,14 +74,14 @@ function Defs({ items }) {
 function Stats({ items, accent }) {
   return (
     <dl
-      className="mt-6 grid gap-x-6 gap-y-6 border-t-2 pt-5 sm:grid-cols-2"
+      className="mt-block grid gap-x-6 gap-y-6 border-t-2 pt-4 sm:grid-cols-2"
       style={{ borderColor: accent }}
     >
       {items.map((s) => (
         <div key={s.label}>
           <dd className="text-3xl font-semibold tracking-tight text-cream">{s.value}</dd>
           <dt className="mt-1 text-copy font-medium text-ink">{s.label}</dt>
-          {s.note && <p className="mt-1 text-note leading-relaxed text-fog">{s.note}</p>}
+          {s.note && <p className="mt-1 text-note text-fog">{s.note}</p>}
         </div>
       ))}
     </dl>
@@ -91,10 +91,10 @@ function Stats({ items, accent }) {
 // A sequence that is a sequence — the arrows are the content.
 function Steps({ items }) {
   return (
-    <ol className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-2">
+    <ol className="mt-block flex flex-wrap items-center gap-x-2 gap-y-2">
       {items.map((step, i) => (
         <li key={step} className="flex items-center gap-2">
-          <span className="rounded-full border border-line px-3 py-1.5 font-mono-tight text-note uppercase tracking-wide text-ink">
+          <span className="rounded-full border border-line px-3 py-2 font-mono-tight text-note uppercase tracking-wide text-ink">
             {step}
           </span>
           {i < items.length - 1 && (
@@ -120,11 +120,11 @@ const FIGURE_SIZE = {
 function Figure({ src, caption, size }) {
   const cap = FIGURE_SIZE[size]
   return (
-    <figure className={`mt-6${cap ? ` ${cap} mx-auto` : ""}`}>
+    <figure className={`mt-block${cap ? ` ${cap} mx-auto` : ""}`}>
       <div className="bg-box">
         <img src={src} alt={caption ?? ""} loading="lazy" className="block h-auto w-full" />
       </div>
-      {caption && <figcaption className="mt-2.5 text-note leading-relaxed text-fog">{caption}</figcaption>}
+      {caption && <figcaption className="mt-body text-note text-fog">{caption}</figcaption>}
     </figure>
   )
 }
@@ -134,14 +134,14 @@ function Figure({ src, caption, size }) {
 // screens, and at full column width five of them turn the section into a scroll.
 function Shots({ items }) {
   return (
-    <ul className="mt-6 grid gap-x-5 gap-y-6 sm:grid-cols-2">
+    <ul className="mt-block grid gap-x-card gap-y-6 sm:grid-cols-2">
       {items.map((shot) => (
         <li key={shot.src}>
           <div className="overflow-hidden rounded-lg border border-line bg-box">
             <img src={shot.src} alt={shot.caption ?? ""} loading="lazy" className="block h-auto w-full" />
           </div>
           {shot.caption && (
-            <p className="mt-2.5 text-note leading-relaxed text-fog">
+            <p className="mt-body text-note text-fog">
               {shot.label && <span className="font-medium text-ink">{shot.label} · </span>}
               {shot.caption}
             </p>
@@ -157,18 +157,18 @@ function Shots({ items }) {
 // reflows, but the numbering does, and it is what ties a note to a screen.
 function Numbers({ title, items }) {
   return (
-    <div className="mt-6">
+    <div className="mt-block">
       {title && <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{title}</p>}
-      <ol className={`${title ? "mt-3" : ""} space-y-3`}>
+      <ol className={`${title ? "mt-body" : ""} space-y-3`}>
         {items.map((item, i) => (
           <li key={item} className="flex gap-3">
             <span
               aria-hidden="true"
-              className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full border border-line font-mono-tight text-note text-ink"
+              className="mt-1 flex size-7 shrink-0 items-center justify-center rounded-full border border-line font-mono-tight text-note text-ink"
             >
               {i + 1}
             </span>
-            <span className="text-copy leading-relaxed text-fog">{item}</span>
+            <span className="text-copy text-fog">{item}</span>
           </li>
         ))}
       </ol>
@@ -181,7 +181,7 @@ function Numbers({ title, items }) {
 // shape it was written in.
 function Formula({ terms, result }) {
   return (
-    <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-3 border-t-2 border-line pt-5">
+    <div className="mt-block flex flex-wrap items-center gap-x-3 gap-y-3 border-t-2 border-line pt-4">
       {terms.map((term, i) => (
         <span key={term} className="flex items-center gap-3">
           <span className="text-copy font-medium text-ink">{term}</span>
@@ -202,16 +202,16 @@ function Formula({ terms, result }) {
 // flattening the three into one wall of chips loses the point it was making.
 function Swatches({ groups }) {
   return (
-    <div className="mt-6 space-y-7">
+    <div className="mt-block space-y-section">
       {groups.map((group) => (
         <div key={group.title}>
           <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{group.title}</p>
-          <ul className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <ul className="mt-body grid grid-cols-2 gap-card sm:grid-cols-3">
             {group.items.map((s) => (
               <li key={s.hex + s.label}>
                 <div className="h-16 rounded-lg border border-line" style={{ background: s.hex }} />
                 <p className="mt-2 font-mono-tight text-note uppercase tracking-wide text-ink">{s.hex}</p>
-                <p className="text-note leading-relaxed text-fog">{s.label}</p>
+                <p className="text-note text-fog">{s.label}</p>
               </li>
             ))}
           </ul>
@@ -235,10 +235,10 @@ function DataTable({ title, head, rows, foot, note }) {
   // Pinned cells need an opaque ground of their own, or the scrolling columns show
   // through them.
   const stick = "sticky left-0 z-10 bg-box"
-  const cell = "whitespace-nowrap px-3 py-2.5 text-note tabular-nums"
+  const cell = "whitespace-nowrap px-3 py-3 text-note tabular-nums"
   return (
-    <figure className="mt-6">
-      {title && <figcaption className="mb-2.5 text-note font-medium text-ink">{title}</figcaption>}
+    <figure className="mt-block">
+      {title && <figcaption className="mb-3 text-note font-medium text-ink">{title}</figcaption>}
       <div className="no-scrollbar overflow-x-auto rounded-xl border border-line bg-box">
         <table className="w-full border-collapse text-left">
           <thead>
@@ -291,7 +291,7 @@ function DataTable({ title, head, rows, foot, note }) {
           )}
         </table>
       </div>
-      <p className="mt-2.5 text-note leading-relaxed text-fog">
+      <p className="mt-body text-note text-fog">
         {note ? `${note} ` : ""}
         {t(ui.scrollTable)}
       </p>
@@ -304,7 +304,7 @@ function DataTable({ title, head, rows, foot, note }) {
 // so the proportions survive being shown at whatever width the column happens to be.
 function GridSpec({ labels }) {
   return (
-    <figure className="mt-6">
+    <figure className="mt-block">
       <div
         className="w-full overflow-hidden rounded-xl border border-line bg-box p-3"
         style={{ aspectRatio: 1440 / 900 }}
@@ -356,7 +356,7 @@ function GridSpec({ labels }) {
 // convincing than one that only shows pictures of it.
 function Links({ items }) {
   return (
-    <ul className="mt-6 space-y-3">
+    <ul className="mt-block space-y-3">
       {items.map((l) => (
         <li key={l.href}>
           <a
@@ -369,11 +369,11 @@ function Links({ items }) {
               <span className="block text-copy font-medium text-ink transition-colors group-hover:text-cream">
                 {l.label}
               </span>
-              {l.note && <span className="mt-1 block text-note leading-relaxed text-fog">{l.note}</span>}
+              {l.note && <span className="mt-1 block text-note text-fog">{l.note}</span>}
             </span>
             <ArrowUpRight
               size={16}
-              className="mt-0.5 shrink-0 text-fog transition-colors group-hover:text-cream"
+              className="mt-1 shrink-0 text-fog transition-colors group-hover:text-cream"
             />
           </a>
         </li>
@@ -386,7 +386,7 @@ function Links({ items }) {
 // is letterboxed or cropped — it is the video's own ratio, not an arbitrary crop.
 function Video({ src, title, caption }) {
   return (
-    <figure className="mt-6">
+    <figure className="mt-block">
       <div className="aspect-video w-full overflow-hidden bg-box">
         <iframe
           src={src}
@@ -397,7 +397,7 @@ function Video({ src, title, caption }) {
           className="h-full w-full border-0"
         />
       </div>
-      {caption && <figcaption className="mt-2.5 text-note leading-relaxed text-fog">{caption}</figcaption>}
+      {caption && <figcaption className="mt-body text-note text-fog">{caption}</figcaption>}
     </figure>
   )
 }
@@ -431,7 +431,7 @@ function Clip({ src, caption, href, cta }) {
     </div>
   )
   return (
-    <figure className="mt-6">
+    <figure className="mt-block">
       {href ? (
         <a
           href={href}
@@ -445,7 +445,7 @@ function Clip({ src, caption, href, cta }) {
       ) : (
         frame
       )}
-      {caption && <figcaption className="mt-2.5 text-note leading-relaxed text-fog">{caption}</figcaption>}
+      {caption && <figcaption className="mt-body text-note text-fog">{caption}</figcaption>}
     </figure>
   )
 }

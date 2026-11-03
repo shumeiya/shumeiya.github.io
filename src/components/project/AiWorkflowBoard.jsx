@@ -396,7 +396,7 @@ export default function AiWorkflowBoard({ board }) {
       </div>
 
       {BOARD_W * scale > hostW + 1 && (
-        <figcaption className="mt-3 text-note leading-relaxed text-fog">{t(ui.scrollSideways)}</figcaption>
+        <figcaption className="mt-body text-note leading-relaxed text-fog">{t(ui.scrollSideways)}</figcaption>
       )}
     </figure>
   )

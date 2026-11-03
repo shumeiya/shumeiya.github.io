@@ -54,13 +54,13 @@ function useSub() {
 function Head({ no, title, sub }) {
   const showSub = useSub()
   return (
-    <header className="mb-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line pb-5">
+    <header className="mb-block flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line pb-4">
       <div className="min-w-0">
         <h3 className="text-3xl font-bold leading-[1.3] tracking-tight text-cream sm:text-4xl">
           <span className="abc-mark">{title}</span>
         </h3>
         {showSub && sub && (
-          <p className="mt-2.5 font-mono-tight text-note uppercase tracking-[0.18em]" style={{ color: QUIET }}>
+          <p className="mt-tight font-mono-tight text-note uppercase tracking-[0.18em]" style={{ color: QUIET }}>
             {sub}
           </p>
         )}
@@ -92,7 +92,7 @@ function SubHead({ title, sub, className = "" }) {
 // A plain card, or the yellow-tinted one that marks the board's chosen item.
 function Card({ lit, children, className = "", style }) {
   return (
-    <div className={`rounded-2xl p-5 sm:p-6 ${className}`} style={{ ...(lit ? CARD_LIT : CARD), ...style }}>
+    <div className={`rounded-2xl p-6 sm:p-6 ${className}`} style={{ ...(lit ? CARD_LIT : CARD), ...style }}>
       {children}
     </div>
   )
@@ -143,7 +143,7 @@ function Dot({ color = ACCENT, className = "" }) {
 // green, and everything else takes the yellow.
 function Lines({ items, tone = ACCENT, color, className = "" }) {
   return (
-    <ul className={`space-y-2.5 ${className}`}>
+    <ul className={`space-y-3 ${className}`}>
       {items.map((item) => (
         <li key={item} className="flex gap-3 text-copy leading-relaxed" style={color ? { color } : undefined}>
           <Dot color={tone} />
@@ -175,7 +175,7 @@ function Arrow({ size = 30, className = "" }) {
 // Carries its own label pill; the phrases it turns on are set in the yellow.
 function Band({ label, children, className = "" }) {
   return (
-    <div className={`abc-band flex flex-col gap-4 rounded-2xl px-5 py-5 sm:flex-row sm:items-start sm:gap-6 sm:px-7 sm:py-6 ${className}`}>
+    <div className={`abc-band flex flex-col gap-4 rounded-2xl px-5 py-6 sm:flex-row sm:items-start sm:gap-6 sm:px-7 sm:py-6 ${className}`}>
       {label && (
         <span className="shrink-0">
           <Pill tone="accent">{label}</Pill>
@@ -222,13 +222,13 @@ function Shot({ src, alt = "", caption, className = "", frameClassName = "" }) {
 function Background({ slide }) {
   const { before, after } = slide
   return (
-    <div className="grid items-stretch gap-5 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:gap-4 lg:gap-6">
+    <div className="grid items-stretch gap-6 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:gap-4 lg:gap-6">
       <Card>
         <Pill tone="dark">{before.label}</Pill>
-        <div className="mt-5 overflow-hidden rounded-xl bg-white ring-1 ring-line">
+        <div className="mt-6 overflow-hidden rounded-xl bg-white ring-1 ring-line">
           <img src={before.image} alt="ABCmouse" loading="lazy" className="block h-auto w-full" />
         </div>
-        <p className="mt-5 text-2xl font-bold leading-tight text-cream">{before.heading}</p>
+        <p className="mt-6 text-2xl font-bold leading-tight text-cream">{before.heading}</p>
         <p className="mt-3 text-copy leading-relaxed" style={{ color: QUIET }}>
           {before.text}
         </p>
@@ -248,14 +248,14 @@ function Background({ slide }) {
 
       <Card lit>
         <Pill tone="accent">{after.label}</Pill>
-        <div className="mt-5 grid grid-cols-2 gap-2">
+        <div className="mt-6 grid grid-cols-2 gap-2">
           {after.images.map((src) => (
             <div key={src} className="overflow-hidden rounded-xl">
               <img src={src} alt="" loading="lazy" className="block aspect-[1/0.93] h-auto w-full object-cover" />
             </div>
           ))}
         </div>
-        <p className="mt-5 text-2xl font-bold leading-tight">{after.heading}</p>
+        <p className="mt-6 text-2xl font-bold leading-tight">{after.heading}</p>
         <p className="mt-3 text-copy leading-relaxed" style={{ color: PALE_QUIET }}>
           {after.text}
         </p>
@@ -270,14 +270,14 @@ function Issues({ slide }) {
   const { design, users, goalLabel, goal } = slide
   return (
     <div>
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,11fr)_minmax(0,9fr)]">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,11fr)_minmax(0,9fr)]">
         <Card>
           <div className="grid grid-cols-2 gap-3">
             {design.shots.map((src) => (
               <Shot key={src} src={src} />
             ))}
           </div>
-          <div className="mt-2.5 grid grid-cols-2 gap-3 text-center text-note" style={{ color: QUIET }}>
+          <div className="mt-3 grid grid-cols-2 gap-3 text-center text-note" style={{ color: QUIET }}>
             {design.labels.map((label) => (
               <span key={label}>{label}</span>
             ))}
@@ -288,7 +288,7 @@ function Issues({ slide }) {
 
         <Card>
           <Shot src={users.image} />
-          <p className="mt-2.5 text-center text-note" style={{ color: QUIET }}>
+          <p className="mt-3 text-center text-note" style={{ color: QUIET }}>
             {users.label}
           </p>
           <p className="mt-6 text-2xl font-bold leading-tight text-cream">{users.heading}</p>
@@ -296,7 +296,7 @@ function Issues({ slide }) {
         </Card>
       </div>
 
-      <Band label={goalLabel} className="mt-5">
+      <Band label={goalLabel} className="mt-6">
         <p className="text-2xl font-bold leading-[1.5]">
           <Marked parts={goal} />
         </p>
@@ -343,7 +343,7 @@ function Workflow({ slide }) {
         {steps.map((step) => (
           <li key={step.no} className="flex flex-col">
             <div
-              className="flex flex-col items-center justify-center rounded-2xl px-4 py-5 text-center"
+              className="flex flex-col items-center justify-center rounded-2xl px-4 py-6 text-center"
               style={{ background: ACCENT, color: ON_ACCENT, minHeight: 112 }}
             >
               <span className="font-condensed text-xl leading-none tracking-[0.2em]">{step.no}</span>
@@ -352,7 +352,7 @@ function Workflow({ slide }) {
             <p className="mt-4 text-center text-copy font-bold" style={{ color: ACCENT_INK }}>
               {step.role}
             </p>
-            <p className="mt-1.5 text-center text-copy leading-relaxed" style={{ color: QUIET }}>
+            <p className="mt-2 text-center text-copy leading-relaxed" style={{ color: QUIET }}>
               {step.text}
             </p>
           </li>
@@ -382,11 +382,11 @@ function Stakeholder({ slide }) {
   const { parties, goal, bloom } = slide
   const n = bloom.levels.length
   return (
-    <div className="grid gap-5 lg:grid-cols-2">
+    <div className="grid gap-6 lg:grid-cols-2">
       <Card className="flex flex-col">
         {/* The four parties around the goal. The goal sits between the two rows
             rather than inside a ring, which at column width would have no middle. */}
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-5">
+        <ul className="grid grid-cols-2 gap-x-4 gap-y-6">
           {parties.slice(0, 2).map((party) => (
             <Party key={party.name} party={party} />
           ))}
@@ -406,11 +406,11 @@ function Stakeholder({ slide }) {
 
       <Card className="flex flex-col">
         <p className="text-center text-2xl font-bold leading-tight text-cream">{bloom.heading}</p>
-        <ol className="mt-5 flex flex-col items-center gap-2">
+        <ol className="mt-6 flex flex-col items-center gap-2">
           {bloom.levels.map((level, i) => (
             <li
               key={level.name}
-              className="rounded-xl py-2.5 text-center"
+              className="rounded-xl py-3 text-center"
               style={{
                 width: `${44 + (56 * i) / (n - 1)}%`,
                 minWidth: "11rem",
@@ -426,9 +426,9 @@ function Stakeholder({ slide }) {
           ))}
         </ol>
 
-        <dl className="mt-6 space-y-2.5">
+        <dl className="mt-6 space-y-3">
           {bloom.notes.map((note) => (
-            <div key={note.term} className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <div key={note.term} className="flex flex-wrap items-center gap-x-3 gap-y-2">
               <dt className="shrink-0">
                 <Pill tone="pale">{note.term}</Pill>
               </dt>
@@ -436,7 +436,7 @@ function Stakeholder({ slide }) {
             </div>
           ))}
         </dl>
-        <p className="mt-5 text-note leading-relaxed" style={{ color: QUIET }}>
+        <p className="mt-6 text-note leading-relaxed" style={{ color: QUIET }}>
           {bloom.note}
         </p>
       </Card>
@@ -466,7 +466,7 @@ function Framework({ slide }) {
           <Pill tone="quiet">{action}</Pill>
           {/* A rotated SVG keeps its unrotated box, so each arrow gets a square cell
               of its own — without it the two turned arrows overlap on a phone. */}
-          <span className="flex gap-1 sm:flex-col sm:gap-1.5">
+          <span className="flex gap-1 sm:flex-col sm:gap-2">
             <span className="grid size-7 place-items-center">
               <Arrow size={26} className="rotate-90 sm:rotate-0" />
             </span>
@@ -490,14 +490,14 @@ function Framework({ slide }) {
       {/* 用户分析 — the board's second half. */}
       <SubHead title={users.heading} sub={users.sub} className="mt-12" />
 
-      <ol className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {users.piaget.stages.map((stage) => (
-          <li key={stage.age} className="rounded-2xl p-5" style={stage.lit ? { background: ACCENT, color: ON_ACCENT } : CARD}>
+          <li key={stage.age} className="rounded-2xl p-6" style={stage.lit ? { background: ACCENT, color: ON_ACCENT } : CARD}>
             <p className="font-condensed text-3xl leading-none tracking-wide" style={{ color: stage.lit ? ON_ACCENT : ACCENT_INK }}>
               {stage.age}
               {stage.unit && <span className="ml-1.5 text-xl">{stage.unit}</span>}
             </p>
-            <p className="mt-2.5 text-copy font-bold leading-snug" style={{ color: stage.lit ? ON_ACCENT : "var(--color-cream)" }}>
+            <p className="mt-3 text-copy font-bold leading-snug" style={{ color: stage.lit ? ON_ACCENT : "var(--color-cream)" }}>
               {stage.name}
             </p>
             <p className="mt-2 text-note leading-relaxed" style={{ color: stage.lit ? ON_ACCENT : QUIET }}>
@@ -515,7 +515,7 @@ function Framework({ slide }) {
         {users.piaget.caption}
       </p>
 
-      <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center lg:gap-4">
+      <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center lg:gap-4">
         <Card>
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <p className="text-copy font-bold text-cream">{users.bartle.heading}</p>
@@ -530,7 +530,7 @@ function Framework({ slide }) {
                   {q.name}
                   {q.lit && <Pill tone="accent">{users.bartle.badge}</Pill>}
                 </p>
-                <p className="mt-1.5 text-note leading-snug" style={{ color: q.lit ? PALE_QUIET : QUIET }}>
+                <p className="mt-2 text-note leading-snug" style={{ color: q.lit ? PALE_QUIET : QUIET }}>
                   {q.text}
                 </p>
               </li>
@@ -543,7 +543,7 @@ function Framework({ slide }) {
 
         <div className="flex flex-col items-center justify-center gap-3 lg:px-1">
           {users.bridges.map((bridge) => (
-            <span key={bridge} className="flex items-center gap-2.5">
+            <span key={bridge} className="flex items-center gap-3">
               <Arrow size={26} className="rotate-90 lg:rotate-0" />
               <span
                 className="rounded-full px-4 py-2 text-center text-copy font-bold leading-snug text-cream"
@@ -555,11 +555,11 @@ function Framework({ slide }) {
           ))}
         </div>
 
-        <Card lit className="space-y-5">
+        <Card lit className="space-y-6">
           {users.traits.map((trait) => (
             <div key={trait.name}>
               <p className="text-copy font-bold leading-snug">{trait.name}</p>
-              <p className="mt-1.5 text-note leading-relaxed" style={{ color: PALE_QUIET }}>
+              <p className="mt-2 text-note leading-relaxed" style={{ color: PALE_QUIET }}>
                 {trait.text}
               </p>
             </div>
@@ -599,9 +599,9 @@ function Actions({ slide }) {
     <div>
       <Pill tone="dark">{why}</Pill>
 
-      <div className="mt-5 space-y-4">
+      <div className="mt-6 space-y-4">
         {motives.map((motive) => (
-          <div key={motive.name} className="grid gap-4 lg:grid-cols-[minmax(0,4fr)_minmax(0,11fr)] lg:gap-5">
+          <div key={motive.name} className="grid gap-4 lg:grid-cols-[minmax(0,4fr)_minmax(0,11fr)] lg:gap-6">
             <Card className="flex flex-col justify-center">
               <p className="text-2xl font-bold leading-tight text-cream">{motive.name}</p>
               <p className="mt-2 text-copy leading-relaxed" style={{ color: QUIET }}>
@@ -611,7 +611,7 @@ function Actions({ slide }) {
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {motive.shots.map((shot) => (
                 <li key={shot.src}>
-                  <Card className="!p-2.5">
+                  <Card className="!p-3">
                     <Shot src={shot.src} frameClassName="ring-0" />
                     <p className="mt-2 text-center text-note leading-snug" style={{ color: QUIET }}>
                       {shot.label}
@@ -628,7 +628,7 @@ function Actions({ slide }) {
         <Pill tone="dark">{how}</Pill>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-stretch sm:gap-4">
+      <div className="mt-6 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-stretch sm:gap-4">
         {formula.map((group, i) => (
           <div key={group.name} className="contents">
             <Card lit={group.lit} className="flex h-full flex-col">
@@ -649,7 +649,7 @@ function Actions({ slide }) {
       </div>
 
       <Band className="mt-6">
-        <ul className="space-y-2.5">
+        <ul className="space-y-3">
           {band.map((line) => (
             <li key={line} className="flex gap-3 text-copy leading-relaxed">
               <Dot />
@@ -675,7 +675,7 @@ function Feedback({ slide }) {
     <div className="grid gap-4 lg:grid-cols-2">
       <Card>
         <p className="text-2xl font-bold leading-tight text-cream">{positive.name}</p>
-        <ul className="mt-5 space-y-3">
+        <ul className="mt-6 space-y-3">
           {positive.rows.map((row) => (
             <li
               key={row.text}
@@ -691,11 +691,11 @@ function Feedback({ slide }) {
 
       <Card>
         <p className="text-2xl font-bold leading-tight text-cream">{negative.name}</p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {negative.shots.map((shot) => (
             <div key={shot.src}>
               <Shot src={shot.src} />
-              <p className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-copy leading-snug text-ink">
+              <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-copy leading-snug text-ink">
                 <Verdict ok={shot.ok} />
                 <span className="min-w-0 flex-1">{shot.text}</span>
               </p>
@@ -707,7 +707,7 @@ function Feedback({ slide }) {
       {[instant, delayed].map((cell) => (
         <Card key={cell.name} lit>
           <p className="text-2xl font-bold leading-tight">{cell.name}</p>
-          <Shot src={cell.image} className="mt-5" frameClassName="bg-transparent ring-0" />
+          <Shot src={cell.image} className="mt-6" frameClassName="bg-transparent ring-0" />
           <p className="mt-4 text-copy leading-relaxed" style={{ color: PALE_QUIET }}>
             {cell.text}
           </p>
@@ -747,7 +747,7 @@ function PersonaCard({ person, labels }) {
         {person.quotes.map((quote) => (
           <li key={quote}>
             <span
-              className="inline-block rounded-lg px-3 py-1.5 text-note leading-snug"
+              className="inline-block rounded-lg px-3 py-2 text-note leading-snug"
               style={{ background: PALE, color: ON_PALE, boxShadow: `inset 0 0 0 1px ${PALE_EDGE}` }}
             >
               {quote}
@@ -760,7 +760,7 @@ function PersonaCard({ person, labels }) {
         {person.bio}
       </p>
 
-      <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-line pt-4">
+      <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-line pt-4">
         <div>
           <dt className={term} style={{ color: QUIET }}>
             {labels.goal}
@@ -800,7 +800,7 @@ function Painpoints({ slide }) {
   const { labels, groups, images } = slide
   return (
     <div>
-      <div className="space-y-9">
+      <div className="space-y-10">
         {groups.map((group) => (
           <section key={group.no}>
             <h4 className="flex items-baseline gap-3 text-2xl font-bold leading-tight text-cream">
@@ -812,7 +812,7 @@ function Painpoints({ slide }) {
 
             {/* Pains on the left, solutions on the right, the arrow between them —
                 turned to point down once the two columns stack. */}
-            <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center lg:gap-5">
+            <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:items-center lg:gap-6">
               <Card>
                 <Pill tone="dark">{labels.pain}</Pill>
                 <Lines items={group.pains} tone={NO} color={QUIET} className="mt-4" />
@@ -827,7 +827,7 @@ function Painpoints({ slide }) {
         ))}
       </div>
 
-      <div className="mt-9 grid gap-4 sm:grid-cols-[minmax(0,11fr)_minmax(0,13fr)] sm:items-start">
+      <div className="mt-10 grid gap-4 sm:grid-cols-[minmax(0,11fr)_minmax(0,13fr)] sm:items-start">
         {images.map((image) => (
           <Shot key={image.src} src={image.src} alt={image.alt} caption={image.alt} />
         ))}
@@ -911,7 +911,7 @@ function FlowArrow({ label }) {
       </svg>
       {label && (
         <span
-          className="absolute inset-x-[-6px] bottom-1/2 mb-1.5 text-center text-note leading-tight"
+          className="absolute inset-x-[-6px] bottom-1/2 mb-2 text-center text-note leading-tight"
           style={{ color: QUIET }}
         >
           {label}
@@ -925,7 +925,7 @@ function FlowArrow({ label }) {
 // is why it never rejoins the run.
 function FlowBranch({ label, node }) {
   return (
-    <div className="mt-1.5">
+    <div className="mt-2">
       <div className="relative flex justify-center" style={{ height: 26 }}>
         <svg aria-hidden="true" width="12" height="26" viewBox="0 0 12 26">
           <line x1="6" y1="0" x2="6" y2="17" stroke={FLOW_LINE} strokeWidth="2" />
@@ -950,7 +950,7 @@ function FlowBranch({ label, node }) {
 // A "no" that sends the child back through earlier steps, named where it happens.
 function FlowReturn({ label, note }) {
   return (
-    <p className="mt-2 flex items-start gap-1.5 text-note leading-snug" style={{ color: QUIET }}>
+    <p className="mt-2 flex items-start gap-2 text-note leading-snug" style={{ color: QUIET }}>
       <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" className="mt-[3px] shrink-0">
         <path
           d="M13 2.5v3.5a3 3 0 0 1-3 3H3"
@@ -1002,8 +1002,8 @@ const LEGEND_MARK = {
 function FlowChart({ flow, caption }) {
   const steps = flattenFlow(flow.nodes)
   return (
-    <figure className="abc-flow mt-4 rounded-2xl bg-box px-4 py-6 ring-1 ring-line sm:px-6 sm:py-7">
-      <ol className="flex flex-wrap items-start gap-y-7">
+    <figure className="abc-flow mt-4 rounded-2xl bg-box px-4 py-6 ring-1 ring-line sm:px-6 sm:py-8">
+      <ol className="flex flex-wrap items-start gap-y-8">
         {steps.map((step, i) => (
           <li key={i} className="flex min-w-0 flex-1 items-start sm:flex-none">
             {i > 0 && <FlowArrow label={step.via} />}
@@ -1018,7 +1018,7 @@ function FlowChart({ flow, caption }) {
         ))}
       </ol>
 
-      <ul className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2.5 border-t border-line pt-4">
+      <ul className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-4">
         {flow.legend.map((item) => (
           <li key={item.kind} className="flex items-center gap-2 text-note leading-snug" style={{ color: QUIET }}>
             <span aria-hidden="true" className="block h-[15px] w-[26px] shrink-0" style={LEGEND_MARK[item.kind]} />
@@ -1039,7 +1039,7 @@ function FlowChart({ flow, caption }) {
 function CaseStep({ step, flip }) {
   return (
     <li
-      className={`grid items-center gap-5 lg:gap-8 ${
+      className={`grid items-center gap-6 lg:gap-8 ${
         flip ? "lg:grid-cols-[minmax(0,11fr)_minmax(0,5fr)]" : "lg:grid-cols-[minmax(0,5fr)_minmax(0,11fr)]"
       }`}
     >
@@ -1065,7 +1065,7 @@ function CaseStep({ step, flip }) {
 
 function Case({ slide }) {
   const { brief, flowLabel, flowSteps, logic, layout, ixd } = slide
-  const row = "grid gap-y-2 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-x-5"
+  const row = "grid gap-y-2 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-x-6"
   return (
     <div>
       {/* The brief: two labelled lines and the numbered flow. */}
@@ -1085,7 +1085,7 @@ function Case({ slide }) {
           <dd className="min-w-0">
             <ol className="space-y-3">
               {flowSteps.map((step, i) => (
-                <li key={step} className="flex gap-3.5">
+                <li key={step} className="flex gap-4">
                   <Disc size={34}>{`0${i + 1}`}</Disc>
                   <span className="min-w-0 pt-1 text-copy leading-relaxed text-ink">{step}</span>
                 </li>
@@ -1111,18 +1111,18 @@ function Case({ slide }) {
       </div>
 
       <SubHead title={ixd.label} sub={ixd.sub} className="mt-10" />
-      <ol className="mt-5 space-y-8 lg:space-y-10">
+      <ol className="mt-6 space-y-8 lg:space-y-10">
         {ixd.steps.map((step, i) => (
           <CaseStep key={step.no} step={step} flip={i % 2 === 1} />
         ))}
       </ol>
 
       {/* The legend from the foot of the board: who still has to sign each note off. */}
-      <div className="abc-band mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 rounded-2xl px-5 py-4 sm:px-6">
+      <div className="abc-band mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl px-5 py-4 sm:px-6">
         <span className="text-note font-semibold" style={{ color: ACCENT }}>
           {ixd.legend.label}
         </span>
-        <ul className="flex min-w-0 flex-wrap items-center gap-x-5 gap-y-2">
+        <ul className="flex min-w-0 flex-wrap items-center gap-x-6 gap-y-2">
           {ixd.legend.items.map((item) => (
             <li key={item.text} className="flex items-center gap-2 text-note leading-snug">
               <span aria-hidden="true" className="size-2.5 shrink-0 rounded-full" style={{ background: item.tone }} />
@@ -1158,7 +1158,7 @@ function Gallery({ slide }) {
         ))}
       </ul>
       <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
-        <ul className="flex flex-wrap gap-2.5">
+        <ul className="flex flex-wrap gap-3">
           {slide.labels.map((label) => (
             <li key={label}>
               <Pill tone="accent">{label}</Pill>

@@ -210,7 +210,7 @@ export default function BackgroundBoard({ board, fromBefore = false }) {
   const restTop = fromBefore ? -BEFORE_TOP : WHO_SHIFT - HEAD_LIFT
 
   return (
-    <figure className="mt-6">
+    <figure className="mt-block">
       <div ref={hostRef} className="no-scrollbar overflow-x-auto">
         <div style={{ width: BOARD_W * scale, height: boardH * scale }}>
           <div
@@ -546,7 +546,7 @@ export default function BackgroundBoard({ board, fromBefore = false }) {
       </div>
 
       {scale <= MIN_SCALE && (
-        <figcaption className="mt-3 text-note leading-relaxed text-fog">
+        <figcaption className="mt-body text-note leading-relaxed text-fog">
           {t(ui.scrollSideways)}
         </figcaption>
       )}
