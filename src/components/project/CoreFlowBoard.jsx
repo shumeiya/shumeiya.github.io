@@ -20,7 +20,7 @@ const OX = 80
 const OY = 112
 const BOARD_W = 1760
 // The page sets the title and lead; the step pills (y 296) start at the top edge.
-const CUT = 184
+const CUT = 309 // the step row and its rule are on the page now; the board opens at act 1
 const BOARD_H = 4210 - CUT // trimmed: the deck left ~50px of empty air under the last line
 // The floor the board stops shrinking at and starts scrolling sideways instead —
 // the same one the design-system board above it uses, so the two behave alike on a
@@ -166,8 +166,7 @@ export default function CoreFlowBoard({ board }) {
           >
             {/* The chapter title (and lead) are set by the page now; the board starts
                 at its first content, lifted by CUT. */}
-            <div style={{ position: "absolute", left: 0, top: -CUT, width: BOARD_W }}>            <PillRow x={80} y={296} items={steps} />
-            <Rule x={80} y={380} w={1760} />
+            <div style={{ position: "absolute", left: 0, top: -CUT, width: BOARD_W }}>
 
             {/* ---- act 1 · Dashboard ---- */}
             <ActHead y={421} n="1" title={acts[0].title} accent={acts[0].titleAccent} />

@@ -219,7 +219,7 @@ function Board({ slide, stage, children }) {
   const st = stage ? TONE[stage] : null
   const head = (
     <>
-      <h3 className="text-3xl font-semibold tracking-tight text-cream">{slide.title}</h3>
+      <h3 className="text-4xl font-semibold tracking-tight text-cream">{slide.title}</h3>
       {slide.lead && (
         <p className="mt-lead max-w-3xl text-copy" style={{ color: QUIET }}>
           {slide.lead}

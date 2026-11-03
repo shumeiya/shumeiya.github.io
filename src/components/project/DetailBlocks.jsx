@@ -88,6 +88,33 @@ function Stats({ items, accent }) {
   )
 }
 
+// A short run of product steps as outlined chips with small arrows between them —
+// the step summary under a chapter's lead (Kyrall core flow). Chamfered like the
+// Kyrall chips, in the page's own type so it does not scale with an artboard.
+function FlowSteps({ items }) {
+  const cut = "polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)"
+  return (
+    <ol className="mt-lead flex flex-wrap items-center gap-x-3 gap-y-3">
+      {items.map((step, i) => (
+        <li key={i} className="flex items-center gap-3">
+          {i > 0 && (
+            <span
+              aria-hidden="true"
+              className="h-2.5 w-2 shrink-0 bg-ink"
+              style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }}
+            />
+          )}
+          <span className="bg-ink p-px" style={{ clipPath: cut }}>
+            <span className="block whitespace-nowrap bg-page px-3 py-1.5 text-callout text-cream" style={{ clipPath: cut }}>
+              {step}
+            </span>
+          </span>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
 // A sequence that is a sequence — the arrows are the content.
 function Steps({ items }) {
   return (
@@ -461,6 +488,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <Defs key={i} items={block.items} />
       case "stats":
         return <Stats key={i} items={block.items} accent={accent} />
+      case "flowSteps":
+        return <FlowSteps key={i} items={block.items} />
       case "steps":
         return <Steps key={i} items={block.items} />
       case "image":

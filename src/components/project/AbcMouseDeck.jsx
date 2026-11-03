@@ -56,7 +56,7 @@ function Head({ no, title, sub }) {
   return (
     <header className="mb-visual flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line pb-4">
       <div className="min-w-0">
-        <h3 className="text-3xl font-bold leading-[1.3] tracking-tight text-cream sm:text-4xl">
+        <h3 className="text-4xl font-bold leading-[1.3] tracking-tight text-cream">
           <span className="abc-mark">{title}</span>
         </h3>
         {showSub && sub && (

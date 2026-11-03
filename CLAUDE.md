@@ -15,7 +15,7 @@
 | `text-callout` | 14px / 1.5 | 次级说明、用时这类附注（Callout） |
 | `text-note` | 13px / 1.4 | 标签、eyebrow、图注 —— 这是地板（Footnote） |
 
-标题用 Tailwind 的 `text-xl` 及以上。项目页的 `<main>` 带 `case-type` class，在它内部这些档位被重新指向 Apple 的标题层级：`text-xl` 20、`text-2xl` 22（Title 2）、`text-3xl` 28（Title 1，章节标题）、`text-4xl` 34、`text-5xl` 40（项目大标题）、`text-6xl` 48，各自带收紧的行高。不要在项目页用 `sm:text-base` 这类响应式缩小字号。
+标题用 Tailwind 的 `text-xl` 及以上。项目页的 `<main>` 带 `case-type` class，在它内部这些档位被重新指向 Apple 的标题层级：`text-xl` 20、`text-2xl` 22（Title 2）、`text-3xl` 28（Title 1）、`text-4xl` 34（Large Title，章节标题）、`text-5xl` 40（项目大标题）、`text-6xl` 48，各自带收紧的行高。不要在项目页用 `sm:text-base` 这类响应式缩小字号。
 
 注意 `WeatherPetsDeck.jsx`、`AbcMouseDeck.jsx` 和 `HmiDeck.jsx` **不在**例外名单里：它们是用真实 DOM 重排的，照常守这条规定。
 

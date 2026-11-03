@@ -115,7 +115,10 @@ export const projectDetails = {
         // The board no longer draws its own title; the page sets it.
         heading: kyrallCoreFlow.title,
         lead: kyrallCoreFlow.lead,
-        blocks: [{ type: "coreflow", board: kyrallCoreFlow }],
+        blocks: [
+          { type: "flowSteps", items: kyrallCoreFlow.steps },
+          { type: "coreflow", board: kyrallCoreFlow },
+        ],
       },
       {
         id: "extensions",

@@ -82,7 +82,7 @@ export default function ProjectDetail() {
               className={
                 section.titleHidden
                   ? "sr-only"
-                  : "mt-tight text-3xl font-semibold tracking-tight text-cream"
+                  : "mt-tight text-4xl font-semibold tracking-tight text-cream"
               }
             >
               {section.heading ?? section.label}
