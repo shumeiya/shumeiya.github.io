@@ -748,7 +748,7 @@ export default function HmiDeck({ slide }) {
   const Board = BOARDS[slide.kind]
   if (!Board) return null
   return (
-    <div className="hmi-deck mt-block">
+    <div className="hmi-deck mt-visual">
       <Board slide={slide} />
     </div>
   )

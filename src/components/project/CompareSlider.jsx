@@ -78,7 +78,7 @@ export default function CompareSlider({
   }
 
   return (
-    <figure className="mt-block">
+    <figure className="mt-visual">
       <div
         ref={hostRef}
         onPointerDown={onPointerDown}

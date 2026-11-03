@@ -55,10 +55,12 @@
 
   /* Spacing for the project pages, on Apple's 8pt grid (4pt below 16). Named by
      role so the hierarchy is the same on every case study — see CLAUDE.md.
-     Each becomes margin, gap and space utilities: mt-block, gap-card, … */
+     Each becomes margin, gap and space utilities: mt-visual, gap-card, … */
+  /* Never name a token after a Tailwind keyword: `block` generated
+     `inline-block { inline-size }` and squeezed every inline-block on the site. */
   --spacing-chapter: 96px;   /* chapter → chapter (128 from lg) */
   --spacing-section: 64px;   /* sub-section → sub-section, inside a chapter */
-  --spacing-block: 32px;     /* heading / copy → the visual it introduces */
+  --spacing-visual: 32px;     /* heading / copy → the visual it introduces */
   --spacing-lead: 16px;      /* title → lead; paragraph → paragraph */
   --spacing-body: 12px;      /* sub-heading → body; figure → caption; list rows */
   --spacing-tight: 8px;      /* eyebrow → title */

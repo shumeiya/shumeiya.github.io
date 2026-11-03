@@ -23,17 +23,19 @@
 
 ## 间距规定（项目详情页）
 
-参考 Apple 的 8pt 网格（16 以下用 4pt）。index.css 的 `@theme` 里按「角色」定义了间距，Tailwind 会生成 `mt-block`、`mb-chapter`、`gap-card`、`space-y-body` 这类 utility。结构性间距一律用这些名字，不要写裸数字：
+参考 Apple 的 8pt 网格（16 以下用 4pt）。index.css 的 `@theme` 里按「角色」定义了间距，Tailwind 会生成 `mt-visual`、`mb-chapter`、`gap-card`、`space-y-body` 这类 utility。结构性间距一律用这些名字，不要写裸数字：
 
 | token | 值 | 用在哪 |
 | --- | --- | --- |
 | `chapter` | 96px（lg 起 128px） | 章节 ↔ 章节（section 的 `mb-chapter`） |
 | `section` | 64px | 章节内的小节 ↔ 小节 |
-| `block` | 32px | 标题或正文 → 它引出的图板、卡片组、图片 |
+| `visual` | 32px | 标题或正文 → 它引出的图板、卡片组、图片 |
 | `lead` | 16px | 标题 → 引导句；段落 ↔ 段落 |
 | `body` | 12px | 小节标题 → 正文；图 → 图注；列表行间 |
 | `tight` | 8px | eyebrow → 标题 |
 | `card` | 16px | 卡片之间的间隔 |
+
+新 token 不要用 Tailwind 已有的关键词命名（比如 `block`、`flex`、`grid`、`full`、`screen`）：Tailwind 会顺带生成 `inline-block` 这类同名 class，把原来的样式覆盖掉。
 
 章节标题被图板或 deck 自己画（`titleHidden` 且没有 `lead`）时，图板顶边就是标题，ProjectDetail 会把它拉到 eyebrow 下方 `tight` 的位置。
 

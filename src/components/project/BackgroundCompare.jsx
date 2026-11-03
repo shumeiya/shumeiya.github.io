@@ -55,7 +55,7 @@ export default function BackgroundCompare({ act }) {
       <h3 className="mt-tight text-2xl font-semibold tracking-tight text-cream">{t(act.title)}</h3>
       <p className="mt-body max-w-2xl text-copy text-ink">{t(act.body)}</p>
 
-      <div className="mt-block grid gap-card md:grid-cols-2">
+      <div className="mt-visual grid gap-card md:grid-cols-2">
         {act.columns.map((col) => (
           <Column key={t(col.title)} col={col} />
         ))}

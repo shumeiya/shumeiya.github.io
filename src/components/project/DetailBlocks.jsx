@@ -32,7 +32,7 @@ function Text({ text }) {
 // they are still watching. Set apart so it never reads as product copy.
 function Note({ text }) {
   return (
-    <p className="mt-block border-l-2 border-line bg-box-2/60 py-3 pl-4 pr-3 text-copy italic text-fog">
+    <p className="mt-visual border-l-2 border-line bg-box-2/60 py-3 pl-4 pr-3 text-copy italic text-fog">
       {text}
     </p>
   )
@@ -40,7 +40,7 @@ function Note({ text }) {
 
 function Bullets({ title, items }) {
   return (
-    <div className="mt-block">
+    <div className="mt-visual">
       {title && (
         <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{title}</p>
       )}
@@ -60,7 +60,7 @@ function Bullets({ title, items }) {
 // that turns into unreadable slivers, so they stack two at a time instead.
 function Defs({ items }) {
   return (
-    <dl className="mt-block grid gap-x-8 gap-y-6 sm:grid-cols-2">
+    <dl className="mt-visual grid gap-x-8 gap-y-6 sm:grid-cols-2">
       {items.map((d) => (
         <div key={d.term} className="border-t border-line pt-3">
           <dt className="font-mono-tight text-note uppercase tracking-wide text-ink">{d.term}</dt>
@@ -74,7 +74,7 @@ function Defs({ items }) {
 function Stats({ items, accent }) {
   return (
     <dl
-      className="mt-block grid gap-x-6 gap-y-6 border-t-2 pt-4 sm:grid-cols-2"
+      className="mt-visual grid gap-x-6 gap-y-6 border-t-2 pt-4 sm:grid-cols-2"
       style={{ borderColor: accent }}
     >
       {items.map((s) => (
@@ -91,7 +91,7 @@ function Stats({ items, accent }) {
 // A sequence that is a sequence — the arrows are the content.
 function Steps({ items }) {
   return (
-    <ol className="mt-block flex flex-wrap items-center gap-x-2 gap-y-2">
+    <ol className="mt-visual flex flex-wrap items-center gap-x-2 gap-y-2">
       {items.map((step, i) => (
         <li key={step} className="flex items-center gap-2">
           <span className="rounded-full border border-line px-3 py-2 font-mono-tight text-note uppercase tracking-wide text-ink">
@@ -120,7 +120,7 @@ const FIGURE_SIZE = {
 function Figure({ src, caption, size }) {
   const cap = FIGURE_SIZE[size]
   return (
-    <figure className={`mt-block${cap ? ` ${cap} mx-auto` : ""}`}>
+    <figure className={`mt-visual${cap ? ` ${cap} mx-auto` : ""}`}>
       <div className="bg-box">
         <img src={src} alt={caption ?? ""} loading="lazy" className="block h-auto w-full" />
       </div>
@@ -134,7 +134,7 @@ function Figure({ src, caption, size }) {
 // screens, and at full column width five of them turn the section into a scroll.
 function Shots({ items }) {
   return (
-    <ul className="mt-block grid gap-x-card gap-y-6 sm:grid-cols-2">
+    <ul className="mt-visual grid gap-x-card gap-y-6 sm:grid-cols-2">
       {items.map((shot) => (
         <li key={shot.src}>
           <div className="overflow-hidden rounded-lg border border-line bg-box">
@@ -157,7 +157,7 @@ function Shots({ items }) {
 // reflows, but the numbering does, and it is what ties a note to a screen.
 function Numbers({ title, items }) {
   return (
-    <div className="mt-block">
+    <div className="mt-visual">
       {title && <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{title}</p>}
       <ol className={`${title ? "mt-body" : ""} space-y-3`}>
         {items.map((item, i) => (
@@ -181,7 +181,7 @@ function Numbers({ title, items }) {
 // shape it was written in.
 function Formula({ terms, result }) {
   return (
-    <div className="mt-block flex flex-wrap items-center gap-x-3 gap-y-3 border-t-2 border-line pt-4">
+    <div className="mt-visual flex flex-wrap items-center gap-x-3 gap-y-3 border-t-2 border-line pt-4">
       {terms.map((term, i) => (
         <span key={term} className="flex items-center gap-3">
           <span className="text-copy font-medium text-ink">{term}</span>
@@ -202,7 +202,7 @@ function Formula({ terms, result }) {
 // flattening the three into one wall of chips loses the point it was making.
 function Swatches({ groups }) {
   return (
-    <div className="mt-block space-y-section">
+    <div className="mt-visual space-y-section">
       {groups.map((group) => (
         <div key={group.title}>
           <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{group.title}</p>
@@ -237,7 +237,7 @@ function DataTable({ title, head, rows, foot, note }) {
   const stick = "sticky left-0 z-10 bg-box"
   const cell = "whitespace-nowrap px-3 py-3 text-note tabular-nums"
   return (
-    <figure className="mt-block">
+    <figure className="mt-visual">
       {title && <figcaption className="mb-3 text-note font-medium text-ink">{title}</figcaption>}
       <div className="no-scrollbar overflow-x-auto rounded-xl border border-line bg-box">
         <table className="w-full border-collapse text-left">
@@ -304,7 +304,7 @@ function DataTable({ title, head, rows, foot, note }) {
 // so the proportions survive being shown at whatever width the column happens to be.
 function GridSpec({ labels }) {
   return (
-    <figure className="mt-block">
+    <figure className="mt-visual">
       <div
         className="w-full overflow-hidden rounded-xl border border-line bg-box p-3"
         style={{ aspectRatio: 1440 / 900 }}
@@ -356,7 +356,7 @@ function GridSpec({ labels }) {
 // convincing than one that only shows pictures of it.
 function Links({ items }) {
   return (
-    <ul className="mt-block space-y-3">
+    <ul className="mt-visual space-y-3">
       {items.map((l) => (
         <li key={l.href}>
           <a
@@ -386,7 +386,7 @@ function Links({ items }) {
 // is letterboxed or cropped — it is the video's own ratio, not an arbitrary crop.
 function Video({ src, title, caption }) {
   return (
-    <figure className="mt-block">
+    <figure className="mt-visual">
       <div className="aspect-video w-full overflow-hidden bg-box">
         <iframe
           src={src}
@@ -431,7 +431,7 @@ function Clip({ src, caption, href, cta }) {
     </div>
   )
   return (
-    <figure className="mt-block">
+    <figure className="mt-visual">
       {href ? (
         <a
           href={href}

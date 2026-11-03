@@ -74,21 +74,6 @@ function Rich({ text, color }) {
     )
 }
 
-// The yellow wave the deck draws under every slide title.
-function Squiggle({ className = "" }) {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 144 24" width="120" height="20" className={className}>
-      <path
-        d="M3 15c8-12 14-12 22 0s14 12 22 0 14-12 22 0 14 12 22 0 14-12 22 0 14 12 22 0"
-        fill="none"
-        stroke={YELLOW}
-        strokeWidth="5"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
-
 // A rounded card in one of the deck's tones.
 function Card({ tone = "card", className = "", style, children }) {
   return (
@@ -227,21 +212,16 @@ function ArrowDisc({ tone = "blue", turn = "sm", size = 44, className = "" }) {
 
 // --- the board shell ---------------------------------------------------------------
 
-// A slide. On the page's own ground by default; `stage` sets the whole slide —
-// title included — on one of the deck's full colour backdrops.
+// A slide. The title and lead always sit plainly on the page, set like every
+// other case study's chapter title; `stage` puts only the slide's content on one
+// of the deck's full colour backdrops.
 function Board({ slide, stage, children }) {
   const st = stage ? TONE[stage] : null
   const head = (
     <>
-      <h3
-        className="text-[28px] font-black tracking-tight sm:text-[32px]"
-        style={{ color: st ? st.fg : "var(--color-cream)" }}
-      >
-        {slide.title}
-      </h3>
-      <Squiggle className="mt-2" />
+      <h3 className="text-3xl font-semibold tracking-tight text-cream">{slide.title}</h3>
       {slide.lead && (
-        <p className="mt-lead max-w-3xl text-copy" style={{ color: st ? st.q : QUIET }}>
+        <p className="mt-lead max-w-3xl text-copy" style={{ color: QUIET }}>
           {slide.lead}
         </p>
       )}
@@ -251,18 +231,18 @@ function Board({ slide, stage, children }) {
     return (
       <div className="wp-deck mt-tight">
         {head}
-        <div className="mt-block">{children}</div>
+        <div className="mt-visual">{children}</div>
       </div>
     )
   }
   return (
     <div className="wp-deck mt-tight">
+      {head}
       <div
-        className="wp-checker relative overflow-hidden rounded-[2rem] px-4 py-6 sm:rounded-[2.5rem] sm:p-8 lg:p-8"
+        className="wp-checker relative mt-visual overflow-hidden rounded-[2rem] px-4 py-6 sm:rounded-[2.5rem] sm:p-8 lg:p-8"
         style={{ ...surface(stage), backgroundColor: st.bg }}
       >
-        {head}
-        <div className="mt-block">{children}</div>
+        {children}
       </div>
     </div>
   )
@@ -285,7 +265,7 @@ function Overview({ slide }) {
       <div className="grid gap-6 lg:grid-cols-[1.75fr_1fr]">
         <TabCard tone="dark" tab={a.tab} align="right" bodyClass="flex flex-col lg:p-8">
           <p className="wp-round text-[22px] font-extrabold">✦ {a.brand}</p>
-          <h4 className="mt-1 text-2xl font-black">{a.title}</h4>
+          <h4 className="mt-1 text-2xl font-semibold tracking-tight">{a.title}</h4>
           <p className="mt-4 max-w-3xl text-copy" style={{ color: TONE.dark.q }}>
             <Rich text={a.text} color={YELLOW} />
           </p>
@@ -308,7 +288,7 @@ function Overview({ slide }) {
         <div className="grid content-start gap-6">
           <Card tone="pale">
             <div className="flex flex-wrap items-center gap-3">
-              <h4 className="text-[22px] font-black">{slide.role.title}</h4>
+              <h4 className="text-2xl font-semibold tracking-tight">{slide.role.title}</h4>
               <Pill tone="yellow" tilt="-rotate-3">
                 {slide.role.pill}
               </Pill>
@@ -316,7 +296,7 @@ function Overview({ slide }) {
             <Bullets items={slide.role.items} className="mt-6" />
           </Card>
           <Card tone="blue" className="lg:pr-24">
-            <h4 className="text-[22px] font-black">{slide.team.title}</h4>
+            <h4 className="text-2xl font-semibold tracking-tight">{slide.team.title}</h4>
             <ul className="mt-4 flex flex-wrap gap-2">
               {slide.team.pills.map((p, i) => (
                 <li key={p}>
@@ -390,7 +370,7 @@ function Background({ slide }) {
 
           <Card>
             <div className="grid gap-3 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-6">
-              <h4 className="text-copy font-black">{slide.revenue.title}</h4>
+              <h4 className="text-copy font-semibold">{slide.revenue.title}</h4>
               <div className="flex h-9 gap-2">
                 {slide.revenue.segments.map((seg, i) => (
                   <span
@@ -415,7 +395,7 @@ function Background({ slide }) {
         </div>
 
         <TabCard tab={slide.expectations.tab}>
-          <h4 className="text-[22px] font-black">{slide.expectations.title}</h4>
+          <h4 className="text-2xl font-semibold tracking-tight">{slide.expectations.title}</h4>
           <p className="mt-1 text-note" style={{ color: QUIET }}>
             {slide.expectations.sub}
           </p>
@@ -482,7 +462,7 @@ function Research({ slide }) {
         <Card className="flex flex-col md:col-span-2 xl:col-span-1" style={{ boxShadow: "inset 0 0 0 2px var(--wp-pale-2)" }}>
           <Tag className="self-start">{slide.why.tag}</Tag>
           <div className="mt-3 flex flex-wrap items-baseline gap-x-4">
-            <h4 className="text-[22px] font-black">{slide.why.title}</h4>
+            <h4 className="text-2xl font-semibold tracking-tight">{slide.why.title}</h4>
             <span className="text-note" style={{ color: QUIET }}>
               {slide.why.sub}
             </span>
@@ -509,7 +489,7 @@ function Research({ slide }) {
 
         <Card tone="pale">
           <Tag onPale>{w.tag}</Tag>
-          <h4 className="mt-3 text-[22px] font-black">{w.title}</h4>
+          <h4 className="mt-3 text-2xl font-semibold tracking-tight">{w.title}</h4>
           <div className="relative mx-auto my-6 size-44 rounded-full" style={{ background: `conic-gradient(${stops})` }}>
             <div className="absolute inset-6 flex items-center justify-center rounded-full" style={{ background: PALE }}>
               <Num className="text-3xl" style={{ color: LINK }}>
@@ -534,7 +514,7 @@ function Research({ slide }) {
         </Card>
 
         <TabCard tone="dark" tab={slide.how.tab}>
-          <h4 className="text-[22px] font-black">{slide.how.title}</h4>
+          <h4 className="text-2xl font-semibold tracking-tight">{slide.how.title}</h4>
           <ol className="mt-6 space-y-6">
             {slide.how.items.map((it, i) => (
               <li key={it.problem} className="flex gap-4">
@@ -570,7 +550,7 @@ function Insights({ slide }) {
         {slide.cards.map((c) => (
           <li key={c.tab} className="relative flex">
             <TabCard tone="card" tab={c.tab} className="w-full" bodyClass="flex flex-col">
-              <h4 className="pr-14 text-[22px] font-black">{c.title}</h4>
+              <h4 className="pr-14 text-2xl font-semibold tracking-tight">{c.title}</h4>
               <p className="mt-3 text-copy" style={{ color: QUIET }}>
                 {c.text}
               </p>
@@ -590,7 +570,7 @@ function Insights({ slide }) {
 
       <div className="grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
         <div>
-          <h4 className="text-[22px] font-black text-white">{slide.pains.title}</h4>
+          <h4 className="text-2xl font-semibold tracking-tight text-white">{slide.pains.title}</h4>
           <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-6">
             {slide.pains.items.map((p, i) => (
               <li key={p.text}>
@@ -684,7 +664,7 @@ function Competitors({ slide }) {
       </p>
 
       <div className="mt-6 grid gap-3 rounded-[2rem] px-6 py-6 sm:grid-cols-[auto_1fr] sm:items-center sm:gap-10 sm:rounded-full sm:px-12" style={{ background: YELLOW, color: ON_FILL }}>
-        <h4 className="text-2xl font-black">{slide.summary.title}</h4>
+        <h4 className="text-2xl font-semibold tracking-tight">{slide.summary.title}</h4>
         <p className="text-copy font-medium">
           <Rich text={slide.summary.text} color="var(--wp-link-on-yellow)" />
         </p>
@@ -705,7 +685,7 @@ function Ideation({ slide }) {
               {r.tag}
             </Pill>
             <Card tone={r.tone} className="pt-10 sm:pt-10">
-              <h4 className="text-[22px] font-black">{r.hmw}</h4>
+              <h4 className="text-2xl font-semibold tracking-tight">{r.hmw}</h4>
               <p className="mt-4 text-note" style={{ color: TONE[r.tone].q }}>
                 {r.clusterLabel}
               </p>
@@ -755,10 +735,9 @@ function Ideation({ slide }) {
       </svg>
 
       <div>
-        <h4 className="text-2xl font-black" style={{ color: "var(--color-cream)" }}>
+        <h4 className="text-2xl font-semibold tracking-tight" style={{ color: "var(--color-cream)" }}>
           {slide.featuresTitle}
         </h4>
-        <Squiggle className="mt-1" />
         <ol className="mt-6 grid gap-6">
           {slide.features.map((f) => (
             <li key={f.no}>
@@ -793,7 +772,7 @@ function Business({ slide }) {
       <Card tone="dark" className="grid gap-6 lg:grid-cols-[15rem_1fr] lg:gap-x-10 2xl:grid-cols-[15rem_1fr_auto] 2xl:items-center">
         <div>
           <Pill tone="yellow">{w.pill}</Pill>
-          <h4 className="mt-3 text-[22px] font-black">{w.title}</h4>
+          <h4 className="mt-3 text-2xl font-semibold tracking-tight">{w.title}</h4>
         </div>
         <p className="text-copy" style={{ color: TONE.dark.q }}>
           {w.text}
@@ -817,7 +796,7 @@ function Business({ slide }) {
                 <Pill tone="yellow" tilt={blue ? "-rotate-3" : "rotate-3"}>
                   {p.tag}
                 </Pill>
-                <h4 className="mt-3 text-[22px] font-black">{p.title}</h4>
+                <h4 className="mt-3 text-2xl font-semibold tracking-tight">{p.title}</h4>
                 <p className="mt-3 text-copy" style={{ color: TONE[p.tone].q }}>
                   {p.text}
                 </p>
@@ -935,7 +914,7 @@ function Turn({ slide, t }) {
           {p.pill}
         </Pill>
         <Card className="h-full">
-          <h4 className="text-[22px] font-black">{p.title}</h4>
+          <h4 className="text-2xl font-semibold tracking-tight">{p.title}</h4>
           <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-4 2xl:grid-cols-3">
             {p.items.map((it, i) => (
               <li key={i} className="flex items-center gap-2">
@@ -1002,7 +981,7 @@ function AiMascot({ slide }) {
 
       <div className="grid content-start gap-6 lg:grid-cols-2 2xl:grid-cols-1">
         <Card tone="dark">
-          <h4 className="text-[22px] font-black">{slide.pipeline.title} <span style={{ color: YELLOW }}>✦</span></h4>
+          <h4 className="text-2xl font-semibold tracking-tight">{slide.pipeline.title} <span style={{ color: YELLOW }}>✦</span></h4>
           <ol className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2 2xl:grid-cols-4">
             {slide.pipeline.nodes.map((n, i) => {
               const last = i === slide.pipeline.nodes.length - 1
@@ -1018,7 +997,7 @@ function AiMascot({ slide }) {
           </p>
         </Card>
         <Card tone="blue" className="wp-checker" style={{ backgroundColor: BLUE }}>
-          <h4 className="text-[22px] font-black">{slide.edges.title}</h4>
+          <h4 className="text-2xl font-semibold tracking-tight">{slide.edges.title}</h4>
           <ul className="mt-6 grid grid-cols-3 gap-3 sm:gap-6">
             {slide.edges.shots.map((s) => (
               <li key={s.src} className="flex min-w-0 flex-col items-center">
@@ -1133,7 +1112,7 @@ function Testing({ slide }) {
           return (
             <li key={r.tab} className="flex">
               <TabCard tone={r.tone} tab={r.tab} className="w-full" bodyClass="flex flex-col">
-                <h4 className="text-[22px] font-black">{r.title}</h4>
+                <h4 className="text-2xl font-semibold tracking-tight">{r.title}</h4>
                 <p className="mt-2 text-note" style={{ color: tone.q }}>
                   {r.sub}
                 </p>
@@ -1233,7 +1212,7 @@ function Handoff({ slide }) {
     <div className="grid gap-6 2xl:grid-cols-[1.1fr_1fr]">
       <div className="grid content-start gap-6">
         <Card tone="dark" className="sm:p-8">
-          <h4 className="text-[22px] font-black">
+          <h4 className="text-2xl font-semibold tracking-tight">
             {a.title} <span style={{ color: YELLOW }}>✦</span>
           </h4>
           {/* The app sits above the backend, the two services either side of it. On
@@ -1407,7 +1386,7 @@ function Launch({ slide }) {
   return (
     <div className="grid gap-6 2xl:grid-cols-[1.6fr_1fr]">
       <Card tone="night2" className="sm:p-8">
-        <h4 className="text-copy font-black">{c.title}</h4>
+        <h4 className="text-copy font-semibold">{c.title}</h4>
         <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-1">
           <Num className="text-4xl" style={{ color: YELLOW }}>
             {c.big}
@@ -1425,7 +1404,7 @@ function Launch({ slide }) {
       <div className="grid content-start gap-6 lg:grid-cols-2 2xl:grid-cols-1">
         <Card>
           <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <h4 className="text-[22px] font-black">{slide.reviews.title}</h4>
+            <h4 className="text-2xl font-semibold tracking-tight">{slide.reviews.title}</h4>
             <span className="text-note" style={{ color: QUIET }}>
               {slide.reviews.sub}
             </span>
@@ -1441,7 +1420,7 @@ function Launch({ slide }) {
         </Card>
         <Card tone="yellow" className="flex items-center gap-4">
           <div className="min-w-0 flex-1">
-            <h4 className="text-[22px] font-black">{slide.retro.title}</h4>
+            <h4 className="text-2xl font-semibold tracking-tight">{slide.retro.title}</h4>
             <p className="mt-3 text-copy font-medium]">{slide.retro.text}</p>
           </div>
           <Sticker src={slide.retro.sticker} className="hidden w-24 shrink-0 sm:block" />
@@ -1497,7 +1476,7 @@ function Reflection({ slide }) {
 
         <Card tone="pale">
           <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <h4 className="text-[22px] font-black">{m.title}</h4>
+            <h4 className="text-2xl font-semibold tracking-tight">{m.title}</h4>
             <span className="text-note" style={{ color: QUIET }}>
               {m.sub}
             </span>
@@ -1544,7 +1523,6 @@ function Reflection({ slide }) {
         <div className="relative z-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-3 sm:pr-40">
           <div>
             <p className="wp-round text-4xl font-extrabold sm:text-5xl">Thanks for watching!</p>
-            <Squiggle className="mt-3" />
           </div>
           <p className="wp-round text-copy font-bold">WeatherPets · Shumei Zhang · UX/UI Designer</p>
         </div>

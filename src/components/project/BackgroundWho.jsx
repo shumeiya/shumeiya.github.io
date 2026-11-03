@@ -7,12 +7,12 @@ import { useT } from "../../i18n/lang"
 export default function BackgroundWho({ act }) {
   const t = useT()
   return (
-    <div className="mt-block">
+    <div className="mt-visual">
       <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{t(act.kicker)}</p>
       <h3 className="mt-tight text-2xl font-semibold tracking-tight text-cream">{t(act.title)}</h3>
       <p className="mt-body max-w-2xl text-copy text-ink">{t(act.body)}</p>
 
-      <p className="mt-block font-mono-tight text-note uppercase tracking-wide text-fog">{t(act.needsLabel)}</p>
+      <p className="mt-visual font-mono-tight text-note uppercase tracking-wide text-fog">{t(act.needsLabel)}</p>
       <ul className="mt-body grid gap-card sm:grid-cols-3">
         {act.needs.map((need, i) => (
           <li key={i} className="rounded-2xl bg-[#efede8] p-6 dark:bg-[#2f2f2f]">

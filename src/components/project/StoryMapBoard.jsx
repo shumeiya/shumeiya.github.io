@@ -167,7 +167,7 @@ export default function StoryMapBoard({ board }) {
   }, [])
 
   return (
-    <figure className="mt-block">
+    <figure className="mt-visual">
       <div ref={hostRef} className="no-scrollbar overflow-x-auto">
         <div style={{ width: BOARD_W * scale, height: BOARD_H * scale }}>
           <div

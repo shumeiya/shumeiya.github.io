@@ -107,7 +107,7 @@ export default function ProjectDetail() {
             ))}
 
             {section.images?.length > 0 && (
-              <div className="mt-block grid gap-card">
+              <div className="mt-visual grid gap-card">
                 {section.images.map((src) => (
                   <div key={src} className="bg-box">
                     <img src={src} alt="" loading="lazy" className="block h-auto w-full" />
