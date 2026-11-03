@@ -838,13 +838,9 @@ const reflection = {
   stickers: [`${ART}/sticker-golden.png`, `${V3}/sticker-sun.png`],
 }
 
-// The section eyebrow is the slide's number and chapter name — "02 · Overview" —
-// which has to stay a wrapped string so it still switches language.
-const localizedEyebrow = (slide) => ({
-  __t: true,
-  en: `${slide.no} · ${slide.eyebrow.en}`,
-  zh: `${slide.no} · ${slide.eyebrow.zh}`,
-})
+// The section eyebrow is the chapter name alone — the slide number is dropped on
+// the page (it still exists as slide.no for the deck itself).
+const localizedEyebrow = (slide) => slide.eyebrow
 
 // --- The deck, in order ---------------------------------------------------------
 

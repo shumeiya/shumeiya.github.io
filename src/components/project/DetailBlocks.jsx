@@ -400,20 +400,49 @@ function Video({ src, title, caption }) {
   )
 }
 
-function Clip({ src, caption }) {
+// With `href`, the clip is a link to the live product: a CTA pill fades in over
+// the video on hover (and on keyboard focus), and the whole frame is clickable.
+function Clip({ src, caption, href, cta }) {
+  const t = useT()
+  const frame = (
+    <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-line bg-box">
+      <video
+        src={src}
+        className="block h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+      />
+      {href && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-300 group-hover:bg-black/30 group-focus-visible:bg-black/30"
+        >
+          <span className="flex translate-y-2 items-center gap-2 rounded-full bg-paper px-5 py-3 text-copy font-medium text-paper-ink opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+            {t(cta)}
+            <ArrowUpRight size={18} />
+          </span>
+        </span>
+      )}
+    </div>
+  )
   return (
     <figure className="mt-6">
-      <div className="aspect-video w-full overflow-hidden rounded-xl border border-line bg-box">
-        <video
-          src={src}
-          className="block h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        />
-      </div>
+      {href ? (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t(cta)}
+          className="group block cursor-pointer focus:outline-none"
+        >
+          {frame}
+        </a>
+      ) : (
+        frame
+      )}
       {caption && <figcaption className="mt-2.5 text-note leading-relaxed text-fog">{caption}</figcaption>}
     </figure>
   )
@@ -474,7 +503,7 @@ export default function DetailBlocks({ blocks, accent }) {
       case "video":
         return <Video key={i} src={block.src} title={block.title} caption={block.caption} />
       case "clip":
-        return <Clip key={i} src={block.src} caption={block.caption} />
+        return <Clip key={i} src={block.src} caption={block.caption} href={block.href} cta={block.cta} />
       case "workflow":
         return <WorkflowBoard key={i} board={block.board} accent={accent} />
       case "background":

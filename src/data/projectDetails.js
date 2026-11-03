@@ -42,7 +42,15 @@ export const projectDetails = {
     ],
     // The product clip opens the case study, between the hero and the first chapter,
     // with no words of its own — the hero has already said what Kyrall is.
-    intro: [{ type: "clip", src: "/dashboard/status.log/kyrall/kyrall.mp4" }],
+    intro: [
+      {
+        type: "clip",
+        src: "/dashboard/status.log/kyrall/kyrall.mp4",
+        // The clip links to the live product; the pill shows on hover.
+        href: "https://kyrall.com/",
+        cta: tt("Try the product", "试用产品"),
+      },
+    ],
     sections: [
       {
         id: "workflow",
@@ -55,7 +63,7 @@ export const projectDetails = {
       },
       {
         id: "background",
-        eyebrow: tt("01 · Background", "01 · 需求背景"),
+        eyebrow: tt("Background", "需求背景"),
         // The board opens with its own title, so the page's heading stays for the
         // chapter index and the outline but is not drawn twice.
         label: tt("Background", "需求背景"),
@@ -64,7 +72,7 @@ export const projectDetails = {
       },
       {
         id: "competitors",
-        eyebrow: tt("02 · Competitors", "02 · 竞品分析"),
+        eyebrow: tt("Competitors", "竞品分析"),
         // Same arrangement as the Background board: the board opens with its own
         // title, so the page's heading stays for the chapter index and the outline
         // but is not drawn twice.
@@ -74,7 +82,7 @@ export const projectDetails = {
       },
       {
         id: "persona",
-        eyebrow: tt("03 · Persona", "03 · 用户画像"),
+        eyebrow: tt("Persona", "用户画像"),
         // The board opens with its own title, so the page's heading stays for the
         // chapter index and the outline but is not drawn twice.
         label: tt("Persona", "用户画像"),
@@ -86,7 +94,7 @@ export const projectDetails = {
       },
       {
         id: "system",
-        eyebrow: tt("05 · Design System", "05 · 设计系统"),
+        eyebrow: tt("Design System", "设计系统"),
         label: tt("Design System", "设计系统"),
         lead: tt(
           "Keep it consistent: document the system and its components.",
@@ -96,7 +104,7 @@ export const projectDetails = {
       },
       {
         id: "loop",
-        eyebrow: tt("06 · Core flow", "06 · 核心流程"),
+        eyebrow: tt("Core flow", "核心流程"),
         // The board opens with its own title, so the page's heading stays for the
         // chapter index and the outline but is not drawn twice.
         label: tt("Core flow", "核心流程"),
@@ -105,7 +113,7 @@ export const projectDetails = {
       },
       {
         id: "extensions",
-        eyebrow: tt("07 · Extensions", "07 · 延展页面"),
+        eyebrow: tt("Extensions", "延展页面"),
         // Same as the core-flow board: it opens with its own title, so the page's
         // heading stays for the chapter index and the outline but is not drawn twice.
         label: tt("Extensions", "延展页面"),
@@ -114,7 +122,7 @@ export const projectDetails = {
       },
       {
         id: "launchdata",
-        eyebrow: tt("08 · Launch data", "08 · 上线数据"),
+        eyebrow: tt("Launch data", "上线数据"),
         // The board opens with its own title, so the page's heading stays for the
         // chapter index and the outline but is not drawn twice.
         label: tt("Launch data", "上线数据"),
@@ -125,7 +133,7 @@ export const projectDetails = {
       // AiWorkflowBoard.jsx) is kept; re-enable by restoring this entry and the import.
       // {
       //   id: "aiworkflow",
-      //   eyebrow: tt("09 · AI workflow", "09 · AI 工作流"),
+      //   eyebrow: tt("AI workflow", "AI 工作流"),
       //   // The board opens with its own title, so the page's heading stays for the
       //   // chapter index and the outline but is not drawn twice.
       //   label: tt("AI workflow", "AI 工作流"),
@@ -165,7 +173,7 @@ export const projectDetails = {
     sections: [
       {
         id: "overview",
-        eyebrow: tt("00 · Overview", "00 · 概览"),
+        eyebrow: tt("Overview", "概览"),
         label: tt("Overview", "概览"),
         lead: tt("“Grow” — a Slow Food experience for Bra.", "「Grow」—— 为布拉设计的慢食体验。"),
         blocks: [
@@ -187,7 +195,7 @@ export const projectDetails = {
       },
       {
         id: "background",
-        eyebrow: tt("01 · Background", "01 · 背景"),
+        eyebrow: tt("Background", "背景"),
         label: tt("Background", "背景"),
         lead: tt(
           "Bra, Piedmont — where the Slow Food movement began.",
@@ -309,7 +317,7 @@ export const projectDetails = {
       },
       {
         id: "design-task",
-        eyebrow: tt("02 · Design task", "02 · 设计任务"),
+        eyebrow: tt("Design task", "设计任务"),
         label: tt("Design task", "设计任务"),
         lead: tt(
           "Three outcomes the design had to serve at once.",
@@ -354,7 +362,7 @@ export const projectDetails = {
       },
       {
         id: "case-study",
-        eyebrow: tt("03 · Case study", "03 · 案例研究"),
+        eyebrow: tt("Case study", "案例研究"),
         label: tt("Case study", "案例研究"),
         lead: tt(
           "Four farm-to-table references, scored on the same five axes.",
@@ -379,7 +387,7 @@ export const projectDetails = {
       },
       {
         id: "persona",
-        eyebrow: tt("04 · Persona", "04 · 用户画像"),
+        eyebrow: tt("Persona", "用户画像"),
         label: tt("Persona", "用户画像"),
         lead: tt(
           "Three visitors, three different reasons to slow down.",
@@ -404,7 +412,7 @@ export const projectDetails = {
       },
       {
         id: "project-overview",
-        eyebrow: tt("05 · Project overview", "05 · 项目总览"),
+        eyebrow: tt("Project overview", "项目总览"),
         label: tt("Project overview", "项目总览"),
         lead: tt(
           "One loop that runs from the app into the restaurant and back out again.",
@@ -439,7 +447,7 @@ export const projectDetails = {
       },
       {
         id: "storyboard",
-        eyebrow: tt("06 · Storyboard", "06 · 故事板"),
+        eyebrow: tt("Storyboard", "故事板"),
         label: tt("Storyboard", "故事板"),
         lead: tt("The same loop, told as one visitor’s day.", "同一个闭环，换成一位客人的一天来讲。"),
         blocks: [
@@ -461,7 +469,7 @@ export const projectDetails = {
       },
       {
         id: "app-design",
-        eyebrow: tt("07 · App design", "07 · 应用设计"),
+        eyebrow: tt("App design", "应用设计"),
         label: tt("App design", "应用设计"),
         lead: tt("GROW — Slow Food Experience.", "GROW —— 慢食体验。"),
         blocks: [
@@ -563,7 +571,7 @@ export const projectDetails = {
       },
       {
         id: "space-design",
-        eyebrow: tt("08 · Space design", "08 · 空间设计"),
+        eyebrow: tt("Space design", "空间设计"),
         label: tt("Space design", "空间设计"),
         lead: tt(
           "Based on site surveys, the outdoor space of the restaurant has been redesigned — three main areas and one corridor.",
@@ -641,7 +649,7 @@ export const projectDetails = {
       },
       {
         id: "user-journey",
-        eyebrow: tt("09 · User journey", "09 · 用户旅程"),
+        eyebrow: tt("User journey", "用户旅程"),
         label: tt("User journey", "用户旅程"),
         lead: tt(
           "Sixteen steps, from a friend’s seed card back to a friend’s seed card.",
@@ -673,7 +681,7 @@ export const projectDetails = {
       },
       {
         id: "design-visivo",
-        eyebrow: tt("10 · Design visivo", "10 · 视觉设计"),
+        eyebrow: tt("Design visivo", "视觉设计"),
         label: tt("Design visivo", "视觉设计"),
         lead: tt(
           "Plant elements, unconstrained spacing, natural growth.",
@@ -716,7 +724,7 @@ export const projectDetails = {
       },
       {
         id: "business",
-        eyebrow: tt("11 · Discounted cash flow", "11 · 现金流折现"),
+        eyebrow: tt("Discounted cash flow", "现金流折现"),
         label: tt("Business case", "商业测算"),
         lead: tt(
           "According to the DCF neutral evaluation, the project can break even by the 10th quarter.",
@@ -792,7 +800,7 @@ export const projectDetails = {
     sections: [
       {
         id: "overview",
-        eyebrow: tt("00 · Overview", "00 · 概览"),
+        eyebrow: tt("Overview", "概览"),
         label: tt("Overview", "概览"),
         lead: tt("TIDE — studio website design.", "TIDE —— 工作室网站设计。"),
         blocks: [
@@ -808,7 +816,7 @@ export const projectDetails = {
       },
       {
         id: "introduction",
-        eyebrow: tt("01 · Introduction", "01 · 介绍"),
+        eyebrow: tt("Introduction", "介绍"),
         label: tt("Introduction", "介绍"),
         lead: tt("“Put us to the test.”", "「来考考我们。」"),
         blocks: [
@@ -835,7 +843,7 @@ export const projectDetails = {
       },
       {
         id: "moodboard",
-        eyebrow: tt("02 · Moodboard", "02 · 情绪板"),
+        eyebrow: tt("Moodboard", "情绪板"),
         label: tt("Moodboard", "情绪板"),
         lead: tt(
           "Sea, sun and shoreline, in flat blues and yellow.",
@@ -854,7 +862,7 @@ export const projectDetails = {
       },
       {
         id: "sitemap",
-        eyebrow: tt("03 · Site map", "03 · 站点地图"),
+        eyebrow: tt("Site map", "站点地图"),
         label: tt("Site map", "站点地图"),
         lead: tt("Five top-level sections.", "五个一级栏目。"),
         blocks: [
@@ -880,7 +888,7 @@ export const projectDetails = {
       },
       {
         id: "wireframe",
-        eyebrow: tt("04 · Wireframe", "04 · 线框"),
+        eyebrow: tt("Wireframe", "线框"),
         label: tt("Wireframe", "线框"),
         lead: tt("Structure first, on both breakpoints.", "先定结构，两个断点一起。"),
         blocks: [
@@ -904,7 +912,7 @@ export const projectDetails = {
       },
       {
         id: "draft-one",
-        eyebrow: tt("05 · Draft one", "05 · 初稿一"),
+        eyebrow: tt("Draft one", "初稿一"),
         label: tt("Draft one", "初稿一"),
         lead: tt("Yellow and blue, cut by wave-shaped edges.", "黄与蓝，被波浪形的边缘切开。"),
         blocks: [
@@ -918,7 +926,7 @@ export const projectDetails = {
       },
       {
         id: "draft-two",
-        eyebrow: tt("06 · Draft two", "06 · 初稿二"),
+        eyebrow: tt("Draft two", "初稿二"),
         label: tt("Draft two", "初稿二"),
         lead: tt("A second pass at the same structure.", "在同一套结构上再走一遍。"),
         blocks: [
@@ -932,7 +940,7 @@ export const projectDetails = {
       },
       {
         id: "final",
-        eyebrow: tt("07 · Final concept", "07 · 最终方案"),
+        eyebrow: tt("Final concept", "最终方案"),
         label: tt("Final concept", "最终方案"),
         lead: tt("Go under the surface.", "潜到水面之下。"),
         blocks: [
@@ -982,7 +990,7 @@ export const projectDetails = {
       },
       {
         id: "prototyping",
-        eyebrow: tt("08 · Prototyping", "08 · 原型"),
+        eyebrow: tt("Prototyping", "原型"),
         label: tt("Prototyping", "原型"),
         lead: tt("Clickable, on both breakpoints.", "两个断点都能点。"),
         blocks: [
@@ -1033,7 +1041,7 @@ export const projectDetails = {
     sections: [
       {
         id: "overview",
-        eyebrow: tt("00 · Overview", "00 · 概览"),
+        eyebrow: tt("Overview", "概览"),
         label: tt("Overview", "概览"),
         lead: tt(
           "Collect nine puzzle pages to complete a storybook.",
@@ -1066,7 +1074,7 @@ export const projectDetails = {
       },
       {
         id: "journey",
-        eyebrow: tt("01 · User journey map", "01 · 用户旅程图"),
+        eyebrow: tt("User journey map", "用户旅程图"),
         label: tt("User journey map", "用户旅程图"),
         lead: tt(
           "Analyze pain points and product opportunities to summarize design strategies.",
@@ -1135,7 +1143,7 @@ export const projectDetails = {
       },
       {
         id: "motivation",
-        eyebrow: tt("02 · User motivation", "02 · 用户动机"),
+        eyebrow: tt("User motivation", "用户动机"),
         label: tt("User motivation", "用户动机"),
         lead: tt("A teenage audience, driven by attraction.", "以青少年为主的用户，被「吸引力」驱动。"),
         blocks: [
@@ -1157,7 +1165,7 @@ export const projectDetails = {
       },
       {
         id: "strategy",
-        eyebrow: tt("03 · Design strategy", "03 · 设计策略"),
+        eyebrow: tt("Design strategy", "设计策略"),
         label: tt("Design strategy", "设计策略"),
         lead: tt(
           "Three strategies, from the experience report and motivation analysis.",
@@ -1195,7 +1203,7 @@ export const projectDetails = {
       },
       {
         id: "emotional",
-        eyebrow: tt("04 · Emotional edition", "04 · 情绪定调"),
+        eyebrow: tt("Emotional edition", "情绪定调"),
         label: tt("Emotional edition", "情绪定调"),
         lead: tt("Young · immersion · interesting.", "年轻 · 沉浸 · 有趣。"),
         blocks: [
@@ -1231,7 +1239,7 @@ export const projectDetails = {
       },
       {
         id: "color",
-        eyebrow: tt("05 · Color standard", "05 · 色彩规范"),
+        eyebrow: tt("Color standard", "色彩规范"),
         label: tt("Color standard", "色彩规范"),
         lead: tt("Childlike purple, with blue as the auxiliary.", "以童趣的紫为主色，蓝色为辅。"),
         blocks: [
@@ -1253,7 +1261,7 @@ export const projectDetails = {
       },
       {
         id: "homepage",
-        eyebrow: tt("06 · Home page", "06 · 首页"),
+        eyebrow: tt("Home page", "首页"),
         label: tt("Home page", "首页"),
         lead: tt(
           "Two tags, a waterfall of puzzle sets, and the player’s balance.",
@@ -1278,7 +1286,7 @@ export const projectDetails = {
       },
       {
         id: "process",
-        eyebrow: tt("07 · Process display", "07 · 流程展示"),
+        eyebrow: tt("Process display", "流程展示"),
         label: tt("Process display", "流程展示"),
         lead: tt(
           "Simple, intuitive interaction that lowers the difficulty of operation.",
@@ -1297,7 +1305,7 @@ export const projectDetails = {
       },
       {
         id: "guidance",
-        eyebrow: tt("08 · Operation guidance", "08 · 操作引导"),
+        eyebrow: tt("Operation guidance", "操作引导"),
         label: tt("Operation guidance", "操作引导"),
         lead: tt(
           "Dynamic beginner guidance, not a static tutorial.",
@@ -1355,7 +1363,7 @@ export const projectDetails = {
       },
       {
         id: "display",
-        eyebrow: tt("09 · Page display", "09 · 页面展示"),
+        eyebrow: tt("Page display", "页面展示"),
         label: tt("Page display", "页面展示"),
         lead: tt("The finished screens.", "最终的界面。"),
         blocks: [
@@ -1385,7 +1393,7 @@ export const projectDetails = {
     sections: [
       {
         id: "overview",
-        eyebrow: tt("00 · Overview", "00 · 概览"),
+        eyebrow: tt("Overview", "概览"),
         label: tt("Overview", "概览"),
         lead: tt(
           "Fire protection system design for urban villages.",
@@ -1404,7 +1412,7 @@ export const projectDetails = {
       },
       {
         id: "background",
-        eyebrow: tt("01 · Background", "01 · 背景"),
+        eyebrow: tt("Background", "背景"),
         label: tt("Background", "背景"),
         lead: tt("Residential fire is where people actually die.", "真正死人的，是住宅火灾。"),
         blocks: [
@@ -1453,7 +1461,7 @@ export const projectDetails = {
       },
       {
         id: "architecture",
-        eyebrow: tt("02 · System architecture", "02 · 系统架构"),
+        eyebrow: tt("System architecture", "系统架构"),
         label: tt("System architecture", "系统架构"),
         lead: tt("Scene, cloud, network, terminal.", "场景、云端、网络、终端。"),
         blocks: [
@@ -1499,7 +1507,7 @@ export const projectDetails = {
       },
       {
         id: "diagram",
-        eyebrow: tt("03 · System diagram", "03 · 系统图解"),
+        eyebrow: tt("System diagram", "系统图解"),
         label: tt("System diagram", "系统图解"),
         lead: tt(
           "Baishizhou, Nanshan District, Shenzhen — taken as the example.",
@@ -1548,7 +1556,7 @@ export const projectDetails = {
       },
       {
         id: "product-design",
-        eyebrow: tt("04 · Product design", "04 · 产品设计"),
+        eyebrow: tt("Product design", "产品设计"),
         label: tt("Product design", "产品设计"),
         lead: tt("Geometry · rounded · affiliative.", "几何 · 圆润 · 亲和。"),
         blocks: [
@@ -1569,7 +1577,7 @@ export const projectDetails = {
       },
       {
         id: "drone",
-        eyebrow: tt("05 · Fire fighting drone", "05 · 消防无人机"),
+        eyebrow: tt("Fire fighting drone", "消防无人机"),
         label: tt("Fire fighting drone", "消防无人机"),
         lead: tt("Eyes above the fire.", "火场上方的那双眼睛。"),
         blocks: [
@@ -1588,7 +1596,7 @@ export const projectDetails = {
       },
       {
         id: "car",
-        eyebrow: tt("06 · Fire fighting small car", "06 · 消防小车"),
+        eyebrow: tt("Fire fighting small car", "消防小车"),
         label: tt("Fire fighting small car", "消防小车"),
         lead: tt(
           "Hoses delivered up the stairs, before anyone arrives.",
@@ -1610,7 +1618,7 @@ export const projectDetails = {
       },
       {
         id: "exploded",
-        eyebrow: tt("07 · Product exploded view", "07 · 产品爆炸图"),
+        eyebrow: tt("Product exploded view", "产品爆炸图"),
         label: tt("Exploded view", "爆炸图"),
         lead: tt("Three systems — PCB, body and battery.", "三大系统 —— 电路板、机身与电池。"),
         blocks: [
@@ -1643,7 +1651,7 @@ export const projectDetails = {
       },
       {
         id: "renders",
-        eyebrow: tt("08 · Renders", "08 · 渲染图"),
+        eyebrow: tt("Renders", "渲染图"),
         label: tt("Renders", "渲染图"),
         lead: tt("The finished pair.", "完成的这一对。"),
         blocks: [
@@ -1687,7 +1695,7 @@ export const projectDetails = {
     sections: [
       {
         id: "overview",
-        eyebrow: tt("00 · Overview", "00 · 概览"),
+        eyebrow: tt("Overview", "概览"),
         label: tt("Overview", "概览"),
         lead: tt(
           "“Place Life” series stationery product design.",
@@ -1706,7 +1714,7 @@ export const projectDetails = {
       },
       {
         id: "description",
-        eyebrow: tt("01 · Design description", "01 · 设计说明"),
+        eyebrow: tt("Design description", "设计说明"),
         label: tt("Design description", "设计说明"),
         lead: tt(
           "A courtyard house, shrunk to the size of a desk.",
@@ -1772,7 +1780,7 @@ export const projectDetails = {
       },
       {
         id: "details",
-        eyebrow: tt("02 · Design details", "02 · 设计细节"),
+        eyebrow: tt("Design details", "设计细节"),
         label: tt("Design details", "设计细节"),
         lead: tt("Held together by dovetail joints, not glue.", "靠燕尾榫咬合，而不是靠胶。"),
         blocks: [
@@ -1806,7 +1814,7 @@ export const projectDetails = {
       },
       {
         id: "product",
-        eyebrow: tt("03 · Product", "03 · 成品"),
+        eyebrow: tt("Product", "成品"),
         label: tt("Product", "成品"),
         lead: tt("The finished object.", "完成后的器物。"),
         blocks: [
@@ -1857,7 +1865,7 @@ export const projectDetails = {
     sections: [
       {
         id: "overview",
-        eyebrow: tt("00 · Overview", "00 · 概览"),
+        eyebrow: tt("Overview", "概览"),
         label: tt("Overview", "概览"),
         lead: tt(
           "Smart packaging: a way to enhance Made in Italy fashion.",
@@ -1892,7 +1900,7 @@ export const projectDetails = {
       },
       {
         id: "case-study",
-        eyebrow: tt("01 · Smart case study", "01 · 智能包装案例"),
+        eyebrow: tt("Smart case study", "智能包装案例"),
         label: tt("Smart case study", "智能包装案例"),
         lead: tt(
           "What smart packaging already does, elsewhere.",
@@ -1924,7 +1932,7 @@ export const projectDetails = {
       },
       {
         id: "history",
-        eyebrow: tt("02 · History of Made in Italy", "02 · 「意大利制造」的历史"),
+        eyebrow: tt("History of Made in Italy", "「意大利制造」的历史"),
         label: tt("History of Made in Italy", "「意大利制造」的历史"),
         lead: tt(
           "Where the label came from, and what it now has to defend.",
@@ -1950,7 +1958,7 @@ export const projectDetails = {
       },
       {
         id: "fashion-system",
-        eyebrow: tt("03 · Fashion system", "03 · 时尚系统"),
+        eyebrow: tt("Fashion system", "时尚系统"),
         label: tt("Fashion system", "时尚系统"),
         lead: tt("The supply chain, drawn end to end.", "把供应链从头画到尾。"),
         blocks: [
@@ -1979,7 +1987,7 @@ export const projectDetails = {
       },
       {
         id: "challenges",
-        eyebrow: tt("04 · Challenges and opportunities", "04 · 挑战与机会"),
+        eyebrow: tt("Challenges and opportunities", "挑战与机会"),
         label: tt("Challenges and opportunities", "挑战与机会"),
         lead: tt(
           "Every challenge, matched to the opportunities that answer it.",
@@ -1998,7 +2006,7 @@ export const projectDetails = {
       },
       {
         id: "new-system",
-        eyebrow: tt("05 · New system", "05 · 新系统"),
+        eyebrow: tt("New system", "新系统"),
         label: tt("New system", "新系统"),
         lead: tt("Three integrable solutions, in one flow.", "三个可整合的解法，接在同一条流上。"),
         blocks: [
@@ -2040,7 +2048,7 @@ export const projectDetails = {
       },
       {
         id: "evaluation",
-        eyebrow: tt("06 · Evaluation", "06 · 评估"),
+        eyebrow: tt("Evaluation", "评估"),
         label: tt("Evaluation", "评估"),
         lead: tt("Outcomes and impacts, over three horizons.", "三个时间跨度上的产出与影响。"),
         blocks: [
@@ -2071,7 +2079,7 @@ export const projectDetails = {
     sections: [
       {
         id: "territory",
-        eyebrow: tt("01 · Territory", "01 · 地域"),
+        eyebrow: tt("Territory", "地域"),
         label: tt("Holistic diagnosis — territory", "整体诊断 —— 地域"),
         lead: tt(
           "Piedmont, with a focus on the Metropolitan City of Turin.",
@@ -2098,7 +2106,7 @@ export const projectDetails = {
       },
       {
         id: "company",
-        eyebrow: tt("02 · Company", "02 · 企业"),
+        eyebrow: tt("Company", "企业"),
         label: tt("Holistic diagnosis — company", "整体诊断 —— 企业"),
         lead: tt(
           "Guido Gobino, chocolate maker in Turin since 1964.",
@@ -2131,7 +2139,7 @@ export const projectDetails = {
       },
       {
         id: "maps",
-        eyebrow: tt("03 · System maps", "03 · 系统图"),
+        eyebrow: tt("System maps", "系统图"),
         label: tt("System maps", "系统图"),
         lead: tt("The flows as they run today.", "当下这些流实际的走法。"),
         blocks: [
@@ -2162,7 +2170,7 @@ export const projectDetails = {
       },
       {
         id: "opportunities",
-        eyebrow: tt("04 · Challenges and opportunities", "04 · 挑战与机会"),
+        eyebrow: tt("Challenges and opportunities", "挑战与机会"),
         label: tt("Challenges and opportunities", "挑战与机会"),
         lead: tt(
           "Company and territory challenges, against what could answer them.",
@@ -2189,7 +2197,7 @@ export const projectDetails = {
       },
       {
         id: "roadmap",
-        eyebrow: tt("05 · Roadmap", "05 · 路线图"),
+        eyebrow: tt("Roadmap", "路线图"),
         label: tt("Roadmap", "路线图"),
         lead: tt(
           "Nine projects, across short, medium and long term.",
@@ -2208,7 +2216,7 @@ export const projectDetails = {
       },
       {
         id: "evaluation",
-        eyebrow: tt("06 · Evaluation", "06 · 评估"),
+        eyebrow: tt("Evaluation", "评估"),
         label: tt("Evaluate the system", "评估这个系统"),
         lead: tt(
           "Outcomes and impacts at micro, meso and macro scale.",

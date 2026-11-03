@@ -63,7 +63,7 @@ export const codemaoTags = [
 export const codemaoSections = [
   {
     id: "reason",
-    eyebrow: tt("01 · Reason", "01 · 迭代原因"),
+    eyebrow: tt("Reason", "迭代原因"),
     label: tt("Background", "项目背景"),
     lead: tt(
       "A B-end platform that had been left behind, and a deadline that ruled out starting over.",
@@ -107,7 +107,7 @@ export const codemaoSections = [
   },
   {
     id: "data",
-    eyebrow: tt("02 · Data", "02 · 数据表现"),
+    eyebrow: tt("Data", "数据表现"),
     label: tt("Data Analysis", "数据表现"),
     lead: tt(
       "The weekly teaching report said the platform was being opened, not used.",
@@ -195,7 +195,7 @@ export const codemaoSections = [
   },
   {
     id: "interview",
-    eyebrow: tt("03 · Interview", "03 · 用户访谈"),
+    eyebrow: tt("Interview", "用户访谈"),
     label: tt("Interview", "用户访谈"),
     lead: tt(
       "From the teacher-training team's interviews, about how a lesson actually runs.",
@@ -241,7 +241,7 @@ export const codemaoSections = [
   },
   {
     id: "problem",
-    eyebrow: tt("04 · Situation", "04 · 问题定位"),
+    eyebrow: tt("Situation", "问题定位"),
     label: tt("Problem", "问题定位"),
     blocks: [
       {
@@ -281,7 +281,7 @@ export const codemaoSections = [
   },
   {
     id: "goal",
-    eyebrow: tt("05 · Brief", "05 · 需求分析"),
+    eyebrow: tt("Brief", "需求分析"),
     label: tt("How", "需求分析"),
     lead: tt(
       "Written as the lesson runs — before it, during it, after it.",
@@ -330,7 +330,7 @@ export const codemaoSections = [
   },
   {
     id: "userflow",
-    eyebrow: tt("06 · User flow", "06 · 用户流程图"),
+    eyebrow: tt("User flow", "用户流程图"),
     label: tt("User flow", "用户流程图"),
     lead: tt(
       "The two kinds of courseware run as parallel lanes and rejoin at save — which is what lets a teacher stay in one place for a whole lesson.",
@@ -340,7 +340,7 @@ export const codemaoSections = [
   },
   {
     id: "layout",
-    eyebrow: tt("07 · Frame layout", "07 · 框架布局"),
+    eyebrow: tt("Frame layout", "框架布局"),
     label: tt("Frame", "框架布局"),
     lead: tt(
       "The functions were broken apart and regrouped into three levels — background, content and global control. The control level is the important one: it carries the top bar and the side navigation.",
@@ -384,7 +384,7 @@ export const codemaoSections = [
   },
   {
     id: "system",
-    eyebrow: tt("08 · Design system", "08 · 设计规范"),
+    eyebrow: tt("Design system", "设计规范"),
     label: tt("Design system", "设计规范"),
     lead: tt(
       "One blue carries every action; everything else is a role, named and fixed.",
@@ -451,7 +451,7 @@ export const codemaoSections = [
   },
   {
     id: "hierarchy",
-    eyebrow: tt("09 · Product experience", "09 · KR1 · 提升产品体验"),
+    eyebrow: tt("Product experience", "KR1 · 提升产品体验"),
     label: tt("Main Pages", "主页重构"),
     lead: tt(
       "Same page, two versions. Drag the divider across to see where the navigation, the tabs and the table moved.",
@@ -494,7 +494,7 @@ export const codemaoSections = [
   },
   {
     id: "editing",
-    eyebrow: tt("10 · KR1 · Interaction flow", "10 · KR1 · 优化交互流程"),
+    eyebrow: tt("KR1 · Interaction flow", "KR1 · 优化交互流程"),
     label: tt("Detail Design", "设计细节"),
     lead: tt(
       "Editing is the thing teachers said they could not do, so it is the flow that got rebuilt first: from the course list into the course, and from the course into the lesson itself.",
@@ -588,7 +588,7 @@ export const codemaoSections = [
   },
   {
     id: "types",
-    eyebrow: tt("11 · KR1 · Preparing and teaching", "11 · KR1 · 优化备课及上课流程"),
+    eyebrow: tt("KR1 · Preparing and teaching", "KR1 · 优化备课及上课流程"),
     label: tt("Detail Design", "超级课件"),
     lead: tt(
       "This is the answer to the switching. A teaching segment can be an image, a carousel, a video, a creative tool or a file to download — all of them inside the lesson, in teaching order, so the lesson runs from one place instead of four.",

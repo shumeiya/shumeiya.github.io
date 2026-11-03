@@ -49,8 +49,14 @@ export default function ProjectDetail() {
 
   if (!project || !detail) return <Navigate to="/project" replace />
 
+  // The "next project" chain is set by hand for the main case studies, so the
+  // reader is led through the four big ones in order; anything else falls back
+  // to list order.
+  const NEXT = { kyrall: "weather-pets", "weather-pets": "codemao", codemao: "abc-mouse" }
   const idx = nextProject.findIndex((p) => p.slug === slug)
-  const next = nextProject[(idx + 1) % nextProject.length]
+  const next =
+    (NEXT[slug] && nextProject.find((p) => p.slug === NEXT[slug])) ||
+    nextProject[(idx + 1) % nextProject.length]
 
   return (
     <main className="relative mx-auto w-full min-w-0 px-4 pb-28 pt-6 sm:px-6 lg:px-8 xl:px-52">

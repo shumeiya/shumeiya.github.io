@@ -442,7 +442,7 @@ const slide = (kind) => [{ type: "hmideck", slide: kind }]
 export const hmiSections = [
   {
     id: "background",
-    eyebrow: tt("01 · Background", "01 · 背景"),
+    eyebrow: tt("Background", "背景"),
     label: tt("Background", "背景"),
     titleHidden: true,
     lead: tt(
@@ -453,7 +453,7 @@ export const hmiSections = [
   },
   {
     id: "trends",
-    eyebrow: tt("02 · Design trends", "02 · 设计趋势"),
+    eyebrow: tt("Design trends", "设计趋势"),
     label: tt("Design trends", "设计趋势"),
     titleHidden: true,
     lead: tt(
@@ -464,7 +464,7 @@ export const hmiSections = [
   },
   {
     id: "interview",
-    eyebrow: tt("03 · User interview", "03 · 用户访谈"),
+    eyebrow: tt("User interview", "用户访谈"),
     label: tt("User interview", "用户访谈"),
     titleHidden: true,
     lead: tt(
@@ -475,7 +475,7 @@ export const hmiSections = [
   },
   {
     id: "journey",
-    eyebrow: tt("04 · User journey map", "04 · 用户旅程图"),
+    eyebrow: tt("User journey map", "用户旅程图"),
     label: tt("User journey map", "用户旅程图"),
     titleHidden: true,
     lead: tt(
@@ -486,7 +486,7 @@ export const hmiSections = [
   },
   {
     id: "scenarios",
-    eyebrow: tt("05 · Possible scenarios", "05 · 可能的场景"),
+    eyebrow: tt("Possible scenarios", "可能的场景"),
     label: tt("Possible scenarios", "可能的场景"),
     titleHidden: true,
     lead: tt(
@@ -497,7 +497,7 @@ export const hmiSections = [
   },
   {
     id: "keypoint",
-    eyebrow: tt("06 · Key point", "06 · 关键点"),
+    eyebrow: tt("Key point", "关键点"),
     label: tt("Key point", "关键点"),
     titleHidden: true,
     lead: tt("What the research adds up to.", "调研加起来说明了什么。"),
@@ -505,7 +505,7 @@ export const hmiSections = [
   },
   {
     id: "designpoint",
-    eyebrow: tt("07 · Design point", "07 · 设计要点"),
+    eyebrow: tt("Design point", "设计要点"),
     label: tt("Design point", "设计要点"),
     titleHidden: true,
     lead: tt(
@@ -516,7 +516,7 @@ export const hmiSections = [
   },
   {
     id: "voice",
-    eyebrow: tt("08 · Voice interaction", "08 · 语音交互"),
+    eyebrow: tt("Voice interaction", "语音交互"),
     label: tt("Voice interaction", "语音交互"),
     titleHidden: true,
     lead: tt("Evoke → command → confirm → enter.", "唤醒 → 指令 → 确认 → 进入。"),
@@ -524,7 +524,7 @@ export const hmiSections = [
   },
   {
     id: "mechanical",
-    eyebrow: tt("09 · Mechanical interaction", "09 · 机械交互"),
+    eyebrow: tt("Mechanical interaction", "机械交互"),
     label: tt("Mechanical interaction", "机械交互"),
     titleHidden: true,
     lead: tt(
@@ -535,7 +535,7 @@ export const hmiSections = [
   },
   {
     id: "interface",
-    eyebrow: tt("10 · Interface", "10 · 界面"),
+    eyebrow: tt("Interface", "界面"),
     label: tt("Interface", "界面"),
     titleHidden: true,
     lead: tt(
@@ -546,7 +546,7 @@ export const hmiSections = [
   },
   {
     id: "dashboard",
-    eyebrow: tt("11 · Dashboard", "11 · 仪表盘"),
+    eyebrow: tt("Dashboard", "仪表盘"),
     label: tt("Dashboard", "仪表盘"),
     titleHidden: true,
     lead: tt(
@@ -557,7 +557,7 @@ export const hmiSections = [
   },
   {
     id: "console",
-    eyebrow: tt("12 · Central console display", "12 · 中控屏"),
+    eyebrow: tt("Central console display", "中控屏"),
     label: tt("Central console display", "中控屏"),
     titleHidden: true,
     lead: tt(
@@ -568,7 +568,7 @@ export const hmiSections = [
   },
   {
     id: "transition",
-    eyebrow: tt("13 · Mode transition", "13 · 模式切换"),
+    eyebrow: tt("Mode transition", "模式切换"),
     label: tt("Mode transition", "模式切换"),
     titleHidden: true,
     lead: tt(
@@ -579,7 +579,7 @@ export const hmiSections = [
   },
   {
     id: "prototype",
-    eyebrow: tt("14 · ProtoPie", "14 · ProtoPie 原型"),
+    eyebrow: tt("ProtoPie", "ProtoPie 原型"),
     label: tt("Prototype", "原型"),
     titleHidden: true,
     lead: tt("Built and testable in ProtoPie.", "用 ProtoPie 做成，可以直接试。"),

@@ -61,7 +61,7 @@ export const ui = {
   aboutExperience: tt("Work Experience", "工作经历"),
   aboutEducation: tt("Education", "教育背景"),
   aboutSkills: tt("Skills", "技能工具"),
-  aboutCta: tt("Go to see my project", "来看看我的项目"),
+  aboutCta: tt("Go to see my project", "我的项目"),
   selfIntro: tt("self introduction", "自我介绍"),
 
   // My world
