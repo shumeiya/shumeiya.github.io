@@ -387,6 +387,8 @@ html::-webkit-scrollbar {
   --wp-link-on-yellow: #004bbd;
   --wp-dash: #c9d6ea;
   --wp-ring: rgba(21, 24, 33, 0.08);
+  /* The quiet panel a slide sits on (formerly a full blue or yellow stage). */
+  --wp-panel: #f3f5f8;
 }
 
 .dark .wp-deck {
@@ -399,6 +401,7 @@ html::-webkit-scrollbar {
   --wp-link: #8db8ff;
   --wp-dash: #3a4560;
   --wp-ring: rgba(255, 255, 255, 0.12);
+  --wp-panel: #0e1420;
 }
 
 /* Numbers and English labels in the deck's rounded face. CJK falls through to the
@@ -409,9 +412,10 @@ html::-webkit-scrollbar {
 
 /* The slides' backdrop: a checkerboard of soft rounded squares, white at low
    opacity so it works on the blue, the yellow and the near-black alike. */
+/* The deck's checkerboard backdrop is switched off on the page: the blue, yellow
+   and near-black fills read cleaner flat. The class stays on the elements. */
 .wp-deck .wp-checker {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Crect x='4' y='4' width='72' height='72' rx='16' fill='white' fill-opacity='0.07'/%3E%3Crect x='84' y='84' width='72' height='72' rx='16' fill='white' fill-opacity='0.07'/%3E%3C/svg%3E");
-  background-size: 160px 160px;
+  background-image: none;
 }
 
 /* The ABC Mouse (开心鼠) deck boards — the 2026 Figma relayout (page 7).

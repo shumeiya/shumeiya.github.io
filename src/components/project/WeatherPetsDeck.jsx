@@ -47,9 +47,9 @@ const TONE = {
   yellow: { bg: YELLOW, fg: ON_FILL, q: "rgba(21,24,33,0.78)", hl: "var(--wp-link-on-yellow)" },
   dark: { bg: NIGHT, fg: "#ffffff", q: "rgba(255,255,255,0.75)", hl: YELLOW, ring: true },
   night2: { bg: "var(--wp-night-2)", fg: "#ffffff", q: "rgba(255,255,255,0.7)", hl: YELLOW },
-  // Fixed white: a white card laid on a yellow or blue fill, which stays white in
-  // both themes because the fill under it does.
-  white: { bg: "#ffffff", fg: ON_FILL, q: "#5f6b7e", hl: "#0058d6" },
+  // The card laid on a fill or on a slide's panel. White in light mode; in dark
+  // mode the dark card, so it no longer glares on the dark panels.
+  white: { bg: CARD, fg: INK, q: QUIET, hl: LINK, ring: true },
 }
 
 const surface = (tone) => {
@@ -107,16 +107,18 @@ function TabCard({ tone = "card", tab, align = "left", className = "", bodyClass
   )
 }
 
-// A pill. `tilt` gives it the deck's slight hand-placed rotation.
+// A pill. The deck set these at a slight hand-placed tilt; the page keeps them
+// straight (`tilt` is accepted and ignored), with a hairline outline at most.
+// eslint-disable-next-line no-unused-vars
 function Pill({ tone = "white", tilt = "", outline = false, className = "", children }) {
   const t = TONE[tone]
   return (
     <span
-      className={`inline-block rounded-full px-4 py-2 text-note font-bold ${tilt} ${className}`}
+      className={`inline-block rounded-full px-4 py-2 text-note font-bold ${className}`}
       style={{
         background: t.bg,
         color: t.fg,
-        boxShadow: outline ? `inset 0 0 0 2.5px ${NIGHT}` : t.ring ? RING : undefined,
+        boxShadow: outline ? `inset 0 0 0 1px ${INK}` : t.ring ? RING : undefined,
       }}
     >
       {children}
@@ -239,8 +241,14 @@ function Board({ slide, stage, children }) {
     <div className="wp-deck mt-tight">
       {head}
       <div
-        className="wp-checker relative mt-visual overflow-hidden rounded-[2rem] px-4 py-6 sm:rounded-[2.5rem] sm:p-8 lg:p-8"
-        style={{ ...surface(stage), backgroundColor: st.bg }}
+        className={`relative mt-visual overflow-hidden rounded-[2rem] px-4 py-6 sm:rounded-[2.5rem] sm:p-8 lg:p-8 ${
+          stage === "dark" ? "wp-checker" : ""
+        }`}
+        style={
+          stage === "dark"
+            ? { ...surface(stage), backgroundColor: st.bg }
+            : { background: "var(--wp-panel)", color: INK }
+        }
       >
         {children}
       </div>
@@ -570,7 +578,7 @@ function Insights({ slide }) {
 
       <div className="grid items-center gap-8 lg:grid-cols-[1.4fr_1fr]">
         <div>
-          <h4 className="text-2xl font-semibold tracking-tight text-white">{slide.pains.title}</h4>
+          <h4 className="text-2xl font-semibold tracking-tight" style={{ color: INK }}>{slide.pains.title}</h4>
           <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-6">
             {slide.pains.items.map((p, i) => (
               <li key={p.text}>
@@ -1518,8 +1526,9 @@ function Reflection({ slide }) {
         </TabCard>
       </div>
 
-      {/* The deck's closing band. */}
-      <div className="wp-checker relative overflow-hidden rounded-[2rem] px-6 py-8 sm:px-9 sm:py-8" style={{ backgroundColor: BLUE, color: "#fff" }}>
+      {/* The deck's closing "Thanks for watching" band: a slide ending, not a web
+          page one, so it is left out.
+            <div className="wp-checker relative overflow-hidden rounded-[2rem] px-6 py-8 sm:px-9 sm:py-8" style={{ backgroundColor: BLUE, color: "#fff" }}>
         <div className="relative z-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-3 sm:pr-40">
           <div>
             <p className="wp-round text-4xl font-extrabold sm:text-5xl">Thanks for watching!</p>
@@ -1531,6 +1540,7 @@ function Reflection({ slide }) {
           <Sticker src={slide.stickers[1]} className="-ml-2 mb-16 w-16" />
         </div>
       </div>
+      */}
     </div>
   )
 }
