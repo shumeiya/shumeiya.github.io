@@ -15,7 +15,7 @@ function Label({ children }) {
 function Card({ card, labels }) {
   const t = useT()
   return (
-    <li className="flex flex-col rounded-2xl bg-[#efede8] p-6 dark:bg-[#2f2f2f]">
+    <li className="flex flex-col rounded-2xl bg-band p-6">
       <div className="flex items-center gap-4">
         <img
           src={`${ART}/${card.photo}`}

@@ -46,8 +46,8 @@ export default function JourneyMap({ map }) {
                   key={i}
                   className={`flex flex-col rounded-xl p-3 ${
                     map.stages[i].lit
-                      ? "border border-ink bg-[#efede8] dark:bg-[#2f2f2f]"
-                      : "bg-[#efede8] dark:bg-[#2f2f2f]"
+                      ? "border border-ink bg-band"
+                      : "bg-band"
                   }`}
                 >
                   <p className="text-note text-ink">{t(cell.text)}</p>

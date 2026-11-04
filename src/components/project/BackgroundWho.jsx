@@ -15,7 +15,7 @@ export default function BackgroundWho({ act }) {
       <p className="mt-visual font-mono-tight text-note uppercase tracking-wide text-fog">{t(act.needsLabel)}</p>
       <ul className="mt-body grid gap-card sm:grid-cols-3">
         {act.needs.map((need, i) => (
-          <li key={i} className="rounded-2xl bg-[#efede8] p-6 dark:bg-[#2f2f2f]">
+          <li key={i} className="rounded-2xl bg-band p-6">
             <span aria-hidden="true" className="block h-1 w-6 rounded-full bg-kyrall" />
             <p className="mt-lead text-xl font-semibold text-cream">{t(need.title)}</p>
             <p className="mt-tight text-copy text-ink">{t(need.body)}</p>

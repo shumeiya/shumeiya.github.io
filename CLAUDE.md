@@ -45,7 +45,7 @@ Kyrall 的图板不再自己画章节标题：标题和引导句写在 `projectD
 
 ## Kyrall 配色
 
-Kyrall 项目浅色模式只用两个主色加一个点缀：墨黑 `#191717` 和暖灰 `#efede8`，点缀是 Kyrall 品牌绿 `#c2f000`（`--color-kyrall`，深色模式下 `#c4ff35`）。品牌绿在浅色模式下只做填充和标记（色块、小圆点、进度条），上面的字用墨黑，**不能用作文字颜色**，因为它在白底上读不清。图板的颜色全部走 index.css 里 `.kyrall-deck` 的 `--deck-*` 变量；`WorkflowBoard` 带 `kyrall-deck--keep`，保留原来的深绿配色。
+Kyrall 项目浅色模式只用两个主色加一个点缀：墨黑 `#191717` 和暖灰 `#efede8`，点缀是 Kyrall 品牌绿 `#c2f000`（`--color-kyrall`，深色模式下 `#c4ff35`）。品牌绿在浅色模式下只做填充和标记（色块、小圆点、进度条），上面的字用墨黑，**不能用作文字颜色**，因为它在白底上读不清。卡片底色统一用 `bg-band`（`--color-band`：浅色 `#efede8`，深色 `#171c29`，跟网站深色卡片同一个偏蓝的色系），不要再写 `bg-[#efede8] dark:bg-[...]` 这种裸色值，深色模式也不要用中性灰。图板的颜色全部走 index.css 里 `.kyrall-deck` 的 `--deck-*` 变量（`--deck-band` 也指向 `--color-band`）；`WorkflowBoard` 带 `kyrall-deck--keep`，保留原来的深绿配色。
 
 改动后自查：
 

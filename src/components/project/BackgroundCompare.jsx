@@ -11,7 +11,7 @@ import { useT } from "../../i18n/lang"
 function Column({ col }) {
   const t = useT()
   return (
-    <div className="flex flex-col rounded-2xl bg-[#efede8] p-6 dark:bg-[#2f2f2f]">
+    <div className="flex flex-col rounded-2xl bg-band p-6">
       {col.video && (
         <div className="relative -mx-6 -mt-6 mb-6 aspect-video overflow-hidden rounded-t-2xl bg-black">
           <video

@@ -158,7 +158,7 @@ export default function PlayView({ items }) {
             aria-label={`${t(item.title)}${clips.length > 1 ? ` · ${t(clips[clip].label)}` : ""}`}
           />
         ) : (
-          <div className="flex aspect-[1600/852] items-center justify-center bg-[#efede8] dark:bg-[#2f2f2f]">
+          <div className="flex aspect-[1600/852] items-center justify-center bg-band">
             <p className="text-callout text-fog">{t(ui.videoComingSoon)}</p>
           </div>
         )}

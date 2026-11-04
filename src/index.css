@@ -47,6 +47,10 @@
      marker, never a text colour in light mode: on white it does not reach a
      readable contrast, so anything that sits on it is set in ink. */
   --color-kyrall: #c2f000;
+  /* The Kyrall card surface: warm grey in light mode, the site's own lifted
+     navy in dark (same as --color-box), so cards sit in the page's hue instead
+     of a neutral grey that reads as dirty on the blue-black ground. */
+  --color-band: #efede8;
 
   /* Fixed tokens — do not flip with theme. For text/scrims laid over photos, whose
      brightness is unrelated to the site's light/dark mode. */
@@ -94,6 +98,7 @@
   --color-ac-pink: #c5919e;
   --color-ac-yellow: #E9DE92;
   --color-kyrall: #c4ff35;
+  --color-band: #171c29;
 }
 
 /* Light mode, every page but the Dashboard: a plain white canvas instead of the
@@ -290,7 +295,7 @@ html::-webkit-scrollbar {
   --deck-on-surface: #fdfdfd;
   --deck-rule: #5c5b59;
   --deck-bar: #5c5b59;
-  --deck-band: #2f2f2f;
+  --deck-band: var(--color-band);
   --deck-head: #c4ff35;
   --deck-head-stroke: #c4ff35;
   --deck-on-head: #191717;

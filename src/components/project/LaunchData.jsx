@@ -7,7 +7,7 @@ import { useT } from "../../i18n/lang"
 // Charts are HTML and an SVG line drawn to the card's width, so every label stays
 // on the project type scale instead of scaling with an artboard. In light mode
 // the Kyrall green is only ever a fill or a marker; anything readable is ink.
-const CARD = "rounded-2xl bg-[#efede8] p-6 dark:bg-[#2f2f2f]"
+const CARD = "rounded-2xl bg-band p-6"
 
 function Tag({ children }) {
   return <p className="font-mono-tight text-note uppercase tracking-wide text-fog">{children}</p>
