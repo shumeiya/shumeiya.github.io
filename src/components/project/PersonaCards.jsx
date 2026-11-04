@@ -28,7 +28,7 @@ function Card({ card, labels }) {
           <p className="text-note text-fog">{t(card.meta)}</p>
         </div>
       </div>
-      <p className="mt-4 self-start rounded-md border border-ink/20 px-2 py-1 text-note text-ink">{t(card.stage)}</p>
+      <p className="chip mt-4 self-start">{t(card.stage)}</p>
 
       <p className="mt-4 text-callout text-cream">{t(card.quote)}</p>
 
@@ -45,7 +45,7 @@ function Card({ card, labels }) {
         <Label>{t(labels.chance)}</Label>
         <ul className="mt-2 flex flex-wrap gap-2">
           {card.chances.map((c, i) => (
-            <li key={i} className="rounded-md bg-kyrall px-2 py-1 text-note font-medium text-[#191717]">
+            <li key={i} className="chip-accent">
               {t(c)}
             </li>
           ))}

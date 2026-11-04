@@ -92,27 +92,19 @@ function Stats({ items, accent }) {
   )
 }
 
-// A short run of product steps as outlined chips with small arrows between them —
-// the step summary under a chapter's lead (Kyrall core flow). Chamfered like the
-// Kyrall chips, in the page's own type so it does not scale with an artboard.
+// A short run of product steps — the step summary under a chapter's lead (Kyrall
+// core flow) — as quiet pills with arrows between them.
 function FlowSteps({ items }) {
-  const cut = "polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)"
   return (
-    <ol className="mt-lead flex flex-wrap items-center gap-x-3 gap-y-3">
+    <ol className="mt-lead flex flex-wrap items-center gap-x-2 gap-y-2">
       {items.map((step, i) => (
-        <li key={i} className="flex items-center gap-3">
+        <li key={i} className="flex items-center gap-2">
           {i > 0 && (
-            <span
-              aria-hidden="true"
-              className="h-2.5 w-2 shrink-0 bg-ink"
-              style={{ clipPath: "polygon(0 0, 100% 50%, 0 100%)" }}
-            />
-          )}
-          <span className="bg-ink p-px" style={{ clipPath: cut }}>
-            <span className="block whitespace-nowrap bg-page px-3 py-1.5 text-callout text-cream" style={{ clipPath: cut }}>
-              {step}
+            <span aria-hidden="true" className="text-note text-fog">
+              →
             </span>
-          </span>
+          )}
+          <span className="chip">{step}</span>
         </li>
       ))}
     </ol>
@@ -438,7 +430,7 @@ function Video({ src, title, caption }) {
 function Clip({ src, caption, href, cta }) {
   const t = useT()
   const frame = (
-    <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-line bg-box">
+    <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-box">
       <video
         src={src}
         className="block h-full w-full object-cover"

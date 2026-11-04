@@ -5,7 +5,7 @@ const ART = "/project/kyrall/persona"
 // The Kyrall user journey in the page's own flow layout (the Figma board,
 // StoryMapBoard.jsx, is kept but no longer on the page): five stages across, the
 // three personas down, one cell per person per stage. The two stages Kyrall owns
-// (`lit`) carry the green stage marker and an outlined cell. On narrow screens
+// (`lit`) carry the green stage marker and a green-tinted cell. On narrow screens
 // the map scrolls sideways rather than squeezing five columns into a phone.
 // A supporting chapter, so the cells run at the 13px floor.
 export default function JourneyMap({ map }) {
@@ -23,8 +23,8 @@ export default function JourneyMap({ map }) {
             {map.stages.map((s) => (
               <div
                 key={s.n}
-                className={`flex items-baseline gap-2 rounded-md px-3 py-2 ${
-                  s.lit ? "bg-kyrall text-[#191717]" : "border border-ink/20 text-ink"
+                className={`flex items-baseline gap-2 rounded-full px-3 py-2 ${
+                  s.lit ? "bg-kyrall text-[#191717]" : "bg-ink/5 text-ink"
                 }`}
               >
                 <span className="font-mono-tight text-note tabular-nums">{s.n}</span>
@@ -45,16 +45,14 @@ export default function JourneyMap({ map }) {
                 <div
                   key={i}
                   className={`flex flex-col rounded-xl p-3 ${
-                    map.stages[i].lit
-                      ? "border border-ink bg-band"
-                      : "bg-band"
+                    map.stages[i].lit ? "bg-kyrall/15 dark:bg-kyrall/10" : "bg-band"
                   }`}
                 >
                   <p className="text-note text-ink">{t(cell.text)}</p>
                   {cell.chips?.length > 0 && (
                     <ul className="mt-auto flex flex-wrap gap-1 pt-3">
                       {cell.chips.map((c, k) => (
-                        <li key={k} className="rounded-md border border-ink/20 px-2 py-1 text-note text-ink">
+                        <li key={k} className="chip">
                           {t(c)}
                         </li>
                       ))}

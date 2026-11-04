@@ -193,13 +193,7 @@ function Next({ data }) {
       <ul className="mt-visual grid gap-card sm:grid-cols-2 lg:grid-cols-4">
         {data.items.map((it, i) => (
           <li key={i} className={CARD}>
-            <span
-              className={`inline-block rounded-md px-2 py-1 font-mono-tight text-note font-medium ${
-                it.p === "P0" ? "bg-kyrall text-[#191717]" : "border border-ink/30 text-ink"
-              }`}
-            >
-              {it.p}
-            </span>
+            <span className={it.p === "P0" ? "chip-accent" : "chip"}>{it.p}</span>
             <p className="mt-3 text-copy font-semibold text-cream">{t(it.title)}</p>
             <p className="mt-2 text-callout text-ink">{t(it.body)}</p>
           </li>

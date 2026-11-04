@@ -185,6 +185,36 @@ html::-webkit-scrollbar {
   line-height: var(--tw-leading, 1.4);
 }
 
+/* One chip for the Kyrall case study, in two weights. `chip` is the quiet one:
+   a faint ink wash, no outline. `chip-accent` is the brand green with ink type,
+   for what Kyrall owns. Pills, 13px, so every tag on the page reads the same. */
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: nowrap;
+  color: var(--color-ink);
+  background: color-mix(in srgb, var(--color-ink) 7%, transparent);
+}
+
+@utility chip-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 500;
+  white-space: nowrap;
+  color: #191717;
+  background: var(--color-kyrall);
+}
+
 /* Inside a project page the Tailwind size steps are re-pointed at the same
    scale, so a deck's `text-2xl` heading lands on Title 2 rather than on
    Tailwind's own step. Scoped to `.case-type` (the project page's <main>), so

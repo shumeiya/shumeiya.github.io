@@ -114,7 +114,7 @@ export default function WorkflowBoard({ board }) {
       <div ref={hostRef} className="no-scrollbar overflow-x-auto">
         <div style={{ width: BOARD_W * scale, height: BOARD_H * scale }}>
           <div
-            className="kyrall-deck kyrall-deck--keep relative"
+            className="kyrall-deck relative"
             style={{
               width: BOARD_W,
               height: BOARD_H,
