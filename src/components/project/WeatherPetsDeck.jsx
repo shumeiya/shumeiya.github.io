@@ -852,20 +852,23 @@ function Business({ slide }) {
 
 function Iteration({ slide }) {
   const [before, after] = slide.panels
-  const root = useRef(null)
-  const seen = useInView(root, { threshold: 0.4, once: true })
-  // Design 1.0 and 2.0 in one frame with a divider: it opens almost all 1.0 and
-  // sweeps to the middle once the reader arrives.
-  const Panel = ({ panel, right }) => (
-    <Card tone={panel.tone} className="h-full pt-14" style={panel.tone === "blue" ? { backgroundColor: BLUE } : undefined}>
-      <Pill
-        tone={panel.tone === "blue" ? "yellow" : "white"}
-        outline={panel.tone !== "blue"}
-        className={`absolute top-5 z-10 ${right ? "right-5" : "left-5"}`}
-      >
-        {panel.tag}
-      </Pill>
-      <ul className="grid grid-cols-3 gap-3 sm:gap-6">
+  // Design 1.0 and 2.0 share one frame behind a switch. Both panels are laid in
+  // the same grid cell, so the phones keep their places and the change reads as
+  // one screen turning into the other; the inactive panel fades out underneath.
+  const [v, setV] = useState(1)
+  const panels = [before, after]
+  const Panel = ({ panel, on }) => (
+    <Card
+      tone={panel.tone}
+      className="col-start-1 row-start-1 h-full transition-[opacity,transform] duration-500 ease-out"
+      style={{
+        ...(panel.tone === "blue" ? { backgroundColor: BLUE } : null),
+        opacity: on ? 1 : 0,
+        transform: on ? "none" : "scale(0.985)",
+        pointerEvents: on ? "auto" : "none",
+      }}
+    >
+      <ul className="grid grid-cols-3 gap-3 sm:gap-6" aria-hidden={!on}>
         {panel.shots.map((sh) => (
           <li key={sh.src} className="min-w-0">
             <Phone src={sh.src} alt={sh.caption} frame={panel.tone === "grey" ? "grey" : sh.hot ? "yellow" : "dark"} className="mx-auto max-w-[12rem] shadow-none" />
@@ -878,10 +881,15 @@ function Iteration({ slide }) {
     </Card>
   )
   return (
-    <div ref={root}>
-      <div className="relative">
-        <Wipe className="rounded-[1.75rem]" at={seen ? 50 : 94} before={<Panel panel={before} />} after={<Panel panel={after} right />} />
-        <Sticker src={slide.sticker} className="pointer-events-none absolute -top-10 left-1/2 hidden w-16 -translate-x-1/2 sm:block" />
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Segmented options={panels.map((p) => p.tag)} value={v} onChange={setV} />
+        <Sticker src={slide.sticker} className="pointer-events-none hidden w-14 sm:block" />
+      </div>
+      <div className="mt-6 grid">
+        {panels.map((p, k) => (
+          <Panel key={p.tag} panel={p} on={k === v} />
+        ))}
       </div>
       <ul className="mt-6 flex flex-wrap gap-3">
         {slide.changes.map((c) => (
