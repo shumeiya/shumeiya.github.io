@@ -1,4 +1,6 @@
+import { useEffect, useRef, useState } from "react"
 import { useT } from "../../i18n/lang"
+import { CountUp, Segmented, Wipe, useInView, useReveal, useStepper } from "./wpMotion"
 import { tt } from "../../i18n/t"
 import { ui } from "../../i18n/ui"
 
@@ -76,8 +78,9 @@ function Rich({ text, color }) {
 
 // A rounded card in one of the deck's tones.
 function Card({ tone = "card", className = "", style, children }) {
+  const ref = useReveal()
   return (
-    <div className={`relative rounded-[1.75rem] p-6 sm:p-6 ${className}`} style={{ ...surface(tone), ...style }}>
+    <div ref={ref} data-reveal="" className={`relative rounded-[1.75rem] p-6 sm:p-6 ${className}`} style={{ ...surface(tone), ...style }}>
       {children}
     </div>
   )
@@ -87,8 +90,9 @@ function Card({ tone = "card", className = "", style, children }) {
 // fill as the body and overlaps its top corner, so the two read as one shape.
 function TabCard({ tone = "card", tab, align = "left", className = "", bodyClass = "", children }) {
   const s = surface(tone)
+  const ref = useReveal()
   return (
-    <div className={`relative flex flex-col ${className}`}>
+    <div ref={ref} data-reveal="" className={`relative flex flex-col ${className}`}>
       <div className={`flex ${align ==="right"?"justify-end":""}`}>
         <div
           className="wp-round rounded-t-[1.25rem] px-6 pb-6 pt-3 text-copy font-extrabold"
@@ -141,7 +145,7 @@ function Tag({ onPale = false, children, className = "" }) {
 function Num({ children, className = "", style }) {
   return (
     <span className={`wp-round font-extrabold ${className}`} style={style}>
-      {children}
+      {typeof children === "string" ? <CountUp>{children}</CountUp> : children}
     </span>
   )
 }
@@ -775,6 +779,7 @@ function Ideation({ slide }) {
 
 function Business({ slide }) {
   const w = slide.why
+  const [plan, setPlan] = useState(0)
   return (
     <div className="grid gap-6">
       <Card tone="dark" className="grid gap-6 lg:grid-cols-[15rem_1fr] lg:gap-x-10 2xl:grid-cols-[15rem_1fr_auto] 2xl:items-center">
@@ -795,16 +800,15 @@ function Business({ slide }) {
         </div>
       </Card>
 
-      <div className="grid gap-6 2xl:grid-cols-2">
-        {slide.plans.map((p) => {
+      {/* Plan A and Plan B behind a switch: one at a time, at full width. */}
+      <Segmented options={slide.plans.map((p) => p.tag)} value={plan} onChange={setPlan} className="justify-self-start" />
+      <div>
+        {[slide.plans[plan]].map((p) => {
           const blue = p.tone === "blue"
           return (
-            <Card key={p.title} tone={p.tone} className={`grid gap-6 overflow-hidden sm:grid-cols-[1fr_auto] ${blue ?"wp-checker":""}`} style={blue ? { backgroundColor: BLUE } : undefined}>
+            <Card key={p.title} tone={p.tone} className={`wp-swap grid gap-6 overflow-hidden sm:grid-cols-[1fr_auto] lg:gap-10 ${blue ?"wp-checker":""}`} style={blue ? { backgroundColor: BLUE } : undefined}>
               <div className="min-w-0">
-                <Pill tone="yellow" tilt={blue ? "-rotate-3" : "rotate-3"}>
-                  {p.tag}
-                </Pill>
-                <h4 className="mt-3 text-2xl font-semibold tracking-tight">{p.title}</h4>
+                <h4 className="text-2xl font-semibold tracking-tight">{p.title}</h4>
                 <p className="mt-3 text-copy" style={{ color: TONE[p.tone].q }}>
                   {p.text}
                 </p>
@@ -848,34 +852,36 @@ function Business({ slide }) {
 
 function Iteration({ slide }) {
   const [before, after] = slide.panels
-  const Panel = ({ panel, tilt }) => (
-    <div className="relative pt-6">
-      <Pill tone={panel.tone === "blue" ? "yellow" : "white"} outline={panel.tone !== "blue"} tilt={tilt} className="absolute left-5 top-0 z-10">
+  const root = useRef(null)
+  const seen = useInView(root, { threshold: 0.4, once: true })
+  // Design 1.0 and 2.0 in one frame with a divider: it opens almost all 1.0 and
+  // sweeps to the middle once the reader arrives.
+  const Panel = ({ panel, right }) => (
+    <Card tone={panel.tone} className="h-full pt-14" style={panel.tone === "blue" ? { backgroundColor: BLUE } : undefined}>
+      <Pill
+        tone={panel.tone === "blue" ? "yellow" : "white"}
+        outline={panel.tone !== "blue"}
+        className={`absolute top-5 z-10 ${right ? "right-5" : "left-5"}`}
+      >
         {panel.tag}
       </Pill>
-      <Card tone={panel.tone} className={`pt-10 ${panel.tone ==="blue"?"wp-checker":""}`} style={panel.tone === "blue" ? { backgroundColor: BLUE } : undefined}>
-        <ul className="grid grid-cols-3 gap-3 sm:gap-4">
-          {panel.shots.map((s) => (
-            <li key={s.src} className="min-w-0">
-              <Phone src={s.src} alt={s.caption} frame={panel.tone === "grey" ? "grey" : s.hot ? "yellow" : "dark"} className="shadow-none" />
-              <p className="mt-3 text-center text-note font-bold" style={{ color: TONE[panel.tone].q }}>
-                {s.caption}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </Card>
-    </div>
+      <ul className="grid grid-cols-3 gap-3 sm:gap-6">
+        {panel.shots.map((sh) => (
+          <li key={sh.src} className="min-w-0">
+            <Phone src={sh.src} alt={sh.caption} frame={panel.tone === "grey" ? "grey" : sh.hot ? "yellow" : "dark"} className="mx-auto max-w-[12rem] shadow-none" />
+            <p className="mt-3 text-center text-note font-bold" style={{ color: TONE[panel.tone].q }}>
+              {sh.caption}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </Card>
   )
   return (
-    <div>
-      <div className="relative grid items-center gap-6 lg:grid-cols-[1fr_auto_1fr]">
-        <Panel panel={before} tilt="rotate-2" />
-        <ArrowDisc tone="yellow" turn="lg" size={64} className="mx-auto" />
-        <div className="relative">
-          <Panel panel={after} tilt="-rotate-2" />
-          <Sticker src={slide.sticker} className="absolute -top-6 right-2 w-20" />
-        </div>
+    <div ref={root}>
+      <div className="relative">
+        <Wipe className="rounded-[1.75rem]" at={seen ? 50 : 94} before={<Panel panel={before} />} after={<Panel panel={after} right />} />
+        <Sticker src={slide.sticker} className="pointer-events-none absolute -top-10 left-1/2 hidden w-16 -translate-x-1/2 sm:block" />
       </div>
       <ul className="mt-6 flex flex-wrap gap-3">
         {slide.changes.map((c) => (
@@ -894,50 +900,122 @@ function Iteration({ slide }) {
 
 function Turn({ slide, t }) {
   const p = slide.pairs
+  const root = useRef(null)
+  const inView = useInView(root, { threshold: 0.3 })
+  const steps = useStepper(slide.timeline.length, { ms: 6500, run: inView })
+
+  // The pets cycle on their own until the reader picks one or drags the divider.
+  // Each new pair arrives with the divider far right (the real photo) and glides
+  // left to uncover the AI pet.
+  const [pair, setPair] = useState(0)
+  const [at, setAt] = useState(50)
+  const [autoPets, setAutoPets] = useState(true)
+  useEffect(() => {
+    setAt(92)
+    const id = setTimeout(() => setAt(38), 450)
+    return () => clearTimeout(id)
+  }, [pair])
+  useEffect(() => {
+    if (!inView || !autoPets || !steps.auto) return
+    const id = setInterval(() => setPair((k) => (k + 1) % p.items.length), 3800)
+    return () => clearInterval(id)
+  }, [inView, autoPets, steps.auto, p.items.length])
+  const pick = (k) => {
+    setAutoPets(false)
+    setPair(k)
+  }
+  const it = p.items[pair]
+  const frame = "flex aspect-[4/3] items-center justify-center p-6"
+
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
+    <div ref={root} className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+      {/* The four beats of the decision as a stepper: one open at a time, the
+          bar under it timing the move to the next. */}
       <Card tone="dark" className="sm:p-8">
-        <ol className="relative">
-          <span aria-hidden="true" className="absolute bottom-10 left-[25px] top-10 border-l-[3px] border-dotted" style={{ borderColor: "rgba(255,255,255,0.35)" }} />
-          {slide.timeline.map((s, i) => (
-            <li key={s.step} className="relative flex gap-6 pb-8 last:pb-0">
-              <Disc tone={s.hot ? "yellow" : "blue"} size={52}>
-                {i + 1}
-              </Disc>
-              <div className="min-w-0 pt-2">
-                <p className="text-[22px] font-black" style={{ color: s.hot ? YELLOW : "#fff" }}>
-                  {s.step}
-                </p>
-                <p className="mt-2 text-copy" style={{ color: TONE.dark.q }}>
-                  {s.text}
-                </p>
-              </div>
-            </li>
-          ))}
+        <ol>
+          {slide.timeline.map((st, i) => {
+            const on = i === steps.step
+            return (
+              <li key={i} className="border-b border-white/10 last:border-b-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    steps.setAuto(false)
+                    steps.go(i)
+                  }}
+                  aria-expanded={on}
+                  className="flex w-full items-center gap-4 py-4 text-left"
+                >
+                  <Disc tone={st.hot ? "yellow" : "blue"} size={36}>
+                    {i + 1}
+                  </Disc>
+                  <span
+                    className="text-xl font-semibold tracking-tight transition-colors duration-300"
+                    style={{ color: on ? (st.hot ? YELLOW : "#fff") : "rgba(255,255,255,0.55)" }}
+                  >
+                    {st.step}
+                  </span>
+                </button>
+                {on && (
+                  <div className="wp-swap pb-4 pl-12">
+                    <p className="text-copy" style={{ color: TONE.dark.q }}>
+                      {st.text}
+                    </p>
+                    <div aria-hidden="true" className="mt-4 h-0.5 rounded-full bg-white/10">
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${(steps.auto ? steps.progress : 1) * 100}%`, background: st.hot ? YELLOW : BLUE }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </li>
+            )
+          })}
         </ol>
       </Card>
 
-      <div className="relative">
-        <Pill tone="blue" tilt="-rotate-3" className="absolute -top-4 right-8 z-10">
-          {p.pill}
-        </Pill>
-        <Card className="h-full">
+      {/* Real pet → AI pet as one frame with a divider, nine pairs underneath. */}
+      <Card className="flex flex-col">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <h4 className="text-2xl font-semibold tracking-tight">{p.title}</h4>
-          <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-x-4 2xl:grid-cols-3">
-            {p.items.map((it, i) => (
-              <li key={i} className="flex items-center gap-2">
-                <div className="aspect-[3/4] flex-1 rounded-xl p-2" style={{ background: PALE }}>
-                  <img src={it.real} alt={t(p.altReal)} loading="lazy" className="h-full w-full object-contain" />
-                </div>
-                <ArrowDisc tone="yellow" turn="none" size={26} />
-                <div className="aspect-[3/4] flex-1 rounded-xl p-2" style={{ background: BLUE }}>
-                  <img src={it.ai} alt={t(p.altAi)} loading="lazy" className="h-full w-full object-contain" />
-                </div>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      </div>
+          <Pill tone="blue">{p.pill}</Pill>
+        </div>
+        <Wipe
+          key={pair}
+          className="mt-6 rounded-[1.25rem]"
+          at={at}
+          onGrab={() => setAutoPets(false)}
+          beforeLabel={t(p.altReal)}
+          afterLabel={t(p.altAi)}
+          before={
+            <div className={frame} style={{ background: PALE }}>
+              <img key={it.real} src={it.real} alt={t(p.altReal)} className="wp-swap h-full w-full object-contain" draggable={false} />
+            </div>
+          }
+          after={
+            <div className={frame} style={{ background: BLUE }}>
+              <img key={it.ai} src={it.ai} alt={t(p.altAi)} className="wp-swap h-full w-full object-contain" draggable={false} />
+            </div>
+          }
+        />
+        <ul className="no-scrollbar -mx-1 mt-4 flex gap-2 overflow-x-auto px-1 py-1">
+          {p.items.map((x, k) => (
+            <li key={k} className="shrink-0">
+              <button
+                type="button"
+                onClick={() => pick(k)}
+                aria-label={`${t(p.altAi)} ${k + 1}`}
+                aria-pressed={k === pair}
+                className="block size-14 overflow-hidden rounded-xl p-1 transition-transform duration-300 hover:-translate-y-0.5"
+                style={{ background: BLUE, boxShadow: k === pair ? `0 0 0 3px ${YELLOW}` : "none", opacity: k === pair ? 1 : 0.7 }}
+              >
+                <img src={x.ai} alt="" loading="lazy" className="h-full w-full object-contain" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </Card>
     </div>
   )
 }
@@ -1086,6 +1164,7 @@ function Home({ slide }) {
 
 function Testing({ slide }) {
   const s = slide.summary
+  const [round, setRound] = useState(0)
   return (
     <div className="grid gap-8">
       <Card tone="pale" className="grid gap-6 lg:grid-cols-[auto_1fr] lg:items-center lg:gap-10">
@@ -1114,12 +1193,16 @@ function Testing({ slide }) {
         </div>
       </Card>
 
-      <ol className="grid gap-8 lg:grid-cols-3 lg:gap-6">
-        {slide.rounds.map((r) => {
+      {/* The three rounds behind a date switch: one at a time, laid out wide —
+          what was tested on the left, what changed on the right. */}
+      <div>
+        <Segmented options={slide.rounds.map((r) => r.tab)} value={round} onChange={setRound} />
+        {[slide.rounds[round]].map((r) => {
           const tone = TONE[r.tone]
           return (
-            <li key={r.tab} className="flex">
-              <TabCard tone={r.tone} tab={r.tab} className="w-full" bodyClass="flex flex-col">
+            <div key={r.tab} className="wp-swap mt-6">
+              <TabCard tone={r.tone} tab={r.tab} className="w-full" bodyClass="grid gap-x-10 lg:grid-cols-2">
+                <div>
                 <h4 className="text-2xl font-semibold tracking-tight">{r.title}</h4>
                 <p className="mt-2 text-note" style={{ color: tone.q }}>
                   {r.sub}
@@ -1147,8 +1230,11 @@ function Testing({ slide }) {
                   </ul>
                 )}
 
+                {r.finding && <Bullets items={[r.finding]} color={YELLOW} className="mt-6" />}
+                </div>
+                <div className="lg:pt-1">
                 {r.quote && (
-                  <div className={`mt-6 rounded-[1.25rem] p-6 ${r.tone ==="yellow"?"sm:mr-24 lg:mr-0 xl:mr-20":""}`} style={r.tone === "dark" ? { background: YELLOW, color: ON_FILL } : { background: "#fff", color: ON_FILL }}>
+                  <div className="mt-6 rounded-[1.25rem] p-6 lg:first:mt-0" style={r.tone === "dark" ? { background: YELLOW, color: ON_FILL } : { background: "#fff", color: ON_FILL }}>
                     <p className="text-copy font-black" style={{ color: r.tone === "dark" ? ON_FILL : "#0058d6" }}>
                       {r.quote.title}
                     </p>
@@ -1159,10 +1245,9 @@ function Testing({ slide }) {
                   </div>
                 )}
 
-                {r.finding && <Bullets items={[r.finding]} color={YELLOW} className="mt-6" />}
 
                 {r.changes && (
-                  <div className={`mt-6 rounded-[1.25rem] p-6 ${r.tone ==="yellow"?"sm:mr-24 lg:mr-0 xl:mr-20":""}`} style={{ background: r.tone === "pale" ? CARD : "#fff", color: r.tone === "pale" ? INK : ON_FILL }}>
+                  <div className="mt-6 rounded-[1.25rem] p-6 lg:first:mt-0" style={{ background: r.tone === "pale" ? CARD : "#fff", color: r.tone === "pale" ? INK : ON_FILL }}>
                     <p className="text-copy font-black" style={{ color: r.tone === "pale" ? LINK : "#0058d6" }}>
                       {r.changeLabel}
                     </p>
@@ -1176,12 +1261,13 @@ function Testing({ slide }) {
                   </div>
                 )}
 
-                {r.sticker && <Sticker src={r.sticker} className="absolute bottom-4 right-3 hidden w-24 sm:block lg:hidden xl:block" />}
+                </div>
+                {r.sticker && <Sticker src={r.sticker} className="absolute -top-10 right-6 hidden w-20 sm:block" />}
               </TabCard>
-            </li>
+            </div>
           )
         })}
-      </ol>
+      </div>
     </div>
   )
 }
@@ -1303,6 +1389,8 @@ function Handoff({ slide }) {
 // line scales with the card while nothing made of words does.
 function InstallChart({ chart }) {
   const { points, max } = chart
+  const plot = useRef(null)
+  const drawn = useInView(plot, { threshold: 0.15, once: true })
   const last = points.length - 1
   const x = (i) => (i / last) * 100
   const y = (v) => (1 - v / max) * 100
@@ -1311,7 +1399,7 @@ function InstallChart({ chart }) {
   const axis = "rgba(255,255,255,0.65)"
   return (
     <div className="no-scrollbar -mx-1 overflow-x-auto px-1 pt-10">
-      <div className="min-w-[30rem]">
+      <div ref={plot} className="min-w-[30rem]">
         <div className="flex gap-3">
           <ul className="wp-round relative w-12 shrink-0 text-note font-bold" style={{ color: axis, height: "clamp(12rem, 18vw, 15rem)" }}>
             {chart.ticks.map((tick) => (
@@ -1320,7 +1408,12 @@ function InstallChart({ chart }) {
               </li>
             ))}
           </ul>
-          <div className="relative min-w-0 flex-1" style={{ height: "clamp(12rem, 18vw, 15rem)" }}>
+          {/* The plot wipes in from the left once it is on screen — the line, the
+              area, the points and the markers together, as if being drawn. */}
+          <div
+            className="relative min-w-0 flex-1 motion-safe:transition-[clip-path] motion-safe:duration-[1800ms] motion-safe:ease-out"
+            style={{ height: "clamp(12rem, 18vw, 15rem)", clipPath: drawn ? "inset(-60% -10% -60% 0)" : "inset(-60% 100% -60% 0)" }}
+          >
             <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" className="absolute inset-0 h-full w-full">
               <defs>
                 <linearGradient id="wp-install-fill" x1="0" x2="0" y1="0" y2="1">

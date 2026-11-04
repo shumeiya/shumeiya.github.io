@@ -412,6 +412,44 @@ html::-webkit-scrollbar {
 
 /* The slides' backdrop: a checkerboard of soft rounded squares, white at low
    opacity so it works on the blue, the yellow and the near-black alike. */
+/* Motion for the WeatherPets case study (wpMotion.jsx). Cards rise in as they
+   reach the viewport; switched panels fade across. The hidden starting state
+   only applies under `.wp-motion`, which the script sets — no script, no hiding —
+   and never under reduced motion. */
+.wp-motion .wp-deck [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.wp-motion .wp-deck [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+@keyframes wp-swap {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.wp-deck .wp-swap {
+  animation: wp-swap 0.45s ease both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-motion .wp-deck [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  .wp-deck .wp-swap {
+    animation: none;
+  }
+}
+
 /* The deck's checkerboard backdrop is switched off on the page: the blue, yellow
    and near-black fills read cleaner flat. The class stays on the elements. */
 .wp-deck .wp-checker {
