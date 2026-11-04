@@ -1039,6 +1039,7 @@ function FlowChart({ flow, caption }) {
 function CaseStep({ step, flip }) {
   return (
     <li
+      data-reveal-from={flip ? "right" : "left"}
       className={`grid items-center gap-6 lg:gap-8 ${
         flip ? "lg:grid-cols-[minmax(0,11fr)_minmax(0,5fr)]" : "lg:grid-cols-[minmax(0,5fr)_minmax(0,11fr)]"
       }`}

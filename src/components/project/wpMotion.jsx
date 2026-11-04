@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react"
 
 // Interaction and motion pieces for the WeatherPets case study: a scroll reveal,
 // a count-up for headline numbers, a before/after wipe, a segmented switch and a
@@ -46,7 +46,7 @@ function observeReveal(el) {
             revealIO.unobserve(e.target)
           }
         }),
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+      { threshold: 0, rootMargin: "0px 0px -8% 0px" }
     )
   }
   revealIO.observe(el)
@@ -61,6 +61,59 @@ export function useReveal() {
   }, [])
   return ref
 }
+
+// --- auto reveal -------------------------------------------------------------------
+// For a page built from shared blocks (CodeMao) or a deck (ABC Mouse): find the
+// content blocks under `root` with `selector`, keep only the top-most ones, and
+// let them rise in as they arrive. A list-like block (a list, or a grid with
+// several children) reveals its children one after another instead of as one
+// piece. Anything already on screen when the page loads is left alone, so the
+// first view never flashes. `data-reveal-from="left|right"` on an element makes
+// it slide in from that side.
+export function useAutoReveal(rootRef, selector, deps = []) {
+  useEffect(() => {
+    const root = rootRef.current
+    if (!root || !selector || reducedMotion()) return
+    const stops = []
+    const id = requestAnimationFrame(() => {
+      const fold = window.innerHeight
+      const below = (el) => el.getBoundingClientRect().top > fold
+      const tag = (el, i = 0) => {
+        if (el.hasAttribute("data-reveal") || !below(el)) return
+        el.setAttribute("data-reveal", "")
+        el.style.setProperty("--reveal-delay", `${Math.min(i, 5) * 80}ms`)
+        stops.push(observeReveal(el))
+      }
+      // Top-most only: a block nested inside another matched block (or inside a
+      // card that already reveals itself) is left to its parent, or the child
+      // would wait, invisible, for a parent that is itself still hidden.
+      const all = [...root.querySelectorAll(selector)].filter((el) => el.getBoundingClientRect().height > 0)
+      const set = new Set(all)
+      const blocks = all.filter((el) => {
+        if (el.parentElement?.closest("[data-reveal]")) return false
+        for (let a = el.parentElement; a && a !== root; a = a.parentElement) if (set.has(a)) return false
+        return true
+      })
+      for (const b of blocks) {
+        const kids = [...b.children].filter((k) => k.getBoundingClientRect().height > 0)
+        const display = getComputedStyle(b).display
+        const listish = /^(UL|OL|DL)$/.test(b.tagName) || ((display === "grid" || display === "flex") && kids.length >= 2 && kids.length <= 12)
+        if (listish && kids.length >= 2) kids.forEach((k, i) => tag(k, i))
+        else tag(b)
+      }
+    })
+    return () => {
+      cancelAnimationFrame(id)
+      stops.forEach((s) => s())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rootRef, selector, ...deps])
+}
+
+// Pages that opt into motion (CodeMao, ABC Mouse) provide this, so a shared block
+// such as Stats can count up there and stay still everywhere else.
+export const MotionContext = createContext(false)
+export const useMotionPage = () => useContext(MotionContext)
 
 // --- count-up ------------------------------------------------------------------------
 // "26M+", "5,600+", "87%", "3 × 5": the leading number counts up from zero when the

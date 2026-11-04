@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react"
+import { CountUp, useMotionPage } from "./wpMotion"
 import { useT } from "../../i18n/lang"
 import { ui } from "../../i18n/ui"
 import WorkflowBoard from "./WorkflowBoard"
@@ -76,6 +77,7 @@ function Defs({ items }) {
 }
 
 function Stats({ items, accent }) {
+  const motion = useMotionPage()
   return (
     <dl
       className="mt-visual grid gap-x-6 gap-y-6 border-t-2 pt-4 sm:grid-cols-2"
@@ -83,7 +85,7 @@ function Stats({ items, accent }) {
     >
       {items.map((s) => (
         <div key={s.label}>
-          <dd className="text-3xl font-semibold tracking-tight text-cream">{s.value}</dd>
+          <dd className="text-3xl font-semibold tracking-tight text-cream">{motion ? <CountUp>{s.value}</CountUp> : s.value}</dd>
           <dt className="mt-1 text-copy font-medium text-ink">{s.label}</dt>
           {s.note && <p className="mt-1 text-note text-fog">{s.note}</p>}
         </div>

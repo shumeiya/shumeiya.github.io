@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, Navigate, useParams } from "react-router-dom"
 import { ArrowUpRight } from "lucide-react"
 import { projectList } from "../data/project"
@@ -9,6 +9,17 @@ import DetailBlocks from "../components/project/DetailBlocks"
 import ProjectHero from "../components/project/ProjectHero"
 import { useLocale, useT } from "../i18n/lang"
 import { ui } from "../i18n/ui"
+import { MotionContext, useAutoReveal } from "../components/project/wpMotion"
+
+// Case studies with scroll motion, and which blocks rise in on each. WeatherPets
+// handles its own (its cards reveal themselves); these two use the auto reveal.
+const MOTION = {
+  // Blocks that sit straight in a section, or inside the plain wrapper a section
+  // gets when its board draws the title; the wrapper itself is not a block.
+  codemao:
+    "article > section > :is(figure, dl, ul, ol, div[class]:not([class*='first-child'])), article > section > div:is(:not([class]), [class*='first-child']) > :is(figure, dl, ul, ol, div)",
+  "abc-mouse": ".abc-deck :is(header, figure, ul, ol, dl, [class*='rounded-2xl'])",
+}
 
 export default function ProjectDetail() {
   const { slug } = useParams()
@@ -16,6 +27,8 @@ export default function ProjectDetail() {
   const detail = useLocale(project && projectDetails[slug])
   const nextProject = useLocale(projectList)
   const t = useT()
+  const mainRef = useRef(null)
+  useAutoReveal(mainRef, MOTION[slug], [slug, t])
 
   const [active, setActive] = useState(detail?.sections[0]?.id)
   useEffect(() => {
@@ -59,10 +72,11 @@ export default function ProjectDetail() {
     nextProject[(idx + 1) % nextProject.length]
 
   return (
-    <main className="case-type relative mx-auto w-full min-w-0 px-4 pb-28 pt-6 sm:px-6 lg:px-8 xl:px-52">
+    <main ref={mainRef} className={`${MOTION[slug] ? "motion-page " : ""}case-type relative mx-auto w-full min-w-0 px-4 pb-28 pt-6 sm:px-6 lg:px-8 xl:px-52`}>
       <DetailToc sections={detail.sections} active={active} />
       <ScrollRail />
 
+      <MotionContext.Provider value={!!MOTION[slug]}>
       <article>
         <ProjectHero project={project} detail={detail} />
         {detail.intro && (
@@ -131,6 +145,7 @@ export default function ProjectDetail() {
           </Link>
         </footer>
       </article>
+      </MotionContext.Provider>
     </main>
   )
 }
