@@ -144,7 +144,11 @@ export const projectDetails = {
         // The board no longer draws its own title; the page sets it.
         heading: kyrallLaunchData.title,
         lead: kyrallLaunchData.lead,
-        blocks: [{ type: "launchdata", board: kyrallLaunchData }],
+        blocks: [
+          // The Figma board, kept for reference but no longer on the page:
+          // { type: "launchdata", board: kyrallLaunchData },
+          { type: "launchData", data: kyrallLaunchData },
+        ],
       },
       // AI workflow chapter hidden for now — the board (kyrallAiWorkflow.js,
       // AiWorkflowBoard.jsx) is kept; re-enable by restoring this entry and the import.

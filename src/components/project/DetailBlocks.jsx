@@ -8,6 +8,7 @@ import BackgroundCompare from "./BackgroundCompare"
 import PlayView from "./PlayView"
 import PersonaCards from "./PersonaCards"
 import JourneyMap from "./JourneyMap"
+import LaunchData from "./LaunchData"
 import CompetitorsBoard from "./CompetitorsBoard"
 import PersonaBoard from "./PersonaBoard"
 import StoryMapBoard from "./StoryMapBoard"
@@ -495,6 +496,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <PersonaCards key={i} persona={block.persona} />
       case "journeyMap":
         return <JourneyMap key={i} map={block.map} />
+      case "launchData":
+        return <LaunchData key={i} data={block.data} />
       case "playView":
         return <PlayView key={i} items={block.items} />
       case "flowSteps":
