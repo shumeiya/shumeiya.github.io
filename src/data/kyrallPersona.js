@@ -17,6 +17,12 @@ export const kyrallPersona = {
   goalLabel: tt("GOAL  /  Goal", "GOAL  /  目标"),
   painLabel: tt("PAIN  /  Pain", "PAIN  /  痛点"),
   chanceLabel: tt("KYRALL opportunity", "KYRALL 的机会"),
+  // Labels for the page's flow layout (PersonaCards.jsx).
+  flowLabels: {
+    goal: tt("Goal", "目标"),
+    pain: tt("Pain", "痛点"),
+    chance: tt("Where Kyrall helps", "Kyrall 的机会"),
+  },
 
   cards: [
     {

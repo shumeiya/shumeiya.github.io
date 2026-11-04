@@ -89,8 +89,11 @@ export const projectDetails = {
         // The board no longer draws its own title; the page sets it.
         heading: kyrallPersona.title,
         blocks: [
-          { type: "persona", board: kyrallPersona },
-          { type: "storymap", board: kyrallStoryMap },
+          // The Figma boards, kept for reference but no longer on the page:
+          // { type: "persona", board: kyrallPersona },
+          // { type: "storymap", board: kyrallStoryMap },
+          { type: "personaCards", persona: kyrallPersona },
+          { type: "journeyMap", map: kyrallStoryMap },
         ],
       },
       {
