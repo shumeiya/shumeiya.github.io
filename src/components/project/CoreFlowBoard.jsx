@@ -20,7 +20,9 @@ const OX = 80
 const OY = 112
 const BOARD_W = 1760
 // The page sets the title and lead; the step pills (y 296) start at the top edge.
-const CUT = 309 // the step row and its rule are on the page now; the board opens at act 1
+// Acts 1–3 are commented out below, so the board opens at act 4 (Editor, y 2520).
+// With them back, this is 309.
+const CUT = 2400
 const BOARD_H = 4210 - CUT // trimmed: the deck left ~50px of empty air under the last line
 // The floor the board stops shrinking at and starts scrolling sideways instead —
 // the same one the design-system board above it uses, so the two behave alike on a
@@ -168,7 +170,9 @@ export default function CoreFlowBoard({ board }) {
                 at its first content, lifted by CUT. */}
             <div style={{ position: "absolute", left: 0, top: -CUT, width: BOARD_W }}>
 
-            {/* ---- act 1 · Dashboard ---- */}
+            {/* Acts 1–3 (Dashboard, the background task, Execution Log) are hidden
+                for now; restore by removing this comment and setting CUT back to 309.
+            ---- act 1 · Dashboard ----
             <ActHead y={421} n="1" title={acts[0].title} accent={acts[0].titleAccent} />
             <PillRow rx={1840} y={421} items={acts[0].steps.map((i) => steps[i])} lit />
 
@@ -187,7 +191,7 @@ export default function CoreFlowBoard({ board }) {
             <Note x={1587} y={776} w={253} title={acts[0].notes[2].title} body={acts[0].notes[2].body} dy={14} />
             <Rule x={80} y={1456} w={1760} />
 
-            {/* ---- act 2 · the queue, and act 3 · Execution Log ---- */}
+            ---- act 2 · the queue, and act 3 · Execution Log ----
             <ActHead y={1523} n="3" title={acts[2].title} accent={acts[2].titleAccent} />
             <ActHead
               y={1523}
@@ -212,9 +216,10 @@ export default function CoreFlowBoard({ board }) {
             <Arrow from={[1660, 928.5]} to={[1660, 1490]} />
             <Arrow from={[1474, 2288]} to={[1474, 2493]} />
             <Rule x={80} y={2461} w={1760} />
+            */}
 
             {/* ---- act 4 · Editor ---- */}
-            <ActHead y={2521} title={acts[3].title} accent={acts[3].titleAccent} x={80} titleX={144} />
+            <ActHead y={2521} title={acts[3].title} accent={acts[3].titleAccent} x={80} titleX={80} />
             <PillRow rx={1840} y={2520} items={acts[3].steps.map((i) => steps[i])} lit={1} />
             <Shot src="editor.png" x={607} y={2606} w={1232.68} h={669.15} />
 
