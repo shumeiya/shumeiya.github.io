@@ -754,8 +754,10 @@ function Ideation({ slide }) {
           {slide.features.map((f) => (
             <li key={f.no}>
               <Card tone={f.tone} className="flex items-center gap-6 p-4 sm:p-6">
-                <div className="size-24 shrink-0 overflow-hidden rounded-full bg-white p-2 sm:size-28">
-                  <img src={f.art} alt="" loading="lazy" className="h-full w-full object-contain" />
+                {/* The art is square with its own pale ground; filling the circle
+                    edge to edge lets that ground be the disc, with no corners showing. */}
+                <div className="size-24 shrink-0 overflow-hidden rounded-full sm:size-28">
+                  <img src={f.art} alt="" loading="lazy" className="h-full w-full object-cover" />
                 </div>
                 <div className="min-w-0">
                   <p className="wp-round text-note font-extrabold" style={{ color: TONE[f.tone].q }}>
