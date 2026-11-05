@@ -1,16 +1,14 @@
-// HMI (Granstudio × Shumei Zhang) — the case-study deck, rebuilt as page content.
+// HMI (Granstudio × Shumei Zhang) — the case-study deck, as page content.
 //
-// The source is the "Granstudio" page of the Figma file (1920×1080 slides, white
-// ground, Montserrat, a navy heading ink and one purple accent that marks the path
-// the project actually designs: manual → autonomous). Nothing here is a flattened
-// export of a slide: every word is real text in both languages, and every column is
-// a real box that reflows, so the deck reads on a phone as well as on a laptop.
-// The artwork — SAE-level figures, avatars, G-Va, the wheel, the breath light, the
-// two screens in both modes — is exported from the same file into
-// /public/project/hmi/deck/.
+// The source is the "Granstudio" page of the Figma file: 1920×1080 slides, one idea
+// each. Every word here is the deck's own, as real text in both languages; nothing
+// is a flattened export of a slide. The artwork — SAE-level figures, avatars, G-Va,
+// the wheel, the breath light, the two screens in both modes — is exported from
+// the same file into /public/project/hmi/deck/.
 //
-// Each entry is one slide. `kind` picks the layout in HmiDeck.jsx; the rest is that
-// layout's content. `**…**` inside a string marks the words the slide set in bold.
+// Each entry is one slide. `kind` picks the layout in HmiDeck.jsx, which re-lays
+// the slide as tiles on the page's grid; the rest is that layout's content.
+// `**…**` inside a string marks the words the slide set in bold.
 import { tt } from "../i18n/t"
 
 const ART = "/project/hmi/deck"
@@ -54,7 +52,7 @@ const AUTO_MODE = tt("Autonomous Driving Mode", "自动驾驶模式")
 
 // --- The slides ------------------------------------------------------------
 
-// 02 · Background — the six SAE levels, then the sentence that frames the project.
+// 02 · Background — the six SAE levels…
 const background = {
   kind: "levels",
   levels: [
@@ -65,11 +63,14 @@ const background = {
     { img: `${ART}/level-4.png`, n: tt("Level 4", "L4"), label: tt("High Driving Automation", "高度驾驶自动化") },
     { img: `${ART}/level-5.png`, n: tt("Level 5", "L5"), label: tt("Full Driving Automation", "完全驾驶自动化") },
   ],
-  statement: tt(
-    "With the popularization of assisted driving functions such as L2 and L3, the mode switch between driver-controlled and vehicle-controlled driving has become an important vehicle control function.",
-    "随着 L2、L3 等辅助驾驶功能的普及，「由人控制」与「由车控制」之间的模式切换，已经成为一项重要的车辆控制功能。"
-  ),
 }
+
+// …and the sentence that slide closes on, which frames the project. The page sets
+// it as the chapter's lead, under the title.
+const backgroundStatement = tt(
+  "With the popularization of assisted driving functions such as L2 and L3, the mode switch between driver-controlled and vehicle-controlled driving has become an important vehicle control function.",
+  "随着 L2、L3 等辅助驾驶功能的普及，「由人控制」与「由车控制」之间的模式切换，已经成为一项重要的车辆控制功能。"
+)
 
 // 11 · Design trends — where the industry stands, and where the interaction is heading.
 const trends = {
@@ -216,8 +217,8 @@ const scenarios = {
   ],
 }
 
-// 07 · Key point — what the research adds up to.
-export const hmiKeyPoints = [
+// 07 · Key point — the five statements.
+const hmiKeyPoints = [
   tt(
     "Safety issues require ongoing vigilance and preemptive alerts in both static and dynamic scenarios.",
     "安全问题需要在静态与动态场景下持续警惕，并提前预警。"
@@ -423,206 +424,139 @@ const transition = {
   ],
 }
 
-// 18 · ProtoPie — the greeting that opens the prototype.
-const gva = {
-  kind: "gva",
+// 07 · Key point — what the research adds up to.
+const keyPoints = {
+  kind: "keypoints",
+  items: hmiKeyPoints,
+}
+
+// 18 + 10 · ProtoPie — the walkthrough video, G-Va's greeting, the two links, and
+// the deck's own asterisked notes on using the prototype.
+const prototype = {
+  kind: "prototype",
   robot: `${ART}/gva.png`,
   hello: tt("Hi, I am G-Va~", "嗨，我是 G-Va～"),
+  video: {
+    src: "https://www.youtube.com/embed/aotbVnrCKbU",
+    title: tt("HMI Design for Autonomous Driving Mode Switching", "自动驾驶模式切换的 HMI 设计"),
+    caption: tt("Walkthrough of the full mode-switching interaction.", "完整模式切换交互的演示。"),
+  },
+  links: [
+    {
+      label: tt("Open the ProtoPie prototype", "打开 ProtoPie 原型"),
+      href: "https://cloud.protopie.io/p/9e757d1212756acd5da5a625",
+      note: tt(
+        "The interactive mode-switching prototype, running in the browser.",
+        "可交互的模式切换原型，直接在浏览器里运行。"
+      ),
+    },
+    {
+      label: tt("Download the ProtoPie file", "下载 ProtoPie 源文件"),
+      href: "https://drive.google.com/file/d/1OZEXEFnGgxuHZWrpMgBwkDYmcTT890DJ/view?usp=drive_link",
+      note: tt("The .pie source, on Google Drive.", "存放在 Google Drive 的 .pie 源文件。"),
+    },
+  ],
+  notes: [
+    tt(
+      "Since ProtoPie cannot activate voice recognition through a voice command, when G-Va appears you need to first click on G-Va. After clicking on G-Va, normal voice interaction can then proceed.",
+      "ProtoPie 无法用语音指令唤起语音识别，所以当 G-Va 出现时，需要先点一下 G-Va，之后就能正常进行语音交互。"
+    ),
+    tt(
+      "The keyword to activate the autonomous driving mode is “autonomous driving mode”.",
+      "开启自动驾驶模式的关键词是「autonomous driving mode」。"
+    ),
+  ],
 }
 
 // --- The sections ------------------------------------------------------------
 //
-// One section per slide, in the deck's own order. The page's chapter index lists
-// `label`; `eyebrow` is the slide number; the board carries the slide itself. The
-// eyebrow already names the slide, so the heading is kept for the index and the
-// outline but not drawn a second time.
+// One chapter per slide, in the deck's own order. `heading` is the slide's title,
+// drawn large by the page (`label` where the two are the same); `label` is the one-
+// or two-word name the chapter index lists, short enough to stay off the copy. The
+// content under it is the slide's own, re-laid as tiles by HmiDeck.jsx. Only the
+// first chapter has a lead: the sentence the Background slide itself closes on.
 
 const slide = (kind) => [{ type: "hmideck", slide: kind }]
 
 export const hmiSections = [
   {
     id: "background",
-    eyebrow: tt("Background", "背景"),
     label: tt("Background", "背景"),
-    titleHidden: true,
-    lead: tt(
-      "Mode switching is now a core vehicle control function.",
-      "模式切换，如今已是一项核心的车辆控制功能。"
-    ),
+    lead: backgroundStatement,
     blocks: slide(background),
   },
   {
     id: "trends",
-    eyebrow: tt("Design trends", "设计趋势"),
-    label: tt("Design trends", "设计趋势"),
-    titleHidden: true,
-    lead: tt(
-      "The industry sits at Level 2.5. The interaction is heading somewhere else.",
-      "行业停在 Level 2.5，而交互正在往别的方向走。"
-    ),
+    label: tt("Trends", "趋势"),
+    heading: tt("Design trends", "设计趋势"),
     blocks: slide(trends),
   },
   {
     id: "interview",
-    eyebrow: tt("User interview", "用户访谈"),
-    label: tt("User interview", "用户访谈"),
-    titleHidden: true,
-    lead: tt(
-      "Three drivers already living with L2/L3 systems.",
-      "三位已经天天在用 L2/L3 系统的驾驶员。"
-    ),
+    label: tt("Interview", "访谈"),
+    heading: tt("User interview", "用户访谈"),
     blocks: slide(interview),
   },
   {
     id: "journey",
-    eyebrow: tt("User journey map", "用户旅程图"),
-    label: tt("User journey map", "用户旅程图"),
-    titleHidden: true,
-    lead: tt(
-      "Five stages, from getting in the car to driving it again.",
-      "五个阶段 —— 从上车，到再次自己开。"
-    ),
+    label: tt("Journey", "旅程"),
+    heading: tt("User journey map", "用户旅程图"),
     blocks: slide(journey),
   },
   {
     id: "scenarios",
-    eyebrow: tt("Possible scenarios", "可能的场景"),
-    label: tt("Possible scenarios", "可能的场景"),
-    titleHidden: true,
-    lead: tt(
-      "Three ways a driver arrives in autonomous mode. The middle one is the project.",
-      "驾驶员进入自动驾驶模式的三条路，中间那条就是这个项目。"
-    ),
+    label: tt("Scenarios", "场景"),
+    heading: tt("Possible scenarios for entering autonomous mode", "进入自动驾驶模式的可能场景"),
     blocks: slide(scenarios),
   },
   {
     id: "keypoint",
-    eyebrow: tt("Key point", "关键点"),
     label: tt("Key point", "关键点"),
-    titleHidden: true,
-    lead: tt("What the research adds up to.", "调研加起来说明了什么。"),
-    blocks: [{ type: "bullets", items: hmiKeyPoints }],
+    blocks: slide(keyPoints),
   },
   {
     id: "designpoint",
-    eyebrow: tt("Design point", "设计要点"),
     label: tt("Design point", "设计要点"),
-    titleHidden: true,
-    lead: tt(
-      "An ambient light that breathes, and a mode you can enter three ways.",
-      "一盏会呼吸的氛围灯，以及三种进入同一个模式的方式。"
-    ),
     blocks: slide(designPoint),
   },
   {
     id: "voice",
-    eyebrow: tt("Voice interaction", "语音交互"),
-    label: tt("Voice interaction", "语音交互"),
-    titleHidden: true,
-    lead: tt("Evoke → command → confirm → enter.", "唤醒 → 指令 → 确认 → 进入。"),
+    label: tt("Voice", "语音"),
+    heading: tt("Voice interaction", "语音交互"),
     blocks: slide(voice),
   },
   {
     id: "mechanical",
-    eyebrow: tt("Mechanical interaction", "机械交互"),
-    label: tt("Mechanical interaction", "机械交互"),
-    titleHidden: true,
-    lead: tt(
-      "Toggle the levers twice to enter autonomous driving mode.",
-      "连拨两次拨杆，进入自动驾驶模式。"
-    ),
+    label: tt("Mechanical", "机械"),
+    heading: tt("Mechanical interaction", "机械交互"),
     blocks: slide(mechanical),
   },
   {
     id: "interface",
-    eyebrow: tt("Interface", "界面"),
     label: tt("Interface", "界面"),
-    titleHidden: true,
-    lead: tt(
-      "Where the driver can actually see and reach.",
-      "驾驶员真正看得到、伸手够得着的地方。"
-    ),
     blocks: slide(iface),
   },
   {
     id: "dashboard",
-    eyebrow: tt("Dashboard", "仪表盘"),
     label: tt("Dashboard", "仪表盘"),
-    titleHidden: true,
-    lead: tt(
-      "The same cluster in both modes: the background changes, and an icon says the road allows it.",
-      "同一块仪表盘的两种模式：背景色改变，并用一个图标说明这条路允许自动驾驶。"
-    ),
     blocks: slide(dashboard),
   },
   {
     id: "console",
-    eyebrow: tt("Central console display", "中控屏"),
-    label: tt("Central console display", "中控屏"),
-    titleHidden: true,
-    lead: tt(
-      "A 3D map while the driver drives; a 2D map, minimised, once the car does.",
-      "人开车时是 3D 地图；车开车时，地图降为 2D 并缩小。"
-    ),
+    label: tt("Console", "中控屏"),
+    heading: tt("Central console display", "中控屏"),
     blocks: slide(consoleSlide),
   },
   {
     id: "transition",
-    eyebrow: tt("Mode transition", "模式切换"),
-    label: tt("Mode transition", "模式切换"),
-    titleHidden: true,
-    lead: tt(
-      "What changes, all at once, at the moment of handover.",
-      "交接的那一刻，有哪些东西同时改变。"
-    ),
+    label: tt("Transition", "切换"),
+    heading: tt("Mode transition", "模式切换"),
     blocks: slide(transition),
   },
   {
     id: "prototype",
-    eyebrow: tt("ProtoPie", "ProtoPie 原型"),
     label: tt("Prototype", "原型"),
-    titleHidden: true,
-    lead: tt("Built and testable in ProtoPie.", "用 ProtoPie 做成，可以直接试。"),
-    blocks: [
-      {
-        type: "links",
-        items: [
-          {
-            label: tt("Open the ProtoPie prototype", "打开 ProtoPie 原型"),
-            href: "https://cloud.protopie.io/p/9e757d1212756acd5da5a625",
-            note: tt(
-              "The interactive mode-switching prototype, running in the browser.",
-              "可交互的模式切换原型，直接在浏览器里运行。"
-            ),
-          },
-          {
-            label: tt("Download the ProtoPie file", "下载 ProtoPie 源文件"),
-            href: "https://drive.google.com/file/d/1OZEXEFnGgxuHZWrpMgBwkDYmcTT890DJ/view?usp=drive_link",
-            note: tt("The .pie source, on Google Drive.", "存放在 Google Drive 的 .pie 源文件。"),
-          },
-        ],
-      },
-      {
-        type: "bullets",
-        title: tt("Before you try it", "试用之前"),
-        items: [
-          tt(
-            "Since ProtoPie cannot activate voice recognition through a voice command, when G-Va appears you need to first click on G-Va. After clicking on G-Va, normal voice interaction can then proceed.",
-            "ProtoPie 无法用语音指令唤起语音识别，所以当 G-Va 出现时，需要先点一下 G-Va，之后就能正常进行语音交互。"
-          ),
-          tt(
-            "The keyword to activate the autonomous driving mode is “autonomous driving mode”.",
-            "开启自动驾驶模式的关键词是「autonomous driving mode」。"
-          ),
-        ],
-      },
-      ...slide(gva),
-      {
-        type: "video",
-        src: "https://www.youtube.com/embed/aotbVnrCKbU",
-        title: tt("HMI Design for Autonomous Driving Mode Switching", "自动驾驶模式切换的 HMI 设计"),
-        caption: tt("Walkthrough of the full mode-switching interaction.", "完整模式切换交互的演示。"),
-      },
-    ],
+    heading: tt("ProtoPie", "ProtoPie 原型"),
+    blocks: slide(prototype),
   },
 ]

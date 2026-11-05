@@ -583,43 +583,85 @@ html::-webkit-scrollbar {
   box-shadow: inset 0 0 0 1px var(--abc-band-edge);
 }
 
-/* The HMI (Granstudio) deck boards. The slides are white, set in a navy heading ink
-   with one purple accent that marks the path the project designs (manual →
-   autonomous); the diagrams use a ramp of three pale blues, the wireframes two greys,
-   and the mode pills and chat bubbles one blue-grey gradient with white type.
-   On the dark page the navy heading becomes the page's own cream and the purple
-   lightens to hold its contrast; the blues and greys step down to sit on near-black.
-   `figure` is the one value that never flips: it backs the breath-light photographs,
-   which were pasted into the deck with their own white ground. */
+/* The HMI (Granstudio) case study. Every chapter is built from one surface — a
+   rounded tile in a quiet grey — on the white page, so the deck's own artwork is
+   the only thing with colour: the ramp of three pale blues in the reach diagrams,
+   the blue-grey gradient of the mode pills and the driver's chat bubbles, and one
+   purple accent that marks the path the project designs (manual → autonomous).
+   `chip` is the raised surface inside a tile (a step, a G-Va bubble, a wireframe's
+   ground); `well` is what a cut-out illustration stands on.
+   On the dark page the tile becomes the site's lifted navy and the purple lightens
+   to hold its contrast. Two things stay pale there on purpose: `well`, because the
+   figures and the wheel are drawn in dark inks, and the breath-light photographs,
+   which were pasted into the deck on their own white ground. */
 .hmi-deck {
   --hmi-accent: #5858a1;
-  --hmi-title: #44455c;
-  --hmi-line: #44455c;
-  --hmi-wire: #ececec;
-  --hmi-wire-2: #d3d3d3;
-  --hmi-on-wire: #333333;
-  --hmi-blind: #e4e4e4;
+  --hmi-on-accent: #ffffff;
+  --hmi-tile: #f5f5f7;
+  --hmi-tile-lit: color-mix(in srgb, var(--hmi-accent) 7%, #f5f5f7);
+  --hmi-lit-edge: color-mix(in srgb, var(--hmi-accent) 26%, transparent);
+  --hmi-chip: #ffffff;
+  --hmi-well: #f5f5f7;
+  --hmi-rule: color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --hmi-dot: color-mix(in srgb, var(--color-ink) 32%, transparent);
+  --hmi-wire: #ffffff;
+  --hmi-wire-2: #e8e8ed;
+  --hmi-blind: #cfd0da;
   --hmi-zone-1: #dbe8f8;
   --hmi-zone-2: #bad4f2;
   --hmi-zone-3: #95baea;
   --hmi-bubble: linear-gradient(135deg, #93a4cc 0%, #6f80ad 100%);
   --hmi-on-bubble: #ffffff;
-  --hmi-chat: linear-gradient(180deg, #edf2fb 0%, #f6f8fd 100%);
-  --hmi-figure: #ffffff;
 }
 
 .dark .hmi-deck {
   --hmi-accent: #a5a2ee;
-  --hmi-title: var(--color-cream);
-  --hmi-line: #9a9bb8;
-  --hmi-wire: #202636;
-  --hmi-wire-2: #303749;
-  --hmi-on-wire: #d8dbe6;
-  --hmi-blind: #272b36;
+  --hmi-on-accent: #14171a;
+  --hmi-tile: #171c29;
+  --hmi-tile-lit: color-mix(in srgb, var(--hmi-accent) 14%, #171c29);
+  --hmi-lit-edge: color-mix(in srgb, var(--hmi-accent) 36%, transparent);
+  --hmi-chip: #262d3f;
+  --hmi-well: #e4e7ee;
+  --hmi-wire: #232a3b;
+  --hmi-wire-2: #343c51;
+  --hmi-blind: #3a4052;
   --hmi-zone-1: #2b3d5c;
   --hmi-zone-2: #35507c;
   --hmi-zone-3: #42669f;
-  --hmi-chat: linear-gradient(180deg, #1b2233 0%, #171c29 100%);
+}
+
+.hmi-deck .hmi-tile {
+  background: var(--hmi-tile);
+}
+
+.hmi-deck .hmi-tile--lit {
+  background: var(--hmi-tile-lit);
+  box-shadow: inset 0 0 0 1px var(--hmi-lit-edge);
+}
+
+/* White-ground photographs: multiplied onto the light tile so the white drops out,
+   kept on a white card on the dark one, where multiplying would black them out. */
+.hmi-deck .hmi-photo img {
+  mix-blend-mode: multiply;
+}
+
+.dark .hmi-deck .hmi-photo {
+  background: #ffffff;
+}
+
+.dark .hmi-deck .hmi-photo img {
+  mix-blend-mode: normal;
+}
+
+/* The round arrow on a link tile: a chip at rest, the accent on hover and focus. */
+.hmi-deck .hmi-go {
+  background: var(--hmi-chip);
+  color: var(--color-ink);
+}
+
+.hmi-deck a:is(:hover, :focus-visible) .hmi-go {
+  background: var(--hmi-accent);
+  color: var(--hmi-on-accent);
 }
 
 body {
