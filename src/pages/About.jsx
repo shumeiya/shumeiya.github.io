@@ -165,6 +165,12 @@ function CvEntry({ heading, meta = [], footer, name, logo, invert, mask, details
       <Rule />
       <div className="flex flex-col gap-[15px] md:flex-row md:items-start">
         <div className="flex flex-1 flex-col self-stretch">
+          {/* The pinned block travels inside this wrapper, not inside the whole
+              column: a sticky element can slide as far as the bottom of its
+              parent, and with the mark sharing that parent the heading rode down
+              on top of it. The wrapper takes all the height the mark does not,
+              so the heading is let go 40px above the mark instead. */}
+          <div className="flex-1 md:pb-10">
           <div className="flex flex-col gap-[30px] md:sticky md:top-[150px]">
             <div className="flex flex-col gap-3">
               <Words
@@ -172,6 +178,11 @@ function CvEntry({ heading, meta = [], footer, name, logo, invert, mask, details
                 text={heading}
                 className="max-w-[377px] text-[22px] leading-[1.1] tracking-[-0.02em] text-cream"
               />
+              {/* Below md the employer's mark is not drawn, which left a post
+                  with a title, dates and a city but no employer. Its name
+                  stands in for it there. A school is already named in type at
+                  the foot of the column, so it is skipped. */}
+              {name && !footer && <p className="text-base leading-[1.3] text-ink md:hidden">{name}</p>}
               {meta.length > 0 && (
                 <p className="flex flex-col gap-1 text-sm leading-[1.4] text-fog">
                   {meta.map((m, k) => (
@@ -180,6 +191,7 @@ function CvEntry({ heading, meta = [], footer, name, logo, invert, mask, details
                 </p>
               )}
             </div>
+          </div>
           </div>
 
           {/* The mark, as it was drawn — no disc behind it. `mt-auto` drops it
@@ -192,7 +204,7 @@ function CvEntry({ heading, meta = [], footer, name, logo, invert, mask, details
               it is filling a wordmark's place. Unlike the logos it is never
               hidden on a phone: dropping it would lose the institution. */}
           {footer ? (
-            <p className="mt-auto pt-10 font-condensed text-2xl uppercase leading-none tracking-tight text-cream">
+            <p className="mt-auto pt-6 font-condensed text-2xl uppercase leading-none tracking-tight text-cream md:pt-10">
               {footer}
             </p>
           ) : logo ? (
@@ -247,7 +259,7 @@ function CvEntry({ heading, meta = [], footer, name, logo, invert, mask, details
                   opens the row, so it starts straight in. */}
               {(j > 0 || d.group) && <Rule delay={j * 0.06} />}
               <div className="flex w-full items-start justify-between">
-                <div className="flex w-[90%] items-start gap-[19px]">
+                <div className="flex w-full items-start gap-3 md:w-[90%] md:gap-[19px]">
                   {/* Drawn, not typed: Urbanist's own bullet glyph is a speck at
                       this size. 10px down puts a 5px disc on the optical centre
                       of a 24px first line. */}
@@ -336,7 +348,7 @@ export default function About() {
           30px of side padding, which is what gives its rows room to breathe.
           Its own vertical rhythm too — 120px above, 150px below, tightening at
           each breakpoint. */}
-      <main className="w-full px-4 pb-37.5 md:px-5 md:pb-15 lg:px-8 lg:pb-37.5">
+      <main className="w-full px-4 pb-20 md:px-5 md:pb-15 lg:px-8 lg:pb-37.5">
       {/* Hero — stickers strewn around a single centred statement, the way the
           reference page opens: mostly air, with the eye pulled to one line. */}
       {/* The opening is the curtain: it pins at the top of the viewport for one
@@ -345,7 +357,10 @@ export default function About() {
           for. */}
       <header
         ref={curtain}
-        className="sticky top-0 z-0 grid h-screen place-items-center overflow-hidden"
+        // A full screen on a phone is a lot of air around a name two lines
+        // tall, so there the opening is a little over half of one. `svh`, not
+        // `vh`, so it does not jump as the browser's toolbar slides away.
+        className="sticky top-0 z-0 grid h-[56svh] min-h-[440px] place-items-center overflow-hidden sm:h-screen"
       >
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 select-none">
           {scatter.map((s, i) => (
@@ -405,7 +420,8 @@ export default function About() {
           sheet would start below its own background with the curtain showing in
           the gap. */}
       <div className="relative z-10 flex flex-col bg-page">
-      {/* Self-introduction video */}
+      {/* Self-introduction video — switched off for now. Remove the comment
+          markers around the block below to bring it back.
       <motion.section {...rise} transition={{ duration: 0.6 }} className="mt-16">
         <div className="aspect-video w-full overflow-hidden rounded-lg border border-line bg-box">
           <iframe
@@ -418,12 +434,13 @@ export default function About() {
           />
         </div>
       </motion.section>
+      */}
 
       {/* Work Experience — the reference's own measurements: a two-column row on
           a 15px gap, each column taking half; the title boxed to 377px; 46px
           down the left, 60px down the right, 20px between entries. Type is 22px
           for the post and 14px for everything else, the labels in caps. */}
-      <section className="mt-[120px]">
+      <section className="mt-20 md:mt-[120px]">
         <Words
           as="h2"
           text={t(ui.aboutExperience)}
@@ -431,7 +448,7 @@ export default function About() {
           className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
         />
 
-        <ol className="mt-16 flex flex-col gap-[60px]">
+        <ol className="mt-10 flex flex-col gap-12 md:mt-16 md:gap-[60px]">
           {[...copy.experience].reverse().map((x) => (
             <CvEntry
               key={`${x.company}-${x.period}`}
@@ -451,7 +468,7 @@ export default function About() {
 
       {/* Education — the same ledger, after the posts: the schooling reads as
           the footnote to the career rather than the preamble to it. */}
-      <section className="mt-[120px]">
+      <section className="mt-20 md:mt-[120px]">
         <Words
           as="h2"
           text={t(ui.aboutEducation)}
@@ -459,7 +476,7 @@ export default function About() {
           className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
         />
 
-        <ol className="mt-16 flex flex-col gap-[60px]">
+        <ol className="mt-10 flex flex-col gap-12 md:mt-16 md:gap-[60px]">
           {copy.education.map((e) => (
             <CvEntry
               key={e.school}
@@ -481,17 +498,21 @@ export default function About() {
           delay={0.08}
           className="font-condensed text-5xl uppercase leading-none text-cream sm:text-7xl"
         />
-        <ul className="mt-16 grid grid-cols-4 gap-x-2 gap-y-8 sm:grid-cols-6 lg:grid-cols-9">
+        {/* On a phone the wall is set small: four to a row, a 32px mark over a
+            12px name, which is as tight as the two-word names ("After Effects",
+            "Premiere Pro") can go without wrapping. Eighteen tools then take
+            five short rows instead of most of two screens. */}
+        <ul className="mt-8 grid grid-cols-4 gap-x-1 gap-y-5 sm:mt-16 sm:grid-cols-6 sm:gap-x-2 sm:gap-y-8 lg:grid-cols-9">
           {copy.skills.map((s, i) => (
             <motion.li
               key={s.name}
               {...rise}
               transition={{ duration: 0.45, delay: (i % 5) * 0.04 }}
-              className="group flex flex-col items-center gap-3"
+              className="group flex flex-col items-center gap-1.5 sm:gap-3"
             >
               <span
                 aria-hidden="true"
-                className="block size-18 bg-ink transition-colors duration-300 group-hover:bg-cream"
+                className="block size-8 bg-ink transition-colors duration-300 group-hover:bg-cream sm:size-18"
                 style={{
                   maskImage: `url(${s.icon})`,
                   WebkitMaskImage: `url(${s.icon})`,
@@ -503,7 +524,7 @@ export default function About() {
                   WebkitMaskPosition: "center",
                 }}
               />
-              <span className="text-center text-base text-fog transition-colors duration-300 group-hover:text-ink">
+              <span className="text-center text-xs leading-tight text-fog transition-colors duration-300 group-hover:text-ink sm:text-base">
                 {s.name}
               </span>
             </motion.li>
@@ -512,10 +533,14 @@ export default function About() {
       </Section>
 
       {/* The sign-off: the name dropped into a heap along the floor of the band. */}
-      <NameScatter text="shumeizhang" className=" h-[46vh] min-h-[300px] w-full" />
+      {/* On a phone the letters are small and settle in a single low heap, so
+          the band is only a little taller than that heap; anything more is
+          empty page. They fall in from above the band, so they need no
+          headroom inside it. */}
+      <NameScatter text="shumeizhang" className="h-36 w-full sm:h-[46vh] sm:min-h-[300px]" />
 
       {/* CTA */}
-      <motion.div {...rise} transition={{ duration: 0.5 }} className="mt-24">
+      <motion.div {...rise} transition={{ duration: 0.5 }} className="mt-12 sm:mt-24">
         <CtaLink to="/project">{t(ui.aboutCta)}</CtaLink>
       </motion.div>
       </div>

@@ -12,7 +12,10 @@ export default function WorkSection({ work }) {
   const t = useT()
 
   return (
-    <section id={work.slug} className="relative pb-16 pt-14 sm:pt-16">
+    // On a phone one project follows the next at 64px (24 under the dots, 40
+    // over the next heading); the 120px the desktop uses is a third of a small
+    // screen with nothing in it.
+    <section id={work.slug} className="relative pb-6 pt-10 sm:pb-16 sm:pt-16">
       <motion.header
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}

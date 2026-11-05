@@ -283,13 +283,16 @@ export const skills = [
 // three portraits are spaced onto different sides so they don't read as a set.
 //
 // `sm` marks the ones that drop away on a phone, where there is no room to strew.
+// Four stay: two above the name, one beside it and one below, all clear of the
+// centred column the name and the résumé links stand in. The opening is only
+// half a screen tall there, so a fifth at the right would sit on the links.
 // `drift` and `wobble` are how far each one sinks and turns as the curtain closes
 // over it — varied per sticker so the pile jostles rather than moving as a slab.
 // `depth` is how far it slides against the pointer: the bigger ones get the
 // bigger numbers, so the near ones outrun the far ones and the field has depth.
 export const scatter = [
   { src: "/about/scatter/s1.png", left: "10%", top: "19%", w: 175, rotate: -9, drift: 34, wobble: 7, depth: 22 },
-  { src: "/about/scatter/s2.png", left: "85%", top: "17%", w: 150, rotate: 11, sm: true, drift: 52, wobble: -9, depth: 19 },
+  { src: "/about/scatter/s2.png", left: "85%", top: "17%", w: 150, rotate: 11, drift: 52, wobble: -9, depth: 19 },
   { src: "/about/scatter/s3.png", left: "80%", top: "38%", w: 195, rotate: 7, sm: true, drift: 22, wobble: -5, depth: 24 },
   { src: "/about/scatter/s4.png", left: "64%", top: "90%", w: 165, rotate: -13, drift: 44, wobble: 11, depth: 21 },
   { src: "/about/scatter/s5.png", left: "65%", top: "22%", w: 190, rotate: 5, sm: true, drift: 18, wobble: 6, depth: 24 },
@@ -300,5 +303,5 @@ export const scatter = [
   { src: "/about/scatter/s11.png", left: "45%", top: "89%", w: 150, rotate: -8, sm: true, drift: 20, wobble: 5, depth: 19 },
   { src: "/about/scatter/s12.png", left: "73%", top: "76%", w: 145, rotate: 12, sm: true, drift: 16, wobble: -7, depth: 18 },
   { src: "/about/scatter/s13.png", left: "90%", top: "71%", w: 125, rotate: -14, sm: true, drift: 38, wobble: 9, depth: 16 },
-  { src: "/about/scatter/s14.png", left: "10%", top: "52%", w: 130, rotate: 6, sm: true, drift: 12, wobble: -4, depth: 16 },
+  { src: "/about/scatter/s14.png", left: "10%", top: "52%", w: 130, rotate: 6, drift: 12, wobble: -4, depth: 16 },
 ]
