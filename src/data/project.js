@@ -83,34 +83,21 @@ export const projectCategories = [
   { key: "product", label: tt("Product", "产品") },
 ]
 
-// "size" drives the bento-grid span in MyProject.jsx — lg (2x2), wide (2x1), tall (1x2), sm (1x1).
 /**
- * Archive bento grid (ProjectArchive.jsx).
+ * The archive (ProjectArchive.jsx) — an even grid of 16:9 covers, in this
+ * order: left to right, top to bottom.
  *
- * `shape` picks the tile: "lg" = a 2x2 wide cover for the meaty projects,
- * "sm" = the same ratio at 1x1, "portrait" = a 1x2 phone-shaped cover for the
- * mobile-first work. `cover` overrides `image` when the card needs a portrait
- * crop the landscape hero can't give.
- *
- * `place` pins the tile on the 4-column desktop grid, which is three bands of
- * two rows. Every band holds one big cover, one phone and two small covers, but
- * in a different arrangement, so neither a row nor a column ever repeats the
- * same shape twice running:
- *
- *   rows 1-2   big . .   phone   small / small
- *   rows 3-4   small     phone   big . .
- *              small
- *   rows 5-6   phone     big . .         small / small
- *
- * Below lg the grid drops to two columns and places the tiles itself, so the
- * source order below is the reading order: left to right, top to bottom.
+ * `image` is the project's landscape hero and is what the card shows. `cover`
+ * swaps in another picture where the hero is the wrong shape for a 16:9 frame,
+ * and `coverPosition` (a CSS object-position) moves the crop where the subject
+ * is off-centre. `description` is the two-line blurb under the title.
  */
 export const projectList = [
   {
     name: tt("Kyrall Web App", "Kyrall 网页应用"),
     slug: "kyrall",
     category: tt("AI Product", "AI 产品"),
-    categories: ["ai"],
+    categories: ["ai", "uxui"],
     description: tt(
       "An AI tool that takes an idea from concept to a manufacturable model in minutes.",
       "一个 AI 工具：把一个想法在几分钟内，从概念推进到可直接制造的模型。"
@@ -118,25 +105,19 @@ export const projectList = [
     image: "/project/kyrall/1.png",
     color: "var(--color-kyrall)",
     href: "/project/kyrall",
-    shape: "lg",
-    place: "lg:col-start-1 lg:row-start-1",
   },
   {
     name: tt("Weather Pets", "天气宠物"),
     slug: "weather-pets",
-    category: tt("UX/UI", "UX/UI"),
-    categories: ["uxui"],
+    category: tt("AI Product", "AI 产品"),
+    categories: ["ai", "uxui"],
     description: tt(
       "A playful weather app concept with animated companion pets, explored at wetter.com.",
       "在 wetter.com 探索的天气应用概念 —— 用会动的陪伴宠物，让查天气变成一件想做的事。"
     ),
     image: "/gallery/weatherpets.jpg",
-    // Phone cropped out of the landscape hero — the app is mobile-only.
-    cover: "/gallery/covers/weatherpets-portrait.jpg",
     color: "var(--color-ac-orange)",
     href: "/project/weather-pets",
-    shape: "portrait",
-    place: "lg:col-start-3 lg:row-start-1",
   },
   {
     name: tt("TIDE", "TIDE"),
@@ -150,8 +131,6 @@ export const projectList = [
     image: "/gallery/tide.jpg",
     color: "var(--color-ac-blue)",
     href: "/project/tide",
-    shape: "sm",
-    place: "lg:col-start-4 lg:row-start-1",
   },
   {
     name: tt("CodeMao", "编程猫"),
@@ -165,8 +144,6 @@ export const projectList = [
     image: "/gallery/codemao.jpg",
     color: "var(--color-ac-pink)",
     href: "/project/codemao",
-    shape: "sm",
-    place: "lg:col-start-4 lg:row-start-2",
   },
   {
     name: tt("Fire Rescue Drone", "消防救援无人机"),
@@ -178,10 +155,10 @@ export const projectList = [
       "救援无人机的工业设计概念，从形态研究一直做到产品渲染图。"
     ),
     image: "/gallery/firesystem.jpg",
+    // Nearly square, with the drone in the upper half.
+    coverPosition: "50% 10%",
     color: "var(--color-ac-green)",
     href: "/project/fire-rescue-drone",
-    shape: "sm",
-    place: "lg:col-start-1 lg:row-start-3",
   },
   {
     name: tt("Slow Food", "慢食 Slow Food"),
@@ -193,12 +170,8 @@ export const projectList = [
       "用一个结合虚拟种植与线下活动的 App，让布拉的慢食餐厅重新活起来。"
     ),
     image: "/gallery/slowfood.jpg",
-    // Shipped app screen — already phone-shaped, no crop needed.
-    cover: "/gallery/works/slow-food/screen-26.jpg",
     color: "var(--color-ac-green)",
     href: "/project/slow-food",
-    shape: "portrait",
-    place: "lg:col-start-2 lg:row-start-3",
   },
   {
     name: tt("ABC Mouse", "ABC Mouse"),
@@ -212,8 +185,6 @@ export const projectList = [
     image: "/gallery/abcmouse.jpg",
     color: "var(--color-ac-orange)",
     href: "/project/abc-mouse",
-    shape: "lg",
-    place: "lg:col-start-3 lg:row-start-3",
   },
   {
     name: tt("Guido Gobino", "Guido Gobino"),
@@ -227,8 +198,6 @@ export const projectList = [
     image: "/project/gobino/1.jpg",
     color: "var(--color-ac-red)",
     href: "/project/gobino",
-    shape: "sm",
-    place: "lg:col-start-1 lg:row-start-4",
   },
   {
     name: tt("Puzzle Game", "拼图游戏"),
@@ -240,12 +209,8 @@ export const projectList = [
       "一款拼图 App，交互顺滑、触感扎实。"
     ),
     image: "/gallery/puzzle.jpg",
-    // Phone cropped out of the two-device mockup.
-    cover: "/gallery/covers/puzzle-portrait.jpg",
     color: "var(--color-ac-green)",
     href: "/project/puzzle-game",
-    shape: "portrait",
-    place: "lg:col-start-1 lg:row-start-5",
   },
   {
     name: tt("HMI Design", "车机 HMI 设计"),
@@ -259,8 +224,6 @@ export const projectList = [
     image: "/gallery/hmi.jpg",
     color: "var(--color-ac-red)",
     href: "/project/hmi",
-    shape: "lg",
-    place: "lg:col-start-2 lg:row-start-5",
   },
   {
     name: tt("E-Pack", "E-Pack"),
@@ -274,8 +237,6 @@ export const projectList = [
     image: "/project/e-pack/cover.jpg",
     color: "var(--color-ac-green)",
     href: "/project/e-pack",
-    shape: "sm",
-    place: "lg:col-start-4 lg:row-start-5",
   },
   {
     name: tt("Place Life", "置物生活"),
@@ -287,9 +248,9 @@ export const projectList = [
       "从文房四宝与中式榫卯出发，设计的一套桌面文具。"
     ),
     image: "/project/stationery/hero.jpg",
+    // The hero is a 3.5:1 banner; this is the box itself, opened along its joints.
+    cover: "/project/stationery/p2.jpg",
     color: "var(--color-ac-orange)",
     href: "/project/stationery",
-    shape: "sm",
-    place: "lg:col-start-4 lg:row-start-6",
   },
 ]

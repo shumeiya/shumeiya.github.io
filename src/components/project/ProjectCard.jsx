@@ -1,61 +1,52 @@
+import { forwardRef } from "react"
 import { motion } from "framer-motion"
 import { Link } from "react-router-dom"
 
 /**
- * Bento tile. A row unit is 0.85 of a column (see .bento-grid in index.css), so
- * these spans land at: a double-width cover, the same ratio at single width,
- * and a two-row single column that comes out near 9:16 — the phone shape used
- * for the mobile-first projects.
+ * One cell of the archive grid: a 16:9 cover with the caption underneath it,
+ * in the flow, so the text is never squeezed into a gap or laid over the image.
+ * 16:9 because that is what most of the cover artwork already is, so it shows
+ * whole; `project.cover` swaps in another image where the hero is the wrong
+ * shape, and `project.coverPosition` moves the crop where the centre is not
+ * the subject.
  *
- * `project.place` pins the tile on the desktop grid; below lg it is absent and
- * the grid places tiles itself.
+ * It is a list item that animates its own layout, which is what lets the grid
+ * close up smoothly when the filter takes cards away. The ref is forwarded
+ * because AnimatePresence's popLayout mode measures the element it removes.
  */
-const SHAPE = {
-  lg: "col-span-2 row-span-2",
-  sm: "col-span-1 row-span-1",
-  portrait: "col-span-1 row-span-2",
-}
-
-const MotionLink = motion.create(Link)
-
-export default function ProjectCard({ project, index, dimmed = false }) {
-  const span = SHAPE[project.shape] ?? SHAPE.sm
-
+const ProjectCard = forwardRef(function ProjectCard({ project }, ref) {
   return (
-    <MotionLink
-      to={project.href}
+    <motion.li
+      ref={ref}
+      layout
       initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8% 0px" }}
-      transition={{ duration: 0.5, delay: (index % 6) * 0.05 }}
-      className={`group relative block ${span} ${project.place ?? ""}`}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className="min-w-0"
     >
-      <div
-        className={`absolute inset-0 overflow-hidden rounded-xl bg-box transition-all duration-500 ${
-          dimmed ? "opacity-40 grayscale" : "opacity-100 grayscale-0"
-        }`}
-      >
-        <img
-          src={project.cover ?? project.image}
-          alt={project.name}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-        />
-      </div>
+      <Link to={project.href} data-cursor-label="view" className="group block">
+        <div className="aspect-video overflow-hidden rounded-2xl bg-box ring-1 ring-inset ring-ink/5">
+          <img
+            src={project.cover ?? project.image}
+            alt=""
+            loading="lazy"
+            style={project.coverPosition ? { objectPosition: project.coverPosition } : undefined}
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          />
+        </div>
 
-      {/* Caption rides in the grid's row gap so it never crops the cover. */}
-      <div
-        className={`absolute inset-x-0 top-full flex items-baseline justify-between gap-3 pt-2 transition-opacity duration-500 ${
-          dimmed ? "opacity-35" : "opacity-100"
-        }`}
-      >
-        <h3 className="truncate text-sm font-medium text-ink sm:text-base">{project.name}</h3>
-        {project.category && (
-          <span className="shrink-0 font-mono-tight text-[11px] uppercase tracking-wide text-fog sm:text-xs">
-            {project.category}
-          </span>
+        <h2 className="mt-4 truncate text-xl font-medium leading-tight text-ink lg:mt-5 lg:text-2xl">
+          {project.name}
+        </h2>
+        {project.description && (
+          <p className="mt-2 line-clamp-2 max-w-[60ch] text-pretty text-[15px] leading-normal text-fog lg:text-base">
+            {project.description}
+          </p>
         )}
-      </div>
-    </MotionLink>
+      </Link>
+    </motion.li>
   )
-}
+})
+
+export default ProjectCard
