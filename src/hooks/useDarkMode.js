@@ -5,7 +5,8 @@ export function useDarkMode() {
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark)
-    localStorage.setItem("theme", isDark ? "dark" : "light")
+    // Same key index.html reads before first paint.
+    localStorage.setItem("theme-v2", isDark ? "dark" : "light")
   }, [isDark])
 
   return [isDark, setIsDark]

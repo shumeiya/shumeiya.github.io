@@ -3,21 +3,21 @@ import { DEFAULT_LANG, LANGS, localize } from "./t"
 import { LanguageContext } from "./lang"
 import { ui } from "./ui"
 
-const STORAGE_KEY = "lang"
+// Same key index.html reads before first paint.
+const STORAGE_KEY = "lang-v2"
 
-// A stored choice wins; failing that the browser's own preference decides, so a
-// Chinese-language visitor lands on the Chinese site without touching anything.
-// index.html resolves the same thing before first paint, so the CJK font stack is
-// already in force and the page never flashes in one language before the other.
+// A stored choice wins; failing that every visitor starts in English, whatever
+// their browser's language. index.html resolves the same thing before first
+// paint, so the CJK font stack is already in force and the page never flashes in
+// one language before the other.
 function initialLang() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (LANGS.includes(stored)) return stored
   } catch {
-    // Private mode or blocked storage — fall through to the browser preference.
+    // Private mode or blocked storage — fall through to the default.
   }
-  const nav = typeof navigator !== "undefined" ? navigator.language || "" : ""
-  return nav.toLowerCase().startsWith("zh") ? "zh" : DEFAULT_LANG
+  return DEFAULT_LANG
 }
 
 export function LanguageProvider({ children }) {
