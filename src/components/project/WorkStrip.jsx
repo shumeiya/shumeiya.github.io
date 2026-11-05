@@ -31,6 +31,8 @@ function StepButton({ side, label, onClick }) {
       type="button"
       onClick={onClick}
       aria-label={label}
+      // The strip around it says "Swipe"; this is a plain button.
+      data-cursor-label=""
       className={`absolute top-1/2 z-10 hidden size-14 -translate-y-1/2 items-center justify-center glass rounded-full text-ink transition-colors duration-300 hover:text-cream lg:flex ${
         side === "left" ? "-translate-x-1/2" : "translate-x-1/2"
       }`}
@@ -256,6 +258,7 @@ export default function WorkStrip({ panels, accent, name }) {
       <div
         ref={clipRef}
         className="work-clip relative cursor-grab"
+        data-cursor-label="swipe"
         style={{ perspective: `${DEPTH}px`, perspectiveOrigin: "50% 0%" }}
       >
         {/* Measures --work-indent in px so the row can align its first panel with

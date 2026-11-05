@@ -38,9 +38,12 @@ export const ui = {
   nextPanel: tt("Next panel", "下一张"),
   othersCta: tt("See the other projects", "来看看其他项目"),
 
+  // The custom cursor's labelled disc (CursorDot.jsx)
+  cursorView: tt("View", "查看"),
+  cursorSwipe: tt("Swipe", "左右滑动"),
+
   // Archive (/project/all)
   allProjects: tt("All projects", "全部项目"),
-
   // Case study (/project/:slug)
   labelRole: tt("Role", "角色"),
   labelCategory: tt("Category", "类别"),

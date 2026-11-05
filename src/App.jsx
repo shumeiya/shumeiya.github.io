@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom"
 import NavBar from "./components/dashboard/NavBar"
 import ScrollToTop from "./components/ScrollToTop"
 import PageTone from "./components/PageTone"
+import CursorDot from "./components/CursorDot"
 import Dashboard from "./pages/Dashboard"
 import Works from "./pages/Works"
 import ProjectArchive from "./pages/ProjectArchive"
@@ -15,6 +16,7 @@ export default function App() {
     <div className="flex min-h-screen flex-col bg-page">
       <ScrollToTop />
       <PageTone />
+      <CursorDot />
       <NavBar />
       <Routes>
         <Route path="/" element={<Dashboard />} />
