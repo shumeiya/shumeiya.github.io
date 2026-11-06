@@ -6,15 +6,10 @@
   /* Urbanist and Anton carry no CJK, so every stack ends in the platform's own
      Chinese face — the browser falls through per glyph, which is what keeps a
      mixed line ("Kyrall 的设计系统") from switching fonts mid-word on the Latin
-     part. `--font-cjk` is declared once and spliced into each stack so adding a
-     webfont later is a one-line change. */
-  --font-cjk: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+     part. */
   --font-mono: "Urbanist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     ui-sans-serif, system-ui, sans-serif;
   --font-display: "Urbanist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Urbanist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     ui-sans-serif, system-ui, sans-serif;
   --font-chapter: "Urbanist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     ui-sans-serif, system-ui, sans-serif;
@@ -23,7 +18,6 @@
 
   /* Themed tokens — light-mode defaults here, dark-mode overrides in the .dark block below. */
   --color-page: #f2ede4;
-  --color-page-line: #e2ded3;
 
   --color-box: #fbfbfb;
   --color-box-2: #efeae1;
@@ -79,7 +73,6 @@
 
 .dark {
   --color-page: #000000;
-  --color-page-line: #0f1420;
 
   --color-box: #171c29;
   --color-box-2: #1f2530;
@@ -307,15 +300,6 @@ html::-webkit-scrollbar {
   --deck-on-rule: #fdfdfd;
 }
 
-/* The Workflow board keeps the palette it had (deep green text and fills) — it
-   was left out of the two-colour pass on purpose. Light mode only. */
-.kyrall-deck.kyrall-deck--keep {
-  --deck-accent: #5c7200;
-  --deck-accent-ink: #5c7200;
-  --deck-on-accent: #fdfdfd;
-  --deck-on-band: #4a4844;
-}
-
 .dark .kyrall-deck {
   --deck-accent: #c4ff35;
   --deck-accent-ink: #c4ff35;
@@ -510,7 +494,6 @@ html::-webkit-scrollbar {
   --abc-band: #1a1a1a;
   --abc-on-band: #f1f1f1;
   --abc-band-edge: transparent;
-  --abc-band-quiet: #a9a9a9;
 
   --abc-no: #c62f2f;
   --abc-on-no: #ffffff;
@@ -536,7 +519,6 @@ html::-webkit-scrollbar {
   --abc-band: #262e3e;
   --abc-on-band: #f0eeea;
   --abc-band-edge: rgba(255, 255, 255, 0.12);
-  --abc-band-quiet: #a7adbb;
 
   --abc-no: #ff8a8a;
   --abc-on-no: #1a1a1a;
@@ -866,50 +848,6 @@ html[data-lang="zh"] .work-title {
 
 html[data-lang="zh"] body {
   line-height: 1.6;
-}
-
-/* World map (My World) — pastel continent plates, tinted with theme tokens so the
-   map recolours in dark mode. A thin same-colour stroke closes the country gaps
-   within a continent so each plate reads as one soft shape. */
-.worldmap-svg {
-  opacity: 0.62;
-}
-.worldmap-svg svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-.worldmap-svg path {
-  stroke-width: 0.9;
-  vector-effect: non-scaling-stroke;
-}
-.worldmap-svg .c-north-america {
-  fill: var(--color-ac-orange);
-  stroke: var(--color-ac-orange);
-}
-.worldmap-svg .c-south-america {
-  fill: var(--color-ac-green);
-  stroke: var(--color-ac-green);
-}
-.worldmap-svg .c-europe {
-  fill: var(--color-ac-yellow);
-  stroke: var(--color-ac-yellow);
-}
-.worldmap-svg .c-africa {
-  fill: var(--color-ac-red);
-  stroke: var(--color-ac-red);
-}
-.worldmap-svg .c-asia {
-  fill: var(--color-ac-green);
-  stroke: var(--color-ac-green);
-}
-.worldmap-svg .c-oceania {
-  fill: var(--color-ac-blue);
-  stroke: var(--color-ac-blue);
-}
-.worldmap-svg .c-antarctica {
-  fill: var(--color-fog);
-  stroke: var(--color-fog);
 }
 
 /* "My World" panel — a dotted world map with the cities my study and work have

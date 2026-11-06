@@ -1,13 +1,6 @@
-// "My World" — places I've been, pinned onto the world map.
-// Each place: a photo marker on the map (cover), and a photo wall for the detail view.
-// `caption` is an optional text layer — set it to a sentence to show one on hover,
-// or leave it null/empty to show just the place name. Add more places by appending
-// an entry with lat/lng; the map projects it automatically.
+// "My World" — the photo walls behind each image on the /my-world page.
 
 import { tt } from "../i18n/t"
-
-const COVER_MUNICH = "/myworld主图/慕尼黑.png"
-const COVER_BARCELONA = "/myworld主图/巴塞罗那.png"
 
 // Barcelona photo wall — the real shots in /public/myworld主图/巴塞罗那.
 const barcelonaPhotos = [
@@ -104,26 +97,6 @@ const munichPhotos = ["weatherpets", "slowfood", "tide", "hmi", "abcmouse", "cod
   src: `/gallery/${n}.jpg`,
   alt: tt("Munich", "慕尼黑"),
 }))
-
-export const places = [
-  {
-    id: "barcelona",
-    place: tt("Barcelona", "巴塞罗那"),
-    country: tt("Spain", "西班牙"),
-    year: "2023",
-    lat: 41.39,
-    lng: 2.17,
-    coords: "41.39° N, 2.17° E",
-    caption: null, // no one-liner — shows just the name on hover
-    cover: COVER_BARCELONA,
-    photos: [{ src: COVER_BARCELONA, alt: tt("Barcelona", "巴塞罗那") }, ...barcelonaPhotos],
-  },
-]
-
-export const intro = tt(
-  "Every place I've been became a piece of the world I carry.",
-  "我去过的每一个地方，都成了我随身带着的那个世界的一块。"
-)
 
 // Scattered-images page — these get strewn across the canvas and connected, in this
 // order, by the white line starting from the top-left corner. Reorder freely.
