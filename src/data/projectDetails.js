@@ -220,9 +220,11 @@ export const projectDetails = {
         // The card stack stays as the Figma board, used as a single illustration;
         // eyebrow, heading and lead are set by the page.
         blocks: [
-          // The deck's overlapping card stack, kept but no longer on the page:
+          // The deck's overlapping card stack and the full-page specimen
+          // catalogue, kept but no longer on the page:
           // { type: "spec", board: kyrallSpec },
-          { type: "specGallery" },
+          // { type: "specGallery" },
+          { type: "kyrallVisual" },
           // The same tokens in both modes: dark and light captures of the
           // Dashboard and the Editor, with a pill switch on each card.
           {

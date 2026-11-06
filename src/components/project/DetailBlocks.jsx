@@ -12,6 +12,7 @@ import EditorTabs from "./EditorTabs"
 import ExtensionsFlow from "./ExtensionsFlow"
 import ModeCompare from "./ModeCompare"
 import SpecGallery from "./SpecGallery"
+import KyrallVisual from "./KyrallVisual"
 import PersonaCards from "./PersonaCards"
 import JourneyMap from "./JourneyMap"
 import LaunchData from "./LaunchData"
@@ -581,6 +582,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <PlayView key={i} items={block.items} />
       case "extensionsFlow":
         return <ExtensionsFlow key={i} board={block.board} />
+      case "kyrallVisual":
+        return <KyrallVisual key={i} />
       case "specGallery":
         return <SpecGallery key={i} />
       case "modeCompare":
