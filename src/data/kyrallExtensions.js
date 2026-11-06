@@ -19,20 +19,51 @@ export const kyrallExtensions = {
 
   // The four acts. The deck sets the subject in white and the point of it in accent.
   acts: [
-    { n: "01", title: tt("Projects", "项目管理页面") },
+    {
+      n: "01",
+      title: tt("Projects", "项目管理页面"),
+      brief: {
+        title: tt("All models, organised", "所有模型，集中管理"),
+        body: tt(
+          "Models are grouped by project, in grid or list view with sorting and search; skeletons cover loading, and an empty project leads straight to generating.",
+          "模型按项目分组，网格和列表两种视图，支持排序与搜索；加载有骨架屏，空项目直接引导开始生成。"
+        ),
+      },
+    },
     {
       n: "02",
       title: tt("Community: ", "社区："),
+      brief: {
+        title: tt("Reuse, not just browse", "不只浏览，拿来即用"),
+        body: tt(
+          "The banner and cards show what Kyrall can generate; any model's prompt can be edited, Copy and Editing makes it your own starting point, and related models lead on to similar designs.",
+          "Banner 和卡片展示 Kyrall 能生成什么；任何模型的 Prompt 都能直接修改，一键 Copy and Editing 变成自己的起点，相关模型再引向相似设计。"
+        ),
+      },
       accent: tt("tutorials and models you can reuse", "教程和可直接复用模型"),
     },
     {
       n: "03",
       title: tt("Context Manager: ", "上下文管理："),
+      brief: {
+        title: tt("A knowledge base the AI draws on", "给 AI 的知识底座"),
+        body: tt(
+          "Uploaded files are scored and linked into a knowledge graph, with their status visible at a glance; pick the context when generating and the model follows it.",
+          "上传的文件会被评分并连成知识图谱，文件状态一目了然；生成时选中上下文，模型就贴着团队的语境来。"
+        ),
+      },
       accent: tt("a team / personal knowledge base", "打造团队/个人知识图库"),
     },
     {
       n: "04",
       title: tt("Mesh Workspace: ", "网格工作台："),
+      brief: {
+        title: tt("From mesh to editable CAD", "把 Mesh 变成可编辑的 CAD"),
+        body: tt(
+          "Upload a mesh and it is rebuilt as a parametric model, with conversion status right on the card; the original input stays traceable, and the result opens in the Editor or Onshape.",
+          "上传网格即可重建为参数化模型，转换状态直接显示在卡片上；原始输入全程可追溯，完成后一键进入 Editor 或 Onshape。"
+        ),
+      },
       accent: tt("turn a mesh into editable CAD", "把 mesh 变成可编辑的 CAD"),
     },
   ],
