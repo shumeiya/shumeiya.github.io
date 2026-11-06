@@ -116,6 +116,9 @@ export const projectList = [
       "在 wetter.com 探索的天气应用概念 —— 用会动的陪伴宠物，让查天气变成一件想做的事。"
     ),
     image: "/gallery/weatherpets.jpg",
+    // Same artwork as the gallery image, which is only 640px wide: this is the
+    // full-resolution copy the project's strip on /project opens with.
+    cover: "/project/weatherpets/1.png",
     color: "var(--color-ac-orange)",
     href: "/project/weather-pets",
   },
@@ -142,6 +145,9 @@ export const projectList = [
       "升级学校用来开设编程猫编程课的 ToB 后台管理平台。"
     ),
     image: "/gallery/codemao.jpg",
+    // The gallery image is 640px wide and soft at card size; this is the
+    // opening panel of the project's strip on /project, at full resolution.
+    cover: "/project/codemao/1.png",
     color: "var(--color-ac-pink)",
     href: "/project/codemao",
   },
@@ -183,6 +189,10 @@ export const projectList = [
       "为腾讯 ToC 教育平台做的儿童学习 App 设计，与跨国团队协作完成。"
     ),
     image: "/gallery/abcmouse.jpg",
+    // The gallery image is 640px wide and soft at card size. This is the same
+    // scene at full resolution without the lettering, so it reads the same in
+    // both languages; cover.jpg is the Chinese-lettered version at 1920px.
+    cover: "/project/abc-mouse/1.png",
     color: "var(--color-ac-orange)",
     href: "/project/abc-mouse",
   },
