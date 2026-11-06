@@ -5,8 +5,8 @@ import { reducedMotion, useInView } from "./wpMotion"
 // The Editor's tools, presented the way adam.new presents a section: one large
 // recording on top and a row of numbered tabs underneath — no thumbnail strip.
 // The active tab carries a progress line along its top rule, fed by the video
-// itself; when a recording ends the next tool starts. Picking a tab hands
-// control to the reader: its recording then loops in place.
+// itself; when a recording ends the next tool starts — also after the reader
+// picks a tab, so the sequence always moves on.
 //
 // It only plays while on screen, and under prefers-reduced-motion nothing
 // plays or advances until the reader picks a tab.
@@ -17,12 +17,10 @@ export default function EditorTabs({ items }) {
   const inView = useInView(root, { threshold: 0.35 })
   const [step, setStep] = useState(0)
   const [progress, setProgress] = useState(0)
-  const [auto, setAuto] = useState(() => !reducedMotion())
   const [playing, setPlaying] = useState(() => !reducedMotion())
   const it = items[step]
 
   const pick = (i) => {
-    setAuto(false)
     setPlaying(true)
     setStep(i)
     setProgress(0)
@@ -39,14 +37,9 @@ export default function EditorTabs({ items }) {
     const v = e.currentTarget
     if (v.duration) setProgress(v.currentTime / v.duration)
   }
-  const onEnded = (e) => {
-    if (auto) {
-      setStep((s) => (s + 1) % items.length)
-      setProgress(0)
-    } else {
-      e.currentTarget.currentTime = 0
-      e.currentTarget.play().catch(() => {})
-    }
+  const onEnded = () => {
+    setStep((s) => (s + 1) % items.length)
+    setProgress(0)
   }
 
   return (
