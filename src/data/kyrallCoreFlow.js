@@ -83,7 +83,7 @@ export const kyrallCoreFlow = {
         {
           title: tt("The generation window", "生成窗口"),
           body: tt(
-            "In the middle: upload an image, mesh or file, add references from the Context Manager, type a description — and start a generation at any moment.",
+            "In the middle: upload an image, mesh or file, add references from the Context Manager, type a description, and start a generation at any moment.",
             "中间是生成窗口：上传图片 / Mesh / 文件、从 Context Manager 添加参考、输入描述，随时开始一次生成"
           ),
         },
@@ -149,7 +149,7 @@ export const kyrallCoreFlow = {
     },
     {
       n: null,
-      title: tt("Generation finished — ", "生成完成，"),
+      title: tt("Generation finished, ", "生成完成，"),
       titleAccent: tt("straight into the Editor", "直接进入 Editor"),
       steps: [4, 5, 6],
       notes: [
@@ -164,7 +164,7 @@ export const kyrallCoreFlow = {
         {
           title: tt("Editor toolbar", "编辑器工具栏"),
           body: tt(
-            "Traditional CAD tooling, cut down to what AI-assisted modelling actually needs — so there is far less to learn.",
+            "Traditional CAD tooling, cut down to what AI-assisted modelling actually needs, so there is far less to learn.",
             "简化传统 CAD 软件工具，只保留在 AI 辅助建模下最必要的工具，降低用户的学习成本。"
           ),
         },
@@ -186,13 +186,13 @@ export const kyrallCoreFlow = {
       video: "/project/kyrall/play/editor-fillet.mp4",
       poster: "/project/kyrall/play/editor-fillet.jpg",
       title: tt("Fillet / chamfer", "倒角 / 圆角工具"),
-      body: tt("Select an edge, choose fillet or chamfer, type the value — it applies at once.", "选中边线，选择圆角 / 倒角，输入参数即时生效"),
+      body: tt("Select an edge, choose fillet or chamfer, type the value, and it applies at once.", "选中边线，选择圆角 / 倒角，输入参数即时生效"),
     },
     {
       file: "tool-3-suggestion.png",
       video: "/project/kyrall/play/editor-suggestion.mp4",
       poster: "/project/kyrall/play/editor-suggestion.jpg",
-      title: tt("Sorted AI suggestions", "AI 建议分类"),
+      title: tt("AI suggestions", "AI 建议分类"),
       body: tt("AI suggestions sorted by structure, fit, appearance, manufacturing and function.", "AI 建议按结构、配合、外观、制造、功能分类"),
     },
     {
@@ -200,7 +200,7 @@ export const kyrallCoreFlow = {
       video: "/project/kyrall/play/editor-parts.mp4",
       poster: "/project/kyrall/play/editor-parts.jpg",
       title: tt("Feature tree", "特征树"),
-      body: tt("Show, hide or delete a feature on its own — which finds the problem faster.", "可单独显示 / 隐藏或删除，定位问题更快"),
+      body: tt("Show, hide or delete a feature on its own, which finds the problem faster.", "可单独显示 / 隐藏或删除，定位问题更快"),
     },
     {
       file: "tool-5-measure.png",
@@ -212,9 +212,9 @@ export const kyrallCoreFlow = {
     {
       video: "/project/kyrall/play/editor-history.mp4",
       poster: "/project/kyrall/play/editor-history.jpg",
-      title: tt("Version history", "历史记录"),
+      title: tt("History", "历史记录"),
       body: tt(
-        "Every generation and every edit is kept as a version — one click returns to any step.",
+        "Every generation and every edit is kept as a version; one click returns to any step.",
         "每一次生成与修改都记录为一个版本，可一键恢复到任意一步"
       ),
     },
