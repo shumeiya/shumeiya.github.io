@@ -61,7 +61,7 @@ export const kyrallCoreFlow = {
     tt("Agent", "Agent生成"),
     tt("Queue", "后台生成列表"),
     tt("Execution Log", "Execution Log"),
-    tt("Done", "生成完成"),
+    tt("Completed", "生成完成"),
     tt("Editor", "Editor 编辑"),
     tt("Export", "导出"),
   ],
