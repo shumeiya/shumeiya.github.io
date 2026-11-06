@@ -1436,3 +1436,135 @@ html[data-lang="zh"] body {
     animation: none;
   }
 }
+
+/* Jigsaw Puzzle deck (PuzzleDeck.jsx). One purple, the game's own primary, marks
+   what the slides marked in purple; the tiles sit on the same quiet surface as
+   the HMI deck. The cover keeps the slide's purple gradient and white ink in both
+   themes; the guidance tile stays white, because the hands were drawn on white. */
+.puzzle-deck {
+  --pz-accent: #8055fe;
+  --pz-tile: #f5f5f7;
+  --pz-rule: color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --pz-stage: #333333;
+  --pz-bubble: #3f2f9c;
+}
+
+.dark .puzzle-deck {
+  --pz-accent: #a98cff;
+  --pz-tile: #171c29;
+  --pz-stage: #0b0e16;
+  --pz-bubble: #4b3bb3;
+}
+
+.puzzle-deck .pz-tile {
+  background: var(--pz-tile);
+}
+
+.puzzle-deck .pz-cover {
+  background: linear-gradient(160deg, #a181ff 0%, #7748ff 100%);
+}
+
+.puzzle-deck .pz-paper {
+  background: #ffffff;
+  color: #14171a;
+}
+
+.puzzle-deck .pz-paper-fog {
+  color: #6b6b72;
+}
+
+/* The logotype: the rounded display face the site already loads, filled on the
+   first word and outlined on the second, as on the slide. */
+.puzzle-deck .pz-display {
+  font-family: "Baloo 2", var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.puzzle-deck .pz-logotype {
+  font-size: clamp(56px, 8vw, 104px);
+}
+
+.puzzle-deck .pz-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px #ffffff;
+}
+
+.puzzle-deck .pz-watermark {
+  position: absolute;
+  right: -0.1em;
+  top: -0.2em;
+  z-index: -1;
+  font-size: clamp(160px, 32vw, 420px);
+  line-height: 1;
+  color: #5b2bff;
+  opacity: 0.12;
+  pointer-events: none;
+  user-select: none;
+}
+
+.puzzle-deck .pz-stage {
+  background: var(--pz-stage);
+}
+
+.puzzle-deck .pz-row {
+  border-top: 1px solid var(--pz-rule);
+}
+
+.puzzle-deck .pz-dashed + .pz-dashed {
+  border-top: 1px dashed color-mix(in srgb, var(--color-ink) 25%, transparent);
+}
+
+.puzzle-deck .pz-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  text-align: center;
+  line-height: 1.3;
+  color: #ffffff;
+  background: var(--pz-bubble);
+}
+
+/* Motion. Tiles rise in on the shared `[data-reveal]` rule; the pieces inside a
+   tile (`.pz-seq`, placed in line by `--i`) follow it in, a beat apart. */
+.wp-motion .puzzle-deck [data-reveal] .pz-seq {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--reveal-delay, 0ms) + 180ms + var(--i, 0) * 90ms);
+}
+
+.wp-motion .puzzle-deck [data-reveal].is-in .pz-seq {
+  opacity: 1;
+  transform: none;
+}
+
+/* The cube and the coins drift, slowly, the way the deck's 3D pieces float. */
+@keyframes pz-float {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-8px);
+  }
+}
+
+.puzzle-deck .pz-float {
+  animation: pz-float 2.6s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-motion .puzzle-deck [data-reveal] .pz-seq {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .puzzle-deck .pz-float {
+    animation: none;
+  }
+}

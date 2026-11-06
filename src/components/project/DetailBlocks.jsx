@@ -30,6 +30,7 @@ import CodemaoFlow from "./CodemaoFlow"
 import AbcMouseDeck from "./AbcMouseDeck"
 import HmiDeck from "./HmiDeck"
 import SlowFoodDeck from "./SlowFoodDeck"
+import PuzzleDeck from "./PuzzleDeck"
 import { Tide404, TideLogo, TideSitemap, TideStrip, TideTour, TideWall } from "./TideBlocks"
 
 // Typed content blocks for a case-study section. A deck-shaped case study needs
@@ -673,6 +674,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <HmiDeck key={i} slide={block.slide} />
       case "sfdeck":
         return <SlowFoodDeck key={i} slide={block.slide} />
+      case "pzdeck":
+        return <PuzzleDeck key={i} slide={block.slide} />
       case "tideWall":
         return <TideWall key={i} columns={block.columns} caption={block.caption} />
       case "tideLogo":

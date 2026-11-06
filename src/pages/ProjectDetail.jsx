@@ -24,6 +24,8 @@ const MOTION = {
   hmi: "article > section > :is(h2, h2 + p)",
   // Same for Slow Food: its tiles reveal themselves (SlowFoodDeck.jsx).
   "slow-food": "article > section > :is(h2, h2 + p)",
+  // And for Jigsaw Puzzle: its tiles reveal themselves (PuzzleDeck.jsx).
+  "puzzle-game": "article > section > :is(h2, h2 + p)",
 }
 // TIDE is built from the same shared blocks as CodeMao, so it rises in the same way.
 MOTION.tide = MOTION.codemao
