@@ -80,22 +80,23 @@ export const projectDetails = {
         heading: kyrallCompetitors.title,
         blocks: [{ type: "competitors", board: kyrallCompetitors }],
       },
-      {
-        id: "persona",
-        eyebrow: tt("Persona", "用户画像"),
-        // The board opens with its own title, so the page's heading stays for the
-        // chapter index and the outline but is not drawn twice.
-        label: tt("Persona", "用户画像"),
-        // The board no longer draws its own title; the page sets it.
-        heading: kyrallPersona.title,
-        blocks: [
-          // The Figma boards, kept for reference but no longer on the page:
-          // { type: "persona", board: kyrallPersona },
-          // { type: "storymap", board: kyrallStoryMap },
-          { type: "personaCards", persona: kyrallPersona },
-          { type: "journeyMap", map: kyrallStoryMap },
-        ],
-      },
+      // Persona + user map chapter hidden for now; restore by uncommenting.
+      // {
+      // id: "persona",
+      // eyebrow: tt("Persona", "用户画像"),
+      // // The board opens with its own title, so the page's heading stays for the
+      // // chapter index and the outline but is not drawn twice.
+      // label: tt("Persona", "用户画像"),
+      // // The board no longer draws its own title; the page sets it.
+      // heading: kyrallPersona.title,
+      // blocks: [
+      // // The Figma boards, kept for reference but no longer on the page:
+      // // { type: "persona", board: kyrallPersona },
+      // // { type: "storymap", board: kyrallStoryMap },
+      // { type: "personaCards", persona: kyrallPersona },
+      // { type: "journeyMap", map: kyrallStoryMap },
+      // ],
+      // },
       {
         id: "system",
         eyebrow: tt("Design System", "设计系统"),
@@ -164,7 +165,11 @@ export const projectDetails = {
         // The board no longer draws its own title; the page sets it.
         heading: kyrallExtensions.title,
         lead: kyrallExtensions.lead,
-        blocks: [{ type: "extensions", board: kyrallExtensions }],
+        blocks: [
+          // The Figma board, kept for reference but no longer on the page:
+          // { type: "extensions", board: kyrallExtensions },
+          { type: "extensionsFlow", board: kyrallExtensions },
+        ],
       },
       {
         id: "launchdata",

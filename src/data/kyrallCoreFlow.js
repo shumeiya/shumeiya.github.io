@@ -179,7 +179,7 @@ export const kyrallCoreFlow = {
       video: "/project/kyrall/play/editor-parameters.mp4",
       poster: "/project/kyrall/play/editor-parameters.jpg",
       title: tt("Parameters", "参数修改"),
-      body: tt("Drag or type a dimension in the parameter panel and the model updates live.", "在参数面板直接拖动或输入尺寸，模型实时更新"),
+      body: tt("Drag or type a dimension in the panel and the model updates live.", "拖动滑条或者输入尺寸，模型实时更新"),
     },
     {
       file: "tool-2-fillet.png",

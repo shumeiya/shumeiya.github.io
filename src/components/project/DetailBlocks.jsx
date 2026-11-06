@@ -8,6 +8,7 @@ import BackgroundWho from "./BackgroundWho"
 import BackgroundCompare from "./BackgroundCompare"
 import PlayView from "./PlayView"
 import EditorTabs from "./EditorTabs"
+import ExtensionsFlow from "./ExtensionsFlow"
 import PersonaCards from "./PersonaCards"
 import JourneyMap from "./JourneyMap"
 import LaunchData from "./LaunchData"
@@ -95,11 +96,12 @@ function Stats({ items, accent }) {
   )
 }
 
-// Two short recordings side by side — the Editor's share and export, under the
-// tool player. Each loops quietly with its name and one line beneath it.
+// Two short recordings side by side, the Editor's share and export, under the
+// tool player. Each loops quietly with its name and one line beneath it. A
+// section gap above: the pair is its own beat, not a caption of the player.
 function VideoPair({ items }) {
   return (
-    <ul className="mt-visual grid gap-card sm:grid-cols-2">
+    <ul className="mt-section grid gap-card sm:grid-cols-2">
       {items.map((it) => (
         <li key={it.video}>
           <video
@@ -534,6 +536,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <LaunchData key={i} data={block.data} />
       case "playView":
         return <PlayView key={i} items={block.items} />
+      case "extensionsFlow":
+        return <ExtensionsFlow key={i} board={block.board} />
       case "videoPair":
         return <VideoPair key={i} items={block.items} />
       case "editorTabs":
