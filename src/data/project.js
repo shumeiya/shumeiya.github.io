@@ -190,9 +190,10 @@ export const projectList = [
     ),
     image: "/gallery/abcmouse.jpg",
     // The gallery image is 640px wide and soft at card size. This is the same
-    // scene at full resolution without the lettering, so it reads the same in
-    // both languages; cover.jpg is the Chinese-lettered version at 1920px.
-    cover: "/project/abc-mouse/1.png",
+    // scene at 1920px with the Chinese lettering (「启蒙英语 就上腾讯开心鼠」),
+    // which is the banner as it shipped; 1.png is the unlettered scene the
+    // detail page's hero uses.
+    cover: "/project/abc-mouse/cover.jpg",
     color: "var(--color-ac-orange)",
     href: "/project/abc-mouse",
   },
