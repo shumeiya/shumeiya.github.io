@@ -126,7 +126,7 @@ export default function EditorTabs({ items }) {
                 ) : (
                   on &&
                   (item.body ?? item.line) && (
-                    <span className="wp-swap mt-1 block text-note text-fog">{t(item.body ?? item.line)}</span>
+                    <span className="wp-swap mt-1 block text-callout text-ink">{t(item.body ?? item.line)}</span>
                   )
                 )}
               </button>

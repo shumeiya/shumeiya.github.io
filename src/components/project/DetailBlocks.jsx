@@ -1,3 +1,4 @@
+import { useRef } from "react"
 import { ArrowUpRight } from "lucide-react"
 import { CountUp, useMotionPage } from "./wpMotion"
 import { useT } from "../../i18n/lang"
@@ -98,29 +99,60 @@ function Stats({ items, accent }) {
 }
 
 // Short recordings side by side: the Editor's share and export pair, and the
-// Dashboard's four features. Each loops quietly, at its own rate if it names
-// one, with its name and one line beneath it. From lg, four line up in one
-// row. A section gap above: the row is its own beat, not a caption.
-function VideoPair({ items }) {
+// Dashboard's four features. From lg, four line up in one row, each with its
+// name and one line beneath it. The clips run in step: they start together
+// once every one can play, and when the last one finishes they all restart
+// together, so the row reads as one take rather than a drift of loops. A
+// clip that names a rate plays at it. `gap: "visual"` tucks the row under
+// the clip above it; without it the row is its own beat, a section apart.
+function VideoPair({ items, gap }) {
+  const refs = useRef([])
+  const ready = useRef(new Set())
+  const done = useRef(new Set())
+  const playAll = () => {
+    refs.current.forEach((v) => {
+      if (v) {
+        v.currentTime = 0
+        v.play().catch(() => {})
+      }
+    })
+  }
+  const onCanPlay = (i) => {
+    if (ready.current.size === items.length) return
+    ready.current.add(i)
+    if (ready.current.size === items.length) playAll()
+  }
+  const onEnded = (i) => {
+    done.current.add(i)
+    if (done.current.size === items.length) {
+      done.current.clear()
+      playAll()
+    }
+  }
   return (
-    <ul className={`mt-section grid gap-card sm:grid-cols-2 ${items.length > 2 ? "lg:grid-cols-4" : ""}`}>
-      {items.map((it) => (
+    <ul
+      className={`${gap === "visual" ? "mt-visual" : "mt-section"} grid gap-card sm:grid-cols-2 ${
+        items.length > 2 ? "lg:grid-cols-4" : ""
+      }`}
+    >
+      {items.map((it, i) => (
         <li key={it.video}>
           <video
+            ref={(el) => { refs.current[i] = el }}
             src={it.video}
             poster={it.poster}
             width={1920}
             height={1022}
             className="block h-auto w-full rounded-xl bg-box"
-            autoPlay
             muted
-            loop
             playsInline
-            preload="metadata"
+            preload="auto"
+            onCanPlay={() => onCanPlay(i)}
             onLoadedMetadata={(e) => { e.currentTarget.playbackRate = it.rate ?? 1 }}
+            onEnded={() => onEnded(i)}
             aria-label={it.title}
           />
-          <p className="mt-body text-xl font-semibold tracking-tight text-cream">{it.title}</p>
+          <p className="mt-body text-copy font-semibold tracking-tight text-cream">{it.title}</p>
           <p className="mt-1 text-callout text-ink">{it.body}</p>
         </li>
       ))}
@@ -474,7 +506,7 @@ function Video({ src, title, caption }) {
 
 // With `href`, the clip is a link to the live product: a CTA pill fades in over
 // the video on hover (and on keyboard focus), and the whole frame is clickable.
-function Clip({ src, caption, href, cta, ratio }) {
+function Clip({ src, caption, title, body, href, cta, ratio }) {
   const t = useT()
   const frame = (
     <div
@@ -518,6 +550,8 @@ function Clip({ src, caption, href, cta, ratio }) {
       ) : (
         frame
       )}
+      {title && <figcaption className="mt-body text-copy font-semibold tracking-tight text-cream">{title}</figcaption>}
+      {body && <p className="mt-1 text-callout text-ink">{body}</p>}
       {caption && <figcaption className="mt-body text-note text-fog">{caption}</figcaption>}
     </figure>
   )
@@ -547,7 +581,7 @@ export default function DetailBlocks({ blocks, accent }) {
       case "modeCompare":
         return <ModeCompare key={i} items={block.items} />
       case "videoPair":
-        return <VideoPair key={i} items={block.items} />
+        return <VideoPair key={i} items={block.items} gap={block.gap} />
       case "editorTabs":
         return <EditorTabs key={i} items={block.items} />
       case "subSection":
@@ -598,7 +632,7 @@ export default function DetailBlocks({ blocks, accent }) {
       case "video":
         return <Video key={i} src={block.src} title={block.title} caption={block.caption} />
       case "clip":
-        return <Clip key={i} src={block.src} caption={block.caption} href={block.href} cta={block.cta} ratio={block.ratio} />
+        return <Clip key={i} src={block.src} caption={block.caption} title={block.title} body={block.body} href={block.href} cta={block.cta} ratio={block.ratio} />
       case "workflow":
         return <WorkflowBoard key={i} board={block.board} accent={accent} />
       case "backgroundWho":

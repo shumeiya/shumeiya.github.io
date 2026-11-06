@@ -115,12 +115,14 @@ export const projectDetails = {
             type: "clip",
             src: "/project/kyrall/play/workflow.mp4",
             ratio: "1920 / 1022",
-            caption: tt("Workflow · Prompt input → Generate list", "工作流 · 输入描述，点击生成"),
+            title: tt("Workflow", "工作流"),
+            body: tt("Prompt input → Generate list", "输入描述，点击生成"),
           },
           // The tab player, kept but no longer on the page:
           // { type: "editorTabs", items: kyrallCoreFlow.play.slice(1).map((p) => ({ ...p, n: null })) },
           {
             type: "videoPair",
+            gap: "visual",
             items: [
               {
                 video: "/project/kyrall/play/input-all.mp4",
