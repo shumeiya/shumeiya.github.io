@@ -20,7 +20,8 @@ export const kyrallCoreFlow = {
       n: "01",
       title: tt("Workflow", "工作流"),
       line: tt("Recent work → Prompt input → Generate list", "最近作品 → 输入 Prompt → 生成列表"),
-      clips: [],
+      // The original recording, unchanged (1920×1022 H.264), not re-encoded.
+      clips: [{ src: "/project/kyrall/play/workflow.mp4", poster: "/project/kyrall/play/workflow.jpg" }],
     },
     {
       n: "02",
