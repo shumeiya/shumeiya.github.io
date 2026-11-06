@@ -123,7 +123,7 @@ export const projectDetails = {
           { type: "playView", items: kyrallCoreFlow.play },
           {
             type: "subSection",
-            heading: tt("Generation finished — straight into the Editor", "生成完成，直接进入 Editor"),
+            heading: tt("Generation finished, straight into the Editor", "生成完成，直接进入 Editor"),
             text: tt(
               "Traditional CAD tooling, simplified: only the tools AI-assisted modelling really needs.",
               "简化传统 CAD 软件工具，只保留在 AI 辅助建模下最必要的工具。"
