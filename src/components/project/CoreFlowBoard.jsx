@@ -20,10 +20,14 @@ const OX = 80
 const OY = 112
 const BOARD_W = 1760
 // The page sets the title and lead; the step pills (y 296) start at the top edge.
-// Acts 1–3 are commented out below, so the board opens at act 4 (Editor, y 2520).
-// With them back, this is 309.
-const CUT = 2400
-const BOARD_H = 4210 - CUT // trimmed: the deck left ~50px of empty air under the last line
+// Acts 1–3 are commented out below, and the Editor act's title is set by the
+// page now (a sub-section above the board), so the board opens at the Editor
+// screenshot (y 2606). With everything back, this is 309.
+const CUT = 2486
+// The tool rail (y 3344–3874) is commented out below — the page tells the five
+// tools in EditorTabs now — so the bottom act closes the 531px gap.
+const RAIL_CUT = 531
+const BOARD_H = 4210 - CUT - RAIL_CUT // trimmed: the deck left ~50px of empty air under the last line
 // The floor the board stops shrinking at and starts scrolling sideways instead —
 // the same one the design-system board above it uses, so the two behave alike on a
 // narrow screen. The reading column sits well above it at 0.58.
@@ -130,9 +134,9 @@ const PANES = [
   { src: "dash-mid.png", x: 746.2, y: 776.86, w: 467.6, h: 344.08 },
   { src: "dash-right.png", x: 1220.85, y: 776.86, w: 247.62, h: 344.08 },
 ]
-const TOOL_X = [105, 468.5, 832, 1195.5, 1559]
-const TOOL_CAP_X = [138, 501, 864, 1228, 1592]
-const TOOL_CAP_W = 290
+// const TOOL_X = [105, 468.5, 832, 1195.5, 1559]
+// const TOOL_CAP_X = [138, 501, 864, 1228, 1592]
+// const TOOL_CAP_W = 290
 
 export default function CoreFlowBoard({ board }) {
   const t = useT()
@@ -151,7 +155,7 @@ export default function CoreFlowBoard({ board }) {
     return () => ro.disconnect()
   }, [])
 
-  const { acts, tools, outputs, steps } = board
+  const { acts, outputs, steps } = board
 
   return (
     <figure className="mt-visual">
@@ -219,8 +223,10 @@ export default function CoreFlowBoard({ board }) {
             */}
 
             {/* ---- act 4 · Editor ---- */}
+            {/* The act's title and its pills are told by the page's sub-section now.
             <ActHead y={2521} title={acts[3].title} accent={acts[3].titleAccent} x={80} titleX={80} />
             <PillRow rx={1840} y={2520} items={acts[3].steps.map((i) => steps[i])} lit={1} />
+            */}
             <Shot src="editor.png" x={607} y={2606} w={1232.68} h={669.15} />
 
             <Arrow from={[941, 2785]} to={[420, 2785]} />
@@ -229,7 +235,8 @@ export default function CoreFlowBoard({ board }) {
             <Arrow from={[290, 3015]} to={[290, 3288]} />
             <Note x={308} y={2995} w={260} title={acts[3].notes[1].title} body={acts[3].notes[1].body} dy={14} />
 
-            {/* the editor's tool rail */}
+            {/* The editor's tool rail is told by the page now (EditorTabs); restore by
+                uncommenting this, the TOOL_* constants and RAIL_CUT.
             <Bracket x={105} y={3344} w={1705} />
             {tools.map((tool, i) => (
               <div key={tool.file}>
@@ -244,8 +251,10 @@ export default function CoreFlowBoard({ board }) {
                 />
               </div>
             ))}
+            */}
 
-            {/* what you leave with */}
+            {/* what you leave with — lifted over the rail's empty band */}
+            <div style={{ position: "absolute", left: 0, top: -RAIL_CUT, width: BOARD_W }}>
             <Bracket x={105} y={3875} w={1705} />
             <Arrow from={[305, 3875]} to={[305, 3950]} />
             <Shot src="bot-history.png" x={108} y={3929} w={423} h={235.5} />
@@ -264,6 +273,7 @@ export default function CoreFlowBoard({ board }) {
                 dy={14}
               />
             ))}
+            </div>
             </div>
           </div>
         </div>

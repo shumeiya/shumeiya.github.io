@@ -31,7 +31,7 @@ export const projectDetails = {
       image: "/project/kyrall/4.png",
       headline: tt(
         "New Design Paradigm for the AI Era",
-        "AI时代的新设计范式"
+        "AI时代的新机械方式"
       ),
     },
     tags: [
@@ -121,6 +121,15 @@ export const projectDetails = {
         blocks: [
           { type: "flowSteps", items: kyrallCoreFlow.steps },
           { type: "playView", items: kyrallCoreFlow.play },
+          {
+            type: "subSection",
+            heading: tt("Generation finished — straight into the Editor", "生成完成，直接进入 Editor"),
+            text: tt(
+              "Traditional CAD tooling, simplified: only the tools AI-assisted modelling really needs.",
+              "简化传统 CAD 软件工具，只保留在 AI 辅助建模下最必要的工具。"
+            ),
+          },
+          { type: "editorTabs", items: kyrallCoreFlow.tools },
           { type: "coreflow", board: kyrallCoreFlow },
         ],
       },

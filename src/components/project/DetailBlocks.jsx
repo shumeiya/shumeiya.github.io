@@ -7,6 +7,7 @@ import BackgroundBoard from "./BackgroundBoard"
 import BackgroundWho from "./BackgroundWho"
 import BackgroundCompare from "./BackgroundCompare"
 import PlayView from "./PlayView"
+import EditorTabs from "./EditorTabs"
 import PersonaCards from "./PersonaCards"
 import JourneyMap from "./JourneyMap"
 import LaunchData from "./LaunchData"
@@ -91,6 +92,17 @@ function Stats({ items, accent }) {
         </div>
       ))}
     </dl>
+  )
+}
+
+// A sub-section head inside a chapter: Title 2 and an optional line of body,
+// a section-gap above (the Kyrall Editor part under the Dashboard play view).
+function SubSection({ heading, text }) {
+  return (
+    <div className="mt-section">
+      <h3 className="text-2xl font-semibold tracking-tight text-cream">{heading}</h3>
+      {text && <p className="mt-lead max-w-3xl text-copy text-ink">{text}</p>}
+    </div>
   )
 }
 
@@ -494,6 +506,10 @@ export default function DetailBlocks({ blocks, accent }) {
         return <LaunchData key={i} data={block.data} />
       case "playView":
         return <PlayView key={i} items={block.items} />
+      case "editorTabs":
+        return <EditorTabs key={i} items={block.items} />
+      case "subSection":
+        return <SubSection key={i} heading={block.heading} text={block.text} />
       case "flowSteps":
         return <FlowSteps key={i} items={block.items} />
       case "steps":

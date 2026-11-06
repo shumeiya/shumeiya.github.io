@@ -11,7 +11,7 @@
 import { tt } from "../i18n/t"
 
 export const kyrallCoreFlow = {
-  title: tt("From an input to a model", "从需求到模型"),
+  title: tt("From an input to a model", "输入 Prompt 生成模型"),
 
   // The play view under the chapter heading (PlayView.jsx): five features, each
   // with its screen recording. Clips live in /public/project/kyrall/play.
@@ -19,7 +19,7 @@ export const kyrallCoreFlow = {
     {
       n: "01",
       title: tt("Workflow", "工作流"),
-      line: tt("Prompt input → Generate list", "输入 Prompt → 生成列表"),
+      line: tt("Prompt input → Generate list", "输入描述，点击生成"),
       // The original recording, unchanged (1920×1022 H.264), not re-encoded.
       clips: [{ src: "/project/kyrall/play/workflow.mp4", poster: "/project/kyrall/play/workflow.jpg" }],
     },
@@ -53,7 +53,7 @@ export const kyrallCoreFlow = {
   ],
   lead: tt(
     "Describe it, press Generate, and the task runs in the background; the Execution Log shows every step, and when it finishes you land in the Editor to adjust and export.",
-    "输入描述、点击 Generate，任务在后台运行，进入 Execution Log 看到每一步，完成后直接进入 Editor 修改并导出。"
+    "多模态输入描述，点击生成，创建生成任务，可运行在后台，不妨碍其他活动。点击进入 Execution Log 可以查看生成过程，生成完成直接进入 Editor 修改并导出。"
   ),
   // The seven steps across the top, and the shorter runs that head each act.
   steps: [

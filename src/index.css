@@ -453,7 +453,8 @@ html::-webkit-scrollbar {
     transform: none;
   }
 }
-.wp-deck .wp-swap {
+.wp-deck .wp-swap,
+.case-type .wp-swap {
   animation: wp-swap 0.45s ease both;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -464,7 +465,8 @@ html::-webkit-scrollbar {
   .motion-page .overflow-hidden:hover > img {
     transform: none;
   }
-  .wp-deck .wp-swap {
+  .wp-deck .wp-swap,
+  .case-type .wp-swap {
     animation: none;
   }
 }
