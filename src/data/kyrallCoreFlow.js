@@ -176,28 +176,47 @@ export const kyrallCoreFlow = {
   tools: [
     {
       file: "tool-1-params.png",
+      video: "/project/kyrall/play/editor-parameters.mp4",
+      poster: "/project/kyrall/play/editor-parameters.jpg",
       title: tt("Parameters", "参数修改"),
       body: tt("Drag or type a dimension in the parameter panel and the model updates live.", "在参数面板直接拖动或输入尺寸，模型实时更新"),
     },
     {
       file: "tool-2-fillet.png",
+      video: "/project/kyrall/play/editor-fillet.mp4",
+      poster: "/project/kyrall/play/editor-fillet.jpg",
       title: tt("Fillet / chamfer", "倒角 / 圆角工具"),
       body: tt("Select an edge, choose fillet or chamfer, type the value — it applies at once.", "选中边线，选择圆角 / 倒角，输入参数即时生效"),
     },
     {
       file: "tool-3-suggestion.png",
+      video: "/project/kyrall/play/editor-suggestion.mp4",
+      poster: "/project/kyrall/play/editor-suggestion.jpg",
       title: tt("Sorted AI suggestions", "AI 建议分类"),
       body: tt("AI suggestions sorted by structure, fit, appearance, manufacturing and function.", "AI 建议按结构、配合、外观、制造、功能分类"),
     },
     {
       file: "tool-4-part.png",
+      video: "/project/kyrall/play/editor-parts.mp4",
+      poster: "/project/kyrall/play/editor-parts.jpg",
       title: tt("Feature tree", "特征树"),
       body: tt("Show, hide or delete a feature on its own — which finds the problem faster.", "可单独显示 / 隐藏或删除，定位问题更快"),
     },
     {
       file: "tool-5-measure.png",
+      video: "/project/kyrall/play/editor-measurement.mp4",
+      poster: "/project/kyrall/play/editor-measurement.jpg",
       title: tt("Measurement", "测量工具"),
       body: tt("Measure any dimension on the model, with units you can switch.", "测量模型任一尺寸，支持切换单位"),
+    },
+    {
+      video: "/project/kyrall/play/editor-history.mp4",
+      poster: "/project/kyrall/play/editor-history.jpg",
+      title: tt("Version history", "历史记录"),
+      body: tt(
+        "Every generation and every edit is kept as a version — one click returns to any step.",
+        "每一次生成与修改都记录为一个版本，可一键恢复到任意一步"
+      ),
     },
   ],
 

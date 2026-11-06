@@ -1,62 +1,89 @@
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useT } from "../../i18n/lang"
-import { useInView, useStepper } from "./wpMotion"
+import { reducedMotion, useInView } from "./wpMotion"
 
-// The Editor's five tools, presented the way adam.new presents a section: one
-// large frame on top and a row of numbered tabs underneath — no thumbnail
-// strip. The active tab carries a progress line along its top rule and the
-// sequence advances on its own; picking a tab hands control to the reader.
+// The Editor's tools, presented the way adam.new presents a section: one large
+// recording on top and a row of numbered tabs underneath — no thumbnail strip.
+// The active tab carries a progress line along its top rule, fed by the video
+// itself; when a recording ends the next tool starts. Picking a tab hands
+// control to the reader: its recording then loops in place.
 //
-// Until a tool has its screen recording, the frame holds the tool's panel
-// screenshot on the band; give an item `video` (and it plays, advancing when
-// it ends). Honour prefers-reduced-motion via useStepper (no auto-advance).
-export default function EditorTabs({ items, base = "/project/kyrall/coreflow" }) {
+// It only plays while on screen, and under prefers-reduced-motion nothing
+// plays or advances until the reader picks a tab.
+export default function EditorTabs({ items }) {
   const t = useT()
   const root = useRef(null)
+  const videoRef = useRef(null)
   const inView = useInView(root, { threshold: 0.35 })
-  const steps = useStepper(items.length, { ms: 6000, run: inView })
-  const it = items[steps.step]
+  const [step, setStep] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const [auto, setAuto] = useState(() => !reducedMotion())
+  const [playing, setPlaying] = useState(() => !reducedMotion())
+  const it = items[step]
+
   const pick = (i) => {
-    steps.setAuto(false)
-    steps.go(i)
+    setAuto(false)
+    setPlaying(true)
+    setStep(i)
+    setProgress(0)
+  }
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    if (inView && playing) v.play().catch(() => {})
+    else v.pause()
+  }, [inView, playing, step])
+
+  const onTime = (e) => {
+    const v = e.currentTarget
+    if (v.duration) setProgress(v.currentTime / v.duration)
+  }
+  const onEnded = (e) => {
+    if (auto) {
+      setStep((s) => (s + 1) % items.length)
+      setProgress(0)
+    } else {
+      e.currentTarget.currentTime = 0
+      e.currentTarget.play().catch(() => {})
+    }
   }
 
   return (
     <div ref={root} className="mt-visual">
-      <div className="flex aspect-[1920/1022] items-center justify-center overflow-hidden rounded-xl bg-band">
+      <div className="overflow-hidden rounded-xl bg-band">
         {it.video ? (
           <video
             key={it.video}
+            ref={videoRef}
             src={it.video}
-            className="wp-swap block h-full w-full object-cover"
-            autoPlay={inView && steps.auto}
+            poster={it.poster}
+            width={1920}
+            height={1022}
+            className="wp-swap block h-auto w-full"
             muted
             playsInline
             preload="auto"
-            onEnded={() => steps.auto && steps.go((steps.step + 1) % items.length)}
+            onTimeUpdate={onTime}
+            onEnded={onEnded}
             aria-label={t(it.title)}
           />
         ) : (
-          <img
-            key={it.file}
-            src={`${base}/${it.file}`}
-            alt={t(it.title)}
-            className="wp-swap h-full object-contain py-6"
-          />
+          <img key={it.file} src={it.poster} alt={t(it.title)} className="block h-auto w-full" />
         )}
       </div>
 
-      <ol className="no-scrollbar mt-4 flex gap-x-6 overflow-x-auto lg:grid lg:grid-cols-5 lg:gap-x-4">
+      <ol className="no-scrollbar mt-4 flex gap-x-6 overflow-x-auto lg:grid lg:grid-cols-6 lg:gap-x-4">
         {items.map((item, i) => {
-          const on = i === steps.step
+          const on = i === step
           return (
-            <li key={i} className="min-w-[11rem] flex-1 lg:min-w-0">
+            <li key={i} className="min-w-[10rem] flex-1 lg:min-w-0">
               {/* The tab's top rule; under the active tab the progress runs along it. */}
               <div aria-hidden="true" className="relative h-px bg-line">
                 {on && (
                   <div
                     className="absolute -top-px left-0 h-[3px] bg-kyrall"
-                    style={{ width: `${(steps.auto ? steps.progress : 1) * 100}%` }}
+                    style={{ width: `${progress * 100}%` }}
                   />
                 )}
               </div>

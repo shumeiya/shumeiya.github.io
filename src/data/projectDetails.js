@@ -130,7 +130,29 @@ export const projectDetails = {
             ),
           },
           { type: "editorTabs", items: kyrallCoreFlow.tools },
-          { type: "coreflow", board: kyrallCoreFlow },
+          {
+            type: "videoPair",
+            items: [
+              {
+                video: "/project/kyrall/play/editor-share.mp4",
+                poster: "/project/kyrall/play/editor-share.jpg",
+                title: tt("Share", "分享"),
+                body: tt(
+                  "Generate a link to send to someone else; they can open the model without an account.",
+                  "生成可访问的链接分享给其他用户，对方无需登录也能查看模型"
+                ),
+              },
+              {
+                video: "/project/kyrall/play/editor-export.mp4",
+                poster: "/project/kyrall/play/editor-export.jpg",
+                title: tt("Export in one step", "一步导出"),
+                body: tt("Export as GLB, STEP or STL.", "可选择导出 GLB / STEP / STL 等格式"),
+              },
+            ],
+          },
+          // The Editor board (CoreFlowBoard) is kept in the repo but no longer on
+          // the page — EditorTabs and the pair above tell this part now.
+          // { type: "coreflow", board: kyrallCoreFlow },
         ],
       },
       {

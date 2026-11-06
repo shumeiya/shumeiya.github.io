@@ -95,6 +95,34 @@ function Stats({ items, accent }) {
   )
 }
 
+// Two short recordings side by side — the Editor's share and export, under the
+// tool player. Each loops quietly with its name and one line beneath it.
+function VideoPair({ items }) {
+  return (
+    <ul className="mt-visual grid gap-card sm:grid-cols-2">
+      {items.map((it) => (
+        <li key={it.video}>
+          <video
+            src={it.video}
+            poster={it.poster}
+            width={1920}
+            height={1022}
+            className="block h-auto w-full rounded-xl bg-box"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-label={it.title}
+          />
+          <p className="mt-body text-xl font-semibold tracking-tight text-cream">{it.title}</p>
+          <p className="mt-1 text-callout text-ink">{it.body}</p>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 // A sub-section head inside a chapter: Title 2 and an optional line of body,
 // a section-gap above (the Kyrall Editor part under the Dashboard play view).
 function SubSection({ heading, text }) {
@@ -506,6 +534,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <LaunchData key={i} data={block.data} />
       case "playView":
         return <PlayView key={i} items={block.items} />
+      case "videoPair":
+        return <VideoPair key={i} items={block.items} />
       case "editorTabs":
         return <EditorTabs key={i} items={block.items} />
       case "subSection":
