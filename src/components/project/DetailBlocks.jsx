@@ -471,10 +471,13 @@ function Video({ src, title, caption }) {
 
 // With `href`, the clip is a link to the live product: a CTA pill fades in over
 // the video on hover (and on keyboard focus), and the whole frame is clickable.
-function Clip({ src, caption, href, cta }) {
+function Clip({ src, caption, href, cta, ratio }) {
   const t = useT()
   const frame = (
-    <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-box">
+    <div
+      className={`relative w-full overflow-hidden rounded-2xl bg-box ${ratio ? "" : "aspect-video"}`}
+      style={ratio ? { aspectRatio: ratio } : undefined}
+    >
       <video
         src={src}
         className="block h-full w-full object-cover"
@@ -590,7 +593,7 @@ export default function DetailBlocks({ blocks, accent }) {
       case "video":
         return <Video key={i} src={block.src} title={block.title} caption={block.caption} />
       case "clip":
-        return <Clip key={i} src={block.src} caption={block.caption} href={block.href} cta={block.cta} />
+        return <Clip key={i} src={block.src} caption={block.caption} href={block.href} cta={block.cta} ratio={block.ratio} />
       case "workflow":
         return <WorkflowBoard key={i} board={block.board} accent={accent} />
       case "backgroundWho":

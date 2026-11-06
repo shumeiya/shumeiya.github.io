@@ -110,7 +110,14 @@ export const projectDetails = {
           { type: "flowSteps", items: kyrallCoreFlow.steps },
           // The side-list player (PlayView), kept but no longer on the page:
           // { type: "playView", items: kyrallCoreFlow.play },
-          { type: "editorTabs", items: kyrallCoreFlow.play },
+          // Workflow runs on its own; the four features line up as tabs below.
+          {
+            type: "clip",
+            src: "/project/kyrall/play/workflow.mp4",
+            ratio: "1920 / 1022",
+            caption: tt("Workflow · Prompt input → Generate list", "工作流 · 输入描述，点击生成"),
+          },
+          { type: "editorTabs", items: kyrallCoreFlow.play.slice(1).map((p) => ({ ...p, n: null })) },
           {
             type: "subSection",
             heading: tt("Generation finished, straight into the Editor", "生成完成，直接进入 Editor"),
