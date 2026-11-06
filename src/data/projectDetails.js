@@ -210,7 +210,30 @@ export const projectDetails = {
         lead: kyrallSpec.body,
         // The card stack stays as the Figma board, used as a single illustration;
         // eyebrow, heading and lead are set by the page.
-        blocks: [{ type: "spec", board: kyrallSpec }],
+        blocks: [
+          { type: "spec", board: kyrallSpec },
+          // The same tokens in both modes: dark and light captures of the
+          // Dashboard and the Editor, with a pill switch on each card.
+          {
+            type: "modeCompare",
+            items: [
+              {
+                title: tt("Dashboard", "Dashboard"),
+                dark: "/project/kyrall/system/dashboard-dark.png",
+                light: "/project/kyrall/system/dashboard-light.png",
+                darkLabel: tt("Dark", "深色"),
+                lightLabel: tt("Light", "浅色"),
+              },
+              {
+                title: tt("Editor", "Editor"),
+                dark: "/project/kyrall/system/editor-dark.png",
+                light: "/project/kyrall/system/editor-light.png",
+                darkLabel: tt("Dark", "深色"),
+                lightLabel: tt("Light", "浅色"),
+              },
+            ],
+          },
+        ],
       },
       {
         id: "launchdata",

@@ -9,6 +9,7 @@ import BackgroundCompare from "./BackgroundCompare"
 import PlayView from "./PlayView"
 import EditorTabs from "./EditorTabs"
 import ExtensionsFlow from "./ExtensionsFlow"
+import ModeCompare from "./ModeCompare"
 import PersonaCards from "./PersonaCards"
 import JourneyMap from "./JourneyMap"
 import LaunchData from "./LaunchData"
@@ -543,6 +544,8 @@ export default function DetailBlocks({ blocks, accent }) {
         return <PlayView key={i} items={block.items} />
       case "extensionsFlow":
         return <ExtensionsFlow key={i} board={block.board} />
+      case "modeCompare":
+        return <ModeCompare key={i} items={block.items} />
       case "videoPair":
         return <VideoPair key={i} items={block.items} />
       case "editorTabs":
