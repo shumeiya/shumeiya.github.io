@@ -66,7 +66,11 @@ export default function EditorTabs({ items }) {
         )}
       </div>
 
-      <ol className="no-scrollbar mt-4 flex gap-x-6 overflow-x-auto lg:grid lg:grid-cols-6 lg:gap-x-4">
+      <ol
+        className={`no-scrollbar mt-4 flex gap-x-6 overflow-x-auto lg:grid lg:gap-x-4 ${
+          items.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-6"
+        }`}
+      >
         {items.map((item, i) => {
           const on = i === step
           return (

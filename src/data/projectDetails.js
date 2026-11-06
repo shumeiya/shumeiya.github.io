@@ -166,9 +166,11 @@ export const projectDetails = {
         heading: kyrallExtensions.title,
         lead: kyrallExtensions.lead,
         blocks: [
-          // The Figma board, kept for reference but no longer on the page:
+          // The Figma board and the flow layout (ExtensionsFlow), kept for
+          // reference but no longer on the page:
           // { type: "extensions", board: kyrallExtensions },
-          { type: "extensionsFlow", board: kyrallExtensions },
+          // { type: "extensionsFlow", board: kyrallExtensions },
+          { type: "editorTabs", items: kyrallExtensions.pages },
         ],
       },
       {

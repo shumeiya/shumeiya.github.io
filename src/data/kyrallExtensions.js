@@ -17,6 +17,36 @@ export const kyrallExtensions = {
     "生成之外，用户还需要管理模型、从社区获得灵感、给 AI 提供团队上下文，以及把已有的 Mesh 变成可编辑的 CAD。四个页面共用同一套导航、卡片与状态规则。"
   ),
 
+  // The four pages as the tab player presents them (EditorTabs), one recording
+  // each, in the order Shumei asked for: Projects, Context Manager, Community,
+  // Mesh Workspace. Clips live in /public/project/kyrall/extensions.
+  pages: [
+    {
+      video: "/project/kyrall/extensions/projects.mp4",
+      poster: "/project/kyrall/extensions/projects.jpg",
+      title: tt("Projects", "项目管理页面"),
+      body: tt("All models and generations, organised in one place.", "所有模型与生成任务集中管理"),
+    },
+    {
+      video: "/project/kyrall/extensions/context-manager.mp4",
+      poster: "/project/kyrall/extensions/context-manager.jpg",
+      title: tt("Context Manager", "上下文管理"),
+      body: tt("A team or personal knowledge base the AI generates from.", "打造团队 / 个人知识图库"),
+    },
+    {
+      video: "/project/kyrall/extensions/community.mp4",
+      poster: "/project/kyrall/extensions/community.jpg",
+      title: tt("Community", "社区"),
+      body: tt("Tutorials and models you can reuse.", "教程和可直接复用的模型"),
+    },
+    {
+      video: "/project/kyrall/extensions/mesh-workspace.mp4",
+      poster: "/project/kyrall/extensions/mesh-workspace.jpg",
+      title: tt("Mesh Workspace", "网格工作台"),
+      body: tt("Turn an existing mesh into editable CAD.", "把 mesh 变成可编辑的 CAD"),
+    },
+  ],
+
   // The four acts. The deck sets the subject in white and the point of it in accent.
   acts: [
     { n: "01", title: tt("Projects", "项目管理页面") },
