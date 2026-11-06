@@ -98,19 +98,6 @@ export const projectDetails = {
       // ],
       // },
       {
-        id: "system",
-        eyebrow: tt("Design System", "设计系统"),
-        label: tt("Design System", "设计系统"),
-        heading: tt(
-          "Keep it consistent: document the system and its components.",
-          "保持统一原则，沉淀设计系统与组件规范。"
-        ),
-        lead: kyrallSpec.body,
-        // The card stack stays as the Figma board, used as a single illustration;
-        // eyebrow, heading and lead are set by the page.
-        blocks: [{ type: "spec", board: kyrallSpec }],
-      },
-      {
         id: "loop",
         eyebrow: tt("Dashboard", "Dashboard"),
         // The board opens with its own title, so the page's heading stays for the
@@ -172,6 +159,19 @@ export const projectDetails = {
           // { type: "extensions", board: kyrallExtensions },
           { type: "extensionsFlow", board: kyrallExtensions },
         ],
+      },
+      {
+        id: "system",
+        eyebrow: tt("Design System", "设计系统"),
+        label: tt("Design System", "设计系统"),
+        heading: tt(
+          "Keep it consistent: document the system and its components.",
+          "保持统一原则，沉淀设计系统与组件规范。"
+        ),
+        lead: kyrallSpec.body,
+        // The card stack stays as the Figma board, used as a single illustration;
+        // eyebrow, heading and lead are set by the page.
+        blocks: [{ type: "spec", board: kyrallSpec }],
       },
       {
         id: "launchdata",
