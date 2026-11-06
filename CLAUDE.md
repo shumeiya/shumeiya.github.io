@@ -58,7 +58,7 @@ Kyrall 页面上的标签统一用两个 utility（index.css）：`chip` 是安�
 ```sh
 grep -n "text-\(xs\|sm\|base\|lg\|\[1[0-9]px\]\)" \
   src/pages/ProjectDetail.jsx \
-  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,EditorTabs,ExtensionsFlow,ModeCompare,PersonaCards,JourneyMap,LaunchData,WeatherPetsDeck,wpMotion,AbcMouseDeck,HmiDeck}.jsx
+  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,EditorTabs,ExtensionsFlow,ModeCompare,SpecGallery,PersonaCards,JourneyMap,LaunchData,WeatherPetsDeck,wpMotion,AbcMouseDeck,HmiDeck}.jsx
 ```
 
 应该零命中。间距自查（同样这几个文件，应该零命中）：
@@ -66,7 +66,7 @@ grep -n "text-\(xs\|sm\|base\|lg\|\[1[0-9]px\]\)" \
 ```sh
 grep -nE "(^|[ \"'\`:])-?(mt|mb|my|pt|pb|py|p|gap|gap-x|gap-y|space-y|space-x)-(0\.5|1\.5|2\.5|3\.5|5|7|9|11)\b" \
   src/pages/ProjectDetail.jsx \
-  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,EditorTabs,ExtensionsFlow,ModeCompare,PersonaCards,JourneyMap,LaunchData,WeatherPetsDeck,wpMotion,AbcMouseDeck,HmiDeck}.jsx
+  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,EditorTabs,ExtensionsFlow,ModeCompare,SpecGallery,PersonaCards,JourneyMap,LaunchData,WeatherPetsDeck,wpMotion,AbcMouseDeck,HmiDeck}.jsx
 ```
 
 注意只查这几个文件：`src/components/project/` 下还有 `ProjectCard.jsx`、`CategoryFilter.jsx`、`WorkSection.jsx`、`WorkStrip.jsx`，那些是 `/project` 列表页的卡片，不在这条规定的范围里。
