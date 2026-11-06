@@ -19,8 +19,6 @@ const SWATCHES = [
   { hex: "#5C5B59", name: "ky-grey-3" },
 ]
 
-// The product's chamfer: one corner cut, as the buttons and tags cut it.
-const CHAMFER = "polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%)"
 
 function Tile({ className = "", style, children }) {
   return (
@@ -84,68 +82,58 @@ export default function KyrallVisual() {
         />
       </Tile>
 
-      {/* The symbol on the brand yellow, 1×1. */}
-      <Tile>
+      {/* The symbol on the brand yellow, 1×1, never cropped. */}
+      <Tile className="flex items-center justify-center" style={{ background: "#C4FF35" }}>
         <img
           src={`${ART}/symbol-yellow.png`}
           alt={t(tt("Symbol on yellow", "黄底 Symbol"))}
           width={600}
           height={600}
           loading="lazy"
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain"
         />
       </Tile>
 
-      {/* The button pair, drawn natively with the product's chamfer, 1×1. */}
-      <Tile className="flex flex-col items-center justify-center gap-4 p-6" style={{ background: INK }}>
+      {/* The three buttons of the system, drawn natively, square-cornered. */}
+      <Tile className="flex flex-col items-center justify-center gap-3 p-6" style={{ background: INK }}>
         <span
-          className="w-full max-w-48 py-3 text-center font-mono-tight text-note font-medium tracking-wide"
-          style={{ background: "#C4FF35", color: INK, clipPath: CHAMFER }}
+          className="w-full max-w-48 py-2 text-center font-mono-tight text-note font-medium tracking-wide"
+          style={{ background: "#C4FF35", color: INK }}
         >
           PRIMARY BUTTON
         </span>
         <span
-          className="w-full max-w-48 border py-3 text-center font-mono-tight text-note tracking-wide"
-          style={{ borderColor: "#FDFDFD", color: "#FDFDFD" }}
+          className="w-full max-w-48 py-2 text-center font-mono-tight text-note font-medium tracking-wide"
+          style={{ background: "#FDFDFD", color: INK }}
         >
           SECONDARY BUTTON
         </span>
+        <span
+          className="w-full max-w-48 border py-2 text-center font-mono-tight text-note tracking-wide"
+          style={{ borderColor: "#FDFDFD", color: "#FDFDFD" }}
+        >
+          THIRDLY BUTTON
+        </span>
       </Tile>
 
-      {/* The dialog family, 2×1: the spec page's top row, filling the tile. */}
-      <Tile className="col-span-2" style={{ background: "#000000" }}>
+      {/* The icon library, one wide tile: Editor tools over common icons. */}
+      <Tile className="col-span-2 flex flex-col items-center justify-center gap-6 p-6 lg:col-span-4" style={{ background: INK }}>
         <img
-          src={`${ART}/dialog-row.png`}
-          alt={t(tt("Dialog components", "Dialog 组件"))}
-          width={1477}
-          height={470}
+          src={`${ART}/icons-row1.png`}
+          alt={t(tt("Editor tool icons", "Editor 工具图标"))}
+          width={2398}
+          height={200}
           loading="lazy"
-          className="h-full w-full object-cover"
+          className="h-8 w-auto max-w-full sm:h-10"
         />
-      </Tile>
-
-      {/* The icon keyline construction, 1×1. */}
-      <Tile>
         <img
-          src={`${ART}/keyline.png`}
-          alt={t(tt("Icon keyline grid", "图标 keyline 网格"))}
-          width={494}
-          height={494}
+          src={`${ART}/icons-row2.png`}
+          alt={t(tt("Common icons", "通用图标"))}
+          width={2680}
+          height={200}
           loading="lazy"
-          className="h-full w-full object-cover"
+          className="h-8 w-auto max-w-full sm:h-10"
         />
-      </Tile>
-
-      {/* The 4pt spacing scale, drawn natively, 1×1. */}
-      <Tile className="flex flex-col justify-between p-6" style={{ background: INK }}>
-        {[4, 8, 16, 32, 64].map((v) => (
-          <div key={v} className="flex items-center gap-4">
-            <span className="w-6 font-mono-tight text-note tabular-nums" style={{ color: "#878787" }}>
-              {v}
-            </span>
-            <span className="h-2 rounded-full" style={{ width: `${v * 2.5}px`, background: "#C4FF35" }} />
-          </div>
-        ))}
       </Tile>
     </div>
   )
