@@ -111,7 +111,7 @@ export const projectDetails = {
       },
       {
         id: "loop",
-        eyebrow: tt("Core flow", "核心流程"),
+        eyebrow: tt("Dashboard", "Dashboard"),
         // The board opens with its own title, so the page's heading stays for the
         // chapter index and the outline but is not drawn twice.
         label: tt("Core flow", "核心流程"),

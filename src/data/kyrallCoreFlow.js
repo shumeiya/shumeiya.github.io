@@ -19,7 +19,7 @@ export const kyrallCoreFlow = {
     {
       n: "01",
       title: tt("Workflow", "工作流"),
-      line: tt("Recent work → Prompt input → Generate list", "最近作品 → 输入 Prompt → 生成列表"),
+      line: tt("Prompt input → Generate list", "输入 Prompt → 生成列表"),
       // The original recording, unchanged (1920×1022 H.264), not re-encoded.
       clips: [{ src: "/project/kyrall/play/workflow.mp4", poster: "/project/kyrall/play/workflow.jpg" }],
     },
@@ -28,7 +28,7 @@ export const kyrallCoreFlow = {
       title: tt("Multimodal input", "多模态输入"),
       clips: [
         { src: "/project/kyrall/play/input-image.mp4", poster: "/project/kyrall/play/input-image.jpg", label: tt("Image", "图片") },
-        { src: "/project/kyrall/play/input-mesh.mp4", poster: "/project/kyrall/play/input-mesh.jpg", label: tt("Mesh", "Mesh") },
+        { src: "/project/kyrall/play/input-mesh.mp4", poster: "/project/kyrall/play/input-mesh.jpg", label: tt("Mesh", "Mesh"), rate: 0.75 },
         { src: "/project/kyrall/play/input-file.mp4", poster: "/project/kyrall/play/input-file.jpg", label: tt("File", "文件") },
       ],
     },
@@ -42,18 +42,18 @@ export const kyrallCoreFlow = {
       n: "04",
       title: tt("Model switching", "生成模型切换"),
       line: tt("Generation models: Base / Reasoning", "生成模型：Base / Reasoning"),
-      clips: [{ src: "/project/kyrall/play/model-switch.mp4", poster: "/project/kyrall/play/model-switch.jpg" }],
+      clips: [{ src: "/project/kyrall/play/model-switch.mp4", poster: "/project/kyrall/play/model-switch.jpg", rate: 0.5 }],
     },
     {
       n: "05",
       title: tt("Context Manager", "Context Manager"),
       line: tt("Add references from the Context Manager", "从 Context Manager 添加参考"),
-      clips: [{ src: "/project/kyrall/play/context-manager.mp4", poster: "/project/kyrall/play/context-manager.jpg" }],
+      clips: [{ src: "/project/kyrall/play/context-manager.mp4", poster: "/project/kyrall/play/context-manager.jpg", rate: 0.75 }],
     },
   ],
   lead: tt(
-    "The Dashboard is laid out left to right along the workflow: recent models → the generation window → what is generating now. Describe it, press Generate, and the task runs in the background; the Execution Log shows every step, and when it finishes you land in the Editor to adjust and export.",
-    "Dashboard 按工作流程从左到右排布：最近的模型 → 生成窗口 → 正在生成列表。输入描述、点击 Generate，任务在后台运行，进入 Execution Log 看到每一步，完成后直接进入 Editor 修改并导出。"
+    "Describe it, press Generate, and the task runs in the background; the Execution Log shows every step, and when it finishes you land in the Editor to adjust and export.",
+    "输入描述、点击 Generate，任务在后台运行，进入 Execution Log 看到每一步，完成后直接进入 Editor 修改并导出。"
   ),
   // The seven steps across the top, and the shorter runs that head each act.
   steps: [

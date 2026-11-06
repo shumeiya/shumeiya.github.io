@@ -48,13 +48,16 @@ export default function PlayView({ items }) {
     return () => io.disconnect()
   }, [])
 
-  // Play or pause the current clip with the run state.
+  // Play or pause the current clip with the run state. A clip may name its own
+  // playback rate (`rate`) — a recording cut too fast plays slowed down, with the
+  // progress bar following the real elapsed time.
   useEffect(() => {
     const v = videoRef.current
     if (!v) return
+    v.playbackRate = clips[clip]?.rate ?? 1
     if (running) v.play().catch(() => {})
     else v.pause()
-  }, [running, active, clip])
+  }, [running, active, clip, clips])
 
   // An item without a clip holds its placeholder for HOLD_MS.
   useEffect(() => {
