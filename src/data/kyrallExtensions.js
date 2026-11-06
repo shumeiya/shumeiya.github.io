@@ -60,12 +60,12 @@ export const kyrallExtensions = {
     },
     banner: {
       title: tt("Banner", "Banner"),
-      body: tt("Shows the latest tutorials and product updates.", "展示最新内容的教程以及产品更新的内容"),
+      body: tt("The latest tutorials and product updates.", "展示最新内容的教程以及产品更新的内容"),
     },
     modelCard: {
       title: tt("Model card", "模型卡片"),
       body: tt(
-        "Shows what the product can generate — inspiration that also sets the right expectations.",
+        "What the product can generate; inspiration that sets the right expectations.",
         "展示产品能生成什么样的模型，给予用户灵感同时控制用户对模型生成预期"
       ),
     },
@@ -78,7 +78,7 @@ export const kyrallExtensions = {
     },
     prompt: {
       title: tt("Reusable prompt", "可复用 Prompt"),
-      body: tt("Edit an existing prompt to generate a similar model.", "直接修改现有 prompt 生成类似想要的模型"),
+      body: tt("Edit a prompt to generate a similar model.", "直接修改现有 prompt 生成类似想要的模型"),
     },
     model: {
       title: tt("Reusable model", "可复用模型"),
@@ -87,7 +87,7 @@ export const kyrallExtensions = {
     related: {
       title: tt("Related models", "相关模型"),
       body: tt(
-        "Related models at the bottom of the detail page lead from one part to similar designs.",
+        "Related models on the detail page lead on to similar designs.",
         "详情页底部推荐相关模型，顺着一个零件能找到同类设计"
       ),
     },

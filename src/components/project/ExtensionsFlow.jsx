@@ -23,7 +23,7 @@ const ACTS = [
   },
   {
     video: { src: `${ART}/mesh-workspace.mp4`, poster: `${ART}/mesh-workspace.jpg` },
-    notes: ["space", "upload", "folders", "status", "fileDetail", "input", "nextStep"],
+    notes: ["upload", "status", "fileDetail", "input", "nextStep"],
   },
 ]
 
@@ -69,7 +69,7 @@ export default function ExtensionsFlow({ board }) {
                 {/* Every callout of the page, as one quiet rail. The rail may not
                     run past the recording, so the notes sit a step smaller than
                     the grids elsewhere: 14px titles over 13px lines, the floor. */}
-                <ul className="grid content-start gap-card sm:grid-cols-2 lg:flex lg:flex-col lg:justify-between lg:gap-y-0">
+                <ul className="grid content-start gap-card sm:grid-cols-2 lg:flex lg:flex-col lg:justify-between lg:gap-y-0 lg:divide-y lg:divide-line lg:[&>li+li]:pt-1">
                   {layout.notes.map((key) => (
                     <li key={key}>
                       <p className="text-callout font-semibold tracking-tight text-cream">{t(notes[key].title)}</p>

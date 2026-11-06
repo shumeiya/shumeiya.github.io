@@ -121,7 +121,9 @@ export const projectDetails = {
         lead: kyrallCoreFlow.lead,
         blocks: [
           { type: "flowSteps", items: kyrallCoreFlow.steps },
-          { type: "playView", items: kyrallCoreFlow.play },
+          // The side-list player (PlayView), kept but no longer on the page:
+          // { type: "playView", items: kyrallCoreFlow.play },
+          { type: "editorTabs", items: kyrallCoreFlow.play },
           {
             type: "subSection",
             heading: tt("Generation finished, straight into the Editor", "生成完成，直接进入 Editor"),
