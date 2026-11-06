@@ -46,30 +46,18 @@ export default function KyrallVisual() {
         />
       </Tile>
 
-      {/* Colour tokens, drawn natively, 1×2. */}
-      <Tile className="row-span-2 p-6" style={{ background: INK }}>
-        <div className="flex h-full flex-col justify-between">
+      {/* Colour tokens, drawn natively, one 2×2 tile. */}
+      <Tile className="col-span-2 row-span-2 p-6" style={{ background: INK }}>
+        <div className="grid h-full grid-cols-2 gap-card">
           {SWATCHES.map((s) => (
-            <div key={s.name}>
-              <div className="h-8 rounded-md" style={{ background: s.hex }} />
-              <p className="mt-1 font-mono-tight text-note" style={{ color: "#878787" }}>
+            <div key={s.name} className="flex flex-col">
+              <div className="min-h-0 flex-1 rounded-xl" style={{ background: s.hex }} />
+              <p className="mt-2 font-mono-tight text-note" style={{ color: "#878787" }}>
                 {s.hex} · {s.name}
               </p>
             </div>
           ))}
         </div>
-      </Tile>
-
-      {/* The mono specimen, 1×2. */}
-      <Tile className="row-span-2 flex items-center justify-center" style={{ background: INK }}>
-        <img
-          src={`${ART}/type-mono.png`}
-          alt={t(tt("Ufficio Mono specimen", "Ufficio Mono 样张"))}
-          width={520}
-          height={582}
-          loading="lazy"
-          className="h-full w-full object-contain"
-        />
       </Tile>
 
       {/* Weights and the brand paragraph, 2×1, under the lockup. */}
