@@ -68,8 +68,10 @@ export default function ExtensionsFlow({ board }) {
                 <Clip video={layout.video} title={t(act.title)} />
                 {/* Every callout of the page, as one quiet rail. The rail may not
                     run past the recording, so the notes sit a step smaller than
-                    the grids elsewhere: 14px titles over 13px lines, the floor. */}
-                <ul className="grid content-start gap-card sm:grid-cols-2 lg:flex lg:flex-col lg:justify-between lg:gap-y-0 lg:divide-y lg:divide-line lg:[&>li+li]:pt-1">
+                    the grids elsewhere: 14px titles over 13px lines, the floor.
+                    Each note closes with a hairline under its text (none after
+                    the last), and the notes spread over the recording's height. */}
+                <ul className="grid content-start gap-card sm:grid-cols-2 lg:flex lg:flex-col lg:justify-between lg:gap-y-0 lg:[&>li:not(:last-child)]:border-b lg:[&>li:not(:last-child)]:border-line lg:[&>li:not(:last-child)]:pb-2">
                   {layout.notes.map((key) => (
                     <li key={key}>
                       <p className="text-callout font-semibold tracking-tight text-cream">{t(notes[key].title)}</p>

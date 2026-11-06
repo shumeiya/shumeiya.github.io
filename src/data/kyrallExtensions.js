@@ -72,7 +72,7 @@ export const kyrallExtensions = {
     tutorialCard: {
       title: tt("Tutorial card", "教程卡片"),
       body: tt(
-        "Text and images explain features and usage so users get started fast.",
+        "Text and images get users started fast.",
         "以图文形式讲清产品功能和用法，让用户快速上手"
       ),
     },
@@ -87,7 +87,7 @@ export const kyrallExtensions = {
     related: {
       title: tt("Related models", "相关模型"),
       body: tt(
-        "Related models on the detail page lead on to similar designs.",
+        "Related models lead on to similar designs.",
         "详情页底部推荐相关模型，顺着一个零件能找到同类设计"
       ),
     },
