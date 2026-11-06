@@ -3,28 +3,47 @@ import { useT } from "../../i18n/lang"
 const ART = "/project/kyrall/extensions"
 
 // The four Extensions pages in the page's own flow layout (the Figma board,
-// ExtensionsBoard.jsx, is kept but no longer on the page). Each act gets a
-// numbered head, the screen itself, and its callouts as a quiet grid of notes
-// underneath, in place of the deck's gutter arrows. Act 01 plays a recording
-// of the Projects page instead of the five state screenshots.
+// ExtensionsBoard.jsx, is kept but no longer on the page). Each act keeps its
+// numbered head and copy, runs its recording on the left, and lists the
+// page's callouts as a quiet rail on the right, per Shumei's sketch; the rail
+// holds every callout of that page and stays within the recording's height.
+// Each recording loops on its own, so there is nothing to step through.
 const ACTS = [
-  { video: { src: `${ART}/projects.mp4`, poster: `${ART}/projects.jpg` } },
   {
-    screens: [
-      { src: "comm-base.png", notes: ["banner", "modelCard", "tutorialCard"] },
-      { src: "comm-detail.png", notes: ["prompt", "model", "related"] },
-    ],
+    video: { src: `${ART}/projects.mp4`, poster: `${ART}/projects.jpg` },
+    notes: ["projCards", "projViews", "projStates"],
   },
   {
-    screens: [{ src: "context.png", notes: ["level", "graph", "fileState", "generate"] }],
+    video: { src: `${ART}/community.mp4`, poster: `${ART}/community.jpg` },
+    notes: ["banner", "modelCard", "tutorialCard", "prompt", "model", "related"],
   },
   {
-    screens: [
-      { src: "mesh-base.png", notes: ["space", "upload", "folders", "status"] },
-      { src: "mesh-detail.png", notes: ["fileDetail", "input", "nextStep"] },
-    ],
+    video: { src: `${ART}/context-manager.mp4`, poster: `${ART}/context-manager.jpg` },
+    notes: ["level", "graph", "fileState", "generate"],
+  },
+  {
+    video: { src: `${ART}/mesh-workspace.mp4`, poster: `${ART}/mesh-workspace.jpg` },
+    notes: ["space", "upload", "folders", "status", "fileDetail", "input", "nextStep"],
   },
 ]
+
+function Clip({ video, title }) {
+  return (
+    <video
+      src={video.src}
+      poster={video.poster}
+      width={1920}
+      height={1022}
+      className="block h-auto w-full rounded-xl bg-box"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      aria-label={title}
+    />
+  )
+}
 
 export default function ExtensionsFlow({ board }) {
   const t = useT()
@@ -44,44 +63,26 @@ export default function ExtensionsFlow({ board }) {
               </h3>
             </div>
 
-            {layout.video && (
-              <video
-                src={layout.video.src}
-                poster={layout.video.poster}
-                width={1920}
-                height={1022}
-                className="mt-visual block h-auto w-full rounded-xl bg-box"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label={t(act.title)}
-              />
-            )}
-
-            {layout.screens?.map((screen) => (
-              <div key={screen.src}>
-                <img
-                  src={`${ART}/${screen.src}`}
-                  alt={t(act.title)}
-                  loading="lazy"
-                  className="mt-visual block h-auto w-full rounded-xl"
-                />
-                <ul
-                  className={`mt-6 grid gap-card sm:grid-cols-2 ${
-                    screen.notes.length > 3 ? "lg:grid-cols-4" : "lg:grid-cols-3"
-                  }`}
-                >
-                  {screen.notes.map((key) => (
-                    <li key={key} className="border-t border-line pt-3">
-                      <p className="text-copy font-semibold tracking-tight text-cream">{t(notes[key].title)}</p>
-                      <p className="mt-1 text-callout text-ink">{t(notes[key].body)}</p>
+            {layout.notes ? (
+              <div className="mt-visual grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]">
+                <Clip video={layout.video} title={t(act.title)} />
+                {/* Every callout of the page, as one quiet rail. The rail may not
+                    run past the recording, so the notes sit a step smaller than
+                    the grids elsewhere: 14px titles over 13px lines, the floor. */}
+                <ul className="grid content-start gap-card sm:grid-cols-2 lg:flex lg:flex-col lg:justify-between lg:gap-y-0">
+                  {layout.notes.map((key) => (
+                    <li key={key}>
+                      <p className="text-callout font-semibold tracking-tight text-cream">{t(notes[key].title)}</p>
+                      <p className="text-note text-ink">{t(notes[key].body)}</p>
                     </li>
                   ))}
                 </ul>
               </div>
-            ))}
+            ) : (
+              <div className="mt-visual">
+                <Clip video={layout.video} title={t(act.title)} />
+              </div>
+            )}
           </section>
         )
       })}

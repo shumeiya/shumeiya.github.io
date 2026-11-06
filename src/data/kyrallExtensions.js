@@ -17,36 +17,6 @@ export const kyrallExtensions = {
     "生成之外，用户还需要管理模型、从社区获得灵感、给 AI 提供团队上下文，以及把已有的 Mesh 变成可编辑的 CAD。四个页面共用同一套导航、卡片与状态规则。"
   ),
 
-  // The four pages as the tab player presents them (EditorTabs), one recording
-  // each, in the order Shumei asked for: Projects, Context Manager, Community,
-  // Mesh Workspace. Clips live in /public/project/kyrall/extensions.
-  pages: [
-    {
-      video: "/project/kyrall/extensions/projects.mp4",
-      poster: "/project/kyrall/extensions/projects.jpg",
-      title: tt("Projects", "项目管理页面"),
-      body: tt("All models and generations, organised in one place.", "所有模型与生成任务集中管理"),
-    },
-    {
-      video: "/project/kyrall/extensions/context-manager.mp4",
-      poster: "/project/kyrall/extensions/context-manager.jpg",
-      title: tt("Context Manager", "上下文管理"),
-      body: tt("A team or personal knowledge base the AI generates from.", "打造团队 / 个人知识图库"),
-    },
-    {
-      video: "/project/kyrall/extensions/community.mp4",
-      poster: "/project/kyrall/extensions/community.jpg",
-      title: tt("Community", "社区"),
-      body: tt("Tutorials and models you can reuse.", "教程和可直接复用的模型"),
-    },
-    {
-      video: "/project/kyrall/extensions/mesh-workspace.mp4",
-      poster: "/project/kyrall/extensions/mesh-workspace.jpg",
-      title: tt("Mesh Workspace", "网格工作台"),
-      body: tt("Turn an existing mesh into editable CAD.", "把 mesh 变成可编辑的 CAD"),
-    },
-  ],
-
   // The four acts. The deck sets the subject in white and the point of it in accent.
   acts: [
     { n: "01", title: tt("Projects", "项目管理页面") },
@@ -76,6 +46,18 @@ export const kyrallExtensions = {
   },
 
   notes: {
+    projCards: {
+      title: tt("Project cards", "项目卡片"),
+      body: tt("Models grouped by project, each card with previews and a count.", "模型按项目分组，卡片带预览和数量"),
+    },
+    projViews: {
+      title: tt("Grid and list view", "网格 / 列表视图"),
+      body: tt("Two ways to browse, with sorting and search.", "两种浏览方式，支持排序与搜索"),
+    },
+    projStates: {
+      title: tt("Loading and empty states", "加载与空状态"),
+      body: tt("Skeletons while loading; an empty project leads straight to generating.", "加载时显示骨架屏，空项目引导直接开始生成"),
+    },
     banner: {
       title: tt("Banner", "Banner"),
       body: tt("Shows the latest tutorials and product updates.", "展示最新内容的教程以及产品更新的内容"),
