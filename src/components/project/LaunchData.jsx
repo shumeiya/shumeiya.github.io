@@ -126,7 +126,7 @@ function Retention({ data }) {
           ))}
         </div>
       </div>
-      <p className="mt-6 text-callout text-ink">{t(data.note)}</p>
+      {data.note && <p className="mt-6 text-callout text-ink">{t(data.note)}</p>}
       <p className="mt-auto pt-4 text-callout font-medium text-cream">{t(data.flag)}</p>
     </div>
   )
@@ -224,7 +224,7 @@ export default function LaunchData({ data }) {
         <Editor data={data.editor} />
       </div>
 
-      <Next data={data.next} />
+      {/* 04 / NEXT, kept but not shown for now: <Next data={data.next} /> */}
     </>
   )
 }

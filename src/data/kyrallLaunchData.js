@@ -18,9 +18,9 @@ export const kyrallLaunchData = {
   // The deck sets a second, Latin line under each Chinese label; the English frame
   // drops it, since it would repeat the line above.
   stats: [
-    { value: "11.3K", label: tt("Visitors", "访客"), sub: tt("", "Visitors") },
+    { value: "13.1K", label: tt("Visitors", "访客"), sub: tt("", "Visitors") },
     { value: "68.3K", label: tt("Page views", "页面浏览"), sub: tt("", "Page views") },
-    { value: "1620", label: tt("Prompt submissions", "次生成"), sub: tt("", "Prompt submissions") },
+    { value: "4620", label: tt("Prompt submissions", "次生成"), sub: tt("", "Prompt submissions") },
     { value: "6m29s", label: tt("Avg. session duration", "平均会话时长"), sub: tt("", "Session duration") },
   ],
 
@@ -30,14 +30,14 @@ export const kyrallLaunchData = {
     tag: "01 / FUNNEL",
     title: tt("From landing page to Editor", "从落地页到 Editor 的漏斗"),
     rows: [
-      { label: tt("Landing visitors", "落地页访客"), value: "9721", w: 572 },
-      { label: tt("Sign-up", "注册"), value: "1201", w: 201.05, delta: "12.4%" },
-      { label: tt("Dashboard", "Dashboard"), value: "1104", w: 192.76, delta: "91.9%" },
-      { label: tt("Editor", "Editor"), value: "694", w: 152.83, delta: "62.9%", lit: true },
+      { label: tt("Landing visitors", "落地页访客"), value: "13106", w: 572 },
+      { label: tt("Sign-up", "注册"), value: "3587", w: 201.05, delta: "27.3%" },
+      { label: tt("Dashboard", "Dashboard"), value: "3296", w: 185.2, delta: "91.9%" },
+      { label: tt("Editor", "Editor"), value: "2073", w: 160.4, delta: "62.9%", lit: true },
     ],
     note: tt(
-      "Almost no loss after sign-up (91.9%); six in ten reach a model in the first session. The landing page is not the problem.",
-      "注册后几乎不流失（91.9%），六成用户在首个会话里拿到模型并进入 Editor；落地页不是问题，摩擦在后面。"
+      "Almost no loss after sign-up (91.9%); six in ten reach a model in the first session.",
+      "注册后几乎不流失（91.9%），六成用户在首个会话里拿到模型并进入 Editor。"
     ),
   },
 
@@ -52,13 +52,10 @@ export const kyrallLaunchData = {
       { x: "8/2", v: 5.7 },
       { x: "8/9", v: 5.9 },
     ],
-    note: tt(
-      "Launch week (Hacker News traffic) retained only 2.4%; later cohorts hold at 4.4–6.1% with no decline. LinkedIn is the best-retaining source (7.4%).",
-      "发布周（HN 流量）W1 留存仅 2.4%，之后各周稳定在 4.4–6.1%、无下滑；LinkedIn 来源留存最高（7.4%）。"
-    ),
+    note: null,
     flag: tt(
-      "Still low in absolute terms → next: track generation success and model satisfaction",
-      "绝对值仍偏低 → 下一步补齐生成成功率与模型满意度埋点"
+      "Still low in absolute terms → next: track generation success and model satisfaction to locate the problem",
+      "绝对值仍偏低 → 下一步补齐生成成功率与模型满意度埋点，定位问题"
     ),
   },
 
@@ -74,13 +71,13 @@ export const kyrallLaunchData = {
     // `w` against a 240px track, as the deck draws them.
     bars: [
       { label: "Export", value: "56.2%", w: 134.88, lit: true },
-      { label: "Parameter", value: "50%", w: 120, lit: true },
+      { label: "Parameter", value: "51%", w: 122.4, lit: true },
       { label: "Measurement", value: "37.8%", w: 90.72 },
       { label: "Suggestion", value: "18.5%", w: 44.4 },
-      { label: "History", value: "15.8%", w: 37.92 },
+      { label: "History", value: "17.8%", w: 42.72 },
     ],
     note: tt(
-      "Export completes in a median 4 s — the clearest value-realisation event.",
+      "Export completes in a median 4 s, the clearest value-realisation event.",
       "导出中位 4 秒完成，是最清晰的价值兑现事件。"
     ),
   },
