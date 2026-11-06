@@ -5,11 +5,12 @@ const ART = "/project/kyrall/ds"
 
 // The design system as one dark bento collage, after the showcase boards
 // Shumei picked as reference: tiles of mixed sizes on a single grid, mostly
-// on the brand ink, one on the brand yellow. The type specimen leads at 2×2,
-// colour tokens and a toolbar column stand as two tall tiles beside it, and
-// the lockup, the symbol and a pair of natively drawn chamfer buttons close
-// the bottom row. The ink and the swatch text colours are brand constants,
-// not theme colours, so the collage reads the same in both site modes.
+// on the brand ink, one on the brand yellow. The type specimens lead, colour
+// tokens and the 4pt spacing scale are drawn natively, the icon DNA and the
+// dialog family come from the Figma source, and a pair of natively drawn
+// chamfer buttons stands for the components. The ink and the fixed text
+// colours are brand constants, not theme colours, so the collage reads the
+// same in both site modes.
 const INK = "#191717"
 
 const SWATCHES = [
@@ -96,6 +97,42 @@ export default function KyrallVisual() {
         />
       </Tile>
 
+      {/* The icon keyline construction, 1×1. */}
+      <Tile>
+        <img
+          src={`${ART}/keyline.png`}
+          alt={t(tt("Icon keyline grid", "图标 keyline 网格"))}
+          width={494}
+          height={494}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+      </Tile>
+
+      {/* Symbol to icons: the shared DNA diagram, 2×1. */}
+      <Tile className="col-span-2 flex items-center justify-center p-6" style={{ background: INK }}>
+        <img
+          src={`${ART}/icon-dna.png`}
+          alt={t(tt("Shared symbol and icon DNA", "Symbol 与图标同源结构"))}
+          width={980}
+          height={331}
+          loading="lazy"
+          className="h-full w-full object-contain"
+        />
+      </Tile>
+
+      {/* The 4pt spacing scale, drawn natively, 1×1. */}
+      <Tile className="flex flex-col justify-between p-6" style={{ background: INK }}>
+        {[4, 8, 16, 32, 64].map((v) => (
+          <div key={v} className="flex items-center gap-4">
+            <span className="w-6 font-mono-tight text-note tabular-nums" style={{ color: "#878787" }}>
+              {v}
+            </span>
+            <span className="h-2 rounded-full" style={{ width: `${v * 2.5}px`, background: "#C4FF35" }} />
+          </div>
+        ))}
+      </Tile>
+
       {/* The button pair, drawn natively with the product's chamfer, 1×1. */}
       <Tile className="flex flex-col items-center justify-center gap-4 p-6" style={{ background: INK }}>
         <span
@@ -110,6 +147,42 @@ export default function KyrallVisual() {
         >
           SECONDARY BUTTON
         </span>
+      </Tile>
+
+      {/* The dialog family, 2×1: the spec page's top row, filling the tile. */}
+      <Tile className="col-span-2" style={{ background: "#000000" }}>
+        <img
+          src={`${ART}/dialog-row.png`}
+          alt={t(tt("Dialog components", "Dialog 组件"))}
+          width={1477}
+          height={470}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+      </Tile>
+
+      {/* One dialog up close, 1×1. */}
+      <Tile className="flex items-center justify-center p-6" style={{ background: "#0A0A0A" }}>
+        <img
+          src={`${ART}/dialog.png`}
+          alt={t(tt("Dialog", "对话框"))}
+          width={894}
+          height={772}
+          loading="lazy"
+          className="h-full w-full object-contain"
+        />
+      </Tile>
+
+      {/* The Editor toolbar variants, 1×1. */}
+      <Tile>
+        <img
+          src={`${ART}/toolbar.png`}
+          alt={t(tt("Editor toolbar", "Editor 工具栏"))}
+          width={1212}
+          height={1152}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
       </Tile>
     </div>
   )
