@@ -8,8 +8,9 @@ import { tt } from "../i18n/t"
 import { kyrallWorkflow } from "./kyrallWorkflow"
 import { kyrallBackground } from "./kyrallBackground"
 import { kyrallCompetitors } from "./kyrallCompetitors"
-import { kyrallPersona } from "./kyrallPersona"
-import { kyrallStoryMap } from "./kyrallStoryMap"
+// Commented out with the persona and story-map blocks below; put both back together.
+// import { kyrallPersona } from "./kyrallPersona"
+// import { kyrallStoryMap } from "./kyrallStoryMap"
 import { kyrallSpec } from "./kyrallSpec"
 import { kyrallCoreFlow } from "./kyrallCoreFlow"
 import { kyrallExtensions } from "./kyrallExtensions"
@@ -19,6 +20,12 @@ import { weatherPetsHero, weatherPetsTags, weatherPetsSummary, weatherPetsSectio
 import { codemaoHero, codemaoRole, codemaoSummary, codemaoTags, codemaoSections } from "./codemao"
 import { abcMouseHero, abcMouseRole, abcMouseSummary, abcMouseTags, abcMouseSections } from "./abcMouse"
 import { hmiHero, hmiRole, hmiSummary, hmiTags, hmiSections } from "./hmiDeck"
+import { slowFoodHero, slowFoodRole, slowFoodSummary, slowFoodTags, slowFoodSections } from "./slowFood"
+
+// TIDE: the Figma exports in /public/project/tide, with their pixel size so the
+// frames that show them never reflow when an image lands.
+const tideFrame = (name, w, h, label) => ({ src: `/project/tide/${name}.webp`, w, h, ...(label ? { label } : {}) })
+const tideWall = (name, h) => tideFrame(`wall-${name}`, 560, h)
 
 export const projectDetails = {
   kyrall: {
@@ -283,624 +290,14 @@ export const projectDetails = {
     tags: weatherPetsTags,
     sections: weatherPetsSections,
   },
+  // Slow Food (GROW) — the Slow Food slides of the Figma 「作品集portfolio」 page,
+  // rebuilt as page content in src/data/slowFood.js and drawn by SlowFoodDeck.jsx.
   "slow-food": {
-    role: tt("UX/UI · Service & System Design", "UX/UI · 服务与系统设计"),
-    summary: tt(
-      "In the post-pandemic era, this project aims to revive a Slow Food-themed restaurant through innovative design and interactive experiences. It includes an app for virtual planting and offline activities.",
-      "在后疫情时代，这个项目希望用创新设计与互动体验，让一家以「慢食」为主题的餐厅重新活起来 —— 其中包含一个结合虚拟种植与线下活动的应用。"
-    ),
-    tags: [
-      tt("Service design", "服务设计"),
-      tt("System design", "系统设计"),
-      tt("UX/UI", "UX/UI"),
-      tt("Brand identity", "品牌形象"),
-    ],
-    sections: [
-      {
-        id: "overview",
-        eyebrow: tt("Overview", "概览"),
-        label: tt("Overview", "概览"),
-        lead: tt("“Grow” — a Slow Food experience for Bra.", "「Grow」—— 为布拉设计的慢食体验。"),
-        blocks: [
-          {
-            text: tt(
-              "GROW connects an app to a restaurant. Users grow vegetables virtually, earn a Harvest Card, and redeem it for real ingredients they pick themselves before the meal is cooked in front of them — so “Slow Food” is something they take part in rather than only eat.",
-              "GROW 把一个应用与一家餐厅连起来。用户在线上种菜，攒到一张「收获卡」，到店兑换成真实食材、亲手采摘，再看着它在眼前被做成一餐 —— 于是「慢食」变成一件他们参与的事，而不只是吃到的东西。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/1.jpg",
-            caption: tt(
-              "Key visual — the GROW app, “Plant your slow dishes”.",
-              "主视觉 —— GROW 应用，「种出你的慢食」。"
-            ),
-          },
-        ],
-      },
-      {
-        id: "background",
-        eyebrow: tt("Background", "背景"),
-        label: tt("Background", "背景"),
-        lead: tt(
-          "Bra, Piedmont — where the Slow Food movement began.",
-          "皮埃蒙特的布拉 —— 慢食运动的发源地。"
-        ),
-        blocks: [
-          {
-            type: "image",
-            src: "/project/slow-food/2.jpg",
-            caption: tt(
-              "Bra in context — Slow Food, the University of Gastronomic Sciences and the Salsiccia di Bra all originate here.",
-              "布拉的背景 —— 慢食组织、美食科学大学与布拉香肠都发源于此。"
-            ),
-          },
-          {
-            type: "defs",
-            items: [
-              {
-                term: tt("Gastronomic Cultural Center", "美食文化中心"),
-                text: tt(
-                  "Bra, birthplace of Slow Food, is renowned for its cheese, wine, sausages, and home to Italy’s University of Gastronomic Sciences.",
-                  "布拉是慢食运动的发源地，以奶酪、葡萄酒与香肠闻名，也是意大利美食科学大学的所在地。"
-                ),
-              },
-              {
-                term: tt("Tourist Place", "旅游目的地"),
-                text: tt(
-                  "Bra, with its historic Baroque churches, town hall, and medieval streets, is a popular tourist destination near the Alps, offering beautiful natural landscapes.",
-                  "布拉有巴洛克教堂、市政厅与中世纪街道，又靠近阿尔卑斯山，自然景观优美，是颇受欢迎的旅游地。"
-                ),
-              },
-              {
-                term: tt("Art and Cultural Center", "艺术与文化中心"),
-                text: tt(
-                  "Bra, birthplace of the Slow Food movement, is renowned for its Italian culinary culture, cheese, wine, sausages, and the University of Gastronomic Sciences.",
-                  "作为慢食运动的发源地，布拉以意大利饮食文化、奶酪、葡萄酒、香肠以及美食科学大学而知名。"
-                ),
-              },
-              {
-                term: tt("Global Organization", "全球性组织"),
-                text: tt(
-                  "Founded in 1989, Slow Food aims to oppose fast food culture and promote a food production and consumption approach that is “good, clean, and fair.”",
-                  "慢食组织成立于 1989 年，旨在对抗快餐文化，推动「好的、干净的、公平的」食物生产与消费方式。"
-                ),
-              },
-            ],
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/3.jpg",
-            size: "lg",
-            caption: tt(
-              "The Slow Food organization — philosophy, reach and partners.",
-              "慢食组织 —— 理念、覆盖范围与合作方。"
-            ),
-          },
-          {
-            type: "defs",
-            items: [
-              {
-                term: tt("Organizational Philosophy", "组织理念"),
-                text: tt(
-                  "It promotes local culinary traditions, sustainable sourcing, and fair, healthy food practices.",
-                  "推广本地饮食传统、可持续采购，以及公平而健康的食物实践。"
-                ),
-              },
-              {
-                term: tt("Global Organization", "全球性组织"),
-                text: tt(
-                  "Slow Food, now in 122 countries with over 83,000 members, collaborates with governments and international organizations to advocate for food safety, agricultural policy, and biodiversity.",
-                  "慢食组织目前覆盖 122 个国家、拥有超过 83,000 名成员，与各国政府及国际组织合作，推动食品安全、农业政策与生物多样性议题。"
-                ),
-              },
-            ],
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/4.jpg",
-            size: "md",
-            caption: tt(
-              "Osteria del Boccondivino — the site of the intervention, and the research findings behind it.",
-              "Osteria del Boccondivino —— 项目介入的场地，以及背后的调研结论。"
-            ),
-          },
-          {
-            type: "defs",
-            items: [
-              {
-                term: tt("Slowfood", "慢食"),
-                text: tt(
-                  "Slow Food collaborates with many Italian restaurants, but Osteria del Boccondivino is the only official Slow Food restaurant.",
-                  "慢食组织与许多意大利餐厅合作，但 Osteria del Boccondivino 是唯一的官方慢食餐厅。"
-                ),
-              },
-              {
-                term: tt("Visitor Traffic", "客流"),
-                text: tt(
-                  "Interviews and on-site recordings revealed that the restaurant’s weekday and Saturday visitor traffic exceeds typical levels by more than double, making it one of Italy’s top-performing establishments.",
-                  "访谈与现场记录显示，这家餐厅在工作日与周六的客流超出同类两倍以上，是意大利经营表现最好的餐厅之一。"
-                ),
-              },
-              {
-                term: tt("Research Summary", "调研小结"),
-                text: tt(
-                  "The restaurant only accepts phone reservations, with 1 in 5 visitors turned away due to limits. Poor information synchronization results in unlisted random closures on Google Maps, occurring three times in seven surveys.",
-                  "餐厅只接受电话预订，每五位到店客人中就有一位因位置已满被拒。信息同步不佳，Google 地图上没有标注的临时歇业，在七次走访中出现了三次。"
-                ),
-              },
-            ],
-          },
-          {
-            type: "note",
-            text: tt(
-              "The constraint that shaped everything after this: demand was never the problem. A restaurant turning away one in five visitors doesn’t need more awareness — it needs a way to hold onto the people it cannot seat today.",
-              "之后所有设计都被这个约束塑形：需求从来不是问题。一家要拒掉五分之一客人的餐厅，不需要更多知名度 —— 它需要一个办法，把今天坐不下的人留住。"
-            ),
-          },
-        ],
-      },
-      {
-        id: "design-task",
-        eyebrow: tt("Design task", "设计任务"),
-        label: tt("Design task", "设计任务"),
-        lead: tt(
-          "Three outcomes the design had to serve at once.",
-          "设计必须同时服务的三个结果。"
-        ),
-        blocks: [
-          {
-            type: "image",
-            src: "/project/slow-food/31.jpg",
-            caption: tt(
-              "The design task, framed across the restaurant, the organization and the town.",
-              "设计任务，放在餐厅、组织与城镇三个尺度上来看。"
-            ),
-          },
-          {
-            type: "defs",
-            items: [
-              {
-                term: tt("Innovative Experience", "创新体验"),
-                text: tt(
-                  "By combining online and offline innovative methods, we aim to enhance the “Slow Food” experience and service at the restaurant. We hope that users can feel the presence of “Slow Food” not only while tasting the cuisine but also through the production of ingredients and the preparation of food.",
-                  "通过线上线下结合的创新方式，提升餐厅的「慢食」体验与服务。我们希望用户不只在品尝菜品时感受到慢食，也能在食材的生长与料理的过程中感受到它。"
-                ),
-              },
-              {
-                term: tt("Expand Slow Food’s Influence", "扩大慢食的影响力"),
-                text: tt(
-                  "We believe that user sharing is one of the most effective ways of spreading our message. Therefore, we hope that users will share their stories after their experience, becoming our advocates. This will enhance the influence of the Slow Food organization on social media, allowing more people to learn about Slow Food.",
-                  "我们相信用户的分享是最有效的传播方式之一。因此希望用户在体验之后讲出自己的故事，成为我们的倡导者 —— 这会提升慢食组织在社交媒体上的影响力，让更多人了解慢食。"
-                ),
-              },
-              {
-                term: tt("Boost Bra’s Tourism Economy", "带动布拉的旅游经济"),
-                text: tt(
-                  "We hope that through this project, more people will be encouraged to travel to Bra, further boosting the local tourism industry.",
-                  "我们希望通过这个项目吸引更多人前往布拉，进一步带动当地的旅游业。"
-                ),
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: "case-study",
-        eyebrow: tt("Case study", "案例研究"),
-        label: tt("Case study", "案例研究"),
-        lead: tt(
-          "Four farm-to-table references, scored on the same five axes.",
-          "四个「从农场到餐桌」的参考案例，按同样的五个维度打分。"
-        ),
-        blocks: [
-          {
-            text: tt(
-              "Stedsans, Segev Kitchen Garden and Blue Hill were each rated on Innovative, Experience, Emotion, Comfortable and Sustainable, so the benchmark produced a comparable profile rather than a mood board.",
-              "Stedsans、Segev Kitchen Garden 与 Blue Hill 各自在「创新、体验、情感、舒适、可持续」五项上被评分 —— 于是这份对标产出的是可比较的轮廓，而不是一张情绪板。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/5.jpg",
-            caption: tt(
-              "Benchmark — each reference scored on the same five criteria.",
-              "对标 —— 每个参考案例都按同样的五项标准评分。"
-            ),
-          },
-        ],
-      },
-      {
-        id: "persona",
-        eyebrow: tt("Persona", "用户画像"),
-        label: tt("Persona", "用户画像"),
-        lead: tt(
-          "Three visitors, three different reasons to slow down.",
-          "三位到访者，三种慢下来的理由。"
-        ),
-        blocks: [
-          {
-            text: tt(
-              "Emma Petit (41, lawyer) wants to escape the hustle and follow the natural order. Giulia Ferrari (25, student) travels to understand how other people live. Leonardo Rossi (33, doctor) wants unique cuisine without giving up a healthy diet.",
-              "Emma Petit（41 岁，律师）想逃开忙乱，跟随自然的节律；Giulia Ferrari（25 岁，学生）旅行是为了理解别人怎么生活；Leonardo Rossi（33 岁，医生）想吃到独特的菜，又不愿放弃健康饮食。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/6.jpg",
-            caption: tt(
-              "Personas — hobbies, life goals and the line each one lives by.",
-              "用户画像 —— 各自的爱好、人生目标，以及他们所信的那句话。"
-            ),
-          },
-        ],
-      },
-      {
-        id: "project-overview",
-        eyebrow: tt("Project overview", "项目总览"),
-        label: tt("Project overview", "项目总览"),
-        lead: tt(
-          "One loop that runs from the app into the restaurant and back out again.",
-          "一个闭环：从应用走进餐厅，再从餐厅走出来。"
-        ),
-        blocks: [
-          {
-            type: "steps",
-            items: [
-              tt("Seed card", "种子卡"),
-              tt("Online planting", "线上种植"),
-              tt("Harvest card", "收获卡"),
-              tt("Restaurant", "餐厅"),
-              tt("Community", "社区"),
-            ],
-          },
-          {
-            text: tt(
-              "A seed card — ordinary or special edition — starts the online planting. Completing it earns a Harvest Card, which is redeemed at the restaurant for a planting experience, harvesting, and kitchen preparation using local ingredients. The visit then feeds the community, which sparks interest in Bra and returns as the next reservation.",
-              "一张种子卡 —— 普通版或特别版 —— 开启线上种植。种成之后得到一张收获卡，到餐厅兑换为种植体验、采摘，以及用本地食材现场料理。这次到访又反哺社区，激起别人对布拉的兴趣，再变成下一笔预订。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/7.jpg",
-            caption: tt(
-              "Service system — how the app, the card, the restaurant and the community close the loop.",
-              "服务系统 —— 应用、卡片、餐厅与社区如何把这个环闭上。"
-            ),
-          },
-        ],
-      },
-      {
-        id: "storyboard",
-        eyebrow: tt("Storyboard", "故事板"),
-        label: tt("Storyboard", "故事板"),
-        lead: tt("The same loop, told as one visitor’s day.", "同一个闭环，换成一位客人的一天来讲。"),
-        blocks: [
-          {
-            text: tt(
-              "Sofia hears about Slow Food from a friend, plants online, travels to Bra, books a table, harvests her own ingredients, watches the meal being prepared, and leaves with a story to share.",
-              "Sofia 从朋友那里听说慢食，在线上种菜，前往布拉，订下位置，亲手采摘食材，看着这餐被做出来，带着一个可以讲的故事离开。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/8.jpg",
-            caption: tt(
-              "Storyboard — from the first conversation to the shared story.",
-              "故事板 —— 从最初那次聊天，到最后被分享出去的故事。"
-            ),
-          },
-        ],
-      },
-      {
-        id: "app-design",
-        eyebrow: tt("App design", "应用设计"),
-        label: tt("App design", "应用设计"),
-        lead: tt("GROW — Slow Food Experience.", "GROW —— 慢食体验。"),
-        blocks: [
-          {
-            type: "image",
-            src: "/project/slow-food/9.jpg",
-            caption: tt(
-              "GROW — launch screen and onboarding, “Plant your slow dishes”.",
-              "GROW —— 启动页与引导流程，「种出你的慢食」。"
-            ),
-          },
-          {
-            type: "defs",
-            items: [
-              {
-                term: tt("1 · Online Planting", "1 · 线上种植"),
-                text: tt(
-                  "Online planting allows users to experience the growth process of vegetables and fruits from planting to maturity. Successful online planting can earn a Harvest Card, which can be exchanged for ingredients during a meal.",
-                  "线上种植让用户体验蔬果从播种到成熟的完整过程。种植成功可获得一张收获卡，用餐时可兑换为食材。"
-                ),
-              },
-              {
-                term: tt("2 · Story Community", "2 · 故事社区"),
-                text: tt(
-                  "Here, users can share planting stories, dining experiences, and their insights on “Slow Food.” They can also read stories from others. We will feature interesting stories to attract more users through this method.",
-                  "用户可以在这里分享种植故事、用餐体验，以及自己对「慢食」的理解，也能读到别人的故事。我们会推荐有意思的故事，以此吸引更多用户。"
-                ),
-              },
-              {
-                term: tt("3 · Restaurant Reservation", "3 · 餐厅预订"),
-                text: tt(
-                  "Users can book a restaurant reservation online and view the menu for the day. They can also learn about some activities the Slow Food organization is currently conducting.",
-                  "用户可以在线预订餐厅、查看当天菜单，也能了解慢食组织正在进行的活动。"
-                ),
-              },
-            ],
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/10.jpg",
-            caption: tt(
-              "Get online seed card → experience online planting → obtain harvest card. Planting simulates seasonal change, weather and real growth; watering, pest control and fertilization run the full cycle.",
-              "领取线上种子卡 → 体验线上种植 → 获得收获卡。种植会模拟季节更替、天气与真实生长；浇水、除虫、施肥，走完整个周期。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/11.jpg",
-            caption: tt(
-              "Planting home page and planting screens — planting-area temperature, plant status data, time to maturity, and the harvest operation once the plant is mature.",
-              "种植首页与种植界面 —— 种植区温度、作物状态数据、距成熟时间，以及成熟后的采收操作。"
-            ),
-          },
-          {
-            type: "bullets",
-            title: tt("Share community", "分享社区"),
-            items: [
-              tt(
-                "Users can view photos and stories shared by other users.",
-                "用户可以看到其他人分享的照片与故事。"
-              ),
-              tt(
-                "Users can find check-in points during their journey in Bra, take photos to check in for more information, and receive random rewards.",
-                "用户在布拉的行程中可以找到打卡点，拍照打卡获取更多信息，并随机获得奖励。"
-              ),
-            ],
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/12.jpg",
-            caption: tt(
-              "Story community — the shared feed, check-in points mapped across Bra, photo authentication and the seed-card reward.",
-              "故事社区 —— 分享信息流、散布在布拉各处的打卡点、照片验证，以及种子卡奖励。"
-            ),
-          },
-          {
-            type: "bullets",
-            title: tt("Restaurant booking", "餐厅预订"),
-            items: [
-              tt(
-                "Users can see the latest activities of the restaurant, such as the release of a new season’s seed cards.",
-                "用户可以看到餐厅的最新动态，比如新一季种子卡的发布。"
-              ),
-              tt(
-                "Users can directly book a dinner reservation at the restaurant here.",
-                "用户可以直接在这里预订餐厅的晚餐。"
-              ),
-            ],
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/13.jpg",
-            caption: tt(
-              "Today’s menu and the booking calendar — the fix for a phone-only reservation system.",
-              "当日菜单与预订日历 —— 针对「只能电话预订」的解法。"
-            ),
-          },
-        ],
-      },
-      {
-        id: "space-design",
-        eyebrow: tt("Space design", "空间设计"),
-        label: tt("Space design", "空间设计"),
-        lead: tt(
-          "Based on site surveys, the outdoor space of the restaurant has been redesigned — three main areas and one corridor.",
-          "基于现场勘察，餐厅的室外空间被重新设计 —— 三个主要区域加一条走廊。"
-        ),
-        blocks: [
-          {
-            type: "defs",
-            items: [
-              {
-                term: tt("Planting Experience Area", "种植体验区"),
-                text: tt(
-                  "Using special online seed cards or harvest cards, users will have the opportunity to plant or harvest ingredients in the restaurant’s planting area. Harvested vegetables are included in the diner’s meal for free, and the hands-on experience helps deepen their understanding of the “Slow Food” philosophy.",
-                  "凭特别版线上种子卡或收获卡，用户可以在餐厅的种植区亲手种下或采收食材。采收的蔬菜会免费加入这一餐，而这份亲手参与，让他们对「慢食」理念的理解更深一层。"
-                ),
-              },
-              {
-                term: tt("Open Kitchen", "开放厨房"),
-                text: tt(
-                  "The area has two parts. The reception service area moved to the entrance/exit to streamline restaurant flow — the original reception sat in an inside corner and was hard to find. The kitchen itself is transparent and open, so users can watch food being prepared while they eat.",
-                  "这个区域分两部分。接待服务区被移到出入口，以理顺动线 —— 原来的接待台位于内侧角落，很难找到。厨房本身则是透明开放的，用户可以边吃边看菜被做出来。"
-                ),
-              },
-              {
-                term: tt("Exhibition Corridor", "展示走廊"),
-                text: tt(
-                  "There is a corridor at the restaurant entrance, with posters promoting programs and events on both sides.",
-                  "餐厅入口处有一条走廊，两侧是宣传项目与活动的海报。"
-                ),
-              },
-              {
-                term: tt("Eating Area", "用餐区"),
-                text: tt(
-                  "In the outdoor dining area, users can comfortably enjoy their meals while watching the food preparation process, adding more enjoyment to their dining experience.",
-                  "在室外用餐区，用户可以舒适地享用这一餐，同时看着料理的过程 —— 让这顿饭多一层乐趣。"
-                ),
-              },
-            ],
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/16.jpg",
-            caption: tt(
-              "Plan — indoor dining, exhibition corridor, outdoor dining, open kitchen and planting area.",
-              "平面图 —— 室内用餐、展示走廊、室外用餐、开放厨房与种植区。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/17.jpg",
-            caption: tt("Exhibition corridor at the entrance.", "入口处的展示走廊。"),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/18.jpg",
-            caption: tt(
-              "Open kitchen — a front reception area moved to the entrance to streamline flow, and the kitchen itself opened up to the dining area.",
-              "开放厨房 —— 接待区前移至入口以理顺动线，厨房本身向用餐区敞开。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/19.jpg",
-            caption: tt(
-              "Planting area — seed cards plant a crop here, harvest cards pick one, and what is harvested goes into the diner’s meal for free.",
-              "种植区 —— 种子卡在这里种下作物，收获卡在这里采收，而采收所得免费进入这一餐。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/20.jpg",
-            caption: tt("Eating area — the outdoor dining space.", "用餐区 —— 室外的用餐空间。"),
-          },
-        ],
-      },
-      {
-        id: "user-journey",
-        eyebrow: tt("User journey", "用户旅程"),
-        label: tt("User journey", "用户旅程"),
-        lead: tt(
-          "Sixteen steps, from a friend’s seed card back to a friend’s seed card.",
-          "十六步 —— 从朋友递来的一张种子卡，回到递给朋友的一张种子卡。"
-        ),
-        blocks: [
-          {
-            text: tt(
-              "Friend sharing → get the online seed card → start online planting → harvest → book a restaurant → explore city → take photos → obtain rewards → exhibition viewing → reception service → ingredient harvesting → ingredient delivery → dining → checkout → share stories → friend sharing.",
-              "朋友分享 → 领取线上种子卡 → 开始线上种植 → 收获 → 预订餐厅 → 探索城市 → 拍照打卡 → 获得奖励 → 参观展示 → 接待服务 → 采摘食材 → 食材送厨 → 用餐 → 结账 → 分享故事 → 再分享给朋友。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/21.jpg",
-            caption: tt(
-              "User journey — the loop closes when the checkout hands over the next seed card.",
-              "用户旅程 —— 当结账时递出下一张种子卡，这个环就闭上了。"
-            ),
-          },
-          {
-            type: "note",
-            text: tt(
-              "The checkout is the hinge. Handing over a new seed card at the moment of payment is what turns a single visit into the start of the next one — the journey map is a circle rather than a line because of that one step.",
-              "结账是那个铰链。在付钱的那一刻递出一张新的种子卡，把「一次到访」变成「下一次的开始」—— 正因为这一步，旅程图才是一个圆，而不是一条线。"
-            ),
-          },
-        ],
-      },
-      {
-        id: "design-visivo",
-        eyebrow: tt("Design visivo", "视觉设计"),
-        label: tt("Design visivo", "视觉设计"),
-        lead: tt(
-          "Plant elements, unconstrained spacing, natural growth.",
-          "植物元素、不受拘束的间距、自然的生长感。"
-        ),
-        blocks: [
-          {
-            type: "image",
-            src: "/project/slow-food/22.jpg",
-            caption: tt(
-              "Logo — the G built from two sprouting leaves, on a construction grid.",
-              "标志 —— 由两片新芽构成的 G，置于制图网格上。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/23.jpg",
-            caption: tt(
-              "Typefaces — PP Eiko for display, Sofia Pro for text.",
-              "字体 —— 标题用 PP Eiko，正文用 Sofia Pro。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/24.jpg",
-            caption: tt(
-              "Palette — #249A48, #66B447, #4B80B8 and #231815.",
-              "色板 —— #249A48、#66B447、#4B80B8 与 #231815。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/25.jpg",
-            caption: tt(
-              "Applications — seed card packaging, menus, posters, aprons, tableware and the social campaign.",
-              "应用延展 —— 种子卡包装、菜单、海报、围裙、餐具与社交媒体投放。"
-            ),
-          },
-        ],
-      },
-      {
-        id: "business",
-        eyebrow: tt("Discounted cash flow", "现金流折现"),
-        label: tt("Business case", "商业测算"),
-        lead: tt(
-          "According to the DCF neutral evaluation, the project can break even by the 10th quarter.",
-          "按 DCF 中性情景测算，项目可在第 10 个季度回本。"
-        ),
-        blocks: [
-          {
-            type: "image",
-            src: "/project/slow-food/26.jpg",
-            caption: tt(
-              "Cost structure — fixed costs across space, development, human resources and marketing; variable costs in ingredients.",
-              "成本结构 —— 固定成本分布在空间、开发、人力与营销上，可变成本在食材上。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/slow-food/27.jpg",
-            caption: tt(
-              "Twelve-quarter model, across the development phase and the launch phase.",
-              "十二个季度的测算模型，覆盖开发期与上线期。"
-            ),
-          },
-          {
-            type: "stats",
-            items: [
-              {
-                value: tt("9th quarter", "第 9 季度"),
-                label: tt("Optimistic", "乐观情景"),
-                note: "NPV 341,761.62 · TIR 19.38%",
-              },
-              {
-                value: tt("10th quarter", "第 10 季度"),
-                label: tt("Neutral", "中性情景"),
-                note: "NPV 159,615.85 · TIR 11.55%",
-              },
-              {
-                value: tt("12th quarter", "第 12 季度"),
-                label: tt("Pessimistic", "悲观情景"),
-                note: "NPV 100,068.14 · TIR 8.17%",
-              },
-            ],
-          },
-          {
-            text: tt(
-              "All three scenarios return a positive NPV, so the question the model answers is not whether the project pays back but how long the restaurant has to carry it — between nine and twelve quarters.",
-              "三种情景的净现值都为正，所以这个模型回答的不是「项目能不能回本」，而是「餐厅要扛多久」—— 九到十二个季度之间。"
-            ),
-          },
-        ],
-      },
-    ],
+    role: slowFoodRole,
+    summary: slowFoodSummary,
+    hero: slowFoodHero,
+    tags: slowFoodTags,
+    sections: slowFoodSections,
   },
   // HMI (Granstudio) — the slides of the Figma 「Granstudio」 page, rebuilt as page
   // content in src/data/hmiDeck.js and drawn by HmiDeck.jsx.
@@ -927,14 +324,19 @@ export const projectDetails = {
         id: "overview",
         eyebrow: tt("Overview", "概览"),
         label: tt("Overview", "概览"),
-        lead: tt("TIDE — studio website design.", "TIDE —— 工作室网站设计。"),
+        lead: tt("TIDE: studio website design.", "TIDE：工作室网站设计。"),
         blocks: [
           {
-            type: "image",
-            src: "/project/tide/1.jpg",
+            type: "tideWall",
+            columns: [
+              { speed: 70, shots: [tideWall("home", 1288), tideWall("404", 315), tideWall("workshop", 815)] },
+              { speed: 92, shots: [tideWall("chi", 1534), tideWall("contact", 829)] },
+              { speed: 80, shots: [tideWall("challenge", 1253), tideWall("cosa", 1054)] },
+              { speed: 100, shots: [tideWall("talk", 1280), tideWall("404", 315), tideWall("home", 1288)] },
+            ],
             caption: tt(
-              "The finished site — an underwater world for a studio named after the tide.",
-              "完成的网站 —— 为一家以「潮」为名的工作室造的一个水下世界。"
+              "The finished site: an underwater world for a studio named after the tide.",
+              "完成的网站：为一家以「潮」为名的工作室造的一个水下世界。"
             ),
           },
         ],
@@ -946,22 +348,20 @@ export const projectDetails = {
         lead: tt("“Put us to the test.”", "「来考考我们。」"),
         blocks: [
           {
-            type: "image",
-            src: "/project/tide/2.jpg",
-            size: "md",
-            caption: tt("The TIDE wordmark.", "TIDE 的字标。"),
+            type: "tideLogo",
+            caption: tt("The tide wordmark, at high tide.", "tide 的字标，正值涨潮。"),
           },
           {
             type: "note",
             text: tt(
-              "Mission — to spread digital culture, be your daily source of inspiration, and even help your grandmother understand what you do. This is our mission: put us to the test.",
-              "使命 —— 传播数字文化，成为你每天的灵感来源，甚至让你奶奶也能明白你在做什么。这就是我们的使命：来考考我们。"
+              "Mission: to spread digital culture, be your daily source of inspiration, and even help your grandmother understand what you do. This is our mission: put us to the test.",
+              "使命：传播数字文化，成为你每天的灵感来源，甚至让你奶奶也能明白你在做什么。这就是我们的使命：来考考我们。"
             ),
           },
           {
             text: tt(
               "That last line is the brief in disguise. A studio whose mission is to be understood by anyone cannot have a website that reads as industry jargon, which is what pushes the design toward an illustrated, explorable world rather than a conventional agency page.",
-              "最后那句话其实就是伪装过的设计命题。一家以「让任何人都看得懂」为使命的工作室，官网不可能满是行业术语 —— 这正是把设计推向一个可探索的插画世界，而不是一张常规代理公司页面的原因。"
+              "最后那句话其实就是伪装过的设计命题。一家以「让任何人都看得懂」为使命的工作室，官网不可能满是行业术语。这正是把设计推向一个可探索的插画世界，而不是一张常规代理公司页面的原因。"
             ),
           },
         ],
@@ -979,9 +379,44 @@ export const projectDetails = {
             type: "image",
             src: "/project/tide/3.jpg",
             caption: tt(
-              "Moodboard — waves, dunes, horizons and halftone textures in a blue and yellow palette.",
-              "情绪板 —— 浪、沙丘、地平线与网点肌理，统一在蓝黄色板里。"
+              "Moodboard: waves, dunes, horizons and halftone textures in a blue and yellow palette.",
+              "情绪板：浪、沙丘、地平线与网点肌理，统一在蓝黄色板里。"
             ),
+          },
+          {
+            text: tt(
+              "The brand palette takes its colours from the sea: nine of them in three tiers, each one named like a piece of advice.",
+              "品牌色板取自海洋：一共九个颜色，分三级，每个颜色的名字都像一句叮嘱。"
+            ),
+          },
+          {
+            type: "swatches",
+            groups: [
+              {
+                title: tt("Primary", "主色"),
+                items: [
+                  { hex: "#191B1E", label: "Go Black" },
+                  { hex: "#FFFFFF", label: "Stay Essential" },
+                  { hex: "#91A4FD", label: "Be Chilled" },
+                ],
+              },
+              {
+                title: tt("Secondary", "辅助色"),
+                items: [
+                  { hex: "#1E1F5D", label: "Get Deeper" },
+                  { hex: "#F0D344", label: "Let's Play" },
+                  { hex: "#E5EAF5", label: "Keep It Cool" },
+                ],
+              },
+              {
+                title: tt("Tertiary", "第三级"),
+                items: [
+                  { hex: "#587FFC", label: "Enjoy Yourself" },
+                  { hex: "#CEC248", label: "Just Shine" },
+                  { hex: "#DBDAC8", label: "Don't Stop" },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -992,21 +427,30 @@ export const projectDetails = {
         lead: tt("Five top-level sections.", "五个一级栏目。"),
         blocks: [
           {
-            type: "steps",
-            items: [
-              tt("Who we are", "我们是谁"),
-              tt("What we do", "我们做什么"),
-              tt("On wave", "浪上"),
-              tt("Community", "社区"),
-              tt("Contact", "联系"),
-            ],
-          },
-          {
-            type: "image",
-            src: "/project/tide/4.jpg",
+            type: "tideSitemap",
+            tree: {
+              label: "Homepage",
+              children: [
+                { label: "Who we are" },
+                {
+                  label: "What we do",
+                  children: [{ label: "nPage nSingle project" }, { label: "Error 404 page" }],
+                },
+                {
+                  label: "On wave",
+                  children: [
+                    { label: "Challenge", children: [{ label: "nPage nSingle challenge" }] },
+                    { label: "Workshop", children: [{ label: "nPage nSingle workshop" }] },
+                    { label: "Creative talk", children: [{ label: "nPage nSingle creative talk" }] },
+                  ],
+                },
+                { label: "Community" },
+                { label: "Contact" },
+              ],
+            },
             caption: tt(
-              "Site map — What we do and On wave each open into single-project pages, with a 404 page planned from the start.",
-              "站点地图 —— 「我们做什么」与「浪上」各自通向单项目页面，404 页面从一开始就在规划里。"
+              "What we do and On wave each open into single-project pages, with a 404 page planned from the start. Hover a page to trace it back to the homepage.",
+              "「What we do」与「On wave」各自通向单项目页面，404 页面从一开始就在规划里。把鼠标移到任一页面上，可以看到它回到首页的路径。"
             ),
           },
         ],
@@ -1018,19 +462,44 @@ export const projectDetails = {
         lead: tt("Structure first, on both breakpoints.", "先定结构，两个断点一起。"),
         blocks: [
           {
-            type: "image",
-            src: "/project/tide/5.jpg",
+            type: "tideStrip",
+            sets: [
+              {
+                id: "desktop",
+                label: tt("Desktop", "桌面端"),
+                width: 228,
+                items: [
+                  tideFrame("wf-home", 956, 2227, "Home"),
+                  tideFrame("wf-chi", 955, 2728, "Chi siamo"),
+                  tideFrame("wf-cosa", 956, 1681, "Cosa facciamo"),
+                  tideFrame("wf-404", 955, 561, "404"),
+                  tideFrame("wf-challenge", 956, 1670, "Challenge"),
+                  tideFrame("wf-workshop", 955, 1400, "Workshop"),
+                  tideFrame("wf-talk", 955, 1696, "Creative talk"),
+                  tideFrame("wf-community", 956, 1681, "Community"),
+                  tideFrame("wf-contact", 956, 1434, "Contatti"),
+                ],
+              },
+              {
+                id: "mobile",
+                label: tt("Mobile", "移动端"),
+                width: 128,
+                items: [
+                  tideFrame("wf-home-m", 450, 2717, "Home"),
+                  tideFrame("wf-chi-m", 450, 2012, "Chi siamo"),
+                  tideFrame("wf-cosa-m", 450, 1879, "Cosa facciamo"),
+                  tideFrame("wf-404-m", 450, 904, "404"),
+                  tideFrame("wf-challenge-m", 450, 1021, "Challenge"),
+                  tideFrame("wf-workshop-m", 450, 916, "Workshop"),
+                  tideFrame("wf-talk-m", 450, 1365, "Creative talk"),
+                  tideFrame("wf-community-m", 450, 1044, "Community"),
+                  tideFrame("wf-contact-m", 450, 1044, "Contatti"),
+                ],
+              },
+            ],
             caption: tt(
-              "Website wireframes — every page laid out end to end.",
-              "网站线框 —— 每一页从头到尾排开。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/tide/6.jpg",
-            caption: tt(
-              "Mobile wireframes — the same structure reflowed to one column.",
-              "移动端线框 —— 同一套结构，重排成单列。"
+              "Every page laid out end to end, then the same structure reflowed to one column. Drag or scroll sideways.",
+              "每一页从头到尾排开，再把同一套结构重排成单列。可以左右拖动或滑动。"
             ),
           },
         ],
@@ -1042,11 +511,65 @@ export const projectDetails = {
         lead: tt("Yellow and blue, cut by wave-shaped edges.", "黄与蓝，被波浪形的边缘切开。"),
         blocks: [
           {
-            type: "image",
-            src: "/project/tide/7.jpg",
-            caption: tt("Draft one — desktop and mobile side by side.", "初稿一 —— 桌面端与移动端并排。"),
+            text: tt(
+              "The first idea treats the page as one pour of yellow liquid: it enters at the top and runs through every section on its way to the footer. The notes below are the motion planned for each stop; press one to go there.",
+              "第一个想法把整页当成一股黄色的液体：它从顶部流入，一路穿过每个板块，最后落进页脚。下面是为每一站设计的动效，点一下就能跳到那里。"
+            ),
           },
-          { type: "image", src: "/project/tide/8.jpg", caption: tt("The full draft-one flow.", "初稿一的完整流程。") },
+          {
+            type: "tideTour",
+            pages: [
+              {
+                id: "draft1",
+                url: "tide / draft 1",
+                desktop: tideFrame("draft1", 1644, 4600),
+                mobile: tideFrame("draft1-m", 390, 3376),
+                stops: [
+                  {
+                    label: tt("Hero", "首屏"),
+                    at: 0,
+                    text: tt(
+                      "The colours, patterns and text move inward on the page to form the final frame.",
+                      "颜色、图案与文字从页面四周向内聚拢，拼成最终的画面。"
+                    ),
+                  },
+                  {
+                    label: tt("What we do", "我们做什么"),
+                    at: 0.19,
+                    text: tt(
+                      "The pattern pours down like a liquid into the bowl below. Once filled, the bowl tips over and releases the colour and the text.",
+                      "图案像液体一样倒进下方的碗里。碗装满后翻倒，把颜色和文字一起倒出来。"
+                    ),
+                  },
+                  {
+                    label: tt("Our best pieces", "代表作"),
+                    at: 0.4,
+                    text: tt(
+                      "The yellow liquid keeps descending, revealing the text and images underneath as it passes.",
+                      "黄色液体继续往下流，流过的地方露出底下的文字和图片。"
+                    ),
+                  },
+                  {
+                    label: tt("On wave", "浪上"),
+                    at: 0.59,
+                    text: tt(
+                      "The liquid runs through a tube into a tank and fills it. At the end the plug at the bottom lifts and lets it flow out.",
+                      "液体顺着管道流进水箱，把它灌满。动画结束时底部的塞子被提起，液体流了出去。"
+                    ),
+                  },
+                  {
+                    label: tt("Contact", "联系"),
+                    at: 0.8,
+                    text: tt(
+                      "The flow comes to an end and pours into the footer of the page.",
+                      "水流走到尽头，倒进页面的页脚。"
+                    ),
+                  },
+                ],
+              },
+            ],
+            caption: tt("Draft one, desktop and mobile side by side.", "初稿一，桌面端与移动端并排。"),
+          },
         ],
       },
       {
@@ -1056,11 +579,66 @@ export const projectDetails = {
         lead: tt("A second pass at the same structure.", "在同一套结构上再走一遍。"),
         blocks: [
           {
-            type: "image",
-            src: "/project/tide/9.jpg",
-            caption: tt("Draft two — desktop and mobile.", "初稿二 —— 桌面端与移动端。"),
+            text: tt(
+              "The second draft drops the liquid and goes into the water itself: the page starts at the surface and sinks section by section, with a small animation waiting at each depth.",
+              "第二稿放下了液体，直接进到水里：页面从水面开始，一个板块一个板块往下沉，每一层都有一段小动画等着。"
+            ),
           },
-          { type: "image", src: "/project/tide/10.jpg", caption: tt("The full draft-two flow.", "初稿二的完整流程。") },
+          {
+            type: "tideTour",
+            pages: [
+              {
+                id: "draft2",
+                url: "tide / draft 2",
+                desktop: tideFrame("draft2", 1638, 4600),
+                mobile: tideFrame("draft2-m", 390, 4233),
+                stops: [
+                  {
+                    label: tt("What we do", "我们做什么"),
+                    at: 0.17,
+                    text: tt(
+                      "Bubbles rise from below, each one carrying a service, and settle into the final frame.",
+                      "气泡从下方升起，每个气泡带着一项服务，最后停在画面里。"
+                    ),
+                  },
+                  {
+                    label: tt("Our pearls", "我们的珍珠"),
+                    at: 0.39,
+                    text: tt(
+                      "Clicking a project starts an animation that leads to its dedicated page.",
+                      "点击一个项目，会有一段动画把你带到它的专属页面。"
+                    ),
+                  },
+                  {
+                    label: tt("On wave", "浪上"),
+                    at: 0.58,
+                    text: tt(
+                      "The diver swims in and brings the words Creative Talk, Workshop and Challenge with it.",
+                      "潜水员游进画面，把 Creative Talk、Workshop 和 Challenge 这几个词一起带出来。"
+                    ),
+                  },
+                  {
+                    label: tt("Contact", "联系"),
+                    at: 0.8,
+                    text: tt(
+                      "Hovering or clicking Contact Us makes the moray eel light up the button, a play on the word “electrified” in the headline.",
+                      "悬停或点击「联系我们」时，海鳗会把按钮点亮，呼应标题里「被电到」这个词。"
+                    ),
+                  },
+                ],
+              },
+            ],
+            caption: tt("Draft two, desktop and mobile.", "初稿二，桌面端与移动端。"),
+          },
+          {
+            type: "clip",
+            src: "/project/tide/draft2-bubbles.mp4",
+            ratio: 1280 / 702,
+            caption: tt(
+              "The bubbles as they were animated for the prototype: web site, art direction, branding, digital strategy, illustration.",
+              "原型里的气泡动画：网站、艺术指导、品牌、数字策略、插画。"
+            ),
+          },
         ],
       },
       {
@@ -1071,44 +649,73 @@ export const projectDetails = {
         blocks: [
           {
             text: tt(
-              "The final direction drops the shoreline and puts the visitor below the waterline — deep navy, seahorses, coral and pearl-lit shelves, with yellow kept as the accent that marks every action.",
-              "最终方向舍掉海岸线，把访客带到水面以下 —— 深海军蓝、海马、珊瑚与珍珠点亮的礁架，而黄色被留作点缀，用来标记每一个可操作的动作。"
+              "The final direction drops the shoreline and puts the visitor below the waterline: deep navy, seahorses, coral and pearl-lit shelves, with yellow kept as the accent that marks every action.",
+              "最终方向舍掉海岸线，把访客带到水面以下：深海军蓝、海马、珊瑚与珍珠点亮的礁架，而黄色被留作点缀，用来标记每一个可操作的动作。"
             ),
           },
           {
-            type: "image",
-            src: "/project/tide/11.jpg",
+            type: "tideTour",
+            pages: [
+              {
+                id: "home",
+                label: "Home",
+                url: "tide / home",
+                desktop: tideFrame("final-home", 1600, 3680),
+                mobile: tideFrame("final-home-m", 390, 2955),
+                stops: [
+                  { label: tt("Nav", "导航"), at: 0 },
+                  { label: tt("Studio introduction", "工作室介绍"), at: 0.06 },
+                  { label: tt("Our work", "作品"), at: 0.235 },
+                  { label: tt("Community", "社区"), at: 0.49 },
+                  { label: tt("Contact", "联系"), at: 0.75 },
+                ],
+              },
+              {
+                id: "chi",
+                label: "Chi siamo",
+                url: "tide / chi siamo",
+                desktop: tideFrame("final-chi", 1568, 4296),
+                mobile: tideFrame("final-chi-m", 390, 2198),
+              },
+              {
+                id: "cosa",
+                label: "Cosa facciamo",
+                url: "tide / cosa facciamo",
+                desktop: tideFrame("final-cosa", 1553, 2922),
+                mobile: tideFrame("final-cosa-m", 390, 2955),
+              },
+              {
+                id: "challenge",
+                label: "Challenge",
+                url: "tide / mettiti alla prova / challenge",
+                desktop: tideFrame("final-challenge", 1561, 3493),
+                mobile: tideFrame("final-challenge-m", 390, 1402),
+              },
+              {
+                id: "workshop",
+                label: "Workshop",
+                url: "tide / mettiti alla prova / workshop",
+                desktop: tideFrame("final-workshop", 1601, 2329),
+                mobile: tideFrame("final-workshop-m", 390, 1434),
+              },
+              {
+                id: "talk",
+                label: "Creative talk",
+                url: "tide / mettiti alla prova / creative talk",
+                desktop: tideFrame("final-talk", 1561, 3567),
+                mobile: tideFrame("final-talk-m", 390, 1718),
+              },
+              {
+                id: "contact",
+                label: "Contattaci",
+                url: "tide / contattaci",
+                desktop: tideFrame("final-contact", 1541, 2281),
+                mobile: tideFrame("final-contact-m", 390, 917),
+              },
+            ],
             caption: tt(
-              "Homepage — navigation, studio introduction, Our Work, Community and Contact, stacked down one continuous seabed.",
-              "首页 —— 导航、工作室介绍、作品、社区与联系，沿着一片连续的海床依次向下排布。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/tide/12.jpg",
-            caption: tt(
-              "Interior pages carrying the same illustrated world.",
-              "内页延续同一个插画世界。"
-            ),
-          },
-          {
-            type: "image",
-            src: "/project/tide/13.jpg",
-            caption: tt("Further pages from the final concept.", "最终方案的其他页面。"),
-          },
-          {
-            type: "image",
-            src: "/project/tide/14.jpg",
-            caption: tt(
-              "404 — “Mi hai ritrovato!” The error page is part of the world rather than an exception to it.",
-              "404 ——「Mi hai ritrovato！」错误页是这个世界的一部分，而不是它的例外。"
-            ),
-          },
-          {
-            type: "note",
-            text: tt(
-              "The 404 is the detail that proves the concept. It was in the site map from the beginning and it keeps the illustration and the voice intact, so the one page a visitor reaches by accident still sounds like the studio.",
-              "404 是那个证明概念成立的细节。它从一开始就在站点地图里，插画与语气都保持完整 —— 于是访客唯一一个误入的页面，听起来仍然像这家工作室。"
+              "Seven pages on both breakpoints, stacked down one continuous seabed. The homepage runs navigation, studio introduction, Our Work, Community and Contact.",
+              "七个页面，两个断点，沿着一片连续的海床依次向下排布。首页依次是导航、工作室介绍、作品、社区与联系。"
             ),
           },
         ],
@@ -1119,22 +726,38 @@ export const projectDetails = {
         label: tt("Prototyping", "原型"),
         lead: tt("Clickable, on both breakpoints.", "两个断点都能点。"),
         blocks: [
-          { type: "image", src: "/project/tide/15.jpg", caption: tt("Desktop prototype.", "桌面端原型。") },
           {
-            type: "image",
-            src: "/project/tide/16.jpg",
-            caption: tt("Mobile prototype — “Cosa facciamo”.", "移动端原型 ——「Cosa facciamo」。"),
+            text: tt(
+              "Both breakpoints were wired up as clickable Figma prototypes. One interaction from them is rebuilt here: the 404 page, where the lost seahorse asks to be dragged back home.",
+              "两个断点都接成了可点击的 Figma 原型。这里重做了其中一个交互：404 页面上，走丢的海马请你把它拖回家。"
+            ),
+          },
+          {
+            type: "tide404",
+            hint: tt("Drag me home", "把我拖回家"),
+            found: tt("Home again", "到家了"),
+            caption: tt(
+              "404, “Mi hai ritrovato!” Drag the seahorse to the coral marked Home.",
+              "404，「Mi hai ritrovato！」把海马拖到标着 Home 的珊瑚那里。"
+            ),
+          },
+          {
+            type: "note",
+            text: tt(
+              "The 404 is the detail that proves the concept. It was in the site map from the beginning and it keeps the illustration and the voice intact, so the one page a visitor reaches by accident still sounds like the studio.",
+              "404 是那个证明概念成立的细节。它从一开始就在站点地图里，插画与语气都保持完整。于是访客唯一一个误入的页面，听起来仍然像这家工作室。"
+            ),
           },
           {
             type: "links",
             items: [
               {
-                label: tt("Figma prototype — website", "Figma 原型 —— 网站"),
+                label: tt("Figma prototype: website", "Figma 原型：网站"),
                 href: "https://www.figma.com/proto/eDGeo82EfFAId4IMVqHtWq/Wireframe---redesign?page-id=164%3A2180&node-id=695-5880&viewport=1996%2C-7389%2C0.14&t=tmlbfG0q5vuygwqL-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=695%3A6450",
                 note: tt("The desktop site, clickable in Figma.", "桌面端网站，在 Figma 里可点击。"),
               },
               {
-                label: tt("Figma prototype — mobile", "Figma 原型 —— 移动端"),
+                label: tt("Figma prototype: mobile", "Figma 原型：移动端"),
                 href: "https://www.figma.com/proto/eDGeo82EfFAId4IMVqHtWq/Wireframe---redesign?page-id=44%3A6640&node-id=914-22478&viewport=472%2C-4392%2C0.25&t=05eNX3ysNf4cawCZ-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=914%3A22478",
                 note: tt("The mobile site, clickable in Figma.", "移动端网站，在 Figma 里可点击。"),
               },

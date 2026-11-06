@@ -17,7 +17,7 @@
 
 标题用 Tailwind 的 `text-xl` 及以上。项目页的 `<main>` 带 `case-type` class，在它内部这些档位被重新指向 Apple 的标题层级：`text-xl` 20、`text-2xl` 22（Title 2）、`text-3xl` 28（Title 1）、`text-4xl` 34（Large Title，章节标题）、`text-5xl` 40（项目大标题）、`text-6xl` 48，各自带收紧的行高。不要在项目页用 `sm:text-base` 这类响应式缩小字号。
 
-注意 `WeatherPetsDeck.jsx`、`AbcMouseDeck.jsx` 和 `HmiDeck.jsx` **不在**例外名单里：它们是用真实 DOM 重排的，照常守这条规定。
+注意 `WeatherPetsDeck.jsx`、`AbcMouseDeck.jsx`、`HmiDeck.jsx` 和 `SlowFoodDeck.jsx` **不在**例外名单里：它们是用真实 DOM 重排的，照常守这条规定。
 
 **唯一例外**：`WorkflowBoard.jsx`、`BackgroundBoard.jsx`、`CompetitorsBoard.jsx`、`PersonaBoard.jsx`、`StoryMapBoard.jsx`、`SpecBoard.jsx`、`CoreFlowBoard.jsx`、`ExtensionsBoard.jsx` 和 `LaunchDataBoard.jsx` 这几块 Figma 图板复刻。它们用的是 Figma 画板坐标，整块靠 `transform: scale()` 缩放，内部的 `size={18}` 不是屏幕像素，而是画板像素。图板是插图，不是页面正文。
 
@@ -58,7 +58,7 @@ Kyrall 页面上的标签统一用两个 utility（index.css）：`chip` 是安�
 ```sh
 grep -n "text-\(xs\|sm\|base\|lg\|\[1[0-9]px\]\)" \
   src/pages/ProjectDetail.jsx \
-  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,EditorTabs,ExtensionsFlow,ModeCompare,SpecGallery,PersonaCards,JourneyMap,LaunchData,WeatherPetsDeck,wpMotion,AbcMouseDeck,HmiDeck}.jsx
+  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,EditorTabs,ExtensionsFlow,ModeCompare,SpecGallery,PersonaCards,JourneyMap,LaunchData,WeatherPetsDeck,wpMotion,AbcMouseDeck,HmiDeck,SlowFoodDeck,TideBlocks}.jsx
 ```
 
 应该零命中。间距自查（同样这几个文件，应该零命中）：
@@ -66,7 +66,7 @@ grep -n "text-\(xs\|sm\|base\|lg\|\[1[0-9]px\]\)" \
 ```sh
 grep -nE "(^|[ \"'\`:])-?(mt|mb|my|pt|pb|py|p|gap|gap-x|gap-y|space-y|space-x)-(0\.5|1\.5|2\.5|3\.5|5|7|9|11)\b" \
   src/pages/ProjectDetail.jsx \
-  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,EditorTabs,ExtensionsFlow,ModeCompare,SpecGallery,PersonaCards,JourneyMap,LaunchData,WeatherPetsDeck,wpMotion,AbcMouseDeck,HmiDeck}.jsx
+  src/components/project/{DetailToc,DetailBlocks,ProjectHero,ScrollRail,BackgroundWho,BackgroundCompare,PlayView,EditorTabs,ExtensionsFlow,ModeCompare,SpecGallery,PersonaCards,JourneyMap,LaunchData,WeatherPetsDeck,wpMotion,AbcMouseDeck,HmiDeck,SlowFoodDeck,TideBlocks}.jsx
 ```
 
 注意只查这几个文件：`src/components/project/` 下还有 `ProjectCard.jsx`、`CategoryFilter.jsx`、`WorkSection.jsx`、`WorkStrip.jsx`，那些是 `/project` 列表页的卡片，不在这条规定的范围里。

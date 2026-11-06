@@ -241,6 +241,8 @@ const designPoint = {
   light: {
     title: tt("Breath Light", "呼吸灯"),
     images: [`${ART}/light-green.png`, `${ART}/light-yellow.png`, `${ART}/light-red.png`],
+    // The same photograph with the light off: each lit frame breathes over it.
+    off: `${ART}/light-off.png`,
     notes: [
       tt(
         "Road safety reminder. Continuous monitoring and early warning alerts under autonomous driving conditions.",
@@ -291,6 +293,7 @@ const mechanical = {
     { img: `${ART}/light-yellow.png` },
     { img: `${ART}/light-red.png` },
   ],
+  lightOff: `${ART}/light-off.png`,
   lightsCaption: tt("road safety reminder", "路况安全提醒"),
   flow: [tt("Toggle the levers twice", "连拨两次拨杆"), tt("Enter the autonomous driving mode", "进入自动驾驶模式")],
   lightTitle: tt("Breath Light", "呼吸灯"),
@@ -409,7 +412,7 @@ const transition = {
     {
       label: tt("“Breath light” on", "「呼吸灯」亮起"),
       left: { img: `${ART}/light-off.png`, fit: "contain" },
-      right: { img: `${ART}/light-green.png`, fit: "contain" },
+      right: { img: `${ART}/light-green.png`, off: `${ART}/light-off.png`, fit: "contain" },
     },
     {
       label: tt("Dashboard change", "仪表盘变化"),

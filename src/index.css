@@ -642,8 +642,10 @@ html::-webkit-scrollbar {
 }
 
 /* White-ground photographs: multiplied onto the light tile so the white drops out,
-   kept on a white card on the dark one, where multiplying would black them out. */
-.hmi-deck .hmi-photo img {
+   kept on a white card on the dark one, where multiplying would black them out.
+   The blend sits on the wrapper, not the images, so the lit frame can fade over
+   the unlit one inside it without the two multiplying each other. */
+.hmi-deck .hmi-photo-in {
   mix-blend-mode: multiply;
 }
 
@@ -651,8 +653,84 @@ html::-webkit-scrollbar {
   background: #ffffff;
 }
 
-.dark .hmi-deck .hmi-photo img {
+.dark .hmi-deck .hmi-photo-in {
   mix-blend-mode: normal;
+}
+
+/* Motion (HmiDeck.jsx). Tiles rise in on the shared `[data-reveal]` rule; what is
+   here is the rest. Hidden starting states only apply under `.wp-motion`, which
+   the reveal script sets, and never under reduced motion.
+
+   A sequence inside a rising block (chat messages, flow steps, a chain of chips):
+   each `.hmi-seq` child follows its block in, `--i` places it in line. */
+.wp-motion .hmi-deck [data-reveal] .hmi-seq {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--reveal-delay, 0ms) + 180ms + var(--i, 0) * 90ms);
+}
+
+.wp-motion .hmi-deck [data-reveal].is-in .hmi-seq {
+  opacity: 1;
+  transform: none;
+}
+
+/* The voice-prompt arrow on the transition table draws itself, manual to autonomous. */
+.wp-motion .hmi-deck [data-reveal] .hmi-draw {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.3s;
+}
+
+.wp-motion .hmi-deck [data-reveal].is-in .hmi-draw {
+  transform: scaleX(1);
+}
+
+/* The breath light breathes: the lit photograph fades over the unlit one, four
+   seconds a cycle, about the pace of a resting breath. */
+@keyframes hmi-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  45%,
+  55% {
+    opacity: 1;
+  }
+}
+
+.hmi-deck .hmi-breathe {
+  animation: hmi-breathe 4s ease-in-out infinite;
+}
+
+/* G-Va hovers a little, as it does in the prototype. */
+@keyframes hmi-float {
+  from {
+    transform: translateY(3px);
+  }
+  to {
+    transform: translateY(-3px);
+  }
+}
+
+.hmi-deck .hmi-float {
+  animation: hmi-float 2.4s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-motion .hmi-deck [data-reveal] .hmi-seq,
+  .wp-motion .hmi-deck [data-reveal] .hmi-draw {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hmi-deck .hmi-breathe,
+  .hmi-deck .hmi-float {
+    animation: none;
+  }
 }
 
 /* The round arrow on a link tile: a chip at rest, the accent on hover and focus. */
@@ -664,6 +742,83 @@ html::-webkit-scrollbar {
 .hmi-deck a:is(:hover, :focus-visible) .hmi-go {
   background: var(--hmi-accent);
   color: var(--hmi-on-accent);
+}
+
+/* The Slow Food (GROW) case study (SlowFoodDeck.jsx). Built like the HMI page: one
+   rounded tile in a quiet tone on the white page, so the deck's own artwork carries
+   the colour. One green, the GROW green, marks numbers, terms and the step a
+   sequence arrives at; `accent` is the fill, `accent-ink` the same green darkened
+   until it reads as type on the tile. The reference ratings keep the deck's blue.
+   `chip` is the raised surface inside a tile. `paper` is what the artwork stands
+   on: the cards, cut-outs, plans and silhouettes were all drawn on white, so that
+   ground stays pale on the dark page too, and only pictures go on it. */
+.sf-deck {
+  --sf-accent: #249a48;
+  --sf-accent-ink: #1a7a38;
+  --sf-on-accent: #ffffff;
+  --sf-tile: #f4f6f2;
+  --sf-tile-lit: color-mix(in srgb, var(--sf-accent) 9%, #f4f6f2);
+  --sf-lit-edge: color-mix(in srgb, var(--sf-accent) 30%, transparent);
+  --sf-chip: #ffffff;
+  --sf-paper: #ffffff;
+  --sf-rule: color-mix(in srgb, var(--color-ink) 10%, transparent);
+  --sf-dot: color-mix(in srgb, var(--color-ink) 16%, transparent);
+  --sf-score: #4b80b8;
+  --sf-bezel: #14171a;
+}
+
+.dark .sf-deck {
+  --sf-accent: #35ad5c;
+  --sf-accent-ink: #6fd491;
+  --sf-on-accent: #06200f;
+  --sf-tile: #171c29;
+  --sf-tile-lit: color-mix(in srgb, var(--sf-accent) 14%, #171c29);
+  --sf-lit-edge: color-mix(in srgb, var(--sf-accent) 40%, transparent);
+  --sf-chip: #262d3f;
+  --sf-paper: #eef1ea;
+  --sf-dot: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  --sf-score: #7fa9d8;
+  --sf-bezel: #05070b;
+}
+
+.sf-deck .sf-tile {
+  background: var(--sf-tile);
+}
+
+.sf-deck .sf-tile--lit {
+  background: var(--sf-tile-lit);
+  box-shadow: inset 0 0 0 1px var(--sf-lit-edge);
+}
+
+.sf-deck .sf-chip {
+  background: var(--sf-chip);
+}
+
+.sf-deck .sf-paper {
+  background: var(--sf-paper);
+}
+
+/* The phone frame around an app screen. On the dark page the bezel would vanish
+   into the tile, so it gets a hairline. */
+.sf-deck .sf-phone {
+  background: var(--sf-bezel);
+  box-shadow: 0 12px 24px -12px rgba(20, 23, 26, 0.35);
+}
+
+.dark .sf-deck .sf-phone {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+/* A palette swatch: the near-black one needs an edge on the dark tile. */
+.dark .sf-deck .sf-swatch {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+/* The name on an application photograph: always a pale pill with dark type, since
+   it sits on the picture, not on the page. */
+.sf-deck .sf-caption {
+  background: rgba(255, 255, 255, 0.88);
+  color: #231815;
 }
 
 body {
@@ -694,6 +849,19 @@ body {
 html[data-lang="zh"] .font-condensed {
   font-weight: 800;
   letter-spacing: 0;
+  /* That weight is for the CJK fallback. Anton has a single cut, and asked for 800
+     the browser smears a fake bold over it until the letters fuse; with weight
+     synthesis off, Latin stays in Anton as drawn. */
+  font-synthesis: style;
+}
+
+/* The project titles on /project mix scripts in one line ("车机 HMI 设计",
+   "Kyrall 网页应用"). Anton beside the square CJK face reads as two unrelated
+   headings, so in Chinese these titles set their Latin in the display face at the
+   weight of the characters around it. */
+html[data-lang="zh"] .work-title {
+  font-family: var(--font-display);
+  font-weight: 700;
 }
 
 html[data-lang="zh"] body {
@@ -929,17 +1097,16 @@ html[data-lang="zh"] body {
   }
 }
 
-/* The outer node is a zero-size point the script pins to the mouse; the three
-   parts are centred on it and only ever change by scale and opacity. All of it
-   is the theme's ink; the dot and the ring also carry a hairline of the page
-   colour, which is what keeps something that thin legible on a light page, a
-   dark page and any image in between. The disc is big enough not to need one.
+/* The outer node is a fixed, zero-size origin; the script moves the head and
+   each tail dot inside it by transform. All of it is the theme's ink, and the
+   dot also carries a hairline of the page colour, which is what keeps something
+   that small legible on a light page, a dark page and any image in between.
 
-   At rest: a 6px dot in a 36px ring. Over something draggable the ring opens a
-   little; over something clickable it opens further, takes a faint wash and the
-   dot drops out, so a button's label is never covered. Over a project
-   (`data-label`) the ring swells out and fades while the 88px disc grows in from
-   its centre with the word on it. */
+   At rest: an 8px dot. While it travels, seven smaller, fainter dots string out
+   behind it and fade once they have caught up. Over something clickable or
+   draggable the dot only grows to 12px. Over a project (`data-label`) the dot
+   and the tail drop out and the 88px disc grows in from the same point with the
+   word on it. */
 .cursor-dot {
   position: fixed;
   left: 0;
@@ -948,41 +1115,78 @@ html[data-lang="zh"] body {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s ease;
-  will-change: transform;
 }
 
 .cursor-dot[data-visible] {
   opacity: 1;
 }
 
-.cursor-dot > span {
+.cursor-head,
+.cursor-tail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+
+/* Sized inline per link; centred on its own point by the negative offset, since
+   the transform is the script's. */
+.cursor-tail {
+  border-radius: 50%;
+  background: var(--color-ink);
+  translate: -50% -50%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.cursor-dot[data-moving]:not([data-label]) .cursor-tail {
+  opacity: var(--o);
+}
+
+.cursor-core,
+.cursor-disc {
   position: absolute;
   left: 0;
   top: 0;
   border-radius: 50%;
-  transform: translate(-50%, -50%) scale(var(--s, 1));
-  transition:
-    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.2s ease,
-    background-color 0.2s ease;
+  translate: -50% -50%;
 }
 
+/* Grown by width and height, not by scale: at this size a scaled-up layer goes
+   soft at the edge, and one 8px element costs nothing to resize. */
 .cursor-core {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   background: var(--color-ink);
   box-shadow: 0 0 0 1.5px var(--color-page);
+  transition:
+    width 0.35s cubic-bezier(0.22, 0.8, 0.2, 1),
+    height 0.35s cubic-bezier(0.22, 0.8, 0.2, 1),
+    opacity 0.2s ease;
 }
 
-.cursor-ring {
-  width: 36px;
-  height: 36px;
-  border: 1.5px solid color-mix(in srgb, var(--color-ink) 55%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-page) 55%, transparent);
+.cursor-dot[data-mode="click"] .cursor-core,
+.cursor-dot[data-mode="drag"] .cursor-core {
+  width: 12px;
+  height: 12px;
+}
+
+.cursor-dot[data-pressed] .cursor-core {
+  width: 6px;
+  height: 6px;
+}
+
+.cursor-dot[data-pressed][data-mode="click"] .cursor-core,
+.cursor-dot[data-pressed][data-mode="drag"] .cursor-core {
+  width: 9px;
+  height: 9px;
+}
+
+.cursor-dot[data-label] .cursor-core {
+  opacity: 0;
 }
 
 .cursor-disc {
-  --s: 0.4;
   display: grid;
   place-items: center;
   width: 88px;
@@ -993,40 +1197,242 @@ html[data-lang="zh"] body {
   font-weight: 500;
   line-height: 1;
   opacity: 0;
-}
-
-.cursor-dot[data-mode="drag"] .cursor-ring {
-  --s: 1.3;
-}
-
-.cursor-dot[data-mode="click"] .cursor-ring {
-  --s: 1.7;
-  background-color: color-mix(in srgb, var(--color-ink) 10%, transparent);
-}
-
-.cursor-dot[data-mode="click"] .cursor-core,
-.cursor-dot[data-label] .cursor-core {
-  --s: 0;
-}
-
-.cursor-dot[data-label] .cursor-ring {
-  --s: 2.4;
-  opacity: 0;
+  scale: 0.2;
+  transition:
+    scale 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
 }
 
 .cursor-dot[data-label] .cursor-disc {
-  --s: 1;
   opacity: 1;
+  scale: 1;
 }
 
-/* Pressing pinches the ring and the disc a little at whatever size they are. */
-.cursor-dot[data-pressed] .cursor-ring,
-.cursor-dot[data-pressed] .cursor-disc {
+.cursor-dot[data-label][data-pressed] .cursor-disc {
   scale: 0.88;
 }
 
 @media print {
   .cursor-dot {
     display: none;
+  }
+}
+
+/* ---------- TIDE (TideBlocks.jsx) ----------
+   Clipping frames get their own class instead of Tailwind's overflow-hidden: the
+   motion pages zoom any image that is the direct child of an .overflow-hidden
+   box on hover, which would fight the transforms these frames drive. */
+.tide-clip,
+.tide-view {
+  overflow: hidden;
+}
+
+/* The wall: each column slides by half its height, which is exactly one copy of
+   its shots, and loops. Paused while the wall is off screen. */
+@keyframes tide-drift {
+  to {
+    transform: translateY(-50%);
+  }
+}
+.tide-drift {
+  animation: tide-drift 80s linear infinite;
+}
+.tide-wall:not(.is-on) .tide-drift {
+  animation-play-state: paused;
+}
+
+/* The wordmark plate. Everything is placed in container units of the plate, so
+   the white copy of the mark inside the water lines up with the blue one behind
+   it however tall the water happens to be. */
+.tide-plate {
+  container-type: size;
+}
+.tide-mark {
+  position: absolute;
+  left: 33cqw;
+  bottom: calc(50cqh - 34cqw * 199 / 560);
+  width: 34cqw;
+  height: calc(34cqw * 199 / 280);
+  -webkit-mask: url(/project/tide/logo.svg) center / contain no-repeat;
+  mask: url(/project/tide/logo.svg) center / contain no-repeat;
+}
+/* Water: a box anchored to the bottom whose top edge is a row of waves (the
+   first mask layer, a tile that slides sideways) over a solid body (the second). */
+.tide-water {
+  --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='24'%3E%3Cpath d='M0 12C40-4 80-4 120 12S200 28 240 12V24H0Z'/%3E%3C/svg%3E");
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 46%;
+  -webkit-mask-image: var(--wave), linear-gradient(#000, #000);
+  mask-image: var(--wave), linear-gradient(#000, #000);
+  -webkit-mask-repeat: repeat-x, no-repeat;
+  mask-repeat: repeat-x, no-repeat;
+  -webkit-mask-size: 240px 24px, 100% 100%;
+  mask-size: 240px 24px, 100% 100%;
+  -webkit-mask-position: 0 0, 0 23px;
+  mask-position: 0 0, 0 23px;
+  animation: tide-wave 7s linear infinite, tide-level 9s ease-in-out infinite alternate;
+}
+.tide-water--back {
+  animation-duration: 11s, 9s;
+  animation-delay: -4s, -1.5s;
+  animation-direction: reverse, alternate;
+}
+@keyframes tide-wave {
+  to {
+    -webkit-mask-position: -240px 0, 0 23px;
+    mask-position: -240px 0, 0 23px;
+  }
+}
+@keyframes tide-level {
+  from {
+    height: 36%;
+  }
+  to {
+    height: 60%;
+  }
+}
+
+/* The site map: a list drawn as a tree. Every item draws the half of the rail
+   above it that leads to its siblings, and the drop down to itself. */
+.tide-tree {
+  --rail: #91a4fd;
+}
+.tide-tree ul {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+}
+.tide-tree > ul {
+  padding-top: 0;
+}
+.tide-tree li {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 24px;
+}
+.tide-tree li::before,
+.tide-tree li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: calc(50% - 1px);
+  width: calc(50% + 1px);
+  height: 24px;
+  border-top: 2px solid var(--rail);
+}
+.tide-tree li::after {
+  right: auto;
+  left: calc(50% - 1px);
+  border-left: 2px solid var(--rail);
+}
+.tide-tree li:first-child::before,
+.tide-tree li:last-child::after {
+  border: 0 none;
+}
+.tide-tree li:last-child::before {
+  border-right: 2px solid var(--rail);
+  border-radius: 0 8px 0 0;
+}
+.tide-tree li:first-child::after {
+  border-radius: 8px 0 0 0;
+}
+.tide-tree li:only-child::before {
+  border-radius: 0;
+  border-top: 0 none;
+}
+.tide-tree > ul > li {
+  padding-top: 0;
+}
+.tide-tree > ul > li::before,
+.tide-tree > ul > li::after {
+  display: none;
+}
+/* The drop from a page down to the rail its children hang from. */
+.tide-tree ul ul::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(50% - 1px);
+  height: 24px;
+  border-left: 2px solid var(--rail);
+}
+.tide-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 8px);
+  max-width: 132px;
+  min-height: 48px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #fbfbfb;
+  color: #1e1f5d;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  transition: background-color 0.25s, color 0.25s, opacity 0.5s, transform 0.5s;
+}
+.tide-node--main {
+  background: #91a4fd;
+  font-weight: 600;
+}
+.tide-tree li:hover > .tide-node {
+  background: #f0d344;
+}
+
+.tide-view {
+  container-type: size;
+}
+/* --p runs 0 → 1 down the page; the image is pulled up by that share of what
+   does not fit in its frame. */
+.tide-scroll {
+  transform: translateY(calc(var(--p, 0) * min(0px, 100cqh - 100%)));
+  will-change: transform;
+}
+
+@keyframes tide-fade {
+  from {
+    opacity: 0;
+  }
+}
+.tide-fade,
+.tide-scroll {
+  animation: tide-fade 0.45s ease both;
+}
+@keyframes tide-nudge {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.tide-nudge {
+  animation: tide-nudge 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The tree grows from the homepage down, a level at a time. */
+  .tide-tree .tide-node {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .tide-tree.is-in .tide-node {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s, 0s, calc(var(--d) * 160ms), calc(var(--d) * 160ms);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tide-drift,
+  .tide-water,
+  .tide-nudge,
+  .tide-fade,
+  .tide-scroll {
+    animation: none;
   }
 }

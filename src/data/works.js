@@ -4,7 +4,7 @@
 import { tt } from "../i18n/t"
 import { projectList } from "./project"
 
-const featured = ["kyrall", "weather-pets", "codemao", "abc-mouse"]
+const featured = ["kyrall", "hmi", "weather-pets", "codemao", "abc-mouse"]
 
 // Each project's strip is a row of big rounded panels that loops forever. Every
 // panel is the same 16:9 frame, so the row keeps one rhythm whatever is in it.
@@ -68,22 +68,14 @@ const panels = {
     { shots: ["/project/abc-mouse/hero.jpg"] },
     { shots: ["/project/abc-mouse/11.png"] },
   ],
+  // The product itself, at 16:9: the centre display in both modes, the cluster,
+  // and the board that puts every change of the handover side by side. Built
+  // from the Figma source screens into /project/hmi/reel/.
   hmi: [
-    { shots: ["/gallery/hmi.jpg"] },
-    { shots: ["/gallery/detail/hmi-mockup.jpg"] },
-    { shots: ["/gallery/works/hmi/personas.jpg"] },
-    { shots: ["/gallery/works/hmi/nav-states.jpg"] },
-    { shots: ["/gallery/works/hmi/driving-modes.jpg"] },
-    {
-      kind: "note",
-      tone: "accent",
-      eyebrow: tt("Granstudio", "Granstudio"),
-      title: tt("Two screens, one system", "两块屏，一套系统"),
-      body: tt(
-        "Navigation, vehicle status and media laid out so the cluster and the centre display never contradict each other.",
-        "导航、车辆状态与媒体的排布方式，让仪表盘与中控屏永远不会互相矛盾。"
-      ),
-    },
+    { shots: ["/project/hmi/reel/console-auto.jpg"] },
+    { shots: ["/project/hmi/reel/console-manual.jpg"] },
+    { shots: ["/project/hmi/reel/dashboard-auto.jpg"] },
+    { shots: ["/project/hmi/reel/transition.jpg"] },
   ],
 }
 
@@ -104,6 +96,13 @@ const meta = {
     lead: tt(
       "Transform your daily forecast into a fun, personalized experience with your own AI-powered weather buddy.",
       "今天的天气如何？让你的天气萌宠为你播报吧。"
+    ),
+  },
+  hmi: {
+    year: "2024",
+    lead: tt(
+      "Designing the handover from manual to autonomous driving mode.",
+      "设计手动驾驶与自动驾驶之间的接管过程。"
     ),
   },
   codemao: {

@@ -18,7 +18,15 @@
 // nothing below `text-note` (13px). The two diagrams on the Interface board draw
 // their shapes in SVG but set their labels in HTML on top, so the labels keep to
 // those sizes however wide the tile is.
+//
+// Motion is small and tied to what the content is: tiles rise in as they arrive,
+// side-by-side tiles a beat apart; a sequence (the chat, a flow, a chain of steps)
+// plays in order once its tile is on screen; the transition's arrow draws itself;
+// and the breath light breathes, at the pace of a resting breath. All of it runs
+// on the shared reveal in wpMotion.jsx and CSS in index.css, and none of it runs
+// under prefers-reduced-motion.
 import { ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react"
+import { useReveal } from "./wpMotion"
 
 // --- primitives ---------------------------------------------------------------
 
@@ -41,13 +49,28 @@ function Rich({ text }) {
   )
 }
 
-// The one surface everything sits on. `lit` is the purple-tinted variant for the
-// part of a sequence the project actually designs.
-function Tile({ as: Tag = "div", lit, pad = "p-6 sm:p-8", className = "", children, ...rest }) {
+// Rises in when it reaches the viewport. `delay` (ms) staggers siblings that
+// arrive together.
+function Rise({ as: Tag = "div", delay = 0, style, children, ...rest }) {
+  const ref = useReveal()
   return (
-    <Tag className={`hmi-tile rounded-3xl ${pad} ${lit ? "hmi-tile--lit" : ""} ${className}`} {...rest}>
+    <Tag ref={ref} data-reveal="" style={delay ? { "--reveal-delay": `${delay}ms`, ...style } : style} {...rest}>
       {children}
     </Tag>
+  )
+}
+
+// One step of a sequence inside a rising block: `seq(i)` on a child makes it
+// follow the block in, i-th in line (see `.hmi-seq` in index.css).
+const seq = (i) => ({ "--i": i })
+
+// The one surface everything sits on. `lit` is the purple-tinted variant for the
+// part of a sequence the project actually designs.
+function Tile({ lit, pad = "p-6 sm:p-8", className = "", children, ...rest }) {
+  return (
+    <Rise className={`hmi-tile rounded-3xl ${pad} ${lit ? "hmi-tile--lit" : ""} ${className}`} {...rest}>
+      {children}
+    </Rise>
   )
 }
 
@@ -77,7 +100,7 @@ function Timeline({ items, numbered, accentLast, className = "" }) {
         const isLast = i === items.length - 1
         const accent = accentLast && isLast
         return (
-          <li key={i} className="flex gap-4">
+          <li key={i} className="hmi-seq flex gap-4" style={seq(i)}>
             <span aria-hidden="true" className={`flex shrink-0 flex-col items-center ${numbered ? "w-8" : "w-2"}`}>
               {numbered ? (
                 <span
@@ -116,7 +139,7 @@ function Chain({ items, lit }) {
   return (
     <ol className="flex flex-wrap items-center gap-2">
       {items.map((step, i) => (
-        <li key={i} className="flex min-w-0 items-center gap-2">
+        <li key={i} className="hmi-seq flex min-w-0 items-center gap-2" style={seq(i)}>
           <span
             className="min-w-0 rounded-2xl px-4 py-2 text-copy leading-snug"
             style={{ background: "var(--hmi-chip)", color: lit ? ACCENT : "var(--color-ink)" }}
@@ -157,10 +180,26 @@ function Screen({ src, alt = "", className = "", children }) {
 // The breath-light photographs were pasted into the deck on their own white ground.
 // On the light tile that white is multiplied away so they sit straight on the
 // surface; on the dark one they keep a white card (see `.hmi-photo` in index.css).
-function Photo({ src, alt = "", className = "" }) {
+//
+// With `off` (the same photograph, unlit) the light breathes: the lit frame fades
+// in and out over the unlit one on a four-second cycle. `phase` offsets the cycle
+// so three lights in a row do not pulse as one.
+function Photo({ src, off, phase = 0, alt = "", className = "" }) {
   return (
     <div className={`hmi-photo aspect-[5/4] overflow-hidden rounded-2xl ${className}`}>
-      <img src={src} alt={alt} loading="lazy" className="block h-full w-full object-cover" />
+      <div className="hmi-photo-in relative h-full w-full">
+        <img src={off ?? src} alt={alt} loading="lazy" className="block h-full w-full object-cover" />
+        {off && (
+          <img
+            src={src}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            className="hmi-breathe absolute inset-0 block h-full w-full object-cover"
+            style={{ animationDelay: `${-phase}s` }}
+          />
+        )}
+      </div>
     </div>
   )
 }
@@ -210,12 +249,12 @@ function Wire({ children, className = "", style, tone = 2 }) {
 function Levels({ slide }) {
   return (
     <ul className="grid grid-cols-3 gap-x-2 gap-y-6 sm:gap-x-card sm:gap-y-8 lg:grid-cols-6">
-      {slide.levels.map((level) => (
-        <li key={level.img}>
+      {slide.levels.map((level, i) => (
+        <Rise as="li" key={level.img} delay={i * 60}>
           <Well src={level.img} className="aspect-square p-2 sm:p-4" />
           <p className="mt-2 text-copy font-semibold text-ink sm:mt-body">{level.n}</p>
           <p className="text-note text-fog">{level.label}</p>
-        </li>
+        </Rise>
       ))}
     </ul>
   )
@@ -239,8 +278,8 @@ function Trends({ slide }) {
           return (
             <li
               key={item}
-              className={`flex items-center gap-3 py-3 lg:gap-4 lg:py-4 ${i ? "border-t" : ""}`}
-              style={{ borderColor: RULE }}
+              className={`hmi-seq flex items-center gap-3 py-3 lg:gap-4 lg:py-4 ${i ? "border-t" : ""}`}
+              style={{ borderColor: RULE, ...seq(i) }}
             >
               <ArrowRight
                 aria-hidden="true"
@@ -268,8 +307,8 @@ function Trends({ slide }) {
 function Interview({ slide }) {
   return (
     <ul className="grid gap-card lg:grid-cols-3">
-      {slide.people.map((person) => (
-        <Tile as="li" key={person.avatar} pad="p-6">
+      {slide.people.map((person, i) => (
+        <Tile as="li" key={person.avatar} pad="p-6" delay={i * 80}>
           <div className="flex items-center gap-4">
             <img src={person.avatar} alt="" loading="lazy" className="block size-16 shrink-0 rounded-full object-cover" />
             <div className="min-w-0">
@@ -333,7 +372,7 @@ function Scenarios({ slide }) {
       {slide.columns.map((col, i) => {
         const ink = col.lit ? ACCENT : "var(--color-cream)"
         return (
-          <Tile as="li" key={col.title} lit={col.lit} pad="p-6">
+          <Tile as="li" key={col.title} lit={col.lit} pad="p-6" delay={i * 80}>
             <span className="block text-5xl font-semibold leading-none tracking-tight" style={{ color: ink }}>
               {i + 1}
             </span>
@@ -360,6 +399,7 @@ function KeyPoints({ slide }) {
         <Tile
           as="li"
           key={item}
+          delay={i * 60}
           pad="p-4 sm:p-8"
           className={`flex items-baseline gap-3 sm:flex-col sm:items-stretch sm:justify-between sm:gap-8 ${
             i === 0 ? "sm:col-span-2 lg:col-span-3" : i === 1 ? "lg:col-span-3" : "lg:col-span-2"
@@ -389,14 +429,14 @@ function DesignPoint({ slide }) {
           ))}
         </div>
         <ul className="mt-auto grid grid-cols-3 gap-3 pt-8">
-          {light.images.map((src) => (
+          {light.images.map((src, i) => (
             <li key={src}>
-              <Photo src={src} />
+              <Photo src={src} off={light.off} phase={i * 1.3} />
             </li>
           ))}
         </ul>
       </Tile>
-      <Tile className="flex flex-col">
+      <Tile className="flex flex-col" delay={80}>
         <Title>{channels.title}</Title>
         <p className="mt-body text-copy text-fog">{channels.note}</p>
         <ul className="mt-auto grid grid-cols-3 gap-3 pt-8">
@@ -422,7 +462,7 @@ function Chat({ slide }) {
         {slide.messages.map((m, i) => {
           const mine = m.from === "user"
           return (
-            <li key={i} className={`flex items-end gap-3 ${mine ? "justify-end" : "justify-start"}`}>
+            <li key={i} className={`hmi-seq flex items-end gap-3 ${mine ? "justify-end" : "justify-start"}`} style={seq(i * 2)}>
               {!mine && <img src={slide.robot} alt="G-Va" loading="lazy" className="block h-14 w-auto shrink-0" />}
               <p
                 className={`max-w-[80%] rounded-3xl px-4 py-3 text-copy leading-snug ${
@@ -446,7 +486,7 @@ function Chat({ slide }) {
 
 function Flow({ title, items }) {
   return (
-    <Tile className="flex flex-col justify-between gap-8">
+    <Tile className="flex flex-col justify-between gap-8" delay={80}>
       <Label>{title}</Label>
       <Timeline items={items} numbered accentLast />
     </Tile>
@@ -468,7 +508,9 @@ function Mechanical({ slide }) {
   return (
     <div className="grid gap-card">
       <div className="grid gap-card lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        <Well src={slide.wheel} className="rounded-3xl p-6 sm:p-8" imgClassName="max-h-72" />
+        <Rise>
+          <Well src={slide.wheel} className="h-full rounded-3xl p-6 sm:p-8" imgClassName="max-h-72" />
+        </Rise>
         <Flow title="FLOW" items={slide.flow} />
       </div>
       <Tile>
@@ -476,8 +518,8 @@ function Mechanical({ slide }) {
         <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-12">
           {/* The slide captions the first light on its own and the other two together. */}
           <div className="grid grid-cols-3 content-start gap-x-3 gap-y-2">
-            {slide.lights.map((l) => (
-              <Photo key={l.img} src={l.img} />
+            {slide.lights.map((l, i) => (
+              <Photo key={l.img} src={l.img} off={slide.lightOff} phase={i * 1.3} />
             ))}
             <p className="text-center text-note text-fog">{slide.lights[0].caption}</p>
             <p className="col-span-2 text-center text-note text-fog">{slide.lightsCaption}</p>
@@ -541,9 +583,9 @@ function ConsoleDiagram({ c }) {
 
 // Title, diagram, then the photograph the diagram was read off. The two diagrams
 // are different shapes, so each is centred in the space its tile has left.
-function InterfaceTile({ title, photo, children }) {
+function InterfaceTile({ title, photo, delay, children }) {
   return (
-    <Tile className="flex flex-col">
+    <Tile className="flex flex-col" delay={delay}>
       <Title>{title}</Title>
       <div className="flex flex-1 items-center py-6">{children}</div>
       <div className="flex h-40 items-center justify-center">
@@ -560,7 +602,7 @@ function Interface({ slide }) {
       <InterfaceTile title={d.title} photo={d.photo}>
         <DashboardDiagram d={d} />
       </InterfaceTile>
-      <InterfaceTile title={c.title} photo={c.photo}>
+      <InterfaceTile title={c.title} photo={c.photo} delay={80}>
         <ConsoleDiagram c={c} />
       </InterfaceTile>
     </div>
@@ -585,9 +627,9 @@ function DashboardWire({ w }) {
   )
 }
 
-function ModeTile({ m }) {
+function ModeTile({ m, delay }) {
   return (
-    <Tile as="figure" className="flex flex-col">
+    <Tile as="figure" className="flex flex-col" delay={delay}>
       <figcaption>
         <Title>{m.caption}</Title>
       </figcaption>
@@ -611,7 +653,7 @@ function Dashboard({ slide }) {
       </Tile>
       <div className="grid gap-card lg:grid-cols-2">
         <ModeTile m={slide.manual} />
-        <ModeTile m={slide.auto} />
+        <ModeTile m={slide.auto} delay={80} />
       </div>
       {/* What turns the first screen into the second. */}
       <Tile pad="px-6 py-4 sm:px-8" className="flex items-center gap-4">
@@ -671,9 +713,9 @@ function ConsoleWireAuto({ slide, b }) {
   )
 }
 
-function ConsoleMode({ slide, m, Wire: WireFrame }) {
+function ConsoleMode({ slide, m, delay, Wire: WireFrame }) {
   return (
-    <Tile as="figure" className="flex flex-col">
+    <Tile as="figure" className="flex flex-col" delay={delay}>
       <figcaption>
         <Title>{m.caption}</Title>
         <p className="mt-body text-copy text-fog">{m.note}</p>
@@ -690,7 +732,7 @@ function Console({ slide }) {
   return (
     <div className="grid gap-card lg:grid-cols-2">
       <ConsoleMode slide={slide} m={slide.manual} Wire={ConsoleWireManual} />
-      <ConsoleMode slide={slide} m={slide.auto} Wire={ConsoleWireAuto} />
+      <ConsoleMode slide={slide} m={slide.auto} delay={80} Wire={ConsoleWireAuto} />
     </div>
   )
 }
@@ -699,7 +741,7 @@ function Console({ slide }) {
 
 function TransitionCell({ cell }) {
   if (cell.fit === "contain") {
-    return <Photo src={cell.img} className="mx-auto w-full max-w-40" />
+    return <Photo src={cell.img} off={cell.off} className="mx-auto w-full max-w-40" />
   }
   return (
     <Screen src={cell.img} className="self-start sm:self-auto">
@@ -742,8 +784,8 @@ function Transition({ slide }) {
               </>
             ) : (
               <span aria-hidden="true" className="col-span-2 flex items-center" style={{ color: ACCENT }}>
-                <span className="h-px flex-1 bg-current" />
-                <ArrowRight size={20} className="-ml-2 shrink-0" />
+                <span className="hmi-draw h-px flex-1 bg-current" />
+                <ArrowRight size={20} className="hmi-seq -ml-2 shrink-0" style={seq(6)} />
               </span>
             )}
           </div>
@@ -755,9 +797,11 @@ function Transition({ slide }) {
 
 // --- ProtoPie: the walkthrough, G-Va, the two links ------------------------------------------
 
-function LinkTile({ link }) {
+function LinkTile({ link, delay }) {
   return (
-    <a
+    <Rise
+      as="a"
+      delay={delay}
       href={link.href}
       target="_blank"
       rel="noreferrer"
@@ -769,18 +813,21 @@ function LinkTile({ link }) {
           aria-hidden="true"
           className="hmi-go flex size-10 shrink-0 items-center justify-center rounded-full transition-colors duration-300"
         >
-          <ArrowUpRight size={20} />
+          <ArrowUpRight
+            size={20}
+            className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5"
+          />
         </span>
       </span>
       <span className="text-copy text-fog">{link.note}</span>
-    </a>
+    </Rise>
   )
 }
 
 function Prototype({ slide }) {
   return (
     <div>
-      <figure>
+      <Rise as="figure">
         <div className="hmi-tile aspect-video w-full overflow-hidden rounded-3xl">
           <iframe
             src={slide.video.src}
@@ -792,19 +839,19 @@ function Prototype({ slide }) {
           />
         </div>
         <figcaption className="mt-body text-note text-fog">{slide.video.caption}</figcaption>
-      </figure>
+      </Rise>
       <div className="mt-visual grid gap-card lg:grid-cols-3">
         <Tile className="flex items-center gap-4">
-          <img src={slide.robot} alt="G-Va" loading="lazy" className="block h-24 w-auto shrink-0" />
+          <img src={slide.robot} alt="G-Va" loading="lazy" className="hmi-float block h-24 w-auto shrink-0" />
           <p
-            className="rounded-3xl rounded-bl-md px-4 py-3 text-copy font-medium leading-snug text-ink"
-            style={{ background: "var(--hmi-chip)" }}
+            className="hmi-seq rounded-3xl rounded-bl-md px-4 py-3 text-copy font-medium leading-snug text-ink"
+            style={{ background: "var(--hmi-chip)", ...seq(2) }}
           >
             {slide.hello}
           </p>
         </Tile>
-        {slide.links.map((link) => (
-          <LinkTile key={link.href} link={link} />
+        {slide.links.map((link, i) => (
+          <LinkTile key={link.href} link={link} delay={(i + 1) * 80} />
         ))}
       </div>
       {/* The deck's own asterisked notes on using the prototype. */}

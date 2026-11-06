@@ -12,14 +12,21 @@ import { ui } from "../i18n/ui"
 import { MotionContext, useAutoReveal } from "../components/project/wpMotion"
 
 // Case studies with scroll motion, and which blocks rise in on each. WeatherPets
-// handles its own (its cards reveal themselves); these two use the auto reveal.
+// handles its own (its cards reveal themselves); the others use the auto reveal.
 const MOTION = {
   // Blocks that sit straight in a section, or inside the plain wrapper a section
   // gets when its board draws the title; the wrapper itself is not a block.
   codemao:
     "article > section > :is(figure, dl, ul, ol, div[class]:not([class*='first-child'])), article > section > div:is(:not([class]), [class*='first-child']) > :is(figure, dl, ul, ol, div)",
   "abc-mouse": ".abc-deck :is(header, figure, ul, ol, dl, [class*='rounded-2xl'])",
+  // HMI's tiles reveal themselves (HmiDeck.jsx); the page only brings in the
+  // chapter titles and the lead under them.
+  hmi: "article > section > :is(h2, h2 + p)",
+  // Same for Slow Food: its tiles reveal themselves (SlowFoodDeck.jsx).
+  "slow-food": "article > section > :is(h2, h2 + p)",
 }
+// TIDE is built from the same shared blocks as CodeMao, so it rises in the same way.
+MOTION.tide = MOTION.codemao
 
 export default function ProjectDetail() {
   const { slug } = useParams()
@@ -63,9 +70,9 @@ export default function ProjectDetail() {
   if (!project || !detail) return <Navigate to="/project" replace />
 
   // The "next project" chain is set by hand for the main case studies, so the
-  // reader is led through the four big ones in order; anything else falls back
-  // to list order.
-  const NEXT = { kyrall: "weather-pets", "weather-pets": "codemao", codemao: "abc-mouse" }
+  // reader is led through the featured ones in the reel's own order; anything
+  // else falls back to list order.
+  const NEXT = { kyrall: "hmi", hmi: "weather-pets", "weather-pets": "codemao", codemao: "abc-mouse" }
   const idx = nextProject.findIndex((p) => p.slug === slug)
   const next =
     (NEXT[slug] && nextProject.find((p) => p.slug === NEXT[slug])) ||

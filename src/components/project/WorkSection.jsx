@@ -32,7 +32,7 @@ export default function WorkSection({ work }) {
           <span className="font-mono-tight text-sm tracking-wide text-ink/70">{work.year}</span>
         </div>
 
-        <h2 className="font-condensed mb-5 text-[clamp(3rem,6.5vw,8rem)] uppercase leading-[0.82] tracking-[-0.01em] text-ink">
+        <h2 className="work-title font-condensed mb-5 text-[clamp(3rem,6.5vw,8rem)] uppercase leading-[0.82] tracking-[-0.01em] text-ink">
           {work.name}
         </h2>
 

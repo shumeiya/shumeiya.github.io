@@ -28,6 +28,8 @@ import CompareSlider from "./CompareSlider"
 import CodemaoFlow from "./CodemaoFlow"
 import AbcMouseDeck from "./AbcMouseDeck"
 import HmiDeck from "./HmiDeck"
+import SlowFoodDeck from "./SlowFoodDeck"
+import { Tide404, TideLogo, TideSitemap, TideStrip, TideTour, TideWall } from "./TideBlocks"
 
 // Typed content blocks for a case-study section. A deck-shaped case study needs
 // more than paragraphs — figures, definition rows, a process sequence and the
@@ -666,6 +668,20 @@ export default function DetailBlocks({ blocks, accent }) {
         return <AbcMouseDeck key={i} slide={block.slide} />
       case "hmideck":
         return <HmiDeck key={i} slide={block.slide} />
+      case "sfdeck":
+        return <SlowFoodDeck key={i} slide={block.slide} />
+      case "tideWall":
+        return <TideWall key={i} columns={block.columns} caption={block.caption} />
+      case "tideLogo":
+        return <TideLogo key={i} caption={block.caption} />
+      case "tideSitemap":
+        return <TideSitemap key={i} tree={block.tree} caption={block.caption} />
+      case "tideStrip":
+        return <TideStrip key={i} sets={block.sets} caption={block.caption} />
+      case "tideTour":
+        return <TideTour key={i} pages={block.pages} caption={block.caption} />
+      case "tide404":
+        return <Tide404 key={i} hint={block.hint} found={block.found} caption={block.caption} />
       default:
         return <Text key={i} text={block.text} />
     }
