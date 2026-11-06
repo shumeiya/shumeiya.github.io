@@ -96,12 +96,13 @@ function Stats({ items, accent }) {
   )
 }
 
-// Two short recordings side by side, the Editor's share and export, under the
-// tool player. Each loops quietly with its name and one line beneath it. A
-// section gap above: the pair is its own beat, not a caption of the player.
+// Short recordings side by side: the Editor's share and export pair, and the
+// Dashboard's four features. Each loops quietly, at its own rate if it names
+// one, with its name and one line beneath it. From lg, four line up in one
+// row. A section gap above: the row is its own beat, not a caption.
 function VideoPair({ items }) {
   return (
-    <ul className="mt-section grid gap-card sm:grid-cols-2">
+    <ul className={`mt-section grid gap-card sm:grid-cols-2 ${items.length > 2 ? "lg:grid-cols-4" : ""}`}>
       {items.map((it) => (
         <li key={it.video}>
           <video
@@ -115,6 +116,7 @@ function VideoPair({ items }) {
             loop
             playsInline
             preload="metadata"
+            onLoadedMetadata={(e) => { e.currentTarget.playbackRate = it.rate ?? 1 }}
             aria-label={it.title}
           />
           <p className="mt-body text-xl font-semibold tracking-tight text-cream">{it.title}</p>

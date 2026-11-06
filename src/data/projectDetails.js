@@ -117,7 +117,39 @@ export const projectDetails = {
             ratio: "1920 / 1022",
             caption: tt("Workflow · Prompt input → Generate list", "工作流 · 输入描述，点击生成"),
           },
-          { type: "editorTabs", items: kyrallCoreFlow.play.slice(1).map((p) => ({ ...p, n: null })) },
+          // The tab player, kept but no longer on the page:
+          // { type: "editorTabs", items: kyrallCoreFlow.play.slice(1).map((p) => ({ ...p, n: null })) },
+          {
+            type: "videoPair",
+            items: [
+              {
+                video: "/project/kyrall/play/input-all.mp4",
+                poster: "/project/kyrall/play/input-all.jpg",
+                title: tt("Multimodal input", "多模态输入"),
+                body: tt("Image, mesh and file inputs.", "支持图片、Mesh、文件输入"),
+              },
+              {
+                video: "/project/kyrall/play/preset-prompt.mp4",
+                poster: "/project/kyrall/play/preset-prompt.jpg",
+                title: tt("Preset prompts", "预设 Prompt"),
+                body: tt("Prompts change with the onboarding role.", "根据 Onboarding 角色选择而改变"),
+              },
+              {
+                video: "/project/kyrall/play/model-switch.mp4",
+                poster: "/project/kyrall/play/model-switch.jpg",
+                rate: 0.5,
+                title: tt("Model switching", "生成模型切换"),
+                body: tt("Generation models: Base / Reasoning.", "生成模型：Base / Reasoning"),
+              },
+              {
+                video: "/project/kyrall/play/context-manager.mp4",
+                poster: "/project/kyrall/play/context-manager.jpg",
+                rate: 0.75,
+                title: tt("Context Manager", "Context Manager"),
+                body: tt("Add references from the Context Manager.", "从 Context Manager 添加参考"),
+              },
+            ],
+          },
           {
             type: "subSection",
             heading: tt("Generation finished, straight into the Editor", "生成完成，直接进入 Editor"),
