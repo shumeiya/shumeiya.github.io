@@ -6,7 +6,7 @@ const ART = "/project/kyrall/extensions"
 // ExtensionsBoard.jsx, is kept but no longer on the page). Each act keeps its
 // numbered head, runs its recording on the left, and makes one point on the
 // right: a title and a tight paragraph (the act's `brief` in the data file),
-// centred against the recording. The recordings loop on their own.
+// bottom-aligned with the recording. The recordings loop on their own.
 const ACTS = [
   { video: { src: `${ART}/projects.mp4`, poster: `${ART}/projects.jpg` } },
   { video: { src: `${ART}/community.mp4`, poster: `${ART}/community.jpg` } },
@@ -46,7 +46,7 @@ export default function ExtensionsFlow({ board }) {
                 preload="metadata"
                 aria-label={t(act.title)}
               />
-              <div className="lg:self-center">
+              <div className="lg:self-end">
                 <h4 className="text-xl font-semibold tracking-tight text-cream">{t(act.brief.title)}</h4>
                 <p className="mt-body text-copy text-ink">{t(act.brief.body)}</p>
               </div>
