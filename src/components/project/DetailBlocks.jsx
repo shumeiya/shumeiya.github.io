@@ -588,7 +588,7 @@ export default function DetailBlocks({ blocks, accent }) {
       case "specGallery":
         return <SpecGallery key={i} />
       case "modeCompare":
-        return <ModeCompare key={i} items={block.items} />
+        return <ModeCompare key={i} items={block.items} intro={block.intro} />
       case "videoPair":
         return <VideoPair key={i} items={block.items} gap={block.gap} />
       case "editorTabs":

@@ -1,14 +1,34 @@
 import { useT } from "../../i18n/lang"
 import { Wipe } from "./wpMotion"
 
-// Light and dark mode of the same screen, side by side under the Design System
-// chapter. Each card is a before/after wipe: the dark capture underneath, the
-// light one revealed by a divider the reader drags (arrow keys work too), with
-// the mode names as small pills in the lower corners.
-export default function ModeCompare({ items }) {
+// Light and dark mode of the same screen under the Design System chapter.
+// An optional intro recording runs full width above (the light theme in
+// motion), then each card is a before/after wipe: the dark capture
+// underneath, the light one revealed by a divider the reader drags (arrow
+// keys work too), with the mode names as small pills in the lower corners.
+export default function ModeCompare({ items, intro }) {
   const t = useT()
   return (
-    <div className="mt-visual grid gap-card lg:grid-cols-2">
+    <div className="mt-visual">
+      {intro && (
+        <div className="mb-visual">
+          <p className="text-copy font-semibold tracking-tight text-cream">{t(intro.title)}</p>
+          <video
+            src={intro.video}
+            poster={intro.poster}
+            width={1920}
+            height={1022}
+            className="mt-body block h-auto w-full rounded-xl bg-box"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-label={t(intro.title)}
+          />
+        </div>
+      )}
+      <div className="grid gap-card lg:grid-cols-2">
       {items.map((item, i) => (
         <div key={i}>
           <p className="text-copy font-semibold tracking-tight text-cream">{t(item.title)}</p>
@@ -41,6 +61,7 @@ export default function ModeCompare({ items }) {
           />
         </div>
       ))}
+      </div>
     </div>
   )
 }

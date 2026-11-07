@@ -230,6 +230,11 @@ export const projectDetails = {
           // Dashboard and the Editor, with a pill switch on each card.
           {
             type: "modeCompare",
+            intro: {
+              title: tt("Light theme", "Light theme"),
+              video: "/project/kyrall/system/light-mode.mp4",
+              poster: "/project/kyrall/system/light-mode.jpg",
+            },
             items: [
               {
                 title: tt("Dashboard", "Dashboard"),
