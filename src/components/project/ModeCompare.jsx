@@ -16,7 +16,7 @@ export default function ModeCompare({ items, intro }) {
           <video
             src={intro.video}
             poster={intro.poster}
-            width={1920}
+            width={1874}
             height={1022}
             className="mt-body block h-auto w-full rounded-xl bg-box"
             autoPlay
