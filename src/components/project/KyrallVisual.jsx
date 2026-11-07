@@ -14,7 +14,7 @@ const INK = "#191717"
 const YELLOW = "#C4FF35"
 const GREY = "#878787"
 
-const ICONS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const ICONS = Array.from({ length: 24 }, (_, i) => i + 1)
 
 function Tile({ className = "", style, children }) {
   return (
@@ -40,8 +40,8 @@ export default function KyrallVisual() {
         />
       </Tile>
 
-      {/* Nine icons from the library, 1×2. */}
-      <Tile className="row-span-2 grid grid-cols-3 items-center gap-6 p-6" style={{ background: INK }}>
+      {/* Twenty-four icons from the library, 1×2. */}
+      <Tile className="row-span-2 grid grid-cols-4 items-center gap-4 p-6" style={{ background: INK }}>
         {ICONS.map((n) => (
           <img key={n} src={`${ART}/ico-${n}.png`} alt="" width={200} height={200} loading="lazy" className="h-auto w-full" />
         ))}
@@ -59,17 +59,16 @@ export default function KyrallVisual() {
         />
       </Tile>
 
-      {/* The numeral sheet, 1×1, drawn natively. */}
-      <Tile className="flex items-center justify-center" style={{ background: "#FDFDFD" }}>
-        <div className="font-mono-tight text-6xl font-semibold tabular-nums" style={{ color: "#A5A095" }}>
-          <p>
-            <span className="px-2" style={{ background: YELLOW, color: INK }}>
-              1
-            </span>
-            234
-          </p>
-          <p>5678</p>
-        </div>
+      {/* The numeral sheet from the board source, 1×1. */}
+      <Tile className="flex items-center justify-center p-8" style={{ background: "#FDFDFD" }}>
+        <img
+          src={`${ART}/numerals.png`}
+          alt={t(tt("Numerals in the brand type", "品牌字体数字样张"))}
+          width={848}
+          height={424}
+          loading="lazy"
+          className="h-full w-full object-contain"
+        />
       </Tile>
 
       {/* The part photo, 1×2. */}
@@ -77,8 +76,8 @@ export default function KyrallVisual() {
         <img
           src={`${ART}/flange.png`}
           alt={t(tt("Flange render, light and dark halves", "法兰件渲染，明暗各半"))}
-          width={373}
-          height={426}
+          width={928}
+          height={1060}
           loading="lazy"
           className="h-full w-full object-cover"
         />
@@ -127,8 +126,8 @@ export default function KyrallVisual() {
         <img
           src={`${ART}/rocket.png`}
           alt={t(tt("Kyrall: automating design for the physical world", "Kyrall：为物理世界自动化设计"))}
-          width={373}
-          height={426}
+          width={928}
+          height={1062}
           loading="lazy"
           className="h-full w-full object-cover"
         />
