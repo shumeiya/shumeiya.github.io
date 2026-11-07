@@ -116,15 +116,16 @@ export default function KyrallVisual() {
         </span>
       </Tile>
 
-      {/* The icon library, one wide tile: Editor tools over common icons. */}
-      <Tile className="col-span-2 flex flex-col items-center justify-center gap-6 p-6 lg:col-span-4" style={{ background: INK }}>
+      {/* The icon library, one wide 4×2 tile: Editor tools over common icons,
+          both strips running the tile's full width. */}
+      <Tile className="col-span-2 row-span-2 flex flex-col justify-center gap-8 p-8 lg:col-span-4" style={{ background: INK }}>
         <img
           src={`${ART}/icons-row1.png`}
           alt={t(tt("Editor tool icons", "Editor 工具图标"))}
           width={2398}
           height={200}
           loading="lazy"
-          className="h-8 w-auto max-w-full sm:h-10"
+          className="h-auto w-full"
         />
         <img
           src={`${ART}/icons-row2.png`}
@@ -132,7 +133,7 @@ export default function KyrallVisual() {
           width={2680}
           height={200}
           loading="lazy"
-          className="h-8 w-auto max-w-full sm:h-10"
+          className="h-auto w-full"
         />
       </Tile>
     </div>
